@@ -1,6 +1,6 @@
-import { Role } from './role.enum';
-import { Gender } from './gender.enum';
-import { Location } from './location.enum';
+import { Role } from '../role.enum';
+import { Gender } from '../gender.enum';
+import { Location } from '../location.enum';
 import { UserProfile } from './user-profile.interface';
 import { TrainerProfile } from './trainer-profile.interface';
 

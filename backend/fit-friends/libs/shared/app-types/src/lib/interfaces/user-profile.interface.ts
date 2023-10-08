@@ -1,6 +1,6 @@
-import { FitnessLevel } from './fitness-level.enum';
-import { TrainingDuration } from './training-duration';
-import { TrainingType } from './training-type.enum';
+import { FitnessLevel } from '../fitness-level.enum';
+import { TrainingDuration } from '../training-duration.enum';
+import { TrainingType } from '../training-type.enum';
 
 export interface UserProfile {
   readonly profileId: number;
