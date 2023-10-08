@@ -17,6 +17,13 @@
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "paths": {}
+    "paths": {
+      "@app-types/shared/app-types": [
+        "libs/shared/app-types/src"
+      ],
+      "@app-types/shared/app-types/*": [
+        "libs/shared/app-types/src/*"
+      ]
+    }
   }
 }
