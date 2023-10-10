@@ -36,6 +36,33 @@
       "compilerOptions": {
         "tsConfigPath": "libs/shared/app-types/tsconfig.lib.json"
       }
+    },
+    "database-service": {
+      "type": "library",
+      "root": "libs/database-service",
+      "entryFile": "index",
+      "sourceRoot": "libs/database-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/database-service/tsconfig.lib.json"
+      }
+    },
+    "config-service": {
+      "type": "library",
+      "root": "libs/config-service",
+      "entryFile": "index",
+      "sourceRoot": "libs/config-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/config-service/tsconfig.lib.json"
+      }
+    },
+    "shared/helpers": {
+      "type": "library",
+      "root": "libs/shared/helpers",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared/helpers/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared/helpers/tsconfig.lib.json"
+      }
     }
   }
 }

@@ -4,7 +4,7 @@
 
 # Logs
 logs
-*.log
+*.log*
 npm-debug.log*
 pnpm-debug.log*
 yarn-debug.log*
@@ -13,6 +13,11 @@ lerna-debug.log*
 
 # OS
 .DS_Store
+
+#misc
+Thumbs.db
+*.env
+**/uploads/*
 
 # Tests
 /coverage

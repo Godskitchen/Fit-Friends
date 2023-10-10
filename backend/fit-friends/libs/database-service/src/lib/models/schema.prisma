@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId          Int             @id @default(autoincrement()) @map("user_id")
+  name            String
+  email           String          @unique
+  avatarUrl       String?         @map("avatar_url")
+  hashPassword    String          @map("hash_password")
+  gender          Gender
+  role            Role
+  aboutInfo       String          @map("about_info")
+  birthDate       DateTime?       @map("birth_date")
+  location        Location
+  backgroundImage String          @map("background_image")
+  createdAt       DateTime        @map("created_at")
+  userProfile     UserProfile?
+  trainerProfile  TrainerProfile?
+
+  @@map("users")
+}
+
+model UserProfile {
+  profileId           Int              @id @default(autoincrement()) @map("profile_id")
+  fitnessLevel        FitnessLevel     @map("fitness_level")
+  trainingType        TrainingType[]   @map("training_type")
+  trainingDuration    TrainingDuration @map("training_duration")
+  caloriesToBurn      Int              @map("calories_to_burn")
+  dailyCaloriesIntake Int              @map("daily_calories_intake")
+  readyForWorkout     Boolean          @map("ready_for_workout")
+  user                User             @relation(fields: [userId], references: [userId])
+  userId              Int              @unique
+
+  @@map("user_profiles")
+}
+
+model TrainerProfile {
+  profileId       Int            @id @default(autoincrement()) @map("profile_id")
+  fitnessLevel    FitnessLevel   @map("fitness_level")
+  trainingType    TrainingType[] @map("training_type")
+  certificates    String
+  achievements    String
+  readyForWorkout Boolean        @map("ready_for_workout")
+  user            User           @relation(fields: [userId], references: [userId])
+  userId          Int            @unique
+
+  @@map("trainer_profiles")
+}
+
+enum Gender {
+  Male
+  Female
+  No_Matter
+}
+
+enum Role {
+  User
+  Trainer
+}
+
+enum Location {
+  Pionerskaya
+  Petrogradskaya
+  Udelnaya
+  Zvezdnaya
+  Sportivnaya
+}
+
+enum FitnessLevel {
+  Beginner
+  Amateur
+  Pro
+}
+
+enum TrainingType {
+  Yoga
+  Running
+  Boxing
+  Stretching
+  Crossfit
+  Aerobics
+  Pilates
+}
+
+enum TrainingDuration {
+  TenToThirtyMinutes
+  ThirtyToFiftyMinutes
+  FiftyToEightyMinutes
+  EightyToOneHundredMinutes
+}

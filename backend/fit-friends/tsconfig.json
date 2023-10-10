@@ -17,12 +17,31 @@
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
     "paths": {
-      "@app-types/shared/app-types": [
-        "libs/shared/app-types/src"
+      "@libs/shared/app-types": [
+        "libs/shared/app-types/src/index.ts"
       ],
-      "@app-types/shared/app-types/*": [
+      "@libs/shared/app-types/*": [
         "libs/shared/app-types/src/*"
+      ],
+      "@libs/database-service": [
+        "libs/database-service/src/index.ts"
+      ],
+      "@libs/database-service/*": [
+        "libs/database-service/src/*"
+      ],
+      "@libs/config-service": [
+        "libs/config-service/src/index.ts"
+      ],
+      "@libs/config-service/*": [
+        "libs/config-service/src/*"
+      ],
+      "@libs/shared/helpers": [
+        "libs/shared/helpers/src/index.ts"
+      ],
+      "@libs/shared/helpers/*": [
+        "libs/shared/helpers/src/*"
       ]
     }
   }
