@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   ignorePatterns: ['.eslintrc.js'],
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint'],
   overrides: [
     {
     parser: '@typescript-eslint/parser',

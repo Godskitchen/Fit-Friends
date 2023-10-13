@@ -8,15 +8,15 @@ export interface User {
   readonly userId: number;
   name: string;
   email: string;
-  avatarUrl?: string;
+  avatarUrl?: string | null;
   hashPassword: string;
   gender: Gender;
   role: Role;
   aboutInfo: string;
-  birthDate?: Date;
+  birthDate?: Date | null;
   location: Location;
   backgroundImage: string;
-  createdAt?: Date;
-  userProfile?: UserProfile;
-  trainerProfile?: TrainerProfile;
+  createdAt?: Date | null;
+  userProfile?: UserProfile | null;
+  trainerProfile?: TrainerProfile | null;
 }
