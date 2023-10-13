@@ -1,8 +1,4 @@
-import { Role } from '../role.enum';
-import { Gender } from '../gender.enum';
-import { Location } from '../location.enum';
-import { UserProfile } from './user-profile.interface';
-import { TrainerProfile } from './trainer-profile.interface';
+import { Gender, Role, Location } from '../..';
 
 export interface User {
   readonly userId: number;
@@ -17,6 +13,4 @@ export interface User {
   location: Location;
   backgroundImage: string;
   createdAt?: Date | null;
-  userProfile?: UserProfile | null;
-  trainerProfile?: TrainerProfile | null;
 }

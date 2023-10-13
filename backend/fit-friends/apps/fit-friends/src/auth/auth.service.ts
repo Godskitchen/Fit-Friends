@@ -1,19 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { compare, genSalt, hash } from 'bcrypt';
 import NewUserDto from './dto/new-user.dto';
-import { UserEntity } from '@libs/database-service';
+import {
+  TrainerProfileEntity,
+  UserEntity,
+  UserProfileEntity,
+  UserRepository,
+} from '@libs/database-service';
 
 const SALT_ROUNDS = 10;
 
 @Injectable()
-export default class AuthService {
+export class AuthService {
   constructor(private readonly userRepository: UserRepository) {}
 
   public async register(data: NewUserDto) {
-    const { password } = data;
+    const { password, userProfile, trainerProfile } = data;
     const hashPassword = await this.setPassword(password);
 
-    const userData: ReturnType<UserEntity['toObject']> = {
+    const userEntity = new UserEntity({
       name: data.name,
       email: data.email,
       avatarUrl: data.avatarUrl,
@@ -24,11 +29,14 @@ export default class AuthService {
       birthDate: data.birthDate,
       location: data.location,
       backgroundImage: data.backgroundImage,
-      userProfile: data.userProfile,
-      trainerProfile: data.trainerProfile,
-    };
+      userProfile: userProfile ? new UserProfileEntity(userProfile) : undefined,
+      trainerProfile: trainerProfile
+        ? new TrainerProfileEntity(trainerProfile)
+        : undefined,
+    });
 
-    return this.userService.create(userData);
+    const user = await this.userRepository.create(userEntity);
+    console.log(user);
   }
 
   private async setPassword(password: string): Promise<string> {

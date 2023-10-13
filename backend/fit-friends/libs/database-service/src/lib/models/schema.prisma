@@ -19,7 +19,7 @@ model User {
   birthDate       DateTime?       @map("birth_date")
   location        Location
   backgroundImage String          @map("background_image")
-  createdAt       DateTime        @map("created_at")
+  createdAt       DateTime        @default(now()) @map("created_at")
   userProfile     UserProfile?
   trainerProfile  TrainerProfile?
 
@@ -27,28 +27,28 @@ model User {
 }
 
 model UserProfile {
-  profileId           Int              @id @default(autoincrement()) @map("profile_id")
+  profileId           Int              @id @map("profile_id")
   fitnessLevel        FitnessLevel     @map("fitness_level")
   trainingType        TrainingType[]   @map("training_type")
   trainingDuration    TrainingDuration @map("training_duration")
   caloriesToBurn      Int              @map("calories_to_burn")
   dailyCaloriesIntake Int              @map("daily_calories_intake")
   readyForWorkout     Boolean          @map("ready_for_workout")
-  user                User             @relation(fields: [userId], references: [userId])
-  userId              Int              @unique
+  user                User             @relation(fields: [profileId], references: [userId])
+  
 
   @@map("user_profiles")
 }
 
 model TrainerProfile {
-  profileId       Int            @id @default(autoincrement()) @map("profile_id")
+  profileId       Int            @id @map("profile_id")
   fitnessLevel    FitnessLevel   @map("fitness_level")
   trainingType    TrainingType[] @map("training_type")
   certificates    String
   achievements    String
   readyForWorkout Boolean        @map("ready_for_workout")
-  user            User           @relation(fields: [userId], references: [userId])
-  userId          Int            @unique
+  user            User           @relation(fields: [profileId], references: [userId])
+
 
   @@map("trainer_profiles")
 }

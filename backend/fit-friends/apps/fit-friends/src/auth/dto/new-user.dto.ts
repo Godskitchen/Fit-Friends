@@ -1,6 +1,6 @@
 import { Gender, Role, Location } from '@libs/shared/app-types';
-import { TrainerProfile } from '@libs/shared/app-types/lib/interfaces/trainer-profile.interface';
-import { UserProfile } from '@libs/shared/app-types/lib/interfaces/user-profile.interface';
+import UserProfileDto from './user-profile.dto';
+import TrainerProfileDto from './trainer-profile.dto';
 
 export default class NewUserDto {
   name: string;
@@ -13,6 +13,6 @@ export default class NewUserDto {
   birthDate?: Date;
   location: Location;
   backgroundImage: string;
-  userProfile?: UserProfile;
-  trainerProfile?: TrainerProfile;
+  userProfile?: UserProfileDto;
+  trainerProfile?: TrainerProfileDto;
 }

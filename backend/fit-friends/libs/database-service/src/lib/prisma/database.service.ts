@@ -1,17 +1,17 @@
 import { ConfigService } from '@nestjs/config';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 
-import { PrismaClient as PrismaPsqlClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { getPostgresConnectionString } from '@libs/shared/helpers';
 
 import { DbConfig } from '@libs/shared/app-types';
 
 @Injectable()
 export class DatabaseService implements OnModuleInit {
-  private psqlConnector: PrismaPsqlClient;
+  private psqlConnector: PrismaClient;
 
   constructor(private configService: ConfigService) {
-    this.psqlConnector = new PrismaPsqlClient({
+    this.psqlConnector = new PrismaClient({
       datasources: {
         db: {
           url: getPostgresConnectionString(
@@ -26,7 +26,7 @@ export class DatabaseService implements OnModuleInit {
     await this.psqlConnector.$connect();
   }
 
-  get prismaPostgresConnector(): PrismaPsqlClient {
+  get prismaPostgresConnector(): PrismaClient {
     return this.psqlConnector;
   }
 }

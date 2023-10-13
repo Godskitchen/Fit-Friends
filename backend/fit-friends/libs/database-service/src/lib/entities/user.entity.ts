@@ -1,26 +1,27 @@
-import { User } from '@libs/shared/app-types';
-import { Gender } from '@libs/shared/app-types/lib/gender.enum';
-import { TrainerProfile } from '@libs/shared/app-types/lib/interfaces/trainer-profile.interface';
-import { UserProfile } from '@libs/shared/app-types/lib/interfaces/user-profile.interface';
-import { Location } from '@libs/shared/app-types/lib/location.enum';
-import { Role } from '@libs/shared/app-types/lib/role.enum';
+import { Gender, Role, User, Location } from '@libs/shared/app-types';
+import { UserProfileEntity } from './user-profile.entity';
+import { TrainerProfileEntity } from './trainer-profile.entity';
 
 export class UserEntity implements Omit<User, 'userId'> {
   name: string;
   email: string;
-  avatarUrl?: string;
+  avatarUrl?: string | null;
   hashPassword: string;
   gender: Gender;
   role: Role;
   aboutInfo: string;
-  birthDate?: Date;
+  birthDate?: Date | null;
   location: Location;
   backgroundImage: string;
-  createdAt?: Date;
-  userProfile?: UserProfile;
-  trainerProfile?: TrainerProfile;
+  userProfile?: UserProfileEntity | null;
+  trainerProfile?: TrainerProfileEntity | null;
 
-  constructor(user: Omit<User, 'userId'>) {
+  constructor(
+    user: Omit<User, 'userId'> & {
+      userProfile?: UserProfileEntity;
+      trainerProfile?: TrainerProfileEntity;
+    },
+  ) {
     this.name = user.name;
     this.email = user.email;
     this.avatarUrl = user.avatarUrl;
@@ -47,8 +48,8 @@ export class UserEntity implements Omit<User, 'userId'> {
       birthDate: this.birthDate,
       location: this.location,
       backgroundImage: this.backgroundImage,
-      userProfile: this.userProfile,
-      trainerProfile: this.trainerProfile,
+      userProfile: this.userProfile?.toObject(),
+      trainerProfile: this.trainerProfile?.toObject(),
     };
   }
 }
