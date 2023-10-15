@@ -23,6 +23,7 @@
     "bcrypt": "5.1.1",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.0",
+    "dayjs": "1.11.10",
     "joi": "17.11.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1"
@@ -76,7 +77,8 @@
       "^@shared/app-types(|/.*)$": "<rootDir>/libs/shared/app-types/src/$1",
       "^@databse-service/database-service(|/.*)$": "<rootDir>/libs/database-service/src/$1",
       "^@config-service/config-service(|/.*)$": "<rootDir>/libs/config-service/src/$1",
-      "^@helpers/shared/helpers(|/.*)$": "<rootDir>/libs/shared/helpers/src/$1"
+      "^@helpers/shared/helpers(|/.*)$": "<rootDir>/libs/shared/helpers/src/$1",
+      "^@validate-decorators/shared/validate-decorators(|/.*)$": "<rootDir>/libs/shared/validate-decorators/src/$1"
     }
   }
 }

@@ -2,11 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { useContainer } from 'class-validator';
 
 // import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);

@@ -11,7 +11,7 @@ export class UserRepository {
     this.prismaConnector = dbService.prismaPostgresConnector;
   }
 
-  public async create(entity: UserEntity) {
+  public async create(entity: UserEntity): Promise<User> {
     const data = entity.toObject();
 
     return this.prismaConnector.user.create({
@@ -31,9 +31,33 @@ export class UserRepository {
     });
   }
 
+  // public async update(
+  //   updateData: Partial<UserEntity>,
+  //   userId: number,
+  // ): Promise<User> {
+  //   return this.prismaConnector.user.update({
+  //     where: {
+  //       userId,
+  //     },
+  //     data: {
+
+  //     }
+  //   });
+  // }
+
   public async findByEmail(email: string): Promise<User | null> {
     return this.prismaConnector.user.findUnique({
       where: { email },
+      include: {
+        userProfile: true,
+        trainerProfile: true,
+      },
+    });
+  }
+
+  public async findById(id: number): Promise<User | null> {
+    return this.prismaConnector.user.findUnique({
+      where: { userId: id },
       include: {
         userProfile: true,
         trainerProfile: true,

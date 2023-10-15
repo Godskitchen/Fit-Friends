@@ -42,6 +42,15 @@
       ],
       "@libs/shared/helpers/*": [
         "libs/shared/helpers/src/*"
+      ],
+      "@libs/shared/validate-decorators": [
+        "libs/shared/validate-decorators/src/index.ts"
+      ],
+      "@libs/sharedvalidate-decorators/*": [
+        "libs/shared/validate-decorators/src/*"
+      ],
+      "@app/user": [
+        "apps/fit-friends/src/user/index.ts"
       ]
     }
   }
