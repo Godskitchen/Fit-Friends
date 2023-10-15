@@ -16,6 +16,8 @@ import {
   isArray,
 } from 'class-validator';
 import {
+  CALORIES_TO_BURN,
+  CALORIES_TO_BURN_VALIDATION_MESSAGE,
   DAILY_CALORIES_INTAKE,
   DAILY_CALORIES_INTAKE_VALIDATION_MESSAGE,
   FITNESS_LEVEL_VALIDATION_MESSAGE,
@@ -52,6 +54,10 @@ export class UserProfileDto {
 
   @IsEnum(TrainingDuration, { message: TRAINING_DURATION_VALIDATION_MESSAGE })
   trainingDuration: TrainingDuration;
+
+  @Max(CALORIES_TO_BURN.MIN, { message: CALORIES_TO_BURN_VALIDATION_MESSAGE })
+  @Min(CALORIES_TO_BURN.MIN, { message: CALORIES_TO_BURN_VALIDATION_MESSAGE })
+  @IsInt({ message: CALORIES_TO_BURN_VALIDATION_MESSAGE })
   caloriesToBurn: number;
 
   @Max(DAILY_CALORIES_INTAKE.MAX, {

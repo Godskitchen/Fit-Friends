@@ -19,5 +19,6 @@ export function fillRDO<T, V>(
   return plainToInstance(someRDO, plainObject, {
     excludeExtraneousValues: true,
     groups,
+    exposeUnsetFields: false,
   });
 }
