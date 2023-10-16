@@ -53,6 +53,15 @@ model TrainerProfile {
   @@map("trainer_profiles")
 }
 
+model RefreshTokenData {
+  tokenId   String @id @map("token_id")
+  userId    String @map("user_id")
+  expiresIn DateTime @map("expires_in")
+
+
+  @@map("refresh_tokens_data")
+}
+
 enum Gender {
   Male
   Female
