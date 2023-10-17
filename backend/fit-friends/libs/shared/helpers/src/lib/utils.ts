@@ -1,6 +1,9 @@
 import { DbConfig } from '@libs/shared/app-types';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 
+export type DateTimeUnit = 's' | 'm' | 'h' | 'd' | 'M' | 'y';
+export type TimeAndUnit = { value: number; unit: DateTimeUnit };
+
 export function getPostgresConnectionString({
   user,
   password,
@@ -21,4 +24,23 @@ export function fillRDO<T, V>(
     groups,
     exposeUnsetFields: false,
   });
+}
+
+export function parseTokenTime(time: string): TimeAndUnit {
+  const regex = /^(\d+)([smhdMy])/;
+  const match = regex.exec(time);
+
+  if (!match) {
+    throw new Error(`[parseTokenTime] Incorrect time string format: ${time}`);
+  }
+
+  const [, valueRaw, unitRaw] = match;
+  const value = parseInt(valueRaw, 10);
+  const unit = unitRaw as DateTimeUnit;
+
+  if (isNaN(value)) {
+    throw new Error(`[parseTokenTime] Can't parse value count. Result is NaN.`);
+  }
+
+  return { value, unit };
 }

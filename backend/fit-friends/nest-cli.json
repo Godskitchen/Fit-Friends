@@ -72,6 +72,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/shared/validate-decorators/tsconfig.lib.json"
       }
+    },
+    "shared/common": {
+      "type": "library",
+      "root": "libs/shared/common",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared/common/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared/common/tsconfig.lib.json"
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 export interface RefreshTokenData {
   tokenId: string;
-  userId: string;
+  userId: number;
   expiresIn: Date;
 }

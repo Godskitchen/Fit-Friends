@@ -2,7 +2,7 @@ import { RefreshTokenData } from '@libs/shared/app-types';
 
 export class RefreshTokenDataEntity implements RefreshTokenData {
   tokenId: string;
-  userId: string;
+  userId: number;
   expiresIn: Date;
 
   constructor(data: RefreshTokenData) {

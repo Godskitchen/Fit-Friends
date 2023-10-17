@@ -51,6 +51,12 @@
       ],
       "@app/user": [
         "apps/fit-friends/src/user/index.ts"
+      ],
+      "@libs/shared/common": [
+        "libs/shared/common/src/index.ts"
+      ],
+      "@libs/shared/common/*": [
+        "libs/shared/common/src/*"
       ]
     }
   }

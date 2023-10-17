@@ -34,8 +34,7 @@ model UserProfile {
   caloriesToBurn      Int              @map("calories_to_burn")
   dailyCaloriesIntake Int              @map("daily_calories_intake")
   readyForWorkout     Boolean          @map("ready_for_workout")
-  user                User             @relation(fields: [profileId], references: [userId])
-  
+  user                User             @relation(fields: [profileId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("user_profiles")
 }
@@ -47,17 +46,15 @@ model TrainerProfile {
   certificates    String
   achievements    String
   readyForWorkout Boolean        @map("ready_for_workout")
-  user            User           @relation(fields: [profileId], references: [userId])
-
+  user            User           @relation(fields: [profileId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("trainer_profiles")
 }
 
 model RefreshTokenData {
-  tokenId   String @id @map("token_id")
-  userId    String @map("user_id")
+  tokenId   String   @id @map("token_id")
+  userId    Int      @unique @map("user_id")
   expiresIn DateTime @map("expires_in")
-
 
   @@map("refresh_tokens_data")
 }

@@ -1,4 +1,9 @@
-import { RefreshTokenDataEntity } from '@libs/database-service';
+import {
+  RefreshTokenDataEntity,
+  RefreshTokenRepository,
+} from '@libs/database-service';
+import { RefreshTokenPayload } from '@libs/shared/app-types';
+import { parseTokenTime } from '@libs/shared/helpers';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import dayjs from 'dayjs';
@@ -23,18 +28,17 @@ export class RefreshTokenService {
     return this.refreshTokenRepository.create(refreshToken);
   }
 
-  public async deleteRefreshSession(tokenId: string) {
-    await this.deleteExpiredRefreshTokens();
-    return this.refreshTokenRepository.deleteByTokenId(tokenId);
+  public async getRefreshSession(userId: number) {
+    return this.refreshTokenRepository.findByUserId(userId);
   }
 
-  public async isExists(tokenId: string): Promise<boolean> {
-    const refreshToken =
-      await this.refreshTokenRepository.findByTokenId(tokenId);
-    return refreshToken !== null;
+  public async deleteRefreshSession(userId: number) {
+    return this.refreshTokenRepository.deleteByUserId(userId);
   }
 
-  public async deleteExpiredRefreshTokens() {
-    return this.refreshTokenRepository.deleteExpiredTokens();
+  public async isExists(userId: number): Promise<boolean> {
+    const refreshTokenData =
+      await this.refreshTokenRepository.findByUserId(userId);
+    return refreshTokenData !== null;
   }
 }

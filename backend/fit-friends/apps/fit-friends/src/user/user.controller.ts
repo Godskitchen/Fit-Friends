@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { fillRDO } from '@libs/shared/helpers';
 import { UserRdo } from './rdo/user.rdo';
@@ -7,9 +7,9 @@ import { UserRdo } from './rdo/user.rdo';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get(':userId')
-  public async getUserDetails(@Param('userId') id: string) {
-    const user = await this.userService.getDetails(parseInt(id));
+  @Get('/:userId')
+  public async getUserDetails(@Param('userId', ParseIntPipe) id: number) {
+    const user = await this.userService.getDetails(id);
     return fillRDO(UserRdo, user, [user.role]);
   }
 }

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-// import jwtConfig from './jwt.config';
+import jwtConfig from './jwt.config';
 import launchAppConfig from './launch-app.config';
 // import staticConfig from './static.config';
 // import rabbitConfig from './rabbit.config';
@@ -14,7 +14,7 @@ const ENV_PATH = './app.env';
   imports: [
     ConfigModule.forRoot({
       cache: true,
-      load: [launchAppConfig],
+      load: [launchAppConfig, jwtConfig],
       envFilePath: [ENV_PATH],
     }),
   ],

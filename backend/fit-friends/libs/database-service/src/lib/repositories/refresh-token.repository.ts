@@ -13,28 +13,18 @@ export class RefreshTokenRepository {
 
   public async create(item: RefreshTokenDataEntity): Promise<RefreshTokenData> {
     const data = item.toObject();
-    return this.prisma.refreshSession.create({ data });
+    return this.prisma.refreshTokenData.create({ data });
   }
 
-  public async deleteByTokenId(tokenId: string) {
-    return this.prisma.refreshSession.delete({
-      where: { tokenId },
+  public async deleteByUserId(userId: number) {
+    return this.prisma.refreshTokenData.delete({
+      where: { userId },
     });
   }
 
-  public async findByTokenId(
-    tokenId: string,
-  ): Promise<RefreshTokenData | null> {
-    return this.prisma.refreshSession.findUnique({
-      where: { tokenId },
-    });
-  }
-
-  public async deleteExpiredTokens() {
-    return this.prisma.refreshSession.deleteMany({
-      where: {
-        expiresIn: { lt: new Date() },
-      },
+  public async findByUserId(userId: number): Promise<RefreshTokenData | null> {
+    return this.prisma.refreshTokenData.findUnique({
+      where: { userId },
     });
   }
 }
