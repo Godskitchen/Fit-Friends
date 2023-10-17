@@ -7,13 +7,12 @@ import {
   UserRepository,
 } from '@libs/database-service';
 import { AuthService } from './auth.service';
-import { IsRedundantConstraint } from '@libs/shared/validate-decorators';
 import { LocalStrategy } from './strategies/local.strategy';
-import { RefreshTokenModule } from '../refresh-token/refresh-token.module';
 import { AppConfigsModule } from '@libs/config-service';
 import { JwtService } from '@nestjs/jwt';
-import { UserModule } from '../user/user.module';
 import { JwtAccessStrategy } from './strategies/jwt-access.strategy';
+import { RefreshTokenModule } from '@app/refresh-token/refresh-token.module';
+import { UserModule } from '@app/user/user.module';
 
 @Module({
   imports: [DatabaseModule, RefreshTokenModule, AppConfigsModule, UserModule],
@@ -21,7 +20,6 @@ import { JwtAccessStrategy } from './strategies/jwt-access.strategy';
     UserRepository,
     AuthService,
     JwtService,
-    IsRedundantConstraint,
     LocalStrategy,
     JwtAccessStrategy,
     JwtRefreshGuard,

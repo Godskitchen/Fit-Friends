@@ -50,7 +50,22 @@
         "libs/shared/validate-decorators/src/*"
       ],
       "@app/user": [
-        "apps/fit-friends/src/user/index.ts"
+        "apps/fit-friends/src/user"
+      ],
+      "@app/user/*": [
+        "apps/fit-friends/src/user/*"
+      ],
+      "@app/auth": [
+        "apps/fit-friends/src/auth"
+      ],
+      "@app/auth/*": [
+        "apps/fit-friends/src/auth/*"
+      ],
+      "@app/refresh-token": [
+        "apps/fit-friends/src/refresh-token"
+      ],
+      "@app/refresh-token/*": [
+        "apps/fit-friends/src/refresh-token/*"
       ],
       "@libs/shared/common": [
         "libs/shared/common/src/index.ts"

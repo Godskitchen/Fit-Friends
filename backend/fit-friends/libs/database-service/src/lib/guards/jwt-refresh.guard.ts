@@ -1,3 +1,5 @@
+import { REFRESH_TOKEN_NAME } from '@app/auth/auth.constants';
+import { RefreshTokenService } from '@app/refresh-token/refresh-token.service';
 import { RefreshTokenPayload } from '@libs/shared/app-types';
 import { ACCESS_DENIED } from '@libs/shared/common';
 import {
@@ -8,8 +10,6 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { REFRESH_TOKEN_NAME } from 'apps/fit-friends/src/auth/auth.constants';
-import { RefreshTokenService } from 'apps/fit-friends/src/refresh-token/refresh-token.service';
 import { Request } from 'express';
 
 @Injectable()

@@ -1,23 +1,9 @@
 import * as crypto from 'node:crypto';
-import {
-  ConflictException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { compare, genSalt, hash } from 'bcrypt';
-import {
-  TrainerProfileEntity,
-  UserEntity,
-  UserProfileEntity,
-  UserRepository,
-} from '@libs/database-service';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { compare } from 'bcrypt';
+import { UserRepository } from '@libs/database-service';
 import { LoginUserDto, NewUserDto } from '@app/user';
-import {
-  RefreshTokenData,
-  RefreshTokenPayload,
-  User,
-} from '@libs/shared/app-types';
-import { RefreshTokenService } from '../refresh-token/refresh-token.service';
+import { RefreshTokenData, User } from '@libs/shared/app-types';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import {
@@ -25,9 +11,10 @@ import {
   getJwtRefreshOptions,
 } from '@libs/shared/helpers';
 import { Response } from 'express';
-import { REFRESH_TOKEN_NAME, SALT_ROUNDS } from './auth.constants';
-import { UserService } from '../user/user.service';
-import { USER_ALREADY_EXISTS, WRONG_CREDENTIALS } from '@libs/shared/common';
+import { REFRESH_TOKEN_NAME } from './auth.constants';
+import { WRONG_CREDENTIALS } from '@libs/shared/common';
+import { RefreshTokenService } from '@app/refresh-token/refresh-token.service';
+import { UserService } from '@app/user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -40,30 +27,12 @@ export class AuthService {
   ) {}
 
   public async register(data: NewUserDto) {
-    const existUser = await this.userRepository.findByEmail(data.email);
-
-    if (existUser) {
-      throw new ConflictException(USER_ALREADY_EXISTS);
-    }
-
-    const { password, userProfile, trainerProfile, ...userData } = data;
-    const hashPassword = await this.setPassword(password);
-
-    const userEntity = new UserEntity({
-      ...userData,
-      hashPassword,
-      userProfile: userProfile ? new UserProfileEntity(userProfile) : undefined,
-      trainerProfile: trainerProfile
-        ? new TrainerProfileEntity(trainerProfile)
-        : undefined,
-    });
-
-    return this.userRepository.create(userEntity);
+    return this.userService.create(data);
   }
 
   public async authorize(dto: LoginUserDto) {
     const { email, password } = dto;
-    const existUser = await this.userRepository.findByEmail(email);
+    const existUser = await this.userService.getByEmail(email);
 
     if (
       !existUser ||
@@ -118,16 +87,6 @@ export class AuthService {
     });
   }
 
-  public async getTokenData(
-    refreshToken: string,
-  ): Promise<RefreshTokenPayload | null> {
-    return this.jwtService
-      .verifyAsync<RefreshTokenPayload>(refreshToken, {
-        secret: this.configService.getOrThrow('jwt.refreshTokenSecret'),
-      })
-      .catch(() => null);
-  }
-
   public async refreshTokens(userId: number, response: Response) {
     const user = await this.userService.getDetails(userId);
     return this.createNewTokens(user, response);
@@ -140,11 +99,6 @@ export class AuthService {
       })
       .then(() => true)
       .catch(() => false);
-  }
-
-  private async setPassword(password: string): Promise<string> {
-    const salt = await genSalt(SALT_ROUNDS);
-    return hash(password, salt);
   }
 
   private async comparePassword(

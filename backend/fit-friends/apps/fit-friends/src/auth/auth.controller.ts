@@ -8,7 +8,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { NewUserDto, UserRdo } from '@app/user';
+import { NewUserDto, UserRdo, AuthUserRdo } from '@app/user';
 import { fillRDO } from '@libs/shared/helpers';
 import {
   JwtRefreshGuard,
@@ -21,7 +21,6 @@ import {
 } from '@libs/shared/app-types';
 import { Response } from 'express';
 import { Token } from '@libs/shared/common';
-import { AuthUserRdo } from '../user/rdo/auth-user.rdo';
 
 @Controller('auth')
 export class AuthController {
