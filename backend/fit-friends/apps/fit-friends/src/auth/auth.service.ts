@@ -27,11 +27,7 @@ import {
 import { Response } from 'express';
 import { REFRESH_TOKEN_NAME, SALT_ROUNDS } from './auth.constants';
 import { UserService } from '../user/user.service';
-import {
-  ACCESS_DENIED,
-  USER_ALREADY_EXISTS,
-  WRONG_CREDENTIALS,
-} from '@libs/shared/common';
+import { USER_ALREADY_EXISTS, WRONG_CREDENTIALS } from '@libs/shared/common';
 
 @Injectable()
 export class AuthService {
@@ -132,29 +128,8 @@ export class AuthService {
       .catch(() => null);
   }
 
-  public async refreshTokens(refreshToken: string | null, response: Response) {
-    if (!refreshToken) {
-      throw new UnauthorizedException(ACCESS_DENIED);
-    }
-
-    const tokenPayload = await this.getTokenData(refreshToken);
-    if (!tokenPayload) {
-      throw new UnauthorizedException(ACCESS_DENIED);
-    }
-
-    const existToken = await this.refreshTokenService.getRefreshSession(
-      tokenPayload.sub,
-    );
-    if (!existToken) {
-      throw new UnauthorizedException(ACCESS_DENIED);
-    }
-
-    await this.refreshTokenService.deleteRefreshSession(existToken.userId);
-    if (existToken.expiresIn < new Date()) {
-      throw new UnauthorizedException(ACCESS_DENIED);
-    }
-
-    const user = await this.userService.getDetails(existToken.userId);
+  public async refreshTokens(userId: number, response: Response) {
+    const user = await this.userService.getDetails(userId);
     return this.createNewTokens(user, response);
   }
 

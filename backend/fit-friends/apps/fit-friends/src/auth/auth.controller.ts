@@ -10,11 +10,17 @@ import {
 import { AuthService } from './auth.service';
 import { NewUserDto, UserRdo } from '@app/user';
 import { fillRDO } from '@libs/shared/helpers';
-import { LocalAuthGuard, PublicGuard } from '@libs/database-service';
-import { RequestWithUserInfo } from '@libs/shared/app-types';
+import {
+  JwtRefreshGuard,
+  LocalAuthGuard,
+  PublicGuard,
+} from '@libs/database-service';
+import {
+  RequestWithTokenPayload,
+  RequestWithUserInfo,
+} from '@libs/shared/app-types';
 import { Response } from 'express';
-import { Cookie, Token } from '@libs/shared/common';
-import { REFRESH_TOKEN_NAME } from './auth.constants';
+import { Token } from '@libs/shared/common';
 import { AuthUserRdo } from '../user/rdo/auth-user.rdo';
 
 @Controller('auth')
@@ -63,12 +69,13 @@ export class AuthController {
   }
 
   @Post('/refresh')
+  @UseGuards(JwtRefreshGuard)
   public async refreshTokens(
-    @Cookie(REFRESH_TOKEN_NAME) refreshToken: string | null,
+    @Req() { user }: RequestWithTokenPayload,
     @Res({ passthrough: true }) response: Response,
   ) {
     const accessToken = await this.authService.refreshTokens(
-      refreshToken,
+      user.sub,
       response,
     );
 

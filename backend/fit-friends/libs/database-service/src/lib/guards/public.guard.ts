@@ -6,6 +6,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 
 @Injectable()
 export class PublicGuard
@@ -15,7 +16,7 @@ export class PublicGuard
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isAuth = await super.canActivate(context);
     if (isAuth) {
-      const request = context.switchToHttp().getRequest();
+      const request = context.switchToHttp().getRequest<Request>();
       const user = request.user;
       if (user) {
         throw new ForbiddenException(REGISTRATION_FORBIDDEN);

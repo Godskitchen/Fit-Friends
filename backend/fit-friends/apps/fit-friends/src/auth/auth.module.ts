@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import {
   DatabaseModule,
+  JwtRefreshGuard,
   PublicGuard,
   UserRepository,
 } from '@libs/database-service';
@@ -23,6 +24,7 @@ import { JwtAccessStrategy } from './strategies/jwt-access.strategy';
     IsRedundantConstraint,
     LocalStrategy,
     JwtAccessStrategy,
+    JwtRefreshGuard,
     PublicGuard,
   ],
   controllers: [AuthController],
