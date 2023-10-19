@@ -10,7 +10,7 @@ import { DbConfig } from '@libs/shared/app-types';
 export class DatabaseService implements OnModuleInit {
   private psqlConnector: PrismaClient;
 
-  constructor(private configService: ConfigService) {
+  constructor(private readonly configService: ConfigService) {
     this.psqlConnector = new PrismaClient({
       datasources: {
         db: {

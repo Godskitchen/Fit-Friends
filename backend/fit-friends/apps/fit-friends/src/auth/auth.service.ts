@@ -1,8 +1,12 @@
 import * as crypto from 'node:crypto';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  UnauthorizedException,
+  forwardRef,
+} from '@nestjs/common';
 import { compare } from 'bcrypt';
-import { UserRepository } from '@libs/database-service';
-import { LoginUserDto, NewUserDto } from '@app/user';
+import { LoginUserDto, NewUserDto, UserService } from '@app/user';
 import { RefreshTokenData, User } from '@libs/shared/app-types';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -13,13 +17,12 @@ import {
 import { Response } from 'express';
 import { REFRESH_TOKEN_NAME } from './auth.constants';
 import { WRONG_CREDENTIALS } from '@libs/shared/common';
-import { RefreshTokenService } from '@app/refresh-token/refresh-token.service';
-import { UserService } from '@app/user/user.service';
+import { RefreshTokenService } from '@app/refresh-token';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userRepository: UserRepository,
+    @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
     private readonly refreshTokenService: RefreshTokenService,
     private readonly configService: ConfigService,

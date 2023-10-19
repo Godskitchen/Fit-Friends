@@ -49,6 +49,7 @@
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "dependency-cruiser": "14.1.2",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
@@ -85,11 +86,13 @@
     ],
     "moduleNameMapper": {
       "^@shared/app-types(|/.*)$": "<rootDir>/libs/shared/app-types/src/$1",
-      "^@databse-service/database-service(|/.*)$": "<rootDir>/libs/database-service/src/$1",
-      "^@config-service/config-service(|/.*)$": "<rootDir>/libs/config-service/src/$1",
-      "^@helpers/shared/helpers(|/.*)$": "<rootDir>/libs/shared/helpers/src/$1",
-      "^@validate-decorators/shared/validate-decorators(|/.*)$": "<rootDir>/libs/shared/validate-decorators/src/$1",
-      "^@common/shared/common(|/.*)$": "<rootDir>/libs/shared/common/src/$1"
+      "^@database-service(|/.*)$": "<rootDir>/libs/database-service/src/$1",
+      "^@config-service(|/.*)$": "<rootDir>/libs/config-service/src/$1",
+      "^@shared/helpers(|/.*)$": "<rootDir>/libs/shared/helpers/src/$1",
+      "^@shared/validate-decorators(|/.*)$": "<rootDir>/libs/shared/validate-decorators/src/$1",
+      "^@shared/common(|/.*)$": "<rootDir>/libs/shared/common/src/$1",
+      "^@shared/guards(|/.*)$": "<rootDir>/libs/shared/guards/src/$1",
+      "^@shared/strategies(|/.*)$": "<rootDir>/libs/shared/strategies/src/$1"
     }
   }
 }

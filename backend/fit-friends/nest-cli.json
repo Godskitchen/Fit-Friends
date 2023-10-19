@@ -81,6 +81,24 @@
       "compilerOptions": {
         "tsConfigPath": "libs/shared/common/tsconfig.lib.json"
       }
+    },
+    "shared/guards": {
+      "type": "library",
+      "root": "libs/shared/guards",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared/guards/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared/guards/tsconfig.lib.json"
+      }
+    },
+    "shared/strategies": {
+      "type": "library",
+      "root": "libs/shared/strategies",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared/strategies/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared/strategies/tsconfig.lib.json"
+      }
     }
   }
 }

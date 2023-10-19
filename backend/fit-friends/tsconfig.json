@@ -50,19 +50,19 @@
         "libs/shared/validate-decorators/src/*"
       ],
       "@app/user": [
-        "apps/fit-friends/src/user"
+        "apps/fit-friends/src/user/index.ts"
       ],
       "@app/user/*": [
         "apps/fit-friends/src/user/*"
       ],
       "@app/auth": [
-        "apps/fit-friends/src/auth"
+        "apps/fit-friends/src/auth/index.ts"
       ],
       "@app/auth/*": [
         "apps/fit-friends/src/auth/*"
       ],
       "@app/refresh-token": [
-        "apps/fit-friends/src/refresh-token"
+        "apps/fit-friends/src/refresh-token/index.ts"
       ],
       "@app/refresh-token/*": [
         "apps/fit-friends/src/refresh-token/*"
@@ -72,6 +72,18 @@
       ],
       "@libs/shared/common/*": [
         "libs/shared/common/src/*"
+      ],
+      "@libs/shared/guards": [
+        "libs/shared/guards/src/index.ts"
+      ],
+      "@libs/shared/guards/*": [
+        "libs/shared/guards/src/*"
+      ],
+      "@libs/shared/strategies": [
+        "libs/shared/strategies/src/index.ts"
+      ],
+      "@libs/shared/strategies/*": [
+        "libs/shared/strategies/src/*"
       ]
     }
   }

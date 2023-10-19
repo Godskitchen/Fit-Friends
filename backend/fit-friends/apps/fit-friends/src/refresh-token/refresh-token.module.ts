@@ -6,6 +6,7 @@ import { AppConfigsModule } from '@libs/config-service';
 @Module({
   imports: [AppConfigsModule, DatabaseModule],
   providers: [RefreshTokenService, RefreshTokenRepository],
+  controllers: [],
   exports: [RefreshTokenService],
 })
 export class RefreshTokenModule {}

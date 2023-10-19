@@ -1,5 +1,5 @@
-import { REFRESH_TOKEN_NAME } from '@app/auth/auth.constants';
-import { RefreshTokenService } from '@app/refresh-token/refresh-token.service';
+import { REFRESH_TOKEN_NAME } from '@app/auth';
+import { RefreshTokenService } from '@app/refresh-token';
 import { RefreshTokenPayload } from '@libs/shared/app-types';
 import { ACCESS_DENIED } from '@libs/shared/common';
 import {
@@ -15,9 +15,9 @@ import { Request } from 'express';
 @Injectable()
 export class JwtRefreshGuard implements CanActivate {
   constructor(
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
     private readonly refreshTokenService: RefreshTokenService,
+    private readonly configService: ConfigService,
+    private readonly jwtService: JwtService,
   ) {}
   async canActivate(ctx: ExecutionContext): Promise<boolean> {
     const request = ctx.switchToHttp().getRequest<Request>();

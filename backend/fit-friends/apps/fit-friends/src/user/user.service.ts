@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { NewUserDto } from './dto/new-user.dto';
 import { genSalt, hash } from 'bcrypt';
-import { SALT_ROUNDS } from '@app/auth/auth.constants';
+import { SALT_ROUNDS } from '@app/auth';
 
 @Injectable()
 export class UserService {

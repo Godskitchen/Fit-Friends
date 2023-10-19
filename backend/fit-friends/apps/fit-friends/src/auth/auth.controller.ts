@@ -11,20 +11,21 @@ import { AuthService } from './auth.service';
 import { NewUserDto, UserRdo, AuthUserRdo } from '@app/user';
 import { fillRDO } from '@libs/shared/helpers';
 import {
-  JwtRefreshGuard,
-  LocalAuthGuard,
-  PublicGuard,
-} from '@libs/database-service';
-import {
   RequestWithTokenPayload,
   RequestWithUserInfo,
 } from '@libs/shared/app-types';
 import { Response } from 'express';
 import { Token } from '@libs/shared/common';
+import {
+  JwtRefreshGuard,
+  LocalAuthGuard,
+  PublicGuard,
+} from '@libs/shared/guards';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
   @Post('/register')
   @UseGuards(PublicGuard)
   public async register(

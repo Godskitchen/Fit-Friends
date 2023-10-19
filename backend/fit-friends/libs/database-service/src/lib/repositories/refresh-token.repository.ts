@@ -6,24 +6,25 @@ import { RefreshTokenData } from '@libs/shared/app-types';
 
 @Injectable()
 export class RefreshTokenRepository {
-  private prisma;
+  private prismaConnector;
+
   constructor(private readonly dbService: DatabaseService) {
-    this.prisma = dbService.prismaPostgresConnector;
+    this.prismaConnector = dbService.prismaPostgresConnector;
   }
 
   public async create(item: RefreshTokenDataEntity): Promise<RefreshTokenData> {
     const data = item.toObject();
-    return this.prisma.refreshTokenData.create({ data });
+    return this.prismaConnector.refreshTokenData.create({ data });
   }
 
   public async deleteByUserId(userId: number) {
-    return this.prisma.refreshTokenData.delete({
+    return this.prismaConnector.refreshTokenData.delete({
       where: { userId },
     });
   }
 
   public async findByUserId(userId: number): Promise<RefreshTokenData | null> {
-    return this.prisma.refreshTokenData.findUnique({
+    return this.prismaConnector.refreshTokenData.findUnique({
       where: { userId },
     });
   }

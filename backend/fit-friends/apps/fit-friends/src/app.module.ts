@@ -1,11 +1,11 @@
 import { AppConfigsModule } from '@libs/config-service';
 import { Module } from '@nestjs/common';
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
-import { RefreshTokenModule } from './refresh-token/refresh-token.module';
+import { RefreshTokenModule } from './refresh-token';
+import { UserModule } from './user';
+import { AuthModule } from './auth';
 
 @Module({
-  imports: [AppConfigsModule, AuthModule, UserModule, RefreshTokenModule],
+  imports: [AppConfigsModule, RefreshTokenModule, UserModule, AuthModule],
   controllers: [],
   providers: [],
 })
