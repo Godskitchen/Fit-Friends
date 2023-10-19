@@ -1,5 +1,4 @@
 import { REFRESH_TOKEN_NAME } from '@app/auth';
-import { RefreshTokenService } from '@app/refresh-token';
 import { RefreshTokenRepository } from '@libs/database-service';
 import { RefreshTokenPayload } from '@libs/shared/app-types';
 import { ACCESS_DENIED } from '@libs/shared/common';

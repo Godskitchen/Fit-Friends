@@ -6,6 +6,7 @@ import {
   ParseIntPipe,
   Patch,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { fillRDO } from '@libs/shared/helpers';
@@ -18,7 +19,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('/:userId')
-  public async getUserDetails(@Param('userId') id: number) {
+  public async getUserDetails(@Param('userId', ParseIntPipe) id: number) {
     const user = await this.userService.getDetails(id);
     return fillRDO(UserRdo, user, [user.role]);
   }
@@ -27,7 +28,8 @@ export class UserController {
   @Patch('/:userId')
   public async updateUserData(
     @Param('userId', ParseIntPipe) id: number,
-    @Body() dto: UpdateUserDto,
+    @Body(new ValidationPipe({ transform: true, whitelist: true }))
+    dto: UpdateUserDto,
   ) {
     const updatedUser = await this.userService.updateData(id, dto);
     return fillRDO(UserRdo, updatedUser, [updatedUser.role]);

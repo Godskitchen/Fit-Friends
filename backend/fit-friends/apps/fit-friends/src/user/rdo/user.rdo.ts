@@ -40,9 +40,13 @@ export class UserRdo {
 
   @Expose({ groups: [Role.User] })
   @Type(() => UserProfileRdo)
+  @Transform(({ value, obj }) => (obj.role === Role.User ? value : undefined))
   userProfile: UserProfileRdo;
 
   @Expose({ groups: [Role.Trainer] })
   @Type(() => TrainerProfileRdo)
+  @Transform(({ value, obj }) =>
+    obj.role === Role.Trainer ? value : undefined,
+  )
   trainerProfile: TrainerProfileRdo;
 }
