@@ -4,3 +4,5 @@ export const USER_NOT_FOUND = 'Пользователь с таким id не н
 
 export const ACCESS_DENIED =
   'Нет доступа. Пожалуйста, пройдите авторизацию / регистрацию';
+
+export const INCORRECT_ID = 'Неверный параметр запроса "id"';

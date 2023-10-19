@@ -7,6 +7,7 @@ export * from './lib/interfaces/request-with-user-info.interface';
 export * from './lib/interfaces/request-with-token-payload.interface';
 
 export * from './lib/token-payload.type';
+export * from './lib/update-user-data.type';
 
 export {
   Gender,

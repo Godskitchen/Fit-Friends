@@ -13,6 +13,7 @@ import {
 import { NewUserDto } from './dto/new-user.dto';
 import { genSalt, hash } from 'bcrypt';
 import { SALT_ROUNDS } from '@app/auth';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -50,6 +51,10 @@ export class UserService {
 
   async getByEmail(email: string) {
     return this.userRepository.findByEmail(email);
+  }
+
+  async updateData(id: number, dto: UpdateUserDto) {
+    return this.userRepository.update(id, dto);
   }
 
   private async setPassword(password: string): Promise<string> {

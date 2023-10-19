@@ -1,5 +1,9 @@
-import { RefreshTokenPayload } from '../token-payload.type';
+import { AccessTokenPayload, RefreshTokenPayload } from '../token-payload.type';
 
-export interface RequestWithTokenPayload {
+export interface RequestWithRefreshTokenPayload {
   user: RefreshTokenPayload;
+}
+
+export interface RequestWithAccessTokenPayload {
+  user: AccessTokenPayload;
 }

@@ -1,5 +1,6 @@
 import { REFRESH_TOKEN_NAME } from '@app/auth';
 import { RefreshTokenService } from '@app/refresh-token';
+import { RefreshTokenRepository } from '@libs/database-service';
 import { RefreshTokenPayload } from '@libs/shared/app-types';
 import { ACCESS_DENIED } from '@libs/shared/common';
 import {
@@ -15,7 +16,7 @@ import { Request } from 'express';
 @Injectable()
 export class JwtRefreshGuard implements CanActivate {
   constructor(
-    private readonly refreshTokenService: RefreshTokenService,
+    private readonly refreshTokenRepository: RefreshTokenRepository,
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
   ) {}
@@ -35,14 +36,14 @@ export class JwtRefreshGuard implements CanActivate {
       throw new UnauthorizedException(ACCESS_DENIED);
     }
 
-    const existToken = await this.refreshTokenService.getRefreshSession(
+    const existToken = await this.refreshTokenRepository.findByUserId(
       tokenPayload.sub,
     );
     if (!existToken) {
       throw new UnauthorizedException(ACCESS_DENIED);
     }
 
-    await this.refreshTokenService.deleteRefreshSession(existToken.userId);
+    await this.refreshTokenRepository.deleteByUserId(existToken.userId);
     if (existToken.expiresIn < new Date()) {
       throw new UnauthorizedException(ACCESS_DENIED);
     }

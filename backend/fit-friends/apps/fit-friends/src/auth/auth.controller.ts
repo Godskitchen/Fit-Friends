@@ -11,7 +11,7 @@ import { AuthService } from './auth.service';
 import { NewUserDto, UserRdo, AuthUserRdo } from '@app/user';
 import { fillRDO } from '@libs/shared/helpers';
 import {
-  RequestWithTokenPayload,
+  RequestWithRefreshTokenPayload,
   RequestWithUserInfo,
 } from '@libs/shared/app-types';
 import { Response } from 'express';
@@ -71,7 +71,7 @@ export class AuthController {
   @Post('/refresh')
   @UseGuards(JwtRefreshGuard)
   public async refreshTokens(
-    @Req() { user }: RequestWithTokenPayload,
+    @Req() { user }: RequestWithRefreshTokenPayload,
     @Res({ passthrough: true }) response: Response,
   ) {
     const accessToken = await this.authService.refreshTokens(

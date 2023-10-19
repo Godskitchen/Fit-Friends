@@ -1,4 +1,4 @@
-import { User } from '@libs/shared/app-types';
+import { UpdateUserData, User } from '@libs/shared/app-types';
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../prisma/database.service';
 import { UserEntity } from '../entities/user.entity';
@@ -31,19 +31,31 @@ export class UserRepository {
     });
   }
 
-  // public async update(
-  //   updateData: Partial<UserEntity>,
-  //   userId: number,
-  // ): Promise<User> {
-  //   return this.prismaConnector.user.update({
-  //     where: {
-  //       userId,
-  //     },
-  //     data: {
-
-  //     }
-  //   });
-  // }
+  public async update(userId: number, data: UpdateUserData): Promise<User> {
+    const { userProfile, trainerProfile, ...restInfo } = data;
+    return this.prismaConnector.user.update({
+      where: {
+        userId,
+      },
+      data: {
+        ...restInfo,
+        userProfile: {
+          update: {
+            data: userProfile,
+          },
+        },
+        trainerProfile: {
+          update: {
+            data: trainerProfile,
+          },
+        },
+      },
+      include: {
+        userProfile: true,
+        trainerProfile: true,
+      },
+    });
+  }
 
   public async findByEmail(email: string): Promise<User | null> {
     return this.prismaConnector.user.findUnique({
