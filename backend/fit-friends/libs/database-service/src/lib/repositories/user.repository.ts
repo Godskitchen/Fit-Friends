@@ -1,7 +1,15 @@
-import { UpdateUserData, User } from '@libs/shared/app-types';
+import { Role, UpdateUserData, User } from '@libs/shared/app-types';
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../prisma/database.service';
 import { UserEntity } from '../entities/user.entity';
+import { UserQuery } from '@app/user';
+
+const SortType = {
+  [Role.User]: 'asc',
+  [Role.Trainer]: 'desc',
+} as const;
+
+const DEFAULT_SORT_DIRECTION = 'desc';
 
 @Injectable()
 export class UserRepository {
@@ -73,6 +81,64 @@ export class UserRepository {
       include: {
         userProfile: true,
         trainerProfile: true,
+      },
+    });
+  }
+
+  public async find({
+    limit,
+    page,
+    location,
+    fitnessLevel,
+    trainingType,
+    sort,
+  }: UserQuery): Promise<User[]> {
+    const locationFilter = location
+      ? location.map((value) => ({ location: value }))
+      : [];
+
+    const fitnessLevelFilter = fitnessLevel
+      ? fitnessLevel.map((value) => ({ fitnessLevel: value }))
+      : [];
+
+    const trainingTypeFilter = trainingType
+      ? { hasSome: trainingType }
+      : undefined;
+
+    return this.prismaConnector.user.findMany({
+      where: {
+        AND: [
+          { OR: locationFilter },
+          {
+            OR: [
+              {
+                userProfile: {
+                  AND: [
+                    { OR: fitnessLevelFilter },
+                    { trainingType: trainingTypeFilter },
+                  ],
+                },
+              },
+              {
+                trainerProfile: {
+                  AND: [
+                    { OR: fitnessLevelFilter },
+                    { trainingType: trainingTypeFilter },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+      orderBy: sort
+        ? { role: SortType[sort] }
+        : { createdAt: DEFAULT_SORT_DIRECTION },
+      take: limit,
+      skip: page ? limit * (page - 1) : undefined,
+      include: {
+        trainerProfile: true,
+        userProfile: true,
       },
     });
   }

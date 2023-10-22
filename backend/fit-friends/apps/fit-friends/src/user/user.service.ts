@@ -14,12 +14,13 @@ import { NewUserDto } from './dto/new-user.dto';
 import { genSalt, hash } from 'bcrypt';
 import { SALT_ROUNDS } from '@app/auth';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserQuery } from './queries/user.query';
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async create(dto: NewUserDto) {
+  public async create(dto: NewUserDto) {
     const existUser = await this.userRepository.findByEmail(dto.email);
 
     if (existUser) {
@@ -40,7 +41,8 @@ export class UserService {
 
     return this.userRepository.create(userEntity);
   }
-  async getDetails(userId: number) {
+
+  public async getDetails(userId: number) {
     const existUser = await this.userRepository.findById(userId);
     if (!existUser) {
       throw new NotFoundException(USER_NOT_FOUND);
@@ -49,12 +51,16 @@ export class UserService {
     return existUser;
   }
 
-  async getByEmail(email: string) {
+  public async getByEmail(email: string) {
     return this.userRepository.findByEmail(email);
   }
 
-  async updateData(id: number, dto: UpdateUserDto) {
+  public async updateData(id: number, dto: UpdateUserDto) {
     return this.userRepository.update(id, dto);
+  }
+
+  public async getMany(userQuery: UserQuery) {
+    return this.userRepository.find(userQuery);
   }
 
   private async setPassword(password: string): Promise<string> {

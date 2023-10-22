@@ -1,27 +1,20 @@
 import { REGISTRATION_FORBIDDEN } from '@libs/shared/common';
+import { Request } from 'express';
 import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
   Injectable,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
 
 @Injectable()
-export class PublicGuard
-  extends AuthGuard('jwt-access')
-  implements CanActivate
-{
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    const isAuth = await super.canActivate(context);
-    if (isAuth) {
-      const request = context.switchToHttp().getRequest<Request>();
-      const user = request.user;
-      if (user) {
-        throw new ForbiddenException(REGISTRATION_FORBIDDEN);
-      }
+export class PublicGuard implements CanActivate {
+  canActivate(ctx: ExecutionContext) {
+    const { headers } = ctx.switchToHttp().getRequest<Request>();
+    if (headers['authorization']) {
+      throw new ForbiddenException(REGISTRATION_FORBIDDEN);
     }
+
     return true;
   }
 }

@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   Req,
   Res,
+  UnauthorizedException,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
@@ -15,8 +17,9 @@ import {
   RequestWithUserInfo,
 } from '@libs/shared/app-types';
 import { Response } from 'express';
-import { Token } from '@libs/shared/common';
+import { ACCESS_DENIED, Token } from '@libs/shared/common';
 import {
+  JwtAccessGuard,
   JwtRefreshGuard,
   LocalAuthGuard,
   PublicGuard,
@@ -80,5 +83,15 @@ export class AuthController {
     );
 
     return accessToken;
+  }
+
+  @Get('/')
+  @UseGuards(JwtAccessGuard)
+  public async checkAuth(@Token() accessToken: string | null) {
+    if (!accessToken) {
+      throw new UnauthorizedException(ACCESS_DENIED);
+    }
+
+    return { accessToken };
   }
 }

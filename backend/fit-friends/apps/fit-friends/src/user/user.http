@@ -1,4 +1,5 @@
-@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsIm5hbWUiOiJOYW1l0KLRgNC10L3QtdGA0LAiLCJlbWFpbCI6InRlc3QyQG1haWwubG9jYWwiLCJyb2xlIjoiVHJhaW5lciIsImlhdCI6MTY5NzczNzI1MywiZXhwIjoxNjk3ODIzNjUzfQ.jLIkXdNOuADxNgvvLl2srM67VPVD-Vy8RBSg5Fz_3Qs
+
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsIm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0MkBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTc5OTIxNTIsImV4cCI6MTY5ODA3ODU1Mn0.EsuXNhe3zQUHSoAPicCEzmObRCM_BkuD8TudHt1mRzk
 
 # get user info
 GET  http://localhost:4000/api/users/3 HTTP/1.1
@@ -17,5 +18,9 @@ Content-Type: application/json
   }
 }
 
+###
 
+# get users
+Get http://localhost:4000/api/users?location=Udelnaya&fitnessLevel=Beginner,Amateur&trainingType=Boxing,Yoga HTTP/1.1
+Authorization: {{token}}
 ###

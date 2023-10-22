@@ -1,27 +1,34 @@
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsIm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0MkBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTc4MjU2MDYsImV4cCI6MTY5NzkxMjAwNn0.nDXFzhiMRaF89bqTDvMEMQcNszY3lU5yIurmYU-jK3A
+
 # Create a new user
 POST http://localhost:4000/api/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
   "name": "NameЮзера",
-  "email": "test@mail.local",
+  "email": "tes6@mail.local",
   "password": "123456",
   "avatarUrl": "image.PNG",
   "gender": "Male",
   "role": "User",
   "aboutInfo": "about info text",
   "birthDate": "2023-10-10",
-  "location": "Pionerskaya",
+  "location": "Udelnaya",
   "backgroundImage": "background_image.jpg",
   "userProfile": {
-    "fitnessLevel": "Beginner",
-    "trainingType": ["Yoga", "Boxing", "Stretching"],
+    "fitnessLevel": "Amateur",
+    "trainingType": ["Boxing", "Running", "Stretching"],
     "trainingDuration": "TenToThirtyMinutes",
     "caloriesToBurn": 1000,
     "dailyCaloriesIntake": 2000,
     "readyForWorkout": true
   }
 }
+
+//Beginner, Amateur, Pro
+//Yoga, Running, Boxing, Stretching, Crossfit, Aerobics, Pilates
+//Pionerskaya, Petrogradskaya, Udelnaya, Zvezdnaya, Sportivnaya
+
 
 ###
 
@@ -31,16 +38,16 @@ Content-Type: application/json
 
 {
   "name": "NameТренера",
-  "email": "test2@mail.local",
+  "email": "test7@mail.local",
   "password": "123456",
   "avatarUrl": "image.jpg",
   "gender": "Male",
   "role": "Trainer",
   "aboutInfo": "about info text",
-  "location": "Pionerskaya",
+  "location": "Udelnaya",
   "backgroundImage": "background_image.png",
   "trainerProfile": {
-    "fitnessLevel": "Pro",
+    "fitnessLevel": "Beginner",
     "trainingType": ["Yoga"],
     "certificates": "2.pdf",
     "achievements": "Описание тренерских заслуг",
@@ -58,5 +65,11 @@ Content-Type: application/json
   "email": "test2@mail.local",
   "password": "123456"
 }
+
+###
+
+# Check auth
+GET http://localhost:4000/api/auth/ HTTP/1.1
+Authorization: {{token}}
 
 ###

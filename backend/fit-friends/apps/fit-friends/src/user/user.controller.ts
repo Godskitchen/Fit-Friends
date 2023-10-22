@@ -5,6 +5,7 @@ import {
   Param,
   ParseIntPipe,
   Patch,
+  Query,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
@@ -13,6 +14,8 @@ import { fillRDO } from '@libs/shared/helpers';
 import { UserRdo } from './rdo/user.rdo';
 import { JwtAccessGuard, ModifyProfileGuard } from '@libs/shared/guards';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserQuery } from './queries/user.query';
+import { Role } from '@libs/shared/app-types';
 
 @Controller('users')
 export class UserController {
@@ -33,5 +36,15 @@ export class UserController {
   ) {
     const updatedUser = await this.userService.updateData(id, dto);
     return fillRDO(UserRdo, updatedUser, [updatedUser.role]);
+  }
+
+  @UseGuards(JwtAccessGuard)
+  @Get('/')
+  public async getUsers(
+    @Query(new ValidationPipe({ transform: true, whitelist: true }))
+    userQuery: UserQuery,
+  ) {
+    const users = await this.userService.getMany(userQuery);
+    return fillRDO(UserRdo, users, [Role.Trainer, Role.User]);
   }
 }
