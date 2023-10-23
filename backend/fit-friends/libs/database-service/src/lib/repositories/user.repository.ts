@@ -57,6 +57,9 @@ export class UserRepository {
             data: trainerProfile,
           },
         },
+        trainings: {
+          connect: [],
+        },
       },
       include: {
         userProfile: true,

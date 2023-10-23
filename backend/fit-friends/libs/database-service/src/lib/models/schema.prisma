@@ -61,7 +61,7 @@ model RefreshTokenData {
 }
 
 model Training {
-  trainingId       Int              @id @map("training_id")
+  trainingId       Int              @id @default(autoincrement()) @map("training_id")
   title            String
   backgroundImage  String           @map("background_image")
   fitnessLevel     FitnessLevel     @map("fitness_level")
