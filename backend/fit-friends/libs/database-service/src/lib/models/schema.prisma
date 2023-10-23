@@ -71,11 +71,11 @@ model Training {
   caloriesToBurn   Int              @map("calories_to_burn")
   description      String
   gender           Gender
-  rating           Decimal          @db.Decimal(3, 2)
+  rating           Float
   video            String
   isSpecialOffer   Boolean          @map("is_special_offer")
-  userId           Int              @map("user_id")
-  trainer          User             @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  trainerId        Int              @map("trainer_id")
+  trainer          User             @relation(fields: [trainerId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("trainings")
 }

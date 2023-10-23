@@ -6,3 +6,5 @@ export const ACCESS_DENIED =
   'Нет доступа. Пожалуйста, пройдите авторизацию / регистрацию';
 
 export const INCORRECT_ID = 'Неверный параметр запроса "id"';
+
+export const TRAINING_NOT_FOUND = 'Тренировка с таким id не найдена';

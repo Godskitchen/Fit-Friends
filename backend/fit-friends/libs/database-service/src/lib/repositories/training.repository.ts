@@ -4,7 +4,7 @@ import { DatabaseService } from '../prisma/database.service';
 import { Training } from '@libs/shared/app-types';
 
 @Injectable()
-export class UserRepository {
+export class TrainingRepository {
   private prismaConnector;
 
   constructor(private readonly dbService: DatabaseService) {
@@ -21,7 +21,14 @@ export class UserRepository {
           connect: { userId: trainer.userId },
         },
       },
-      include: {},
+      include: {
+        trainer: {
+          include: {
+            userProfile: true,
+            trainerProfile: true,
+          },
+        },
+      },
     });
   }
 
@@ -51,25 +58,19 @@ export class UserRepository {
   //   });
   // }
 
-  // public async findByEmail(email: string): Promise<User | null> {
-  //   return this.prismaConnector.user.findUnique({
-  //     where: { email },
-  //     include: {
-  //       userProfile: true,
-  //       trainerProfile: true,
-  //     },
-  //   });
-  // }
-
-  // public async findById(id: number): Promise<User | null> {
-  //   return this.prismaConnector.user.findUnique({
-  //     where: { userId: id },
-  //     include: {
-  //       userProfile: true,
-  //       trainerProfile: true,
-  //     },
-  //   });
-  // }
+  public async findById(trainingId: number): Promise<Training | null> {
+    return this.prismaConnector.training.findUnique({
+      where: { trainingId },
+      include: {
+        trainer: {
+          include: {
+            userProfile: true,
+            trainerProfile: true,
+          },
+        },
+      },
+    });
+  }
 
   // public async find({
   //   limit,

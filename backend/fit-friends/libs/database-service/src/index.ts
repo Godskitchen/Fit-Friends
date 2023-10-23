@@ -6,6 +6,7 @@ export * from './lib/entities/training.entity';
 
 export * from './lib/repositories/user.repository';
 export * from './lib/repositories/refresh-token.repository';
+export * from './lib/repositories/training.repository';
 
 export * from './lib/prisma/database.module';
 export * from './lib/prisma/database.service';
