@@ -22,6 +22,7 @@ model User {
   createdAt       DateTime        @default(now()) @map("created_at")
   userProfile     UserProfile?
   trainerProfile  TrainerProfile?
+  trainings       Training[]
 
   @@map("users")
 }
@@ -57,6 +58,26 @@ model RefreshTokenData {
   expiresIn DateTime @map("expires_in")
 
   @@map("refresh_tokens_data")
+}
+
+model Training {
+  trainingId       Int              @id @map("training_id")
+  title            String
+  backgroundImage  String           @map("background_image")
+  fitnessLevel     FitnessLevel     @map("fitness_level")
+  trainingDuration TrainingDuration @map("training_duration")
+  trainingType     TrainingType     @map("training_type")
+  price            Int
+  caloriesToBurn   Int              @map("calories_to_burn")
+  description      String
+  gender           Gender
+  rating           Decimal          @db.Decimal(3, 2)
+  video            String
+  isSpecialOffer   Boolean          @map("is_special_offer")
+  userId           Int              @map("user_id")
+  trainer          User             @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("trainings")
 }
 
 enum Gender {

@@ -1,11 +1,9 @@
-import { FitnessLevel } from '../fitness-level.enum';
-import { Gender } from '../gender.enum';
-import { TrainingDuration } from '../training-duration.enum';
-import { TrainingType } from '../training-type.enum';
+import { FitnessLevel, Gender, TrainingDuration, TrainingType } from '../..';
 import { User } from './user.interface';
 
 export interface Training {
   readonly trainingId: number;
+  title: string;
   backgroundImage: string;
   fitnessLevel: FitnessLevel;
   trainingDuration: TrainingDuration;

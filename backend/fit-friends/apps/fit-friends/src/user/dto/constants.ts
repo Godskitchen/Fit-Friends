@@ -37,11 +37,12 @@ export enum ACHIEVEMENTS {
   MAX = 140,
 }
 
-export const MAX_DATE_STRING_LENGTH = 10;
 export enum TRAINING_TYPE_COUNT {
   MIN = 1,
   MAX = 3,
 }
+
+export const MAX_DATE_STRING_LENGTH = 10;
 
 export const ImageFormats = ['jpg', 'png'];
 

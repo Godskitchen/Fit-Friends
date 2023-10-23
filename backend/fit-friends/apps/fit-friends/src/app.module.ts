@@ -3,9 +3,16 @@ import { Module } from '@nestjs/common';
 import { RefreshTokenModule } from './refresh-token';
 import { UserModule } from './user';
 import { AuthModule } from './auth';
+import { TrainingModule } from './training';
 
 @Module({
-  imports: [AppConfigsModule, RefreshTokenModule, UserModule, AuthModule],
+  imports: [
+    AppConfigsModule,
+    RefreshTokenModule,
+    UserModule,
+    AuthModule,
+    TrainingModule,
+  ],
   controllers: [],
   providers: [],
 })

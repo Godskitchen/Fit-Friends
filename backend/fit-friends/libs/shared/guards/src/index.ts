@@ -3,3 +3,4 @@ export * from './lib/jwt-access.guard';
 export * from './lib/local-auth.guard';
 export * from './lib/public.guard';
 export * from './lib/modify-profile.guard';
+export * from './lib/role.guard';
