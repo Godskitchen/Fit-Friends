@@ -1,5 +1,4 @@
-import { OrderType } from '../order-type.enum';
-import { PaymentType } from '../payment-type.enum';
+import { OrderType, PaymentType } from '../..';
 
 export interface Order {
   readonly orderId: string;

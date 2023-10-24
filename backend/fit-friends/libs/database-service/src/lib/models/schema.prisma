@@ -75,9 +75,24 @@ model Training {
   video            String
   isSpecialOffer   Boolean          @map("is_special_offer")
   trainerId        Int              @map("trainer_id")
-  trainer          User             @relation(fields: [trainerId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  trainer          User             @relation(fields: [trainerId], references: [userId], onUpdate: Cascade)
+  orders           Order[]
 
   @@map("trainings")
+}
+
+model Order {
+  orderId       String      @id @default(uuid()) @map("order_id")
+  orderType     OrderType   @map("order_type")
+  trainingId    Int         @map("training_id")
+  training      Training    @relation(fields: [trainingId], references: [trainingId])
+  price         Int
+  trainingCount Int         @map("training_count")
+  sum           Int
+  paymentType   PaymentType @map("payment_type")
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  @@map("orders")
 }
 
 enum Gender {
@@ -120,4 +135,14 @@ enum TrainingDuration {
   ThirtyToFiftyMinutes
   FiftyToEightyMinutes
   EightyToOneHundredMinutes
+}
+
+enum OrderType {
+  Abonement
+}
+
+enum PaymentType {
+  Visa
+  Mir
+  UMoney
 }

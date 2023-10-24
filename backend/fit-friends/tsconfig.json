@@ -73,6 +73,12 @@
       "@app/training/*": [
         "apps/fit-friends/src/training/*"
       ],
+      "@app/order": [
+        "apps/fit-friends/src/order/index.ts"
+      ],
+      "@app/order/*": [
+        "apps/fit-friends/src/order/*"
+      ],
       "@libs/shared/common": [
         "libs/shared/common/src/index.ts"
       ],

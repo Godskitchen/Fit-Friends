@@ -38,7 +38,7 @@ export class UserController {
     return fillRDO(UserRdo, updatedUser, [updatedUser.role]);
   }
 
-  @UseGuards(JwtAccessGuard)
+  // @UseGuards(JwtAccessGuard)
   @Get('/')
   public async getUsers(
     @Query(new ValidationPipe({ transform: true, whitelist: true }))
