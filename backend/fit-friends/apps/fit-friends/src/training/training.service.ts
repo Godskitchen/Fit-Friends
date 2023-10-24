@@ -6,6 +6,8 @@ import {
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { NewTrainingDto } from './dto/new-training.dto';
 import { TRAINING_NOT_FOUND, USER_NOT_FOUND } from '@libs/shared/common';
+import { UpdateTrainingDto } from './dto/update-training.dto';
+import { TrainingQuery } from './queries/training.query';
 
 @Injectable()
 export class TrainingService {
@@ -35,5 +37,13 @@ export class TrainingService {
     }
 
     return training;
+  }
+
+  public async update(dto: UpdateTrainingDto, id: number) {
+    return this.trainingRepository.update(dto, id);
+  }
+
+  public async getByTrainerId(id: number, query: TrainingQuery) {
+    return this.trainingRepository.findByTrainerId(id, query);
   }
 }

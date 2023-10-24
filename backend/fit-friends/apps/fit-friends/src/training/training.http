@@ -1,18 +1,19 @@
-@trainerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJOYW1l0KLRgNC10L3QtdGA0LAiLCJlbWFpbCI6InRlc3Q3QG1haWwubG9jYWwiLCJyb2xlIjoiVHJhaW5lciIsImlhdCI6MTY5ODA2MDk4MiwiZXhwIjoxNjk4MTQ3MzgyfQ.p9ygtnaLjnVMbFYaG2FeGzeGBjnRPrQ-wnvFgNNIEAU
+@trainerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiTmFtZdCi0YDQtdC90LXRgNCwIiwiZW1haWwiOiJ0ZXN0NUBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTgxNjc4OTksImV4cCI6MTY5ODI1NDI5OX0.lsz4HyIS-VO_MQXGnIeUmeTCkznC_BLlbVIch5Gz0zw
+@trainerToken2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiTmFtZdCi0YDQtdC90LXRgNCwIiwiZW1haWwiOiJ0ZXN0NUBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTgwOTI1NjMsImV4cCI6MTY5ODE3ODk2M30.x847fs4rQn2UFkkhguJJAVGRfKqFLXrtw9lCtrw6W8Q
 @userToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsIm5hbWUiOiJOYW1l0K7Qt9C10YDQsCIsImVtYWlsIjoidGVzNkBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE2OTgwNjUwMDYsImV4cCI6MTY5ODE1MTQwNn0.B2x2SNgQ44QE5uwsH9Z-89xqa2rBWdl64m5CqJPgVXQ
 #create new training
-POST http://localhost:4000/api/trainings HTTP/1.1
-Authorization: {{userToken}}
+POST http://localhost:4000/api/trainings/create HTTP/1.1
+Authorization: {{trainerToken}}
 Content-Type: application/json
 
 {
   "title": "title",
   "backgroundImage": "1.jpg",
   "fitnessLevel": "Pro",
-  "trainingDuration": "TenToThirtyMinutes",
+  "trainingDuration": "FiftyToEightyMinutes",
   "trainingType": "Boxing",
-  "price": 100,
-  "caloriesToBurn": 1000,
+  "price": 0,
+  "caloriesToBurn": 2001,
   "description": "Описание тренировки",
   "gender": "Male",
   "video": "1.mov",
@@ -22,6 +23,23 @@ Content-Type: application/json
 ###
 
 # get training info
-GET http://localhost:4000/api/trainings/1 HTTP/1.1
+GET http://localhost:4000/api/trainings/details/1 HTTP/1.1
 Authorization: {{userToken}}
+###
+
+#
+PATCH http://localhost:4000/api/trainings/update/1 HTTP/1.1
+Authorization: {{trainerToken}}
+Content-Type: application/json
+
+{
+  "title": "new title",
+  "fitnessLevel": "Beginner"
+}
+###
+
+#
+GET http://localhost:4000/api/trainings/mylist?caloriesToBurn=1999 HTTP/1.1
+Authorization: {{trainerToken}}
+
 ###

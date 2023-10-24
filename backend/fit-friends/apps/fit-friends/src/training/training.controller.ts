@@ -1,6 +1,10 @@
 import { RequestWithAccessTokenPayload, Role } from '@libs/shared/app-types';
 import { Roles } from '@libs/shared/common';
-import { JwtAccessGuard, RoleGuard } from '@libs/shared/guards';
+import {
+  JwtAccessGuard,
+  ModifyTrainingGuard,
+  RoleGuard,
+} from '@libs/shared/guards';
 import {
   Body,
   Controller,
@@ -9,6 +13,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
   ValidationPipe,
@@ -17,12 +22,14 @@ import { NewTrainingDto } from './dto/new-training.dto';
 import { TrainingService } from './training.service';
 import { fillRDO } from '@libs/shared/helpers';
 import { TrainingRdo } from './rdo/training.rdo';
+import { UpdateTrainingDto } from './dto/update-training.dto';
+import { TrainingQuery } from './queries/training.query';
 
 @Controller('/trainings')
 export class TrainingController {
   constructor(private readonly trainingService: TrainingService) {}
 
-  @Post('/')
+  @Post('/create')
   @Roles(Role.Trainer)
   @UseGuards(JwtAccessGuard, RoleGuard)
   public async createTraining(
@@ -31,10 +38,10 @@ export class TrainingController {
     @Req() { user }: RequestWithAccessTokenPayload,
   ) {
     const newTraining = await this.trainingService.create(dto, user.sub);
-    console.log(newTraining);
+    return fillRDO(TrainingRdo, newTraining, [Role.Trainer]);
   }
 
-  @Get('/:trainingId')
+  @Get('/details/:trainingId')
   @UseGuards(JwtAccessGuard)
   public async getTrainingDetails(
     @Param('trainingId', ParseIntPipe) id: number,
@@ -43,9 +50,30 @@ export class TrainingController {
     return fillRDO(TrainingRdo, training, [Role.Trainer]);
   }
 
-  @Patch('/:trainingId')
-  @UseGuards(JwtAccessGuard)
-  public async updateTrainingInfo(@Param('trainingId', ParseIntPipe) id: number,) {
-    
+  @Patch('/update/:trainingId')
+  @Roles(Role.Trainer)
+  @UseGuards(JwtAccessGuard, RoleGuard, ModifyTrainingGuard)
+  public async updateTrainingInfo(
+    @Param('trainingId', ParseIntPipe) id: number,
+    @Body(new ValidationPipe({ transform: true, whitelist: true }))
+    dto: UpdateTrainingDto,
+  ) {
+    const training = await this.trainingService.update(dto, id);
+    return fillRDO(TrainingRdo, training, [Role.Trainer]);
+  }
+
+  @Get('/mylist')
+  @Roles(Role.Trainer)
+  @UseGuards(JwtAccessGuard, RoleGuard)
+  public async getTrainerTrainingsList(
+    @Req() { user }: RequestWithAccessTokenPayload,
+    @Query(new ValidationPipe({ transform: true, whitelist: true }))
+    query: TrainingQuery,
+  ) {
+    const trainingList = await this.trainingService.getByTrainerId(
+      user.sub,
+      query,
+    );
+    return fillRDO(TrainingRdo, trainingList, [Role.Trainer]);
   }
 }

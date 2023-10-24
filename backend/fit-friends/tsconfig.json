@@ -67,6 +67,12 @@
       "@app/refresh-token/*": [
         "apps/fit-friends/src/refresh-token/*"
       ],
+      "@app/training": [
+        "apps/fit-friends/src/training/index.ts"
+      ],
+      "@app/training/*": [
+        "apps/fit-friends/src/training/*"
+      ],
       "@libs/shared/common": [
         "libs/shared/common/src/index.ts"
       ],

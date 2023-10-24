@@ -71,7 +71,7 @@ model Training {
   caloriesToBurn   Int              @map("calories_to_burn")
   description      String
   gender           Gender
-  rating           Float
+  rating           Int
   video            String
   isSpecialOffer   Boolean          @map("is_special_offer")
   trainerId        Int              @map("trainer_id")

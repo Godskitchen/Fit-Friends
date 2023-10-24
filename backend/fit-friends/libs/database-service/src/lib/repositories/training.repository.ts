@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { TrainingEntity } from '../entities/training.entity';
 import { DatabaseService } from '../prisma/database.service';
 import { Training } from '@libs/shared/app-types';
+import { TrainingQuery, UpdateTrainingDto } from '@app/training';
 
 @Injectable()
 export class TrainingRepository {
@@ -22,52 +23,59 @@ export class TrainingRepository {
         },
       },
       include: {
-        trainer: {
-          include: {
-            userProfile: true,
-            trainerProfile: true,
-          },
-        },
+        trainer: { include: { trainerProfile: true } },
       },
     });
   }
 
-  // public async update(userId: number, data: UpdateUserData): Promise<User> {
-  //   const { userProfile, trainerProfile, ...restInfo } = data;
-  //   return this.prismaConnector.user.update({
-  //     where: {
-  //       userId,
-  //     },
-  //     data: {
-  //       ...restInfo,
-  //       userProfile: {
-  //         update: {
-  //           data: userProfile,
-  //         },
-  //       },
-  //       trainerProfile: {
-  //         update: {
-  //           data: trainerProfile,
-  //         },
-  //       },
-  //     },
-  //     include: {
-  //       userProfile: true,
-  //       trainerProfile: true,
-  //     },
-  //   });
-  // }
+  public async update(
+    data: UpdateTrainingDto,
+    trainingId: number,
+  ): Promise<Training> {
+    return this.prismaConnector.training.update({
+      where: { trainingId },
+      data: { ...data },
+      include: {
+        trainer: { include: { trainerProfile: true } },
+      },
+    });
+  }
 
   public async findById(trainingId: number): Promise<Training | null> {
     return this.prismaConnector.training.findUnique({
       where: { trainingId },
       include: {
-        trainer: {
-          include: {
-            userProfile: true,
-            trainerProfile: true,
-          },
-        },
+        trainer: { include: { trainerProfile: true } },
+      },
+    });
+  }
+
+  public async findByTrainerId(
+    trainerId: number,
+    { limit, page, price, caloriesToBurn, trainingDuration }: TrainingQuery,
+  ) {
+    const priceFilter = price ? { gte: price[0], lte: price[1] } : undefined;
+    const caloriesFilter = caloriesToBurn
+      ? { gte: caloriesToBurn[0], lte: caloriesToBurn[1] }
+      : undefined;
+
+    const durationFilter = trainingDuration
+      ? trainingDuration.map((value) => ({ trainingDuration: value }))
+      : [];
+
+    return this.prismaConnector.training.findMany({
+      where: {
+        AND: [
+          { trainerId },
+          { price: priceFilter },
+          { caloriesToBurn: caloriesFilter },
+          { OR: durationFilter },
+        ],
+      },
+      take: limit,
+      skip: page ? limit * (page - 1) : undefined,
+      include: {
+        trainer: { include: { trainerProfile: true } },
       },
     });
   }

@@ -25,6 +25,7 @@ import { Request } from 'express';
 @Injectable()
 export class ModifyProfileGuard implements CanActivate {
   constructor(private readonly userRepository: UserRepository) {}
+
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>();
     if (!request.user) {
