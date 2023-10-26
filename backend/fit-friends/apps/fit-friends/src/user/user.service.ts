@@ -63,6 +63,18 @@ export class UserService {
     return this.userRepository.find(userQuery);
   }
 
+  public async addFriend(userId: number, friendId: number) {
+    await this.userRepository.addFriend(userId, friendId);
+  }
+
+  public async removeFriend(userId: number, friendId: number) {
+    await this.userRepository.removeFriend(userId, friendId);
+  }
+
+  public async getFriendList(userId: number) {
+    return this.userRepository.getFriends(userId);
+  }
+
   private async setPassword(password: string): Promise<string> {
     const salt = await genSalt(SALT_ROUNDS);
     return hash(password, salt);

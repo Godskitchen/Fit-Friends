@@ -1,6 +1,7 @@
 import { Transform, Type } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional, IsPositive } from 'class-validator';
-import { MAX_ORDERS_LIMIT, SortDirection, SortType } from './query.constants';
+import { MAX_ORDERS_LIMIT } from './query.constants';
+import { SortDirection, SortType } from '@libs/shared/app-types';
 
 export class OrderQuery {
   @Transform(({ value }) =>

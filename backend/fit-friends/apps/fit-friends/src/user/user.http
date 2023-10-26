@@ -1,14 +1,15 @@
 
-@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsIm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0MkBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTc5OTIxNTIsImV4cCI6MTY5ODA3ODU1Mn0.EsuXNhe3zQUHSoAPicCEzmObRCM_BkuD8TudHt1mRzk
-
+@trainerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiTmFtZdCi0YDQtdC90LXRgNCwIiwiZW1haWwiOiJ0ZXN0NUBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTgzNDc4NDEsImV4cCI6MTY5ODQzNDI0MX0.7gNoJn_l7TNj_sL27_Ily-SyzCEtkbkNjea-SOhuS94
+@userToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExLCJuYW1lIjoiTmFtZdCu0LfQtdGA0LAiLCJlbWFpbCI6InRlczZAbWFpbC5sb2NhbCIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNjk4MzQ4MDQ3LCJleHAiOjE2OTg0MzQ0NDd9.WkXj54GtTxd8vSKIpIsbYhbFg-l5RbRSES77lVEWH94
+@userToken2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsIm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0MkBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTgzNDg1MDksImV4cCI6MTY5ODQzNDkwOX0.lKvKVKa3PpVwLGhQQp8ntfxSx8eEhdw8-cNFV4WYBPk
 # get user info
-GET  http://localhost:4000/api/users/3 HTTP/1.1
+GET  http://localhost:4000/api/users/details/3 HTTP/1.1
 
 ###
 
 # update user profile
-PATCH http://localhost:4000/api/users/5 HTTP/1.1
-Authorization: {{token}}
+PATCH http://localhost:4000/api/users/details/5 HTTP/1.1
+Authorization: {{userToken}}
 Content-Type: application/json
 
 {
@@ -22,5 +23,20 @@ Content-Type: application/json
 
 # get users
 Get http://localhost:4000/api/users?location=Udelnaya&fitnessLevel=Beginner,Amateur&trainingType=Boxing,Yoga HTTP/1.1
-Authorization: {{token}}
+Authorization: {{userToken}}
+###
+
+# add friend
+PATCH  http://localhost:4000/api/users/friends/add/5 HTTP/1.1
+Authorization: {{userToken}}
+###
+
+# remove friend
+PATCH http://localhost:4000/api/users/friends/remove/5 HTTP/1.1
+Authorization: {{userToken}}
+###
+
+# get friendlist
+GET  http://localhost:4000/api/users/friends/ HTTP/1.1
+Authorization: {{userToken2}}
 ###

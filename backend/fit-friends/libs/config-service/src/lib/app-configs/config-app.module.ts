@@ -13,7 +13,6 @@ const ENV_PATH = './app.env';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true,
       cache: true,
       load: [launchAppConfig, jwtConfig],
       envFilePath: [ENV_PATH],

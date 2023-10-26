@@ -7,6 +7,7 @@ export class OrderEntity implements Omit<Order, 'orderId'> {
   trainingCount: number;
   sum: number;
   paymentType: PaymentType;
+  customerId: number;
 
   constructor(order: Omit<Order, 'orderId'>) {
     this.orderType = order.orderType;
@@ -15,6 +16,7 @@ export class OrderEntity implements Omit<Order, 'orderId'> {
     this.trainingCount = order.trainingCount;
     this.sum = order.sum;
     this.paymentType = order.paymentType;
+    this.customerId = order.customerId;
   }
 
   toObject() {
@@ -25,6 +27,7 @@ export class OrderEntity implements Omit<Order, 'orderId'> {
       trainingCount: this.trainingCount,
       sum: this.sum,
       paymentType: this.paymentType,
+      customerId: this.customerId,
     };
   }
 }

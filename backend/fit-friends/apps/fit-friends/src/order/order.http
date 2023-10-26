@@ -1,0 +1,22 @@
+@userToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExLCJuYW1lIjoiTmFtZdCu0LfQtdGA0LAiLCJlbWFpbCI6InRlczZAbWFpbC5sb2NhbCIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNjk4MTk1NzgxLCJleHAiOjE2OTgyODIxODF9.UlOo5qWcnzjW3oLV_zMY0K4H2ES23XOs1k743Z-lnzM
+@trainerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiTmFtZdCi0YDQtdC90LXRgNCwIiwiZW1haWwiOiJ0ZXN0NUBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTgyNjAwMzUsImV4cCI6MTY5ODM0NjQzNX0.0XXSQNeOrLd1dI7n_BSzgMrmdP9qH_yDVxHYg0pPzoY
+#  create order (for users)
+POST http://localhost:4000/api/orders/create HTTP/1.1
+Content-Type: application/json
+Authorization: {{userToken}}
+
+{
+  "trainingId": 1,
+  "trainingCount": 4,
+  "paymentType": "Visa"
+}
+
+###
+
+# get orders (for trainers)
+
+GET http://localhost:4000/api/orders/mylist?sort=trainingCount&direction=asc
+Authorization:{{trainerToken}}
+
+
+###

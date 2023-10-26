@@ -10,6 +10,11 @@ export * from './lib/interfaces/order.interface';
 
 export * from './lib/token-payload.type';
 export * from './lib/update-user-data.type';
+export * from './lib/update-training-data.type';
+
+export * from './lib/query-types/training-query.type';
+export * from './lib/query-types/user-query.type';
+export * from './lib/query-types/order-query.type';
 
 export {
   Gender,

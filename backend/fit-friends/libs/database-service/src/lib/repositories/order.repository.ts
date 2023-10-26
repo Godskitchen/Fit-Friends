@@ -1,25 +1,30 @@
-import { DatabaseService } from '@libs/database-service';
 import { OrderEntity } from '../entities/order.entity';
-import { Order } from '@libs/shared/app-types';
 import {
-  DEFAULT_SORT_DIRECTION,
+  Order,
   OrderQuery,
   SortDirection,
   SortType,
-} from '@app/order';
+} from '@libs/shared/app-types';
+import { Injectable } from '@nestjs/common';
+import { DatabaseService } from '../prisma/database.service';
 
+const DEFAULT_SORT_DIRECTION = 'desc';
+
+@Injectable()
 export class OrderRepository {
   private prismaConnector;
 
   constructor(private readonly dbService: DatabaseService) {
     this.prismaConnector = dbService.prismaPostgresConnector;
   }
+
   public async create(item: OrderEntity): Promise<Order> {
-    const { trainingId, ...restData } = item.toObject();
+    const { trainingId, customerId, ...restData } = item.toObject();
 
     return this.prismaConnector.order.create({
       data: {
         ...restData,
+        customer: { connect: { userId: customerId } },
         training: { connect: { trainingId } },
       },
       include: {

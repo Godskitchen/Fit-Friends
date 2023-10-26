@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { TrainingEntity } from '../entities/training.entity';
 import { DatabaseService } from '../prisma/database.service';
-import { Training } from '@libs/shared/app-types';
-import { TrainingQuery, UpdateTrainingDto } from '@app/training';
+import {
+  Training,
+  TrainingQuery,
+  UpdateTrainingData,
+} from '@libs/shared/app-types';
 
 @Injectable()
 export class TrainingRepository {
@@ -29,7 +32,7 @@ export class TrainingRepository {
   }
 
   public async update(
-    data: UpdateTrainingDto,
+    data: UpdateTrainingData,
     trainingId: number,
   ): Promise<Training> {
     return this.prismaConnector.training.update({

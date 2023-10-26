@@ -8,5 +8,6 @@ export interface Order {
   trainingCount: number;
   sum: number;
   paymentType: PaymentType;
+  customerId: number;
   createdAt?: Date;
 }

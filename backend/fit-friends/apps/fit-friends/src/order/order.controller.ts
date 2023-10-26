@@ -21,24 +21,27 @@ import { OrderQuery } from './queries/order.query';
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
-  
-  // @UseGuards(JwtAccessGuard, RoleGuard)
-  // @Roles(Role.User)
+  @UseGuards(JwtAccessGuard, RoleGuard)
+  @Roles(Role.User)
   @Post('/create')
-  public async createOrder(@Body() dto: NewOrderDto) {
-    const newOrder = this.orderService.create(dto);
+  public async createOrder(
+    @Req() { user }: RequestWithAccessTokenPayload,
+    @Body(new ValidationPipe({ transform: true, whitelist: true }))
+    dto: NewOrderDto,
+  ) {
+    const newOrder = this.orderService.create(dto, user.sub);
     return fillRDO(OrderRdo, newOrder);
   }
 
-  // @Get('/mylist')
-  // // @UseGuards(JwtAccessGuard, RoleGuard)
-  // // @Roles(Role.Trainer)
-  // public async getOrderList(
-  //   @Req() { user }: RequestWithAccessTokenPayload,
-  //   @Query(new ValidationPipe({ transform: true, whitelist: true }))
-  //   query: OrderQuery,
-  // ) {
-  //   const orderList = this.orderService.getByUserId(user.sub, query);
-  //   return fillRDO(OrderRdo, orderList);
-  // }
+  @UseGuards(JwtAccessGuard, RoleGuard)
+  @Roles(Role.Trainer)
+  @Get('/mylist')
+  public async getOrderList(
+    @Req() { user }: RequestWithAccessTokenPayload,
+    @Query(new ValidationPipe({ transform: true, whitelist: true }))
+    query: OrderQuery,
+  ) {
+    const orderList = this.orderService.getByUserId(user.sub, query);
+    return fillRDO(OrderRdo, orderList);
+  }
 }

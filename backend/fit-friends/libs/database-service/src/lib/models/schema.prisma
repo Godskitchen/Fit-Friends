@@ -23,9 +23,14 @@ model User {
   userProfile     UserProfile?
   trainerProfile  TrainerProfile?
   trainings       Training[]
+  orders          Order[]
+  friends         User[]          @relation("friends")
+  friendsAddedMe  User[]          @relation("friends")
+  
 
   @@map("users")
 }
+
 
 model UserProfile {
   profileId           Int              @id @map("profile_id")
@@ -91,6 +96,8 @@ model Order {
   sum           Int
   paymentType   PaymentType @map("payment_type")
   createdAt     DateTime    @default(now()) @map("created_at")
+  customerId    Int         @map("customer_id")
+  customer      User        @relation(fields: [customerId], references: [userId])
 
   @@map("orders")
 }

@@ -8,7 +8,6 @@ const ENV_PATH = './app.env';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true,
       cache: true,
       load: [psqlConnectorConfig],
       envFilePath: [ENV_PATH],

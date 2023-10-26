@@ -1,12 +1,15 @@
 import { Module } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { OrderController } from './order.controller';
-import { DatabaseModule } from '@libs/database-service';
-import { JwtAccessGuard } from '@libs/shared/guards';
+import {
+  DatabaseModule,
+  OrderRepository,
+  TrainingRepository,
+} from '@libs/database-service';
 
 @Module({
-  imports: [],
-  providers: [OrderService],
+  imports: [DatabaseModule],
+  providers: [OrderService, OrderRepository, TrainingRepository],
   controllers: [OrderController],
 })
 export class OrderModule {}

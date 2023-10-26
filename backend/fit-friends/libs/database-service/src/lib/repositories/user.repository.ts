@@ -1,8 +1,7 @@
-import { Role, UpdateUserData, User } from '@libs/shared/app-types';
+import { Role, UpdateUserData, User, UserQuery } from '@libs/shared/app-types';
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../prisma/database.service';
 import { UserEntity } from '../entities/user.entity';
-import { UserQuery } from '@app/user';
 
 const SortType = {
   [Role.User]: 'asc',
@@ -144,5 +143,47 @@ export class UserRepository {
         userProfile: true,
       },
     });
+  }
+
+  public async addFriend(userId: number, friendId: number) {
+    await Promise.all([
+      this.prismaConnector.user.update({
+        where: { userId },
+        data: { friends: { connect: { userId: friendId } } },
+      }),
+      this.prismaConnector.user.update({
+        where: { userId: friendId },
+        data: { friends: { connect: { userId } } },
+      }),
+    ]);
+  }
+
+  public async removeFriend(userId: number, friendId: number) {
+    await Promise.all([
+      this.prismaConnector.user.update({
+        where: { userId },
+        data: { friends: { disconnect: { userId: friendId } } },
+      }),
+      this.prismaConnector.user.update({
+        where: { userId: friendId },
+        data: { friends: { disconnect: { userId } } },
+      }),
+    ]);
+  }
+
+  public async getFriends(userId: number): Promise<User[]> {
+    return this.prismaConnector.user
+      .findUnique({
+        where: { userId },
+        select: {
+          friends: {
+            include: {
+              userProfile: true,
+              trainerProfile: true,
+            },
+          },
+        },
+      })
+      .then((user) => (user ? user.friends : []));
   }
 }

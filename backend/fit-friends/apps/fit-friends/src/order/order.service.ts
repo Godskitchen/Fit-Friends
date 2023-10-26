@@ -5,21 +5,20 @@ import {
 } from '@libs/database-service';
 import { NewOrderDto } from './dto/new-order.dto';
 import { TRAINING_NOT_FOUND } from '@libs/shared/common';
-import { NotFoundException } from '@nestjs/common';
+import { Inject, NotFoundException } from '@nestjs/common';
 import { OrderQuery } from './queries/order.query';
 
 export class OrderService {
   constructor(
     private readonly orderRepository: OrderRepository,
+    @Inject(TrainingRepository)
     private readonly trainingRepository: TrainingRepository,
   ) {}
 
-  public async create({
-    trainingId,
-    trainingCount,
-    orderType,
-    paymentType,
-  }: NewOrderDto) {
+  public async create(
+    { trainingId, trainingCount, orderType, paymentType }: NewOrderDto,
+    userId: number,
+  ) {
     const training = await this.trainingRepository.findById(trainingId);
 
     if (!training) {
@@ -37,6 +36,7 @@ export class OrderService {
         trainingCount,
         sum,
         paymentType,
+        customerId: userId,
       }),
     );
   }
