@@ -8,7 +8,11 @@ import {
   BadRequestException,
   ConflictException,
 } from '@nestjs/common';
-import { BALANCE_ALREADY_EXIST, TRAINING_NOT_FOUND } from '@libs/shared/common';
+import {
+  BALANCE_ALREADY_EXIST,
+  INCORRECT_TRAINING_ID_TYPE,
+  TRAINING_NOT_FOUND,
+} from '@libs/shared/common';
 
 @Injectable()
 export class CreateBalanceGuard implements CanActivate {
@@ -22,6 +26,9 @@ export class CreateBalanceGuard implements CanActivate {
 
     const userId = (user as AccessTokenPayload).sub;
     const trainingId = (body as CreateBalanceData).trainingId;
+    if (!Number.isInteger(trainingId) || trainingId <= 0) {
+      throw new BadRequestException(INCORRECT_TRAINING_ID_TYPE);
+    }
 
     const training = await this.trainingRepository.findById(trainingId);
     if (!training) {

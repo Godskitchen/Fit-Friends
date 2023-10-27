@@ -22,3 +22,6 @@ export const BALANCE_NOT_FOUND = 'Баланса данной тренировк
 export const BALANCE_ALREADY_EXIST = 'Баланс данной тренировки уже существует';
 
 export const MODIFY_BALANCE_FORBIDDEN = 'Вы не можете изменять данный баланс';
+export const INCORRECT_BALANCE_ID_TYPE = 'id баланса должен быть UUID строкой';
+export const INCORRECT_TRAINING_ID_TYPE =
+  'id тренировки должно быть целым положительным числом';

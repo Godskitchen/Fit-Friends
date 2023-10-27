@@ -2,6 +2,7 @@ import { BalanceRepository } from '@libs/database-service';
 import { AccessTokenPayload, UpdateBalanceData } from '@libs/shared/app-types';
 import {
   BALANCE_NOT_FOUND,
+  INCORRECT_BALANCE_ID_TYPE,
   MODIFY_BALANCE_FORBIDDEN,
 } from '@libs/shared/common';
 import { Request } from 'express';
@@ -12,6 +13,7 @@ import {
   BadRequestException,
   ForbiddenException,
 } from '@nestjs/common';
+import uuidValidate from 'uuid-validate';
 
 @Injectable()
 export class ModifyBalanceGuard implements CanActivate {
@@ -22,7 +24,10 @@ export class ModifyBalanceGuard implements CanActivate {
 
     const userId = (user as AccessTokenPayload).sub;
     const balanceId = (body as UpdateBalanceData).balanceId;
-// Argument `balanceId`: Invalid value provided. Expected String, provided Int.
+
+    if (!uuidValidate(balanceId)) {
+      throw new BadRequestException(INCORRECT_BALANCE_ID_TYPE);
+    }
     const existBalance = await this.balanceRepository.findById(balanceId);
 
     if (!existBalance) {

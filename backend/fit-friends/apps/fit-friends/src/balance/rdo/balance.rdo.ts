@@ -10,5 +10,5 @@ export class BalanceRdo {
   training: TrainingRdo;
 
   @Expose()
-  remainingAmout: number;
+  remainingAmount: number;
 }
