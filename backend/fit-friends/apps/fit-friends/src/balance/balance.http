@@ -1,0 +1,31 @@
+@userToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExLCJuYW1lIjoiTmFtZdCu0LfQtdGA0LAiLCJlbWFpbCI6InRlczZAbWFpbC5sb2NhbCIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNjk4MzQ4MDQ3LCJleHAiOjE2OTg0MzQ0NDd9.WkXj54GtTxd8vSKIpIsbYhbFg-l5RbRSES77lVEWH94
+@trainerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiTmFtZdCi0YDQtdC90LXRgNCwIiwiZW1haWwiOiJ0ZXN0NUBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTgzNTk1NjYsImV4cCI6MTY5ODQ0NTk2Nn0.6kAAACsdYTASE2MCmYAauvlWhWhOfsah-xY1uOpZhUc
+# create new balance
+POST http://localhost:4000/api/balance/create HTTP/1.1
+Authorization: {{userToken}}
+Content-Type: application/json
+
+{
+  "trainingId": 5,
+  "remainingAmount": 2
+}
+
+###
+
+# update balance
+PATCH  http://localhost:4000/api/balance/update HTTP/1.1
+Authorization: {{userToken}}
+Content-Type: application/json
+
+{
+  "balanceId": 5,
+  "remainingAmount": 2
+}
+
+###
+
+# get user total balance
+GET http://localhost:4000/api/balance/my-balance HTTP/1.1
+Authorization: {{userToken}}
+
+###

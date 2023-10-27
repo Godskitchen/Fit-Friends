@@ -4,6 +4,7 @@ import { UserModule } from './user';
 import { AuthModule } from './auth';
 import { TrainingModule } from './training';
 import { OrderModule } from './order';
+import { BalanceModule } from './balance';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { OrderModule } from './order';
     AuthModule,
     TrainingModule,
     OrderModule,
+    BalanceModule,
   ],
   controllers: [],
   providers: [],

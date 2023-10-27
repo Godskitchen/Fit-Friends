@@ -79,6 +79,12 @@
       "@app/order/*": [
         "apps/fit-friends/src/order/*"
       ],
+      "@app/balance": [
+        "apps/fit-friends/src/balance/index.ts"
+      ],
+      "@app/balance/*": [
+        "apps/fit-friendbalance/order/*"
+      ],
       "@libs/shared/common": [
         "libs/shared/common/src/index.ts"
       ],

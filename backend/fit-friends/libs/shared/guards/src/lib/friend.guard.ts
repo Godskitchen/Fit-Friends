@@ -18,6 +18,7 @@ import { Request } from 'express';
 
 const ADD_FRIEND_HANDLER = 'addFriend';
 const REMOVE_FRIEND_HANDLER = 'removeFriend';
+
 @Injectable()
 export class FriendGuard implements CanActivate {
   constructor(private readonly userRepository: UserRepository) {}

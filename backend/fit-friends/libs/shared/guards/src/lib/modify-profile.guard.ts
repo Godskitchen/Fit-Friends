@@ -8,7 +8,7 @@ import {
   ACCESS_DENIED,
   INCORRECT_ID,
   INCORRECT_USER_PROFILE_TYPE,
-  MODIFY_OTHER_USER_FORBIDDEN,
+  MODIFY_USER_FORBIDDEN,
   USER_NOT_FOUND,
 } from '@libs/shared/common';
 import {
@@ -45,7 +45,7 @@ export class ModifyProfileGuard implements CanActivate {
       throw new BadRequestException(INCORRECT_ID);
     }
     if (userId !== +paramsUserId) {
-      throw new ForbiddenException(MODIFY_OTHER_USER_FORBIDDEN);
+      throw new ForbiddenException(MODIFY_USER_FORBIDDEN);
     }
 
     const updateData = request.body as UpdateUserData;

@@ -26,11 +26,10 @@ model User {
   orders          Order[]
   friends         User[]          @relation("friends")
   friendsAddedMe  User[]          @relation("friends")
-  
+  balance         UserBalance[]
 
   @@map("users")
 }
-
 
 model UserProfile {
   profileId           Int              @id @map("profile_id")
@@ -82,6 +81,7 @@ model Training {
   trainerId        Int              @map("trainer_id")
   trainer          User             @relation(fields: [trainerId], references: [userId], onUpdate: Cascade)
   orders           Order[]
+  balances         UserBalance[]
 
   @@map("trainings")
 }
@@ -100,6 +100,18 @@ model Order {
   customer      User        @relation(fields: [customerId], references: [userId])
 
   @@map("orders")
+}
+
+model UserBalance {
+  balanceId       String   @id @default(uuid()) @map("balance_id")
+  userId          Int
+  user            User     @relation(fields: [userId], references: [userId])
+  trainingId      Int
+  training        Training @relation(fields: [trainingId], references: [trainingId])
+  remainingAmount Int
+
+  @@unique([userId, trainingId])
+  @@map("user_balances")
 }
 
 enum Gender {

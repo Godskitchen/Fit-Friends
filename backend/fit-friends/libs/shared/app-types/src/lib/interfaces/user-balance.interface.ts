@@ -1,7 +1,6 @@
-import { Training } from './training.interface';
-
 export interface UserBalance {
-  balanceId: number;
-  training: Training;
+  balanceId: string;
+  userId: number;
+  trainingId: number;
   remainingAmount: number;
 }
