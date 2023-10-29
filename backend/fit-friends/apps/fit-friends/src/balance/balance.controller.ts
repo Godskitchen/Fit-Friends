@@ -62,7 +62,7 @@ export class BalanceController {
     return fillRDO(BalanceRdo, balance);
   }
 
-  @Get('/my-balance')
+  @Get('/mylist')
   @Roles(Role.User)
   public async getUserBalance(
     @Req() { user }: RequestWithAccessTokenPayload,

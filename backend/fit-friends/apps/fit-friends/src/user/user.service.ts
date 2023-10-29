@@ -15,10 +15,15 @@ import { genSalt, hash } from 'bcrypt';
 import { SALT_ROUNDS } from '@app/auth';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserQuery } from './queries/user.query';
+import { StaticService } from '@app/static';
+import { BackgroundImageType } from '@libs/shared/app-types';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly staticService: StaticService,
+  ) {}
 
   public async create(dto: NewUserDto) {
     const existUser = await this.userRepository.findByEmail(dto.email);
@@ -27,15 +32,27 @@ export class UserService {
       throw new ConflictException(USER_ALREADY_EXISTS);
     }
 
-    const { password, userProfile, trainerProfile, ...userData } = dto;
-    const hashPassword = await this.setPassword(password);
+    const { password, userProfile, trainerProfile, avatar, ...restData } = dto;
+
+    let certificatePath = '';
+    if (trainerProfile?.certificates) {
+      const { certificates } = trainerProfile;
+      certificatePath = (await this.staticService.getFile(certificates)) ?? '';
+    }
 
     const userEntity = new UserEntity({
-      ...userData,
-      hashPassword,
+      ...restData,
+      avatarUrl: avatar ? await this.staticService.getFile(avatar) : undefined,
+      backgroundImage: await this.staticService.getDefaultBackgroundImage(
+        BackgroundImageType.users,
+      ),
+      hashPassword: await this.setPassword(password),
       userProfile: userProfile ? new UserProfileEntity(userProfile) : undefined,
       trainerProfile: trainerProfile
-        ? new TrainerProfileEntity(trainerProfile)
+        ? new TrainerProfileEntity({
+            ...trainerProfile,
+            certificates: certificatePath,
+          })
         : undefined,
     });
 
@@ -56,7 +73,21 @@ export class UserService {
   }
 
   public async updateData(id: number, dto: UpdateUserDto) {
-    return this.userRepository.update(id, dto);
+    const { avatar, trainerProfile, ...restData } = dto;
+
+    let certificatePath: string | undefined;
+    if (trainerProfile?.certificates) {
+      const { certificates } = trainerProfile;
+      certificatePath = await this.staticService.getFile(certificates);
+    }
+
+    return this.userRepository.update(id, {
+      ...restData,
+      avatarUrl: avatar ? await this.staticService.getFile(avatar) : undefined,
+      trainerProfile: trainerProfile
+        ? { ...trainerProfile, certificates: certificatePath }
+        : undefined,
+    });
   }
 
   public async getMany(userQuery: UserQuery) {

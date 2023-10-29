@@ -8,10 +8,13 @@ import { NewTrainingDto } from './dto/new-training.dto';
 import { TRAINING_NOT_FOUND, USER_NOT_FOUND } from '@libs/shared/common';
 import { UpdateTrainingDto } from './dto/update-training.dto';
 import { TrainingQuery } from './queries/training.query';
+import { StaticService } from '@app/static';
+import { BackgroundImageType } from '@libs/shared/app-types';
 
 @Injectable()
 export class TrainingService {
   constructor(
+    private readonly staticService: StaticService,
     private readonly trainingRepository: TrainingRepository,
     private readonly userRepository: UserRepository,
   ) {}
@@ -21,8 +24,15 @@ export class TrainingService {
     if (!existTrainer) {
       throw new NotFoundException(USER_NOT_FOUND);
     }
+
+    const { video: videoPath } = dto;
+
     const entity = new TrainingEntity({
       ...dto,
+      backgroundImage: await this.staticService.getDefaultBackgroundImage(
+        BackgroundImageType.trainings,
+      ),
+      video: (await this.staticService.getFile(videoPath)) ?? '',
       rating: 0,
       trainer: existTrainer,
     });
@@ -40,7 +50,16 @@ export class TrainingService {
   }
 
   public async update(dto: UpdateTrainingDto, id: number) {
-    return this.trainingRepository.update(dto, id);
+    const { video: videoPath } = dto;
+    return this.trainingRepository.update(
+      {
+        ...dto,
+        video: videoPath
+          ? await this.staticService.getFile(videoPath)
+          : undefined,
+      },
+      id,
+    );
   }
 
   public async getByTrainerId(id: number, query: TrainingQuery) {

@@ -18,8 +18,6 @@ import {
 import {
   TITLE_LENGTH,
   TITLE_VALIDATION_MESSAGE,
-  IMAGE_FILE_NAME_PATTERN,
-  IMAGE_FILE_VALIDATION_MESSAGE,
   FITNESS_LEVEL_VALIDATION_MESSAGE,
   TRAINING_DURATION_VALIDATION_MESSAGE,
   TRAINING_TYPE_VALIDATION_MESSAGE,
@@ -41,10 +39,6 @@ export class UpdateTrainingDto {
   })
   @IsOptional()
   title?: string;
-
-  @Matches(IMAGE_FILE_NAME_PATTERN, { message: IMAGE_FILE_VALIDATION_MESSAGE })
-  @IsOptional()
-  backgroundImage?: string;
 
   @IsEnum(FitnessLevel, { message: FITNESS_LEVEL_VALIDATION_MESSAGE })
   @IsOptional()

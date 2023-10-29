@@ -1,0 +1,45 @@
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiTmFtZdCi0YDQtdC90LXRgNCwIiwiZW1haWwiOiJ0ZXN0NUBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTg1MzQ2NDUsImV4cCI6MTY5ODYyMTA0NX0.I2srkl5sk-X_UHy2XQMebgBW1VJWOY1zzjU81jlK3NI
+#Upload user avatar
+POST http://localhost:4000/api/static/upload/avatar HTTP/1.1
+# Authorization: {{token}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="avatar"; filename="nafik.jpg"
+Content-Type: image/jpeg
+
+< Q:/images/nafik.jpg
+
+--boundary--
+
+###
+
+#Upload trainer certificate
+POST http://localhost:4000/api/static/upload/certificate HTTP/1.1
+# Authorization: {{token}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="certificate"; filename="nafik.pdf"
+Content-Type: application/pdf
+
+< Q:/images/Оставьте брезгливость - съешьте лягушку.pdf
+
+--boundary--
+
+###
+
+#Upload video training
+POST http://localhost:4000/api/static/upload/training-video HTTP/1.1
+Authorization: {{token}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="training-video"; filename="3.avi"
+Content-Type: video/avi
+
+< Q:/images/3.avi
+
+--boundary--
+
+###

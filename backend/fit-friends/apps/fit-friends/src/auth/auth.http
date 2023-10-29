@@ -6,15 +6,14 @@ Content-Type: application/json
 
 {
   "name": "NameЮзера",
-  "email": "tes6@mail.local",
+  "email": "tes14@mail.local",
   "password": "123456",
-  "avatarUrl": "image.PNG",
+  "avatar": "21baf343-7727-4f47-93d2-c29c18c9dbbb.jpg",
   "gender": "Male",
   "role": "User",
   "aboutInfo": "about info text",
   "birthDate": "2023-10-10",
   "location": "Udelnaya",
-  "backgroundImage": "background_image.jpg",
   "userProfile": {
     "fitnessLevel": "Amateur",
     "trainingType": ["Boxing", "Running", "Stretching"],
@@ -38,18 +37,16 @@ Content-Type: application/json
 
 {
   "name": "NameТренера",
-  "email": "test5@mail.local",
+  "email": "test18@mail.local",
   "password": "123456",
-  "avatarUrl": "image.jpg",
   "gender": "Male",
   "role": "Trainer",
   "aboutInfo": "about info text",
   "location": "Udelnaya",
-  "backgroundImage": "background_image.png",
   "trainerProfile": {
     "fitnessLevel": "Beginner",
     "trainingType": ["Yoga"],
-    "certificates": "2.pdf",
+    "certificates": "e17be906-322b-429f-8c68-93588ce49410.pdf",
     "achievements": "Описание тренерских заслуг",
     "readyForWorkout": false
   }
@@ -62,7 +59,7 @@ POST http://localhost:4000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "test2@mail.local",
+  "email": "test18@mail.local",
   "password": "123456"
 }
 

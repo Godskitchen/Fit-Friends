@@ -16,13 +16,12 @@ lerna-debug.log*
 
 # Static
 
-/static/*
-!/static/defaults/
+**/uploads/*
+!**/uploads/default/
 
 #misc
 Thumbs.db
 *.env
-**/uploads/*
 
 # Tests
 /coverage

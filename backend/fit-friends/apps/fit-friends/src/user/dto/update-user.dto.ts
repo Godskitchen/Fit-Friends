@@ -34,7 +34,7 @@ export class UpdateUserDto {
 
   @Matches(IMAGE_FILE_NAME_PATTERN, { message: IMAGE_FILE_VALIDATION_MESSAGE })
   @IsOptional()
-  avatarUrl?: string;
+  avatar?: string;
 
   @IsEnum(Gender, { message: GENDER_VALIDATION_MESSAGE })
   @IsOptional()
@@ -60,10 +60,6 @@ export class UpdateUserDto {
   @IsEnum(Location, { message: LOCATION_VALIDATION_MESSAGE })
   @IsOptional()
   location?: Location;
-
-  @Matches(IMAGE_FILE_NAME_PATTERN, { message: IMAGE_FILE_VALIDATION_MESSAGE })
-  @IsOptional()
-  backgroundImage?: string;
 
   @ValidateNested()
   @Type(() => UpdateUserProfileDto)

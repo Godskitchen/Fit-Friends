@@ -6,9 +6,10 @@ import {
   TrainingRepository,
   UserRepository,
 } from '@libs/database-service';
+import { StaticModule } from '@app/static';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, StaticModule],
   providers: [TrainingService, TrainingRepository, UserRepository],
   controllers: [TrainingController],
   exports: [],

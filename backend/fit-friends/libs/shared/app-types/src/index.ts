@@ -8,6 +8,7 @@ export * from './lib/interfaces/request-with-token-payload.interface';
 export * from './lib/interfaces/training.interface';
 export * from './lib/interfaces/order.interface';
 export * from './lib/interfaces/user-balance.interface';
+export * from './lib/interfaces/file-data.interface';
 
 export * from './lib/token-payload.type';
 export * from './lib/update-user-data.type';
@@ -18,6 +19,8 @@ export * from './lib/query-types/training-query.type';
 export * from './lib/query-types/user-query.type';
 export * from './lib/query-types/order-query.type';
 export * from './lib/query-types/balance-query.type';
+
+export * from './lib/background-image.type';
 
 export {
   Gender,

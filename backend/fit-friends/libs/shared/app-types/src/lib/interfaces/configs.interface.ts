@@ -12,3 +12,8 @@ export interface DbConfig {
   password: string;
   authBase?: string;
 }
+
+export interface StaticConfig {
+  uploadDirectory: string;
+  serveRoot: string;
+}

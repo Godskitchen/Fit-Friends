@@ -44,7 +44,7 @@ export enum TRAINING_TYPE_COUNT {
 
 export const MAX_DATE_STRING_LENGTH = 10;
 
-export const ImageFormats = ['jpg', 'png'];
+export const ImageFormats = ['jpg', 'jpeg', 'png'];
 
 export const NAME_PATTERN = RegExp(
   `^[a-zA-Zа-яА-Я]{${NAME_LENGTH.MIN},${NAME_LENGTH.MAX}}$`,

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -83,7 +83,13 @@
         "apps/fit-friends/src/balance/index.ts"
       ],
       "@app/balance/*": [
-        "apps/fit-friendbalance/order/*"
+        "apps/fit-friends/src/balance/*"
+      ],
+      "@app/static": [
+        "apps/fit-friends/src/static/index.ts"
+      ],
+      "@app/static/*": [
+        "apps/fit-friends/src/static/*"
       ],
       "@libs/shared/common": [
         "libs/shared/common/src/index.ts"

@@ -1,4 +1,4 @@
-@trainerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiTmFtZdCi0YDQtdC90LXRgNCwIiwiZW1haWwiOiJ0ZXN0NUBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTgxNjc4OTksImV4cCI6MTY5ODI1NDI5OX0.lsz4HyIS-VO_MQXGnIeUmeTCkznC_BLlbVIch5Gz0zw
+@trainerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIxLCJuYW1lIjoiTmFtZdCi0YDQtdC90LXRgNCwIiwiZW1haWwiOiJ0ZXN0MThAbWFpbC5sb2NhbCIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNjk4NTkxNzc4LCJleHAiOjE2OTg2NzgxNzh9.uzLuQrap_sMag9KvrOzHe8oHABAaqdTBLbcZjOIZ5A0
 @trainerToken2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiTmFtZdCi0YDQtdC90LXRgNCwIiwiZW1haWwiOiJ0ZXN0NUBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTgwOTI1NjMsImV4cCI6MTY5ODE3ODk2M30.x847fs4rQn2UFkkhguJJAVGRfKqFLXrtw9lCtrw6W8Q
 @userToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsIm5hbWUiOiJOYW1l0K7Qt9C10YDQsCIsImVtYWlsIjoidGVzNkBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE2OTgwNjUwMDYsImV4cCI6MTY5ODE1MTQwNn0.B2x2SNgQ44QE5uwsH9Z-89xqa2rBWdl64m5CqJPgVXQ
 #create new training
@@ -8,7 +8,6 @@ Content-Type: application/json
 
 {
   "title": "title",
-  "backgroundImage": "1.jpg",
   "fitnessLevel": "Pro",
   "trainingDuration": "FiftyToEightyMinutes",
   "trainingType": "Boxing",
@@ -16,7 +15,7 @@ Content-Type: application/json
   "caloriesToBurn": 2001,
   "description": "Описание тренировки",
   "gender": "Male",
-  "video": "1.mov",
+  "video": "4eb6c4d9-b7d4-49f0-9f36-9d4c331f6c29.avi",
   "isSpecialOffer": false
 }
 
@@ -28,13 +27,12 @@ Authorization: {{userToken}}
 ###
 
 #
-PATCH http://localhost:4000/api/trainings/update/1 HTTP/1.1
+PATCH http://localhost:4000/api/trainings/update/6 HTTP/1.1
 Authorization: {{trainerToken}}
 Content-Type: application/json
 
 {
-  "title": "new title",
-  "fitnessLevel": "Beginner"
+  "video": "/4eb6c4d9-b7d4-49f0-9f36-9d4c331f6c29.avi"
 }
 ###
 

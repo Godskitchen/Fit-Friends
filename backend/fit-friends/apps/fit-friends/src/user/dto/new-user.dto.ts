@@ -42,7 +42,7 @@ export class NewUserDto {
 
   @Matches(IMAGE_FILE_NAME_PATTERN, { message: IMAGE_FILE_VALIDATION_MESSAGE })
   @IsOptional()
-  avatarUrl?: string;
+  avatar?: string;
 
   @Length(PASSWORD_LENGTH.MIN, PASSWORD_LENGTH.MAX, {
     message: PASSWORD_VALIDATION_MESSAGE,
@@ -73,9 +73,6 @@ export class NewUserDto {
 
   @IsEnum(Location, { message: LOCATION_VALIDATION_MESSAGE })
   location: Location;
-
-  @Matches(IMAGE_FILE_NAME_PATTERN, { message: IMAGE_FILE_VALIDATION_MESSAGE })
-  backgroundImage: string;
 
   @ValidateNested()
   @IsRedundant()

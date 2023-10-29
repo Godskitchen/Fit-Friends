@@ -13,9 +13,9 @@ Authorization: {{userToken}}
 Content-Type: application/json
 
 {
-  "name": "test",
+  "avatar": "test.jpg",
   "trainerProfile": {
-    "readyForWorkout": true
+    "certificates": "e17be906-322b-429f-8c68-93588ce49410.pdf"
   }
 }
 
