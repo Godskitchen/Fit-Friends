@@ -33,7 +33,6 @@ export class TrainingService {
         BackgroundImageType.trainings,
       ),
       video: (await this.staticService.getFile(videoPath)) ?? '',
-      rating: 0,
       trainer: existTrainer,
     });
 

@@ -7,7 +7,7 @@ import {
   User,
 } from '@libs/shared/app-types';
 
-export class TrainingEntity implements Omit<Training, 'trainingId'> {
+export class TrainingEntity implements Omit<Training, 'trainingId' | 'rating'> {
   title: string;
   backgroundImage: string;
   fitnessLevel: FitnessLevel;
@@ -17,12 +17,11 @@ export class TrainingEntity implements Omit<Training, 'trainingId'> {
   caloriesToBurn: number;
   description: string;
   gender: Gender;
-  rating: number;
   video: string;
   trainer: User;
   isSpecialOffer: boolean;
 
-  constructor(training: Omit<Training, 'trainingId'>) {
+  constructor(training: Omit<Training, 'trainingId' | 'rating'>) {
     this.title = training.title;
     this.backgroundImage = training.backgroundImage;
     this.fitnessLevel = training.fitnessLevel;
@@ -32,7 +31,6 @@ export class TrainingEntity implements Omit<Training, 'trainingId'> {
     this.caloriesToBurn = training.caloriesToBurn;
     this.description = training.description;
     this.gender = training.gender;
-    this.rating = training.rating;
     this.video = training.video;
     this.trainer = training.trainer;
     this.isSpecialOffer = training.isSpecialOffer;
@@ -49,7 +47,6 @@ export class TrainingEntity implements Omit<Training, 'trainingId'> {
       caloriesToBurn: this.caloriesToBurn,
       description: this.description,
       gender: this.gender,
-      rating: this.rating,
       video: this.video,
       trainer: this.trainer,
       isSpecialOffer: this.isSpecialOffer,

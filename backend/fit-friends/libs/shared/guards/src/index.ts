@@ -12,3 +12,5 @@ export * from './lib/friend.guard';
 
 export * from './lib/create-balance.guard';
 export * from './lib/modify-balance.guard';
+
+export * from './lib/message.guard';

@@ -4,7 +4,11 @@ import {
   UserProfileEntity,
   UserRepository,
 } from '@libs/database-service';
-import { USER_ALREADY_EXISTS, USER_NOT_FOUND } from '@libs/shared/common';
+import {
+  USER_ALREADY_EXISTS,
+  USER_NOT_FOUND,
+  createFriendRequestMessage,
+} from '@libs/shared/common';
 import {
   ConflictException,
   Injectable,
@@ -17,12 +21,14 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserQuery } from './queries/user.query';
 import { StaticService } from '@app/static';
 import { BackgroundImageType } from '@libs/shared/app-types';
+import { MessageService } from '@app/message';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly staticService: StaticService,
+    private readonly messageService: MessageService,
   ) {}
 
   public async create(dto: NewUserDto) {
@@ -94,8 +100,13 @@ export class UserService {
     return this.userRepository.find(userQuery);
   }
 
-  public async addFriend(userId: number, friendId: number) {
+  public async addFriend(userId: number, userName: string, friendId: number) {
     await this.userRepository.addFriend(userId, friendId);
+
+    await this.messageService.createMessage({
+      recepientId: friendId,
+      text: createFriendRequestMessage(userName),
+    });
   }
 
   public async removeFriend(userId: number, friendId: number) {

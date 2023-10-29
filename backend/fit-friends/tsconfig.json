@@ -91,6 +91,18 @@
       "@app/static/*": [
         "apps/fit-friends/src/static/*"
       ],
+      "@app/message": [
+        "apps/fit-friends/src/message/index.ts"
+      ],
+      "@app/message/*": [
+        "apps/fit-friends/src/message/*"
+      ],
+      "@app/training-request": [
+        "apps/fit-friends/src/training-request/index.ts"
+      ],
+      "@app/training-request/*": [
+        "apps/fit-friends/src/training-request/*"
+      ],
       "@libs/shared/common": [
         "libs/shared/common/src/index.ts"
       ],

@@ -1,6 +1,27 @@
-import { Gender, Location } from '..';
-import { UpdateTrainerProfileData } from './update-trainer-profile-data.type';
-import { UpdateUserProfileData } from './update-user-profile.type';
+import {
+  FitnessLevel,
+  Gender,
+  Location,
+  TrainingDuration,
+  TrainingType,
+} from '..';
+
+export type UpdateTrainerProfileData = {
+  fitnessLevel?: FitnessLevel;
+  trainingType?: TrainingType[];
+  certificates?: string;
+  achievements?: string;
+  readyForWorkout?: boolean;
+};
+
+export type UpdateUserProfileData = {
+  fitnessLevel?: FitnessLevel;
+  trainingType?: TrainingType[];
+  trainingDuration?: TrainingDuration;
+  caloriesToBurn?: number;
+  dailyCaloriesIntake?: number;
+  readyForWorkout?: boolean;
+};
 
 export type UpdateUserData = {
   name?: string;

@@ -67,7 +67,7 @@ export class UserController {
     @Param('friendId', ParseIntPipe) friendId: number,
     @Req() { user }: RequestWithAccessTokenPayload,
   ) {
-    await this.userService.addFriend(user.sub, friendId);
+    await this.userService.addFriend(user.sub, user.name, friendId);
     return {
       message: createAddFriendMessage(friendId),
     };

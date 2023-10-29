@@ -1,11 +1,10 @@
-import { RequestStatus } from '../request-status.enum';
-import { User } from './user.interface';
+import { TrainingRequestStatus } from '../..';
 
 export interface TrainingRequest {
-  requestId: number;
-  enquirer: User;
-  recipient: User;
-  status: RequestStatus;
+  id: string;
+  senderId: number;
+  recepientId: number;
+  status: TrainingRequestStatus;
   createdAt?: Date;
   updatedAt?: Date;
 }

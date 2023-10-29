@@ -8,25 +8,28 @@ datasource db {
 }
 
 model User {
-  userId          Int             @id @default(autoincrement()) @map("user_id")
-  name            String
-  email           String          @unique
-  avatarUrl       String?         @map("avatar_url")
-  hashPassword    String          @map("hash_password")
-  gender          Gender
-  role            Role
-  aboutInfo       String          @map("about_info")
-  birthDate       DateTime?       @map("birth_date")
-  location        Location
-  backgroundImage String          @map("background_image")
-  createdAt       DateTime        @default(now()) @map("created_at")
-  userProfile     UserProfile?
-  trainerProfile  TrainerProfile?
-  trainings       Training[]
-  orders          Order[]
-  friends         User[]          @relation("friends")
-  friendsAddedMe  User[]          @relation("friends")
-  balance         UserBalance[]
+  userId           Int               @id @default(autoincrement()) @map("user_id")
+  name             String
+  email            String            @unique
+  avatarUrl        String?           @map("avatar_url")
+  hashPassword     String            @map("hash_password")
+  gender           Gender
+  role             Role
+  aboutInfo        String            @map("about_info")
+  birthDate        DateTime?         @map("birth_date")
+  location         Location
+  backgroundImage  String            @map("background_image")
+  createdAt        DateTime          @default(now()) @map("created_at")
+  userProfile      UserProfile?
+  trainerProfile   TrainerProfile?
+  trainings        Training[]
+  orders           Order[]
+  friends          User[]            @relation("friends")
+  friendsAddedMe   User[]            @relation("friends")
+  balance          UserBalance[]
+  notifications    Message[]
+  trainingRequests TrainingRequest[] @relation("recepients")
+  inOthersRequests TrainingRequest[] @relation("others_requests")
 
   @@map("users")
 }
@@ -75,7 +78,7 @@ model Training {
   caloriesToBurn   Int              @map("calories_to_burn")
   description      String
   gender           Gender
-  rating           Int
+  rating           Int              @default(0)
   video            String
   isSpecialOffer   Boolean          @map("is_special_offer")
   trainerId        Int              @map("trainer_id")
@@ -123,6 +126,29 @@ model FileData {
   createdAt    DateTime @default(now()) @map("created_at")
 
   @@map("files")
+}
+
+model Message {
+  id          String   @id @default(uuid())
+  recepient   User     @relation(fields: [recepientId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  recepientId Int      @map("recepient_id")
+  text        String
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("messages")
+}
+
+model TrainingRequest {
+  id          String                @id @default(uuid())
+  sender      User                  @relation("others_requests", fields: [senderId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  senderId    Int                   @map("sender_id")
+  recepient   User                  @relation("recepients", fields: [recepientId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  recepientId Int                   @map("recepient_id")
+  status      TrainingRequestStatus
+  createdAt   DateTime              @default(now()) @map("created_at")
+  updatedAt   DateTime              @updatedAt @map("updated_at")
+
+  @@map("training_requests")
 }
 
 enum Gender {
@@ -175,4 +201,10 @@ enum PaymentType {
   Visa
   Mir
   UMoney
+}
+
+enum TrainingRequestStatus {
+  Pending
+  Accepted
+  Declined
 }

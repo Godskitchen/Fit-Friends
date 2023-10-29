@@ -6,6 +6,8 @@ import { TrainingModule } from './training';
 import { OrderModule } from './order';
 import { BalanceModule } from './balance';
 import { StaticModule } from './static';
+import { MessageModule } from './message';
+import { TrainingRequestModule } from './training-request';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { StaticModule } from './static';
     OrderModule,
     BalanceModule,
     StaticModule,
+    MessageModule,
+    TrainingRequestModule,
   ],
   controllers: [],
   providers: [],

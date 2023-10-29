@@ -25,3 +25,7 @@ export const MODIFY_BALANCE_FORBIDDEN = 'Вы не можете изменять
 export const INCORRECT_BALANCE_ID_TYPE = 'id баланса должен быть UUID строкой';
 export const INCORRECT_TRAINING_ID_TYPE =
   'id тренировки должно быть целым положительным числом';
+
+export const MESSAGE_NOT_FOUND = 'Оповещение с таким id не найдено';
+export const MODIFY_MESSAGE_FORBIDDEN =
+  'Вы не можете изменять или удалять данное оповещение';
