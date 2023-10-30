@@ -1,4 +1,10 @@
-import { Role, UpdateUserData, User, UserQuery } from '@libs/shared/app-types';
+import {
+  Role,
+  TrainingRequestStatus,
+  UpdateUserData,
+  User,
+  UserQuery,
+} from '@libs/shared/app-types';
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../prisma/database.service';
 import { UserEntity } from '../entities/user.entity';
@@ -180,6 +186,18 @@ export class UserRepository {
             include: {
               userProfile: true,
               trainerProfile: true,
+              trainingRequests: {
+                where: {
+                  recepientId: { equals: userId },
+                  status: TrainingRequestStatus.Pending,
+                },
+              },
+              inOthersRequests: {
+                where: {
+                  senderId: { equals: userId },
+                  status: { not: TrainingRequestStatus.Pending },
+                },
+              },
             },
           },
         },

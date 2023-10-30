@@ -1,10 +1,11 @@
 import { UserRepository } from '@libs/database-service';
 import { AccessTokenPayload } from '@libs/shared/app-types';
 import {
-  ADD_FRIEND_YOURSELF,
+  FORBIDDEN_ADD_FRIEND_YOURSELF,
   USER_NOT_FOUND,
-  YOU_ALREADY_FRIENDS,
-  YOU_NOT_FRIENDS,
+  ALREADY_FRIENDS,
+  NOT_FRIENDS,
+  INCORRECT_USER_ID_TYPE,
 } from '@libs/shared/common';
 import {
   BadRequestException,
@@ -12,7 +13,6 @@ import {
   ConflictException,
   ExecutionContext,
   Injectable,
-  NotFoundException,
 } from '@nestjs/common';
 import { Request } from 'express';
 
@@ -30,21 +30,25 @@ export class FriendGuard implements CanActivate {
     const userId = (user as AccessTokenPayload).sub;
     const friendId = +params.friendId;
 
+    if (!Number.isInteger(friendId) || friendId <= 0) {
+      throw new BadRequestException(INCORRECT_USER_ID_TYPE);
+    }
+
     if (userId === friendId) {
-      throw new BadRequestException(ADD_FRIEND_YOURSELF);
+      throw new BadRequestException(FORBIDDEN_ADD_FRIEND_YOURSELF);
     }
     const friend = await this.userRepository.findById(friendId);
     if (!friend) {
-      throw new NotFoundException(USER_NOT_FOUND);
+      throw new BadRequestException(USER_NOT_FOUND);
     }
 
     const isFriends = await this.checkFriendship(userId, friendId);
     if (currentHandler === ADD_FRIEND_HANDLER && isFriends) {
-      throw new ConflictException(YOU_ALREADY_FRIENDS);
+      throw new ConflictException(ALREADY_FRIENDS);
     }
 
     if (currentHandler === REMOVE_FRIEND_HANDLER && !isFriends) {
-      throw new BadRequestException(YOU_NOT_FRIENDS);
+      throw new BadRequestException(NOT_FRIENDS);
     }
 
     return true;

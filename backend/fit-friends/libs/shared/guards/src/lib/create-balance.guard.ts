@@ -9,7 +9,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 import {
-  BALANCE_ALREADY_EXIST,
+  BALANCE_ALREADY_EXISTS,
   INCORRECT_TRAINING_ID_TYPE,
   TRAINING_NOT_FOUND,
 } from '@libs/shared/common';
@@ -41,7 +41,7 @@ export class CreateBalanceGuard implements CanActivate {
     );
 
     if (existBalance) {
-      throw new ConflictException(BALANCE_ALREADY_EXIST);
+      throw new ConflictException(BALANCE_ALREADY_EXISTS);
     }
     return true;
   }

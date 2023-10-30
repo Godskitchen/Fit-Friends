@@ -14,3 +14,6 @@ export * from './lib/create-balance.guard';
 export * from './lib/modify-balance.guard';
 
 export * from './lib/message.guard';
+
+export * from './lib/create-request.guard';
+export * from './lib/modify-request-status.guard';

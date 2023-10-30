@@ -1,5 +1,5 @@
 
-@trainerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiTmFtZdCi0YDQtdC90LXRgNCwIiwiZW1haWwiOiJ0ZXN0NUBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTgzNDc4NDEsImV4cCI6MTY5ODQzNDI0MX0.7gNoJn_l7TNj_sL27_Ily-SyzCEtkbkNjea-SOhuS94
+@trainerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsIm5hbWUiOiJOYW1l0KLRgNC10L3QtdGA0LAiLCJlbWFpbCI6InRlc3QxOEBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTg2NjM4MDksImV4cCI6MTY5ODc1MDIwOX0.AQ2_50lsDSmm9jrXIrYezpQ15Emt0UsgGjriw_E60Tk
 @userToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExLCJuYW1lIjoiTmFtZdCu0LfQtdGA0LAiLCJlbWFpbCI6InRlczZAbWFpbC5sb2NhbCIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNjk4MzQ4MDQ3LCJleHAiOjE2OTg0MzQ0NDd9.WkXj54GtTxd8vSKIpIsbYhbFg-l5RbRSES77lVEWH94
 @userToken2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsIm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0MkBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTgzNDg1MDksImV4cCI6MTY5ODQzNDkwOX0.lKvKVKa3PpVwLGhQQp8ntfxSx8eEhdw8-cNFV4WYBPk
 # get user info
@@ -23,7 +23,7 @@ Content-Type: application/json
 
 # get users
 Get http://localhost:4000/api/users?location=Udelnaya&fitnessLevel=Beginner,Amateur&trainingType=Boxing,Yoga HTTP/1.1
-Authorization: {{userToken}}
+Authorization: {{trainerToken}}
 ###
 
 # add friend
