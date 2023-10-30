@@ -27,6 +27,7 @@ import {
   createAddFriendMessage,
   createRemoveFriendMessage,
 } from './rdo/constants';
+import { FriendRdo } from './rdo/friend.rdo';
 
 @Controller('users')
 export class UserController {
@@ -89,6 +90,6 @@ export class UserController {
   @Get('/friends')
   public async getFriendList(@Req() { user }: RequestWithAccessTokenPayload) {
     const friendList = await this.userService.getFriendList(user.sub);
-    return fillRDO(UserRdo, friendList, [Role.Trainer, Role.User]);
+    return fillRDO(FriendRdo, friendList, [Role.Trainer, Role.User]);
   }
 }

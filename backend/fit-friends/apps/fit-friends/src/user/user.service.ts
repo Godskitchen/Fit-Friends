@@ -1,9 +1,4 @@
-import {
-  TrainerProfileEntity,
-  UserEntity,
-  UserProfileEntity,
-  UserRepository,
-} from '@libs/database-service';
+import { UserEntity, UserRepository } from '@libs/database-service';
 import {
   USER_ALREADY_EXISTS,
   USER_NOT_FOUND,
@@ -53,12 +48,9 @@ export class UserService {
         BackgroundImageType.users,
       ),
       hashPassword: await this.setPassword(password),
-      userProfile: userProfile ? new UserProfileEntity(userProfile) : undefined,
+      userProfile,
       trainerProfile: trainerProfile
-        ? new TrainerProfileEntity({
-            ...trainerProfile,
-            certificates: certificatePath,
-          })
+        ? { ...trainerProfile, certificates: certificatePath }
         : undefined,
     });
 

@@ -1,6 +1,11 @@
-import { Gender, Role, User, Location } from '@libs/shared/app-types';
-import { UserProfileEntity } from './user-profile.entity';
-import { TrainerProfileEntity } from './trainer-profile.entity';
+import {
+  Gender,
+  Role,
+  User,
+  Location,
+  TrainerProfile,
+  UserProfile,
+} from '@libs/shared/app-types';
 
 export class UserEntity implements Omit<User, 'userId'> {
   name: string;
@@ -13,15 +18,10 @@ export class UserEntity implements Omit<User, 'userId'> {
   birthDate?: Date | null;
   location: Location;
   backgroundImage: string;
-  userProfile?: UserProfileEntity | null;
-  trainerProfile?: TrainerProfileEntity | null;
+  userProfile?: UserProfile | null;
+  trainerProfile?: TrainerProfile | null;
 
-  constructor(
-    user: Omit<User, 'userId'> & {
-      userProfile?: UserProfileEntity;
-      trainerProfile?: TrainerProfileEntity;
-    },
-  ) {
+  constructor(user: Omit<User, 'userId'>) {
     this.name = user.name;
     this.email = user.email;
     this.avatarUrl = user.avatarUrl;
@@ -48,8 +48,8 @@ export class UserEntity implements Omit<User, 'userId'> {
       birthDate: this.birthDate,
       location: this.location,
       backgroundImage: this.backgroundImage,
-      userProfile: this.userProfile?.toObject(),
-      trainerProfile: this.trainerProfile?.toObject(),
+      userProfile: this.userProfile,
+      trainerProfile: this.trainerProfile,
     };
   }
 }

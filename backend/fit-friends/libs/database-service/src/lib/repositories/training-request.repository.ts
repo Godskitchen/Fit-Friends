@@ -14,13 +14,23 @@ export class TrainingRequestRepository {
   public async create(item: TrainingRequestEntity): Promise<TrainingRequest> {
     const { senderId, recepientId, status } = item.toObject();
 
-    return this.prismaConnector.trainingRequest.create({
+    const request = await this.prismaConnector.trainingRequest.create({
       data: {
         status,
         sender: { connect: { userId: senderId } },
         recepient: { connect: { userId: recepientId } },
       },
     });
+
+    await this.prismaConnector.trainingRequest.deleteMany({
+      where: {
+        senderId,
+        recepientId,
+        status: { not: TrainingRequestStatus.Pending },
+      },
+    });
+
+    return request;
   }
 
   public async update(

@@ -186,17 +186,11 @@ export class UserRepository {
             include: {
               userProfile: true,
               trainerProfile: true,
-              trainingRequests: {
-                where: {
-                  recepientId: { equals: userId },
-                  status: TrainingRequestStatus.Pending,
-                },
+              trainingRequestsAsSender: {
+                where: { recepientId: userId },
               },
-              inOthersRequests: {
-                where: {
-                  senderId: { equals: userId },
-                  status: { not: TrainingRequestStatus.Pending },
-                },
+              trainingRequestsAsRecepient: {
+                where: { senderId: userId },
               },
             },
           },

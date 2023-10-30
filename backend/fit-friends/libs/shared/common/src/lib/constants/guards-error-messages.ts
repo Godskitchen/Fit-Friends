@@ -48,3 +48,6 @@ export const FORBIDDEN_REQUEST_TO_YOURSELF =
 
 export const PENDING_REQUEST_ALREADY_EXISTS =
   'У Вас уже есть активный запрос на тренировку данному пользователю';
+
+export const RECEPIENT_IS_NOT_READY =
+  'На данный момент получатель не готов к тренировкам.';

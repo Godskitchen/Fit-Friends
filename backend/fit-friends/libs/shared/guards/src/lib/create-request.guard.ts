@@ -8,15 +8,18 @@ import {
   INCORRECT_USER_ID_TYPE,
   NOT_FRIENDS,
   PENDING_REQUEST_ALREADY_EXISTS,
+  RECEPIENT_IS_NOT_READY,
   USER_NOT_FOUND,
 } from '@libs/shared/common';
 import {
   BadRequestException,
   CanActivate,
   ExecutionContext,
+  Injectable,
 } from '@nestjs/common';
 import { Request } from 'express';
 
+@Injectable()
 export class CreateRequestGuard implements CanActivate {
   constructor(
     private readonly requestRepository: TrainingRequestRepository,
@@ -35,7 +38,7 @@ export class CreateRequestGuard implements CanActivate {
       throw new BadRequestException(FORBIDDEN_REQUEST_TO_YOURSELF);
     }
 
-    const recepient = this.userRepository.findById(recepientId);
+    const recepient = await this.userRepository.findById(recepientId);
     if (!recepient) {
       throw new BadRequestException(USER_NOT_FOUND);
     }
@@ -43,6 +46,15 @@ export class CreateRequestGuard implements CanActivate {
     const isFriends = await this.checkFriendship(senderId, recepientId);
     if (!isFriends) {
       throw new BadRequestException(NOT_FRIENDS);
+    }
+
+    if (
+      (recepient.userProfile &&
+        recepient.userProfile.readyForWorkout === false) ||
+      (recepient.trainerProfile &&
+        recepient.trainerProfile?.readyForWorkout === false)
+    ) {
+      throw new BadRequestException(RECEPIENT_IS_NOT_READY);
     }
 
     const existPendingRequest = await this.requestRepository.findPending(

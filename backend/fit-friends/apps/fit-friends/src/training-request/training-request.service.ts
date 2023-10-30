@@ -35,6 +35,6 @@ export class TrainingRequestService {
   }
 
   public async updateStatus({ status, requestId }: UpdateStatusDto) {
-    await this.requestRepository.update(status, requestId);
+    return this.requestRepository.update(status, requestId);
   }
 }

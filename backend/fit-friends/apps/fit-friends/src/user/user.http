@@ -1,7 +1,9 @@
 
-@trainerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsIm5hbWUiOiJOYW1l0KLRgNC10L3QtdGA0LAiLCJlbWFpbCI6InRlc3QxOEBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTg2NjM4MDksImV4cCI6MTY5ODc1MDIwOX0.AQ2_50lsDSmm9jrXIrYezpQ15Emt0UsgGjriw_E60Tk
-@userToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExLCJuYW1lIjoiTmFtZdCu0LfQtdGA0LAiLCJlbWFpbCI6InRlczZAbWFpbC5sb2NhbCIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNjk4MzQ4MDQ3LCJleHAiOjE2OTg0MzQ0NDd9.WkXj54GtTxd8vSKIpIsbYhbFg-l5RbRSES77lVEWH94
-@userToken2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsIm5hbWUiOiJ0ZXN0IiwiZW1haWwiOiJ0ZXN0MkBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTgzNDg1MDksImV4cCI6MTY5ODQzNDkwOX0.lKvKVKa3PpVwLGhQQp8ntfxSx8eEhdw8-cNFV4WYBPk
+@user1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJVc2VyT25lIiwiZW1haWwiOiJ1c2VyMUBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE2OTg2OTM2OTIsImV4cCI6MTY5ODc4MDA5Mn0.vohx7yWn_LJpNs7J9ClgZIqvFvYczfL0h0aU1df4DlY
+@user2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsIm5hbWUiOiJVc2VyVHdvIiwiZW1haWwiOiJ1c2VyMkBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE2OTg2OTM3MjEsImV4cCI6MTY5ODc4MDEyMX0.QmISBWF2Jo-2xurspDnw69vs_UIXEKfyj_d6928Cxkk
+
+@user3 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsIm5hbWUiOiJVc2VyVGhyZWUiLCJlbWFpbCI6InVzZXIzQG1haWwubG9jYWwiLCJyb2xlIjoiVXNlciIsImlhdCI6MTY5ODY5Mzc0MCwiZXhwIjoxNjk4NzgwMTQwfQ._QH28zDovULIAa_3VMubXGrnJLJZ7IIdAnY2jXSER6o
+
 # get user info
 GET  http://localhost:4000/api/users/details/3 HTTP/1.1
 
@@ -9,7 +11,7 @@ GET  http://localhost:4000/api/users/details/3 HTTP/1.1
 
 # update user profile
 PATCH http://localhost:4000/api/users/details/5 HTTP/1.1
-Authorization: {{userToken}}
+Authorization: {{user1}}
 Content-Type: application/json
 
 {
@@ -23,20 +25,20 @@ Content-Type: application/json
 
 # get users
 Get http://localhost:4000/api/users?location=Udelnaya&fitnessLevel=Beginner,Amateur&trainingType=Boxing,Yoga HTTP/1.1
-Authorization: {{trainerToken}}
+Authorization: {{user1}}
 ###
 
 # add friend
-PATCH  http://localhost:4000/api/users/friends/add/5 HTTP/1.1
-Authorization: {{userToken}}
+PATCH  http://localhost:4000/api/users/friends/add/3 HTTP/1.1
+Authorization: {{user2}}
 ###
 
 # remove friend
 PATCH http://localhost:4000/api/users/friends/remove/5 HTTP/1.1
-Authorization: {{userToken}}
+Authorization: {{user2}}
 ###
 
 # get friendlist
 GET  http://localhost:4000/api/users/friends/ HTTP/1.1
-Authorization: {{userToken2}}
+Authorization: {{user1}}
 ###

@@ -21,3 +21,7 @@ npx prisma generate --schema=./libs/database-service/src/lib/models/schema.prism
 - update:
 
 npx prisma db push --schema=./libs/database-service/src/lib/models/schema.prisma
+
+- reset:
+
+npx prisma migrate reset --schema=./libs/database-service/src/lib/models/schema.prisma

@@ -28,8 +28,10 @@ model User {
   friendsAddedMe   User[]            @relation("friends")
   balance          UserBalance[]
   notifications    Message[]
-  trainingRequests TrainingRequest[] @relation("recepients")
-  inOthersRequests TrainingRequest[] @relation("others_requests")
+  // trainingRequests TrainingRequest[] @relation("recepients")
+  // inOthersRequests TrainingRequest[] @relation("others_requests")
+  trainingRequestsAsSender   TrainingRequest[] @relation("as_sender")
+  trainingRequestsAsRecepient TrainingRequest[] @relation("as_recepient")
 
   @@map("users")
 }
@@ -140,9 +142,11 @@ model Message {
 
 model TrainingRequest {
   id          String                @id @default(uuid())
-  sender      User                  @relation("others_requests", fields: [senderId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   senderId    Int                   @map("sender_id")
-  recepient   User                  @relation("recepients", fields: [recepientId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  // sender      User                  @relation("others_requests", fields: [senderId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  // recepient   User                  @relation("recepients", fields: [recepientId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  sender      User                  @relation("as_sender", fields: [senderId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  recepient   User                  @relation("as_recepient", fields: [recepientId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   recepientId Int                   @map("recepient_id")
   status      TrainingRequestStatus
   createdAt   DateTime              @default(now()) @map("created_at")

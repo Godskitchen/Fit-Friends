@@ -4,12 +4,18 @@ import { TrainingRequestController } from './training-request.controller';
 import {
   DatabaseModule,
   TrainingRequestRepository,
+  UserRepository,
 } from '@libs/database-service';
 import { MessageModule } from '@app/message';
+import { UserModule } from '@app/user';
 
 @Module({
-  imports: [DatabaseModule, MessageModule],
-  providers: [TrainingRequestService, TrainingRequestRepository],
+  imports: [DatabaseModule, MessageModule, UserModule],
+  providers: [
+    TrainingRequestService,
+    TrainingRequestRepository,
+    UserRepository,
+  ],
   controllers: [TrainingRequestController],
   exports: [TrainingRequestService],
 })

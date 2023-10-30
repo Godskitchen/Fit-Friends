@@ -1,7 +1,7 @@
 import { FitnessLevel, TrainingType } from '../..';
 
 export interface TrainerProfile {
-  readonly profileId: number;
+  readonly profileId?: number;
   fitnessLevel: FitnessLevel;
   trainingType: TrainingType[];
   certificates: string;

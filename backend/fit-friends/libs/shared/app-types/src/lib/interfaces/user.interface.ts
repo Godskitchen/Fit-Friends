@@ -1,4 +1,4 @@
-import { Gender, Role, Location } from '../..';
+import { Gender, Role, Location, TrainerProfile, UserProfile } from '../..';
 
 export interface User {
   readonly userId: number;
@@ -13,4 +13,6 @@ export interface User {
   location: Location;
   backgroundImage: string;
   createdAt?: Date | null;
+  trainerProfile?: TrainerProfile | null;
+  userProfile?: UserProfile | null;
 }

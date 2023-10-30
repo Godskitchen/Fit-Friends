@@ -7,6 +7,7 @@ import {
   Post,
   Req,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 import { TrainingRequestService } from './training-request.service';
 import { RequestWithAccessTokenPayload, Role } from '@libs/shared/app-types';
@@ -17,7 +18,10 @@ import {
   RoleGuard,
 } from '@libs/shared/guards';
 import { Roles } from '@libs/shared/common';
-import { createNewRequestMessage } from './constants';
+import {
+  createNewRequestMessage,
+  createUpdateStatusMessage,
+} from './constants';
 import { UpdateStatusDto } from './dto/update-status.dto';
 
 @Controller('training-requests')
@@ -34,20 +38,26 @@ export class TrainingRequestController {
     @Req() { user }: RequestWithAccessTokenPayload,
     @Param('recepientId', ParseIntPipe) recepientId: number,
   ) {
-    await this.trainingRequestService.createRequest(
+    const request = await this.trainingRequestService.createRequest(
       user.sub,
       user.name,
       recepientId,
     );
 
     return {
-      message: createNewRequestMessage(recepientId),
+      message: createNewRequestMessage(request),
     };
   }
 
   @Patch('/update')
   @UseGuards(ModifyRequestStatusGuard)
-  public async updateStatusRequest(@Body() dto: UpdateStatusDto) {
-    await this.trainingRequestService.updateStatus(dto);
+  public async updateStatusRequest(
+    @Body(new ValidationPipe({ transform: true, whitelist: true }))
+    dto: UpdateStatusDto,
+  ) {
+    const request = await this.trainingRequestService.updateStatus(dto);
+    return {
+      message: createUpdateStatusMessage(request),
+    };
   }
 }
