@@ -1,5 +1,6 @@
 import { OrderEntity } from '../entities/order.entity';
 import {
+  DEFAULT_SORT_DIRECTION,
   Order,
   OrderQuery,
   SortDirection,
@@ -7,8 +8,6 @@ import {
 } from '@libs/shared/app-types';
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../prisma/database.service';
-
-const DEFAULT_SORT_DIRECTION = 'desc';
 
 @Injectable()
 export class OrderRepository {
@@ -35,14 +34,14 @@ export class OrderRepository {
 
   public async findByTrainerId(
     trainerId: number,
-    { limit, page, sort, direction }: OrderQuery,
+    { limit, page, sort, sortDirection }: OrderQuery,
   ) {
     return this.prismaConnector.order.findMany({
       where: { training: { trainerId } },
       orderBy: sort
         ? {
-            [SortType[sort]]: direction
-              ? SortDirection[direction]
+            [SortType[sort]]: sortDirection
+              ? SortDirection[sortDirection]
               : DEFAULT_SORT_DIRECTION,
           }
         : { createdAt: DEFAULT_SORT_DIRECTION },

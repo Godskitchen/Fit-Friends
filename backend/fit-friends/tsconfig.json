@@ -103,6 +103,12 @@
       "@app/training-request/*": [
         "apps/fit-friends/src/training-request/*"
       ],
+      "@app/reply": [
+        "apps/fit-friends/src/reply/index.ts"
+      ],
+      "@app/reply/*": [
+        "apps/fit-friends/src/reply/*"
+      ],
       "@libs/shared/common": [
         "libs/shared/common/src/index.ts"
       ],

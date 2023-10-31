@@ -8,6 +8,7 @@ import { BalanceModule } from './balance';
 import { StaticModule } from './static';
 import { MessageModule } from './message';
 import { TrainingRequestModule } from './training-request';
+import { ReplyModule } from './reply';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TrainingRequestModule } from './training-request';
     StaticModule,
     MessageModule,
     TrainingRequestModule,
+    ReplyModule,
   ],
   controllers: [],
   providers: [],

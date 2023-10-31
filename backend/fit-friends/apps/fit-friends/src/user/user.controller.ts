@@ -28,6 +28,7 @@ import {
   createRemoveFriendMessage,
 } from './rdo/constants';
 import { FriendRdo } from './rdo/friend.rdo';
+import { FriendsQuery } from './queries/friends.query';
 
 @Controller('users')
 export class UserController {
@@ -88,8 +89,12 @@ export class UserController {
 
   @UseGuards(JwtAccessGuard)
   @Get('/friends')
-  public async getFriendList(@Req() { user }: RequestWithAccessTokenPayload) {
-    const friendList = await this.userService.getFriendList(user.sub);
+  public async getFriendList(
+    @Req() { user }: RequestWithAccessTokenPayload,
+    @Query(new ValidationPipe({ transform: true, whitelist: true }))
+    query: FriendsQuery,
+  ) {
+    const friendList = await this.userService.getFriendList(user.sub, query);
     return fillRDO(FriendRdo, friendList, [Role.Trainer, Role.User]);
   }
 }

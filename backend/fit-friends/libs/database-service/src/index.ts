@@ -14,6 +14,7 @@ export * from './lib/repositories/balance.repository';
 export * from './lib/repositories/file-data.repository';
 export * from './lib/repositories/message.repository';
 export * from './lib/repositories/training-request.repository';
+export * from './lib/repositories/reply.repository';
 
 export * from './lib/prisma/database.module';
 export * from './lib/prisma/database.service';

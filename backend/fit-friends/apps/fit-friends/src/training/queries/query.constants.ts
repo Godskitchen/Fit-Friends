@@ -1,5 +1,3 @@
-export const MAX_TRAININGS_LIMIT = 50;
-
 export const MAX_RATING = 5;
 export const MIN_RATING = 0;
 

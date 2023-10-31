@@ -11,23 +11,27 @@ import {
 } from 'class-validator';
 import {
   MAX_RATING,
-  MAX_TRAININGS_LIMIT,
   MIN_CALORIES,
   MIN_PRICE,
   MIN_RATING,
   RANGE_ARRAYS_SIZE,
 } from './query.constants';
-import { TrainingDuration } from '@libs/shared/app-types';
+import {
+  DEFAULT_SORT_DIRECTION,
+  MAX_ITEMS_LIMIT,
+  SortDirection,
+  TrainingDuration,
+} from '@libs/shared/app-types';
 
 export class TrainingQuery {
   @Transform(({ value }) =>
-    +value && +value < MAX_TRAININGS_LIMIT && Number.isInteger(+value)
+    +value && +value < MAX_ITEMS_LIMIT && Number.isInteger(+value)
       ? +value
-      : MAX_TRAININGS_LIMIT,
+      : MAX_ITEMS_LIMIT,
   )
   @IsInt()
   @IsOptional()
-  public limit: number = MAX_TRAININGS_LIMIT;
+  public limit: number = MAX_ITEMS_LIMIT;
 
   @IsPositive()
   @IsInt()
@@ -88,4 +92,8 @@ export class TrainingQuery {
   @Transform(({ value }) => (value ? value.split(',') : value))
   @IsOptional()
   public trainingDuration?: TrainingDuration[];
+
+  @IsEnum(SortDirection)
+  @IsOptional()
+  public sortDirection: SortDirection = DEFAULT_SORT_DIRECTION;
 }

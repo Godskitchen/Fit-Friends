@@ -8,30 +8,29 @@ datasource db {
 }
 
 model User {
-  userId           Int               @id @default(autoincrement()) @map("user_id")
-  name             String
-  email            String            @unique
-  avatarUrl        String?           @map("avatar_url")
-  hashPassword     String            @map("hash_password")
-  gender           Gender
-  role             Role
-  aboutInfo        String            @map("about_info")
-  birthDate        DateTime?         @map("birth_date")
-  location         Location
-  backgroundImage  String            @map("background_image")
-  createdAt        DateTime          @default(now()) @map("created_at")
-  userProfile      UserProfile?
-  trainerProfile   TrainerProfile?
-  trainings        Training[]
-  orders           Order[]
-  friends          User[]            @relation("friends")
-  friendsAddedMe   User[]            @relation("friends")
-  balance          UserBalance[]
-  notifications    Message[]
-  // trainingRequests TrainingRequest[] @relation("recepients")
-  // inOthersRequests TrainingRequest[] @relation("others_requests")
-  trainingRequestsAsSender   TrainingRequest[] @relation("as_sender")
+  userId                      Int               @id @default(autoincrement()) @map("user_id")
+  name                        String
+  email                       String            @unique
+  avatarUrl                   String?           @map("avatar_url")
+  hashPassword                String            @map("hash_password")
+  gender                      Gender
+  role                        Role
+  aboutInfo                   String            @map("about_info")
+  birthDate                   DateTime?         @map("birth_date")
+  location                    Location
+  backgroundImage             String            @map("background_image")
+  createdAt                   DateTime          @default(now()) @map("created_at")
+  userProfile                 UserProfile?
+  trainerProfile              TrainerProfile?
+  trainings                   Training[]
+  orders                      Order[]
+  friends                     User[]            @relation("friends")
+  friendsAddedMe              User[]            @relation("friends")
+  balance                     UserBalance[]
+  notifications               Message[]
+  trainingRequestsAsSender    TrainingRequest[] @relation("as_sender")
   trainingRequestsAsRecepient TrainingRequest[] @relation("as_recepient")
+  replies                     Reply[]
 
   @@map("users")
 }
@@ -80,13 +79,15 @@ model Training {
   caloriesToBurn   Int              @map("calories_to_burn")
   description      String
   gender           Gender
-  rating           Int              @default(0)
+  rating           Float            @default(0)
   video            String
   isSpecialOffer   Boolean          @map("is_special_offer")
   trainerId        Int              @map("trainer_id")
   trainer          User             @relation(fields: [trainerId], references: [userId], onUpdate: Cascade)
   orders           Order[]
   balances         UserBalance[]
+  replies          Reply[]
+  createdAt       DateTime @default(now()) @map("created_at")
 
   @@map("trainings")
 }
@@ -114,6 +115,7 @@ model UserBalance {
   trainingId      Int
   training        Training @relation(fields: [trainingId], references: [trainingId])
   remainingAmount Int
+  createdAt       DateTime @default(now()) @map("created_at")
 
   @@unique([userId, trainingId])
   @@map("user_balances")
@@ -143,8 +145,6 @@ model Message {
 model TrainingRequest {
   id          String                @id @default(uuid())
   senderId    Int                   @map("sender_id")
-  // sender      User                  @relation("others_requests", fields: [senderId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
-  // recepient   User                  @relation("recepients", fields: [recepientId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   sender      User                  @relation("as_sender", fields: [senderId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   recepient   User                  @relation("as_recepient", fields: [recepientId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   recepientId Int                   @map("recepient_id")
@@ -153,6 +153,19 @@ model TrainingRequest {
   updatedAt   DateTime              @updatedAt @map("updated_at")
 
   @@map("training_requests")
+}
+
+model Reply {
+  replyId    Int      @id @default(autoincrement()) @map("reply_id")
+  author     User     @relation(fields: [authorId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  authorId   Int      @map("author_id")
+  training   Training @relation(fields: [trainingId], references: [trainingId], onUpdate: Cascade, onDelete: Cascade)
+  trainingId Int      @map("training_id")
+  rating     Int
+  text       String
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("replies")
 }
 
 enum Gender {

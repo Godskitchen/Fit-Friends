@@ -1,22 +1,22 @@
 import { Transform, Type } from 'class-transformer';
 import { IsPositive, IsInt, IsOptional, IsEnum } from 'class-validator';
-import { MAX_USERS_LIMIT } from './query.constants';
 import {
   FitnessLevel,
   Location,
+  MAX_ITEMS_LIMIT,
   Role,
   TrainingType,
 } from '@libs/shared/app-types';
 
 export class UserQuery {
   @Transform(({ value }) =>
-    +value && +value < MAX_USERS_LIMIT && Number.isInteger(+value)
+    +value && +value < MAX_ITEMS_LIMIT && Number.isInteger(+value)
       ? +value
-      : MAX_USERS_LIMIT,
+      : MAX_ITEMS_LIMIT,
   )
   @IsInt()
   @IsOptional()
-  public limit: number = MAX_USERS_LIMIT;
+  public limit: number = MAX_ITEMS_LIMIT;
 
   @IsPositive()
   @IsInt()

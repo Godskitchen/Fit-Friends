@@ -1,12 +1,11 @@
-@userToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExLCJuYW1lIjoiTmFtZdCu0LfQtdGA0LAiLCJlbWFpbCI6InRlczZAbWFpbC5sb2NhbCIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNjk4MzQ4MDQ3LCJleHAiOjE2OTg0MzQ0NDd9.WkXj54GtTxd8vSKIpIsbYhbFg-l5RbRSES77lVEWH94
-@trainerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiTmFtZdCi0YDQtdC90LXRgNCwIiwiZW1haWwiOiJ0ZXN0NUBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTgzNTk1NjYsImV4cCI6MTY5ODQ0NTk2Nn0.6kAAACsdYTASE2MCmYAauvlWhWhOfsah-xY1uOpZhUc
+@user1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJVc2VyT25lIiwiZW1haWwiOiJ1c2VyMUBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE2OTg2OTM2OTIsImV4cCI6MTY5ODc4MDA5Mn0.vohx7yWn_LJpNs7J9ClgZIqvFvYczfL0h0aU1df4DlY
 # create new balance
 POST http://localhost:4000/api/balance/create HTTP/1.1
-Authorization: {{userToken}}
+Authorization: {{user1}}
 Content-Type: application/json
 
 {
-  "trainingId": 5,
+  "trainingId": 1,
   "remainingAmount": 2
 }
 
@@ -14,7 +13,7 @@ Content-Type: application/json
 
 # update balance
 PATCH  http://localhost:4000/api/balance/update HTTP/1.1
-Authorization: {{userToken}}
+Authorization: {{user1}}
 Content-Type: application/json
 
 {
@@ -26,6 +25,6 @@ Content-Type: application/json
 
 # get user total balance
 GET http://localhost:4000/api/balance/mylist HTTP/1.1
-Authorization: {{userToken}}
+Authorization: {{user1}}
 
 ###

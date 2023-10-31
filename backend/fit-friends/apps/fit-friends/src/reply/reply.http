@@ -1,44 +1,22 @@
-
 @user1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJVc2VyT25lIiwiZW1haWwiOiJ1c2VyMUBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE2OTg2OTM2OTIsImV4cCI6MTY5ODc4MDA5Mn0.vohx7yWn_LJpNs7J9ClgZIqvFvYczfL0h0aU1df4DlY
 @user2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsIm5hbWUiOiJVc2VyVHdvIiwiZW1haWwiOiJ1c2VyMkBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE2OTg2OTM3MjEsImV4cCI6MTY5ODc4MDEyMX0.QmISBWF2Jo-2xurspDnw69vs_UIXEKfyj_d6928Cxkk
 
 @user3 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsIm5hbWUiOiJVc2VyVGhyZWUiLCJlbWFpbCI6InVzZXIzQG1haWwubG9jYWwiLCJyb2xlIjoiVXNlciIsImlhdCI6MTY5ODY5Mzc0MCwiZXhwIjoxNjk4NzgwMTQwfQ._QH28zDovULIAa_3VMubXGrnJLJZ7IIdAnY2jXSER6o
 
-# get user info
-GET  http://localhost:4000/api/users/details/3 HTTP/1.1
-
-###
-
-# update user profile
-PATCH http://localhost:4000/api/users/details/5 HTTP/1.1
+@trainer1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjQsIm5hbWUiOiJUcmFpbmVyT25lIiwiZW1haWwiOiJ0cmFpbmVyMUBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTg3NDk0NDgsImV4cCI6MTY5ODgzNTg0OH0.vMtuVDW4fAueBhes8MD34PVrZ3yshfZ_guZfP5cgD4w
+# create reply
+POST http://localhost:4000/api/replies/create HTTP/1.1
 Authorization: {{user1}}
 Content-Type: application/json
 
 {
-  "avatar": "test.jpg",
-  "trainerProfile": {
-    "certificates": "e17be906-322b-429f-8c68-93588ce49410.pdf"
-  }
+  "trainingId": 1,
+  "text": "супер информативный отзыв по тренировки, который должен иметь длину от 100 до 1024 символов и оставляться к только к существующей тренировке",
+  "rating": 3
 }
-
 ###
 
-# get users
-Get http://localhost:4000/api/users?location=Udelnaya&fitnessLevel=Beginner,Amateur&trainingType=Boxing,Yoga HTTP/1.1
-Authorization: {{user1}}
-###
-
-# add friend
-PATCH  http://localhost:4000/api/users/friends/add/3 HTTP/1.1
-Authorization: {{user2}}
-###
-
-# remove friend
-PATCH http://localhost:4000/api/users/friends/remove/3 HTTP/1.1
-Authorization: {{user2}}
-###
-
-# get friendlist
-GET  http://localhost:4000/api/users/friends/ HTTP/1.1
+# get training replies
+GET http://localhost:4000/api/replies/list/1
 Authorization: {{user1}}
 ###

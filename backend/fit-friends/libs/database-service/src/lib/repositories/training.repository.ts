@@ -55,7 +55,15 @@ export class TrainingRepository {
 
   public async findByTrainerId(
     trainerId: number,
-    { limit, page, price, caloriesToBurn, trainingDuration }: TrainingQuery,
+    {
+      limit,
+      page,
+      price,
+      caloriesToBurn,
+      trainingDuration,
+      rating,
+      sortDirection,
+    }: TrainingQuery,
   ) {
     const priceFilter = price ? { gte: price[0], lte: price[1] } : undefined;
     const caloriesFilter = caloriesToBurn
@@ -66,6 +74,8 @@ export class TrainingRepository {
       ? trainingDuration.map((value) => ({ trainingDuration: value }))
       : [];
 
+    const ratingFilter = rating ? { gte: rating, lt: rating + 1 } : undefined;
+
     return this.prismaConnector.training.findMany({
       where: {
         AND: [
@@ -73,6 +83,7 @@ export class TrainingRepository {
           { price: priceFilter },
           { caloriesToBurn: caloriesFilter },
           { OR: durationFilter },
+          { rating: ratingFilter },
         ],
       },
       take: limit,
@@ -80,6 +91,7 @@ export class TrainingRepository {
       include: {
         trainer: { include: { trainerProfile: true } },
       },
+      orderBy: { createdAt: sortDirection },
     });
   }
 

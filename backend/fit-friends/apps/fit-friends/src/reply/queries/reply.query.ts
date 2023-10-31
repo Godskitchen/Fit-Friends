@@ -1,13 +1,12 @@
-import { Transform, Type } from 'class-transformer';
-import { IsEnum, IsInt, IsOptional, IsPositive } from 'class-validator';
 import {
   DEFAULT_SORT_DIRECTION,
   MAX_ITEMS_LIMIT,
   SortDirection,
-  SortType,
 } from '@libs/shared/app-types';
+import { Transform, Type } from 'class-transformer';
+import { IsEnum, IsInt, IsOptional, IsPositive } from 'class-validator';
 
-export class OrderQuery {
+export class ReplyQuery {
   @Transform(({ value }) =>
     +value && +value < MAX_ITEMS_LIMIT && Number.isInteger(+value)
       ? +value
@@ -23,11 +22,7 @@ export class OrderQuery {
   @IsOptional()
   public page?: number;
 
-  @IsEnum(SortType)
-  @IsOptional()
-  public sort?: SortType;
-
   @IsEnum(SortDirection)
   @IsOptional()
-  public direction: SortDirection = DEFAULT_SORT_DIRECTION;
+  public sortDirection: SortDirection = DEFAULT_SORT_DIRECTION;
 }

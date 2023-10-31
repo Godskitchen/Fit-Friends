@@ -55,7 +55,7 @@ export class FriendGuard implements CanActivate {
   }
 
   private async checkFriendship(userId: number, friendId: number) {
-    const friendList = await this.userRepository.getFriends(userId);
+    const friendList = await this.userRepository.findFriend(userId, friendId);
     return friendList.map(({ userId }) => userId).includes(friendId);
   }
 }

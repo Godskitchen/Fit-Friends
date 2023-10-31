@@ -1,8 +1,6 @@
-import { TrainingDuration } from '../..';
+import { BaseQuery, TrainingDuration } from '../..';
 
-export type TrainingQuery = {
-  limit: number;
-  page?: number;
+export type TrainingQuery = BaseQuery & {
   rating?: number;
   price?: number[];
   caloriesToBurn?: number[];

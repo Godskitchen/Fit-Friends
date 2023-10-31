@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../prisma/database.service';
 import { UserBalanceEntity } from '../entities/user-balance.entity';
 import {
-  BalanceQuery,
+  BaseQuery,
   UpdateBalanceData,
   UserBalance,
 } from '@libs/shared/app-types';
@@ -41,13 +41,14 @@ export class BalanceRepository {
 
   public async findAllByUserId(
     userId: number,
-    { limit, page }: BalanceQuery,
+    { limit, page, sortDirection }: BaseQuery,
   ): Promise<UserBalance[]> {
     return this.prismaConnector.userBalance.findMany({
       where: { userId },
       include: { training: true },
       take: limit,
       skip: page ? limit * (page - 1) : undefined,
+      orderBy: { createdAt: sortDirection },
     });
   }
 

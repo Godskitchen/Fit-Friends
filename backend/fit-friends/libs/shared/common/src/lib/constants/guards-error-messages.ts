@@ -51,3 +51,7 @@ export const PENDING_REQUEST_ALREADY_EXISTS =
 
 export const RECEPIENT_IS_NOT_READY =
   'На данный момент получатель не готов к тренировкам.';
+
+export const REPLY_ALREADY_EXISTS = 'Вы уже оставляли отзыв к этой тренировке';
+export const CREATE_REPLY_FORBIDDEN =
+  'Вы не можете оставить отзыв к этой тренировке, так как еще не приобретали ее';

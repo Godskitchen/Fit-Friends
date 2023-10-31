@@ -70,7 +70,10 @@ export class CreateRequestGuard implements CanActivate {
   }
 
   private async checkFriendship(userId: number, recepientId: number) {
-    const friendList = await this.userRepository.getFriends(userId);
+    const friendList = await this.userRepository.findFriend(
+      userId,
+      recepientId,
+    );
     return friendList.map(({ userId }) => userId).includes(recepientId);
   }
 }

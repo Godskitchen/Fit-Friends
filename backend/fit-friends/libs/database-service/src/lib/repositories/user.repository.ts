@@ -1,6 +1,6 @@
 import {
+  BaseQuery,
   Role,
-  TrainingRequestStatus,
   UpdateUserData,
   User,
   UserQuery,
@@ -177,12 +177,17 @@ export class UserRepository {
     ]);
   }
 
-  public async getFriends(userId: number): Promise<User[]> {
+  public async getFriends(
+    userId: number,
+    { limit, page, sortDirection }: BaseQuery,
+  ): Promise<User[]> {
     return this.prismaConnector.user
       .findUnique({
         where: { userId },
         select: {
           friends: {
+            take: limit,
+            skip: page ? limit * (page - 1) : undefined,
             include: {
               userProfile: true,
               trainerProfile: true,
@@ -193,6 +198,20 @@ export class UserRepository {
                 where: { senderId: userId },
               },
             },
+            orderBy: { createdAt: sortDirection },
+          },
+        },
+      })
+      .then((user) => (user ? user.friends : []));
+  }
+
+  public async findFriend(userId: number, friendId: number) {
+    return this.prismaConnector.user
+      .findUnique({
+        where: { userId },
+        select: {
+          friends: {
+            where: { userId: friendId },
           },
         },
       })

@@ -17,6 +17,7 @@ import { UserQuery } from './queries/user.query';
 import { StaticService } from '@app/static';
 import { BackgroundImageType } from '@libs/shared/app-types';
 import { MessageService } from '@app/message';
+import { FriendsQuery } from './queries/friends.query';
 
 @Injectable()
 export class UserService {
@@ -105,8 +106,8 @@ export class UserService {
     await this.userRepository.removeFriend(userId, friendId);
   }
 
-  public async getFriendList(userId: number) {
-    return this.userRepository.getFriends(userId);
+  public async getFriendList(userId: number, query: FriendsQuery) {
+    return this.userRepository.getFriends(userId, query);
   }
 
   private async setPassword(password: string): Promise<string> {

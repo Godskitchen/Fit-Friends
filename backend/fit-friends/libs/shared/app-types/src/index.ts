@@ -11,6 +11,7 @@ export * from './lib/interfaces/user-balance.interface';
 export * from './lib/interfaces/file-data.interface';
 export * from './lib/interfaces/message.interface';
 export * from './lib/interfaces/training-request.interface';
+export * from './lib/interfaces/reply.interface';
 
 export * from './lib/token-payload.type';
 export * from './lib/update-user-data.type';
@@ -18,11 +19,12 @@ export * from './lib/update-training-data.type';
 export * from './lib/balance-data.type';
 export * from './lib/message-data.type';
 export * from './lib/request-data.type';
+export * from './lib/reply-data.type';
 
+export * from './lib/query-types/base-query.type';
 export * from './lib/query-types/training-query.type';
 export * from './lib/query-types/user-query.type';
 export * from './lib/query-types/order-query.type';
-export * from './lib/query-types/balance-query.type';
 
 export * from './lib/background-image.type';
 
