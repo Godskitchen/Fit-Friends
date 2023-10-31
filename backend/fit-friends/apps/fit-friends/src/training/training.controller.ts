@@ -23,7 +23,8 @@ import { TrainingService } from './training.service';
 import { fillRDO } from '@libs/shared/helpers';
 import { TrainingRdo } from './rdo/training.rdo';
 import { UpdateTrainingDto } from './dto/update-training.dto';
-import { TrainingQuery } from './queries/training.query';
+import { UserTrainingsQuery } from './queries/user-training.query';
+import { GeneralTrainingQuery } from './queries/general-training.query';
 
 @Controller('/trainings')
 export class TrainingController {
@@ -62,13 +63,23 @@ export class TrainingController {
     return fillRDO(TrainingRdo, training, [Role.Trainer]);
   }
 
+  @Get('/')
+  @UseGuards(JwtAccessGuard)
+  public async getTrainingsCatalog(
+    @Query(new ValidationPipe({ transform: true, whitelist: true }))
+    query: GeneralTrainingQuery,
+  ) {
+    const trainingList = await this.trainingService.getAll(query);
+    return fillRDO(TrainingRdo, trainingList, [Role.Trainer]);
+  }
+
   @Get('/mylist')
   @Roles(Role.Trainer)
   @UseGuards(JwtAccessGuard, RoleGuard)
   public async getTrainerTrainingsList(
     @Req() { user }: RequestWithAccessTokenPayload,
     @Query(new ValidationPipe({ transform: true, whitelist: true }))
-    query: TrainingQuery,
+    query: UserTrainingsQuery,
   ) {
     const trainingList = await this.trainingService.getByTrainerId(
       user.sub,

@@ -3,8 +3,9 @@ import { TrainingEntity } from '../entities/training.entity';
 import { DatabaseService } from '../prisma/database.service';
 import {
   Training,
-  TrainingQuery,
+  UserTrainingQuery,
   UpdateTrainingData,
+  GeneralTrainingQuery,
 } from '@libs/shared/app-types';
 
 @Injectable()
@@ -63,7 +64,7 @@ export class TrainingRepository {
       trainingDuration,
       rating,
       sortDirection,
-    }: TrainingQuery,
+    }: UserTrainingQuery,
   ) {
     const priceFilter = price ? { gte: price[0], lte: price[1] } : undefined;
     const caloriesFilter = caloriesToBurn
@@ -95,61 +96,48 @@ export class TrainingRepository {
     });
   }
 
-  // public async find({
-  //   limit,
-  //   page,
-  //   location,
-  //   fitnessLevel,
-  //   trainingType,
-  //   sort,
-  // }: UserQuery): Promise<User[]> {
-  //   const locationFilter = location
-  //     ? location.map((value) => ({ location: value }))
-  //     : [];
+  public async findAll({
+    limit,
+    page,
+    trainingType,
+    trainingDuration,
+    sort,
+    sortDirection,
+    rating,
+    price,
+    caloriesToBurn,
+  }: GeneralTrainingQuery): Promise<Training[]> {
+    const priceFilter = price ? { gte: price[0], lte: price[1] } : undefined;
+    const caloriesFilter = caloriesToBurn
+      ? { gte: caloriesToBurn[0], lte: caloriesToBurn[1] }
+      : undefined;
 
-  //   const fitnessLevelFilter = fitnessLevel
-  //     ? fitnessLevel.map((value) => ({ fitnessLevel: value }))
-  //     : [];
+    const durationFilter = trainingDuration
+      ? trainingDuration.map((value) => ({ trainingDuration: value }))
+      : [];
 
-  //   const trainingTypeFilter = trainingType
-  //     ? { hasSome: trainingType }
-  //     : undefined;
+    const typeFilter = trainingType
+      ? trainingType.map((value) => ({ trainingType: value }))
+      : [];
 
-  //   return this.prismaConnector.user.findMany({
-  //     where: {
-  //       AND: [
-  //         { OR: locationFilter },
-  //         {
-  //           OR: [
-  //             {
-  //               userProfile: {
-  //                 AND: [
-  //                   { OR: fitnessLevelFilter },
-  //                   { trainingType: trainingTypeFilter },
-  //                 ],
-  //               },
-  //             },
-  //             {
-  //               trainerProfile: {
-  //                 AND: [
-  //                   { OR: fitnessLevelFilter },
-  //                   { trainingType: trainingTypeFilter },
-  //                 ],
-  //               },
-  //             },
-  //           ],
-  //         },
-  //       ],
-  //     },
-  //     orderBy: sort
-  //       ? { role: SortType[sort] }
-  //       : { createdAt: DEFAULT_SORT_DIRECTION },
-  //     take: limit,
-  //     skip: page ? limit * (page - 1) : undefined,
-  //     include: {
-  //       trainerProfile: true,
-  //       userProfile: true,
-  //     },
-  //   });
-  // }
+    const ratingFilter = rating ? { gte: rating, lt: rating + 1 } : undefined;
+
+    return this.prismaConnector.training.findMany({
+      where: {
+        AND: [
+          { price: priceFilter },
+          { caloriesToBurn: caloriesFilter },
+          { OR: durationFilter },
+          { OR: typeFilter },
+          { rating: ratingFilter },
+        ],
+      },
+      take: limit,
+      skip: page ? limit * (page - 1) : undefined,
+      include: {
+        trainer: { include: { trainerProfile: true } },
+      },
+      orderBy: sort ? { [sort]: sortDirection } : { createdAt: sortDirection },
+    });
+  }
 }

@@ -9,9 +9,9 @@ Content-Type: application/json
   "title": "title",
   "fitnessLevel": "Pro",
   "trainingDuration": "FiftyToEightyMinutes",
-  "trainingType": "Boxing",
-  "price": 0,
-  "caloriesToBurn": 2001,
+  "trainingType": "Stretching",
+  "price": 200,
+  "caloriesToBurn": 1001,
   "description": "Описание тренировки",
   "gender": "Male",
   "video": "4eb6c4d9-b7d4-49f0-9f36-9d4c331f6c29.avi",
@@ -25,7 +25,7 @@ GET http://localhost:4000/api/trainings/details/1 HTTP/1.1
 Authorization: {{trainer1}}
 ###
 
-#
+# update training info
 PATCH http://localhost:4000/api/trainings/update/6 HTTP/1.1
 Authorization: {{trainer1}}
 Content-Type: application/json
@@ -36,7 +36,7 @@ Content-Type: application/json
 ###
 
 #
-GET http://localhost:4000/api/trainings/mylist HTTP/1.1
+GET http://localhost:4000/api/trainings/?sort=price&sortDirection=asc&trainingType=Yoga HTTP/1.1
 Authorization: {{trainer1}}
 
 ###

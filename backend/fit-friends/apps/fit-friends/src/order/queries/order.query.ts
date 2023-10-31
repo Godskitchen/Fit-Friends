@@ -4,7 +4,7 @@ import {
   DEFAULT_SORT_DIRECTION,
   MAX_ITEMS_LIMIT,
   SortDirection,
-  SortType,
+  OrderSortType,
 } from '@libs/shared/app-types';
 
 export class OrderQuery {
@@ -23,9 +23,9 @@ export class OrderQuery {
   @IsOptional()
   public page?: number;
 
-  @IsEnum(SortType)
+  @IsEnum(OrderSortType)
   @IsOptional()
-  public sort?: SortType;
+  public sort?: OrderSortType;
 
   @IsEnum(SortDirection)
   @IsOptional()

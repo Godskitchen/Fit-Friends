@@ -1,12 +1,12 @@
 import { BaseQuery } from './base-query.type';
 
 export type OrderQuery = BaseQuery & {
-  sort?: SortType;
+  sort?: OrderSortType;
 };
 
-export const SortType = {
+export const OrderSortType = {
   sum: 'sum',
   trainingCount: 'trainingCount',
 } as const;
 
-export type SortType = (typeof SortType)[keyof typeof SortType];
+export type OrderSortType = (typeof OrderSortType)[keyof typeof OrderSortType];

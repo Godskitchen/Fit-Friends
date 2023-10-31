@@ -1,6 +1,6 @@
 import { BaseQuery, TrainingDuration } from '../..';
 
-export type TrainingQuery = BaseQuery & {
+export type UserTrainingQuery = BaseQuery & {
   rating?: number;
   price?: number[];
   caloriesToBurn?: number[];

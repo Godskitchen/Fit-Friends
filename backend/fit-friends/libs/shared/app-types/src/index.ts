@@ -22,7 +22,8 @@ export * from './lib/request-data.type';
 export * from './lib/reply-data.type';
 
 export * from './lib/query-types/base-query.type';
-export * from './lib/query-types/training-query.type';
+export * from './lib/query-types/user-training-query.type';
+export * from './lib/query-types/general-training-query.type';
 export * from './lib/query-types/user-query.type';
 export * from './lib/query-types/order-query.type';
 

@@ -4,7 +4,7 @@ import {
   Order,
   OrderQuery,
   SortDirection,
-  SortType,
+  OrderSortType,
 } from '@libs/shared/app-types';
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../prisma/database.service';
@@ -40,7 +40,7 @@ export class OrderRepository {
       where: { training: { trainerId } },
       orderBy: sort
         ? {
-            [SortType[sort]]: sortDirection
+            [OrderSortType[sort]]: sortDirection
               ? SortDirection[sortDirection]
               : DEFAULT_SORT_DIRECTION,
           }

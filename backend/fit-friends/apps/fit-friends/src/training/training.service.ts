@@ -7,9 +7,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { NewTrainingDto } from './dto/new-training.dto';
 import { TrainingErrors, UserErrors } from '@libs/shared/common';
 import { UpdateTrainingDto } from './dto/update-training.dto';
-import { TrainingQuery } from './queries/training.query';
+import { UserTrainingsQuery } from './queries/user-training.query';
 import { StaticService } from '@app/static';
 import { BackgroundImageType } from '@libs/shared/app-types';
+import { GeneralTrainingQuery } from './queries/general-training.query';
 
 @Injectable()
 export class TrainingService {
@@ -61,7 +62,11 @@ export class TrainingService {
     );
   }
 
-  public async getByTrainerId(id: number, query: TrainingQuery) {
+  public async getByTrainerId(id: number, query: UserTrainingsQuery) {
     return this.trainingRepository.findByTrainerId(id, query);
+  }
+
+  public async getAll(query: GeneralTrainingQuery) {
+    return this.trainingRepository.findAll(query);
   }
 }

@@ -36,7 +36,7 @@ export class ReplyRepository {
     if (averageRating) {
       await this.prismaConnector.training.update({
         where: { trainingId },
-        data: { rating: averageRating },
+        data: { rating: parseFloat(averageRating.toFixed(1)) },
       });
     }
 

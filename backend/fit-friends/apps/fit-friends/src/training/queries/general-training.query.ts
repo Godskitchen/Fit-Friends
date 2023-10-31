@@ -1,29 +1,31 @@
-import { Transform, Type } from 'class-transformer';
-import {
-  ArrayMaxSize,
-  ArrayMinSize,
-  IsEnum,
-  IsInt,
-  IsOptional,
-  IsPositive,
-  Max,
-  Min,
-} from 'class-validator';
-import {
-  MAX_RATING,
-  MIN_CALORIES,
-  MIN_PRICE,
-  MIN_RATING,
-  RANGE_ARRAYS_SIZE,
-} from './query.constants';
 import {
   DEFAULT_SORT_DIRECTION,
   MAX_ITEMS_LIMIT,
   SortDirection,
   TrainingDuration,
+  TrainingSortType,
+  TrainingType,
 } from '@libs/shared/app-types';
+import { Transform, Type } from 'class-transformer';
+import {
+  IsInt,
+  IsOptional,
+  IsPositive,
+  Max,
+  Min,
+  ArrayMinSize,
+  ArrayMaxSize,
+  IsEnum,
+} from 'class-validator';
+import {
+  MAX_RATING,
+  MIN_RATING,
+  RANGE_ARRAYS_SIZE,
+  MIN_PRICE,
+  MIN_CALORIES,
+} from './query.constants';
 
-export class TrainingQuery {
+export class GeneralTrainingQuery {
   @Transform(({ value }) =>
     +value && +value < MAX_ITEMS_LIMIT && Number.isInteger(+value)
       ? +value
@@ -92,6 +94,15 @@ export class TrainingQuery {
   @Transform(({ value }) => (value ? value.split(',') : value))
   @IsOptional()
   public trainingDuration?: TrainingDuration[];
+
+  @IsEnum(TrainingType, { each: true })
+  @Transform(({ value }) => (value ? value.split(',') : value))
+  @IsOptional()
+  public trainingType?: TrainingType[];
+
+  @IsEnum(TrainingSortType)
+  @IsOptional()
+  public sort?: TrainingSortType;
 
   @IsEnum(SortDirection)
   @IsOptional()
