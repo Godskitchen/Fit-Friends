@@ -1,7 +1,7 @@
 import { REFRESH_TOKEN_NAME } from '@app/auth';
 import { RefreshTokenRepository } from '@libs/database-service';
 import { RefreshTokenPayload } from '@libs/shared/app-types';
-import { ACCESS_DENIED } from '@libs/shared/common';
+import { AuthErrors } from '@libs/shared/common';
 import {
   CanActivate,
   ExecutionContext,
@@ -23,7 +23,7 @@ export class JwtRefreshGuard implements CanActivate {
     const request = ctx.switchToHttp().getRequest<Request>();
     const refreshToken = request.cookies[REFRESH_TOKEN_NAME];
     if (!refreshToken) {
-      throw new UnauthorizedException(ACCESS_DENIED);
+      throw new UnauthorizedException(AuthErrors.ACCESS_DENIED);
     }
 
     const tokenPayload = await this.jwtService
@@ -32,19 +32,19 @@ export class JwtRefreshGuard implements CanActivate {
       })
       .catch(() => null);
     if (!tokenPayload) {
-      throw new UnauthorizedException(ACCESS_DENIED);
+      throw new UnauthorizedException(AuthErrors.ACCESS_DENIED);
     }
 
     const existToken = await this.refreshTokenRepository.findByUserId(
       tokenPayload.sub,
     );
     if (!existToken) {
-      throw new UnauthorizedException(ACCESS_DENIED);
+      throw new UnauthorizedException(AuthErrors.ACCESS_DENIED);
     }
 
     await this.refreshTokenRepository.deleteByUserId(existToken.userId);
     if (existToken.expiresIn < new Date()) {
-      throw new UnauthorizedException(ACCESS_DENIED);
+      throw new UnauthorizedException(AuthErrors.ACCESS_DENIED);
     }
     request.user = { ...tokenPayload };
 

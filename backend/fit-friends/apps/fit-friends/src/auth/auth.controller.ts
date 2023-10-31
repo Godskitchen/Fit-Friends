@@ -17,7 +17,7 @@ import {
   RequestWithUserInfo,
 } from '@libs/shared/app-types';
 import { Response } from 'express';
-import { ACCESS_DENIED, Token } from '@libs/shared/common';
+import { AuthErrors, Token } from '@libs/shared/common';
 import {
   JwtAccessGuard,
   JwtRefreshGuard,
@@ -89,7 +89,7 @@ export class AuthController {
   @UseGuards(JwtAccessGuard)
   public async checkAuth(@Token() accessToken: string | null) {
     if (!accessToken) {
-      throw new UnauthorizedException(ACCESS_DENIED);
+      throw new UnauthorizedException(AuthErrors.ACCESS_DENIED);
     }
 
     return { accessToken };

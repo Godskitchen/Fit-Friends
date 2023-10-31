@@ -1,9 +1,6 @@
 import { TrainingRepository } from '@libs/database-service';
 import { AccessTokenPayload } from '@libs/shared/app-types';
-import {
-  INCORRECT_TRAINING_OWNER,
-  TRAINING_NOT_FOUND,
-} from '@libs/shared/common';
+import { TrainingErrors } from '@libs/shared/common';
 import {
   CanActivate,
   ExecutionContext,
@@ -27,11 +24,11 @@ export class ModifyTrainingGuard implements CanActivate {
     const training = await this.trainingRepository.findById(+trainingId);
 
     if (!training) {
-      throw new NotFoundException(TRAINING_NOT_FOUND);
+      throw new NotFoundException(TrainingErrors.TRAINING_NOT_FOUND);
     }
 
     if (training.trainer.userId !== +payload.sub)
-      throw new ForbiddenException(INCORRECT_TRAINING_OWNER);
+      throw new ForbiddenException(TrainingErrors.INCORRECT_TRAINING_OWNER);
 
     return true;
   }

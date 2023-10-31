@@ -1,12 +1,6 @@
 import { UserRepository } from '@libs/database-service';
 import { AccessTokenPayload } from '@libs/shared/app-types';
-import {
-  FORBIDDEN_ADD_FRIEND_YOURSELF,
-  USER_NOT_FOUND,
-  ALREADY_FRIENDS,
-  NOT_FRIENDS,
-  INCORRECT_USER_ID_TYPE,
-} from '@libs/shared/common';
+import { UserErrors } from '@libs/shared/common';
 import {
   BadRequestException,
   CanActivate,
@@ -31,24 +25,24 @@ export class FriendGuard implements CanActivate {
     const friendId = +params.friendId;
 
     if (!Number.isInteger(friendId) || friendId <= 0) {
-      throw new BadRequestException(INCORRECT_USER_ID_TYPE);
+      throw new BadRequestException(UserErrors.INCORRECT_USER_ID_TYPE);
     }
 
     if (userId === friendId) {
-      throw new BadRequestException(FORBIDDEN_ADD_FRIEND_YOURSELF);
+      throw new BadRequestException(UserErrors.FORBIDDEN_ADD_FRIEND_YOURSELF);
     }
     const friend = await this.userRepository.findById(friendId);
     if (!friend) {
-      throw new BadRequestException(USER_NOT_FOUND);
+      throw new BadRequestException(UserErrors.USER_NOT_FOUND);
     }
 
     const isFriends = await this.checkFriendship(userId, friendId);
     if (currentHandler === ADD_FRIEND_HANDLER && isFriends) {
-      throw new ConflictException(ALREADY_FRIENDS);
+      throw new ConflictException(UserErrors.ALREADY_FRIENDS);
     }
 
     if (currentHandler === REMOVE_FRIEND_HANDLER && !isFriends) {
-      throw new BadRequestException(NOT_FRIENDS);
+      throw new BadRequestException(UserErrors.NOT_FRIENDS);
     }
 
     return true;

@@ -16,7 +16,7 @@ import {
 } from '@libs/shared/helpers';
 import { Response } from 'express';
 import { REFRESH_TOKEN_NAME } from './auth.constants';
-import { WRONG_CREDENTIALS } from '@libs/shared/common';
+import { AuthErrors } from '@libs/shared/common';
 import { RefreshTokenService } from '@app/refresh-token';
 
 @Injectable()
@@ -42,7 +42,7 @@ export class AuthService {
       !existUser ||
       !(await this.comparePassword(password, existUser.hashPassword))
     ) {
-      throw new UnauthorizedException(WRONG_CREDENTIALS);
+      throw new UnauthorizedException(AuthErrors.WRONG_CREDENTIALS);
     }
 
     return existUser;

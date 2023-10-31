@@ -3,14 +3,7 @@ import {
   UserRepository,
 } from '@libs/database-service';
 import { AccessTokenPayload } from '@libs/shared/app-types';
-import {
-  FORBIDDEN_REQUEST_TO_YOURSELF,
-  INCORRECT_USER_ID_TYPE,
-  NOT_FRIENDS,
-  PENDING_REQUEST_ALREADY_EXISTS,
-  RECEPIENT_IS_NOT_READY,
-  USER_NOT_FOUND,
-} from '@libs/shared/common';
+import { TrainingRequestErrors, UserErrors } from '@libs/shared/common';
 import {
   BadRequestException,
   CanActivate,
@@ -31,21 +24,23 @@ export class CreateRequestGuard implements CanActivate {
     const recepientId = +params.recepientId;
 
     if (!Number.isInteger(recepientId) || recepientId <= 0) {
-      throw new BadRequestException(INCORRECT_USER_ID_TYPE);
+      throw new BadRequestException(UserErrors.INCORRECT_USER_ID_TYPE);
     }
 
     if (senderId === recepientId) {
-      throw new BadRequestException(FORBIDDEN_REQUEST_TO_YOURSELF);
+      throw new BadRequestException(
+        TrainingRequestErrors.FORBIDDEN_REQUEST_TO_YOURSELF,
+      );
     }
 
     const recepient = await this.userRepository.findById(recepientId);
     if (!recepient) {
-      throw new BadRequestException(USER_NOT_FOUND);
+      throw new BadRequestException(UserErrors.USER_NOT_FOUND);
     }
 
     const isFriends = await this.checkFriendship(senderId, recepientId);
     if (!isFriends) {
-      throw new BadRequestException(NOT_FRIENDS);
+      throw new BadRequestException(UserErrors.NOT_FRIENDS);
     }
 
     if (
@@ -54,7 +49,9 @@ export class CreateRequestGuard implements CanActivate {
       (recepient.trainerProfile &&
         recepient.trainerProfile?.readyForWorkout === false)
     ) {
-      throw new BadRequestException(RECEPIENT_IS_NOT_READY);
+      throw new BadRequestException(
+        TrainingRequestErrors.RECEPIENT_IS_NOT_READY,
+      );
     }
 
     const existPendingRequest = await this.requestRepository.findPending(
@@ -63,7 +60,9 @@ export class CreateRequestGuard implements CanActivate {
     );
 
     if (existPendingRequest) {
-      throw new BadRequestException(PENDING_REQUEST_ALREADY_EXISTS);
+      throw new BadRequestException(
+        TrainingRequestErrors.PENDING_REQUEST_ALREADY_EXISTS,
+      );
     }
 
     return true;

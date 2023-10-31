@@ -1,9 +1,6 @@
 import { MessageRepository } from '@libs/database-service';
 import { AccessTokenPayload } from '@libs/shared/app-types';
-import {
-  MESSAGE_NOT_FOUND,
-  MODIFY_MESSAGE_FORBIDDEN,
-} from '@libs/shared/common';
+import { MessageErrors } from '@libs/shared/common';
 import {
   Injectable,
   CanActivate,
@@ -27,11 +24,11 @@ export class MessageGuard implements CanActivate {
 
     const message = await this.messageRepository.findById(messageId);
     if (!message) {
-      throw new BadRequestException(MESSAGE_NOT_FOUND);
+      throw new BadRequestException(MessageErrors.MESSAGE_NOT_FOUND);
     }
 
     if (message.recepientId !== userId) {
-      throw new ForbiddenException(MODIFY_MESSAGE_FORBIDDEN);
+      throw new ForbiddenException(MessageErrors.MODIFY_MESSAGE_FORBIDDEN);
     }
 
     return true;

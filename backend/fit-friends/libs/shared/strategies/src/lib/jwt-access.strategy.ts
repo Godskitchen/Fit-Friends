@@ -1,6 +1,6 @@
 import { UserService } from '@app/user';
 import { AccessTokenPayload } from '@libs/shared/app-types';
-import { USER_NOT_FOUND } from '@libs/shared/common';
+import { UserErrors } from '@libs/shared/common';
 import {
   Inject,
   Injectable,
@@ -29,7 +29,7 @@ export class JwtAccessStrategy extends PassportStrategy(
 
   public async validate(payload: AccessTokenPayload) {
     await this.userService.getDetails(payload.sub).catch(() => {
-      throw new UnauthorizedException(USER_NOT_FOUND);
+      throw new UnauthorizedException(UserErrors.USER_NOT_FOUND);
     });
     return payload;
   }

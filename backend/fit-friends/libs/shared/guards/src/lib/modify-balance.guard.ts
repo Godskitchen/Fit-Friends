@@ -1,10 +1,6 @@
 import { BalanceRepository } from '@libs/database-service';
 import { AccessTokenPayload, UpdateBalanceData } from '@libs/shared/app-types';
-import {
-  BALANCE_NOT_FOUND,
-  INCORRECT_BALANCE_ID_TYPE,
-  MODIFY_BALANCE_FORBIDDEN,
-} from '@libs/shared/common';
+import { BalanceErrors } from '@libs/shared/common';
 import { Request } from 'express';
 import {
   Injectable,
@@ -26,16 +22,16 @@ export class ModifyBalanceGuard implements CanActivate {
     const balanceId = (body as UpdateBalanceData).balanceId;
 
     if (!uuidValidate(balanceId)) {
-      throw new BadRequestException(INCORRECT_BALANCE_ID_TYPE);
+      throw new BadRequestException(BalanceErrors.INCORRECT_BALANCE_ID_TYPE);
     }
     const existBalance = await this.balanceRepository.findById(balanceId);
 
     if (!existBalance) {
-      throw new BadRequestException(BALANCE_NOT_FOUND);
+      throw new BadRequestException(BalanceErrors.BALANCE_NOT_FOUND);
     }
 
     if (existBalance.userId !== userId) {
-      throw new ForbiddenException(MODIFY_BALANCE_FORBIDDEN);
+      throw new ForbiddenException(BalanceErrors.MODIFY_BALANCE_FORBIDDEN);
     }
     return true;
   }

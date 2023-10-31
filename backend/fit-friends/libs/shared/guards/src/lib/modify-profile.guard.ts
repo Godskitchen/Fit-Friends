@@ -4,11 +4,7 @@ import {
   Role,
   UpdateUserData,
 } from '@libs/shared/app-types';
-import {
-  INCORRECT_ID,
-  INCORRECT_USER_PROFILE_TYPE,
-  MODIFY_USER_FORBIDDEN,
-} from '@libs/shared/common';
+import { UserErrors } from '@libs/shared/common';
 import {
   BadRequestException,
   CanActivate,
@@ -31,10 +27,10 @@ export class ModifyProfileGuard implements CanActivate {
 
     const paramsUserId = params.userId;
     if (!Number.isInteger(+paramsUserId)) {
-      throw new BadRequestException(INCORRECT_ID);
+      throw new BadRequestException(UserErrors.INCORRECT_USER_ID_TYPE);
     }
     if (userId !== +paramsUserId) {
-      throw new ForbiddenException(MODIFY_USER_FORBIDDEN);
+      throw new ForbiddenException(UserErrors.MODIFY_USER_FORBIDDEN);
     }
 
     const updateData = body as UpdateUserData;
@@ -42,7 +38,7 @@ export class ModifyProfileGuard implements CanActivate {
       (role === Role.Trainer && updateData.userProfile) ||
       (role === Role.User && updateData.trainerProfile)
     ) {
-      throw new BadRequestException(INCORRECT_USER_PROFILE_TYPE);
+      throw new BadRequestException(UserErrors.INCORRECT_USER_PROFILE_TYPE);
     }
 
     return true;

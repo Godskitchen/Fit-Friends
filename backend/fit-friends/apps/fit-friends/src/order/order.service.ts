@@ -4,7 +4,7 @@ import {
   TrainingRepository,
 } from '@libs/database-service';
 import { NewOrderDto } from './dto/new-order.dto';
-import { TRAINING_NOT_FOUND } from '@libs/shared/common';
+import { TrainingErrors } from '@libs/shared/common';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { OrderQuery } from './queries/order.query';
 
@@ -22,7 +22,7 @@ export class OrderService {
     const training = await this.trainingRepository.findById(trainingId);
 
     if (!training) {
-      throw new NotFoundException(TRAINING_NOT_FOUND);
+      throw new NotFoundException(TrainingErrors.TRAINING_NOT_FOUND);
     }
 
     const price = training.price;

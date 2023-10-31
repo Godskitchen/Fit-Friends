@@ -1,5 +1,5 @@
 import { AccessTokenPayload, Role } from '@libs/shared/app-types';
-import { FORBIDDEN_BY_ROLE } from '@libs/shared/common';
+import { UserErrors } from '@libs/shared/common';
 import {
   CanActivate,
   ExecutionContext,
@@ -23,7 +23,7 @@ export class RoleGuard implements CanActivate {
     const { role } = request.user as AccessTokenPayload;
 
     if (!roles.includes(role)) {
-      throw new ForbiddenException(FORBIDDEN_BY_ROLE);
+      throw new ForbiddenException(UserErrors.FORBIDDEN_BY_ROLE);
     }
 
     return true;

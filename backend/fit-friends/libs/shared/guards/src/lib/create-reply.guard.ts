@@ -4,12 +4,7 @@ import {
   TrainingRepository,
 } from '@libs/database-service';
 import { AccessTokenPayload, ReplyData } from '@libs/shared/app-types';
-import {
-  INCORRECT_TRAINING_ID_TYPE,
-  TRAINING_NOT_FOUND,
-  REPLY_ALREADY_EXISTS,
-  CREATE_REPLY_FORBIDDEN,
-} from '@libs/shared/common';
+import { TrainingErrors, ReplyErrors } from '@libs/shared/common';
 import {
   Injectable,
   CanActivate,
@@ -34,18 +29,18 @@ export class CreateReplyGuard implements CanActivate {
     const userId = (user as AccessTokenPayload).sub;
     const trainingId = (body as ReplyData).trainingId;
     if (!Number.isInteger(trainingId) || trainingId <= 0) {
-      throw new BadRequestException(INCORRECT_TRAINING_ID_TYPE);
+      throw new BadRequestException(TrainingErrors.INCORRECT_TRAINING_ID_TYPE);
     }
 
     const training = await this.trainingRepository.findById(trainingId);
     if (!training) {
-      throw new BadRequestException(TRAINING_NOT_FOUND);
+      throw new BadRequestException(TrainingErrors.TRAINING_NOT_FOUND);
     }
 
     const existReply = await this.replyRepository.findExist(userId, trainingId);
 
     if (existReply) {
-      throw new ConflictException(REPLY_ALREADY_EXISTS);
+      throw new ConflictException(ReplyErrors.REPLY_ALREADY_EXISTS);
     }
 
     const existTrainingBalance = await this.balanceRepository.findExist(
@@ -54,7 +49,7 @@ export class CreateReplyGuard implements CanActivate {
     );
 
     if (!existTrainingBalance) {
-      throw new ForbiddenException(CREATE_REPLY_FORBIDDEN);
+      throw new ForbiddenException(ReplyErrors.CREATE_REPLY_FORBIDDEN);
     }
 
     return true;

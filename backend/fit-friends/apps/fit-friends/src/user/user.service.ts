@@ -1,9 +1,5 @@
 import { UserEntity, UserRepository } from '@libs/database-service';
-import {
-  USER_ALREADY_EXISTS,
-  USER_NOT_FOUND,
-  createFriendRequestMessage,
-} from '@libs/shared/common';
+import { AuthErrors, UserErrors } from '@libs/shared/common';
 import {
   ConflictException,
   Injectable,
@@ -18,6 +14,7 @@ import { StaticService } from '@app/static';
 import { BackgroundImageType } from '@libs/shared/app-types';
 import { MessageService } from '@app/message';
 import { FriendsQuery } from './queries/friends.query';
+import { createFriendRequestMessage } from '@libs/shared/helpers';
 
 @Injectable()
 export class UserService {
@@ -31,7 +28,7 @@ export class UserService {
     const existUser = await this.userRepository.findByEmail(dto.email);
 
     if (existUser) {
-      throw new ConflictException(USER_ALREADY_EXISTS);
+      throw new ConflictException(AuthErrors.USER_ALREADY_EXISTS);
     }
 
     const { password, userProfile, trainerProfile, avatar, ...restData } = dto;
@@ -61,7 +58,7 @@ export class UserService {
   public async getDetails(userId: number) {
     const existUser = await this.userRepository.findById(userId);
     if (!existUser) {
-      throw new NotFoundException(USER_NOT_FOUND);
+      throw new NotFoundException(UserErrors.USER_NOT_FOUND);
     }
 
     return existUser;

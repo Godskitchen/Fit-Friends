@@ -5,7 +5,7 @@ import {
 } from '@libs/database-service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { NewTrainingDto } from './dto/new-training.dto';
-import { TRAINING_NOT_FOUND, USER_NOT_FOUND } from '@libs/shared/common';
+import { TrainingErrors, UserErrors } from '@libs/shared/common';
 import { UpdateTrainingDto } from './dto/update-training.dto';
 import { TrainingQuery } from './queries/training.query';
 import { StaticService } from '@app/static';
@@ -22,7 +22,7 @@ export class TrainingService {
   public async create(dto: NewTrainingDto, trainerId: number) {
     const existTrainer = await this.userRepository.findById(trainerId);
     if (!existTrainer) {
-      throw new NotFoundException(USER_NOT_FOUND);
+      throw new NotFoundException(UserErrors.USER_NOT_FOUND);
     }
 
     const { video: videoPath } = dto;
@@ -42,7 +42,7 @@ export class TrainingService {
   public async getById(id: number) {
     const training = await this.trainingRepository.findById(id);
     if (!training) {
-      throw new NotFoundException(TRAINING_NOT_FOUND);
+      throw new NotFoundException(TrainingErrors.TRAINING_NOT_FOUND);
     }
 
     return training;

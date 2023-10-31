@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { NewReplyDto } from './dto/new-reply.dto';
 import { ReplyEntity } from '@libs/database-service/lib/entities/reply.entity';
-import { REPLY_NOT_FOUND, TRAINING_NOT_FOUND } from '@libs/shared/common';
+import { ReplyErrors, TrainingErrors } from '@libs/shared/common';
 import { ReplyQuery } from './queries/reply.query';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class ReplyService {
   public async getTrainingReplies(trainingId: number, query: ReplyQuery) {
     const existTraining = this.trainingRepository.findById(trainingId);
     if (!existTraining) {
-      throw new BadRequestException(TRAINING_NOT_FOUND);
+      throw new BadRequestException(TrainingErrors.TRAINING_NOT_FOUND);
     }
     return this.replyRepository.findAllByTrainingId(trainingId, query);
   }
@@ -31,7 +31,7 @@ export class ReplyService {
   public async getDetails(replyId: number) {
     const reply = await this.replyRepository.findById(replyId);
     if (!reply) {
-      throw new NotFoundException(REPLY_NOT_FOUND);
+      throw new NotFoundException(ReplyErrors.REPLY_NOT_FOUND);
     }
     return reply;
   }
