@@ -19,3 +19,5 @@ export * from './lib/create-request.guard';
 export * from './lib/modify-request-status.guard';
 
 export * from './lib/create-reply.guard';
+
+export * from './lib/subscription.guard';

@@ -1,0 +1,15 @@
+@user1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJVc2VyT25lIiwiZW1haWwiOiJ1c2VyMUBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE2OTg3OTQzNTEsImV4cCI6MTY5ODg4MDc1MX0.0B0tOPfPaoWh0t7xyhdswDLEEepZSVbB8gy_7L2iS2I
+@user2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsIm5hbWUiOiJVc2VyVHdvIiwiZW1haWwiOiJ1c2VyMkBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE2OTg4Mjk0NDcsImV4cCI6MTY5ODkxNTg0N30.fNRO9VFpIYLg30KE5hj13_5apQX_rPAxTC24aYCcilg
+
+@user3 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsIm5hbWUiOiJVc2VyVGhyZWUiLCJlbWFpbCI6InVzZXIzQG1haWwubG9jYWwiLCJyb2xlIjoiVXNlciIsImlhdCI6MTY5ODgyOTQ2OCwiZXhwIjoxNjk4OTE1ODY4fQ.akl5kfd4kN87XcgX1Iyk86NrUyt0jjfcMycIr6G_HWQ
+
+
+#subscribe to trainer
+POST http://localhost:4000/api/subscriptions/add/6 HTTP/1.1
+Authorization: {{user3}}
+###
+
+#unsubscribe from trainer
+DELETE http://localhost:4000/api/subscriptions/remove/5 HTTP/1.1
+Authorization: {{user1}}
+###

@@ -17,3 +17,12 @@ export interface StaticConfig {
   uploadDirectory: string;
   serveRoot: string;
 }
+
+export interface MailerConfig {
+  host: string;
+  port: string;
+  user: string;
+  password: string;
+  from: string;
+  broadcastInterval: string;
+}

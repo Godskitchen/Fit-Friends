@@ -6,7 +6,7 @@ import launchAppConfig from './launch-app.config';
 import staticConfig from './static.config';
 // import rabbitConfig from './rabbit.config';
 // import rabbitQueueConfig from './rabbit-queue.config';
-// import mailerConfig from './mailer.config';
+import mailerConfig from './mailer.config';
 
 const ENV_PATH = './app.env';
 
@@ -14,7 +14,7 @@ const ENV_PATH = './app.env';
   imports: [
     ConfigModule.forRoot({
       cache: true,
-      load: [launchAppConfig, jwtConfig, staticConfig],
+      load: [launchAppConfig, jwtConfig, staticConfig, mailerConfig],
       envFilePath: [ENV_PATH],
     }),
   ],

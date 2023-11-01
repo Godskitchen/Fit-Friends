@@ -29,6 +29,9 @@ export * from './lib/query-types/order-query.type';
 
 export * from './lib/background-image.type';
 
+export * from './lib/templates-types/trainer-info.type';
+export * from './lib/templates-types/training-card.type';
+
 export {
   Gender,
   Role,

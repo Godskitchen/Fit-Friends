@@ -31,6 +31,7 @@ model User {
   trainingRequestsAsSender    TrainingRequest[] @relation("as_sender")
   trainingRequestsAsRecepient TrainingRequest[] @relation("as_recepient")
   replies                     Reply[]
+  subscriptions               Subscriber[]      @relation("subscriptions")
 
   @@map("users")
 }
@@ -87,7 +88,7 @@ model Training {
   orders           Order[]
   balances         UserBalance[]
   replies          Reply[]
-  createdAt       DateTime @default(now()) @map("created_at")
+  createdAt        DateTime @default(now()) @map("created_at")
 
   @@map("trainings")
 }
@@ -166,6 +167,16 @@ model Reply {
   createdAt  DateTime @default(now()) @map("created_at")
 
   @@map("replies")
+}
+
+model Subscriber {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  subscribedTo User[]   @relation("subscriptions")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("subscribers")
 }
 
 enum Gender {

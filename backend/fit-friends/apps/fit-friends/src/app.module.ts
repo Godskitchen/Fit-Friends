@@ -9,6 +9,8 @@ import { StaticModule } from './static';
 import { MessageModule } from './message';
 import { TrainingRequestModule } from './training-request';
 import { ReplyModule } from './reply';
+import { MailModule } from './mail';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { ReplyModule } from './reply';
     MessageModule,
     TrainingRequestModule,
     ReplyModule,
+    MailModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [],
   providers: [],

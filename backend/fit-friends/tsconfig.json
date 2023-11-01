@@ -109,6 +109,12 @@
       "@app/reply/*": [
         "apps/fit-friends/src/reply/*"
       ],
+      "@app/mail": [
+        "apps/fit-friends/src/mail/index.ts"
+      ],
+      "@app/mail/*": [
+        "apps/fit-friends/src/mail/*"
+      ],
       "@libs/shared/common": [
         "libs/shared/common/src/index.ts"
       ],

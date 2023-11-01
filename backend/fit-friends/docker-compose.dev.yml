@@ -34,24 +34,23 @@ services:
       - fit-friends
 
 
-  fit-friends.notify.rabbitmq:
-    image: rabbitmq:3.11-management
-    container_name: fit-friends.notify.rabbitmq
+  
+  fit-friends.smtp.maildev:
+    image: maildev/maildev
+    container_name: fit-friends.smtp.maildev
     ports:
-      - 2088:15672
-      - ${RABBIT_PORT}:5672
+      - ${MAIL_UI_PORT}:1080  
+      - ${MAIL_SMTP_PORT}:1025
     environment:
-      RABBITMQ_DEFAULT_USER: ${RABBIT_USERNAME}
-      RABBITMQ_DEFAULT_PASS: ${RABBIT_PASSWORD}
-    healthcheck:
-      test: rabbitmq-diagnostics -q ping
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - SMTP_USER=${MAIL_USERNAME}
+      - SMTP_PASS=${MAIL_PASSWORD}
+    volumes:
+      - maildev-data:/maildev/data
 
 
 volumes:
   fit-friends.postgres:
+  maildev-data:
 
 networks:
   fit-friends:
