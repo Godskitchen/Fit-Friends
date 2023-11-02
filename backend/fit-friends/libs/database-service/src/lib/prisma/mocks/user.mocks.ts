@@ -18,7 +18,7 @@ export const NAMES = [
   'Варвара',
 ];
 
-export const EMAILS = [
+export const USER_EMAILS = [
   'balistreri@hotmail.com',
   'ahul44@kirlin.com',
   'alysha.walker@johns.biz',
@@ -26,6 +26,9 @@ export const EMAILS = [
   'jacobson.@nolan.org',
   'candido@bergstrom.biz',
   'estrella.bode@stehr.com',
+];
+
+export const TRAINER_EMAILS = [
   'columbus.kohler@heiden.com',
   'joan37@collins.biz',
   'mason.aufderhar@hamill.org',
@@ -54,7 +57,7 @@ export const ABOUT_INFO = [
   'Фитнес - это не только спорт, но и стиль жизни. Готов делиться своими знаниями и опытом с теми, кто ищет равновесие и гармонию.',
 ];
 
-export const BACK_IMAGES = [
+export const BACK_USER_IMAGES = [
   'default/users/user-1.png',
   'default/users/user-2.png',
   'default/users/user-3.png',

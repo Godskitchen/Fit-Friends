@@ -101,4 +101,9 @@ export class StaticService {
     const images = await readdir(`${uploadRootDir}${defaultDir}`);
     return this.getFullStaticPath(`${defaultDir}/${getRandomArrItem(images)}`);
   }
+
+  public async getDefaulAvatarImage() {
+    const defaultAvatarLocalPath = `/default/users/avatar.png`;
+    return this.getFullStaticPath(defaultAvatarLocalPath);
+  }
 }

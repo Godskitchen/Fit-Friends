@@ -42,10 +42,19 @@ export const getUniqueRandomArrItems = <T>(
   return resultElements;
 };
 
-export function randomUniqueItem<T>(array: T[]) {
-  const set = new Set(array);
-  return function (array: T[]) {
-    const element = getRandomArrItem(array);
-    set.delete(element);
+export function getRandomUniqueItem<T>(array: T[], triesCount: number) {
+  if (triesCount > array.length) {
+    throw new Error(
+      'Число использований генератора должно быть меньше длины массива',
+    );
+  }
+  const duplicates: T[] = [];
+  return () => {
+    let element = getRandomArrItem(array);
+    while (duplicates.includes(element)) {
+      element = getRandomArrItem(array);
+    }
+    duplicates.push(element);
+    return element;
   };
 }

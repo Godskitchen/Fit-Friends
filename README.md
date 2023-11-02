@@ -8,7 +8,7 @@ docker compose --env-file ./app.env --file ./docker-compose.dev.yml --project-na
 
 
 
-Prisma (temp):
+Prisma:
 
 - format:
 
@@ -25,3 +25,7 @@ npx prisma db push --schema=./libs/database-service/src/lib/models/schema.prisma
 - reset:
 
 npx prisma migrate reset --schema=./libs/database-service/src/lib/models/schema.prisma
+
+- seed:
+
+npx prisma db seed

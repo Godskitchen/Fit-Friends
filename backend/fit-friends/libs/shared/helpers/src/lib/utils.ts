@@ -1,8 +1,11 @@
 import { DbConfig } from '@libs/shared/app-types';
+import { genSalt, hash } from 'bcrypt';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 
 export type DateTimeUnit = 's' | 'm' | 'h' | 'd' | 'M' | 'y';
 export type TimeAndUnit = { value: number; unit: DateTimeUnit };
+
+const SALT_ROUNDS = 10;
 
 export function getPostgresConnectionString({
   user,
@@ -43,4 +46,9 @@ export function parseTokenTime(time: string): TimeAndUnit {
   }
 
   return { value, unit };
+}
+
+export async function hashPassword(password: string): Promise<string> {
+  const salt = await genSalt(SALT_ROUNDS);
+  return hash(password, salt);
 }

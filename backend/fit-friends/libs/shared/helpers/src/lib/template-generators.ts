@@ -48,10 +48,13 @@ export function createTrainerBlock(
 ) {
   return `<section class="trainer_block">
             <div class="trainer_info_container">
-              <div class="avatar">
-                <img src="${avatarUrl}">
-              </div>
-            
+              ${
+                avatarUrl
+                  ? `<div class="avatar">
+                      <img src="${avatarUrl}">
+                    </div>`
+                  : ''
+              }
               <div class="author_block">
                 <div class="author_name">${name}</div>
                 <div class="author_location">

@@ -6,15 +6,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { NewUserDto } from './dto/new-user.dto';
-import { genSalt, hash } from 'bcrypt';
-import { SALT_ROUNDS } from '@app/auth';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserQuery } from './queries/user.query';
 import { StaticService } from '@app/static';
 import { BackgroundImageType } from '@libs/shared/app-types';
 import { MessageService } from '@app/message';
 import { FriendsQuery } from './queries/friends.query';
-import { createFriendRequestMessage } from '@libs/shared/helpers';
+import { createFriendRequestMessage, hashPassword } from '@libs/shared/helpers';
 
 @Injectable()
 export class UserService {
@@ -41,11 +39,13 @@ export class UserService {
 
     const userEntity = new UserEntity({
       ...restData,
-      avatarUrl: avatar ? await this.staticService.getFile(avatar) : undefined,
+      avatarUrl: avatar
+        ? await this.staticService.getFile(avatar)
+        : await this.staticService.getDefaulAvatarImage(),
       backgroundImage: await this.staticService.getDefaultBackgroundImage(
         BackgroundImageType.users,
       ),
-      hashPassword: await this.setPassword(password),
+      hashPassword: await hashPassword(password),
       userProfile,
       trainerProfile: trainerProfile
         ? { ...trainerProfile, certificates: certificatePath }
@@ -105,10 +105,5 @@ export class UserService {
 
   public async getFriendList(userId: number, query: FriendsQuery) {
     return this.userRepository.getFriends(userId, query);
-  }
-
-  private async setPassword(password: string): Promise<string> {
-    const salt = await genSalt(SALT_ROUNDS);
-    return hash(password, salt);
   }
 }

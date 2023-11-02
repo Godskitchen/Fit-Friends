@@ -112,7 +112,7 @@ model Order {
 model UserBalance {
   balanceId       String   @id @default(uuid()) @map("balance_id")
   userId          Int
-  user            User     @relation(fields: [userId], references: [userId])
+  user            User     @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
   trainingId      Int
   training        Training @relation(fields: [trainingId], references: [trainingId])
   remainingAmount Int
