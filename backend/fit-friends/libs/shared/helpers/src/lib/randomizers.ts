@@ -17,3 +17,35 @@ export const getRandomNumber = (
 
 export const getRandomArrItem = <T>(array: T[]): T =>
   array[getRandomNumber(0, array.length - 1)];
+
+export const getUniqueRandomArrItems = <T>(
+  elementsCount: number,
+  sourceArray: T[],
+): T[] => {
+  const uniqueSourceArray = Array.from(new Set(sourceArray));
+
+  if (elementsCount > uniqueSourceArray.length) {
+    return uniqueSourceArray;
+  }
+
+  const resultElements: T[] = [];
+
+  for (let i = 0; i < elementsCount; i++) {
+    let element = getRandomArrItem(uniqueSourceArray);
+    while (resultElements.includes(element)) {
+      element = getRandomArrItem(uniqueSourceArray);
+    }
+
+    resultElements.push(element);
+  }
+
+  return resultElements;
+};
+
+export function randomUniqueItem<T>(array: T[]) {
+  const set = new Set(array);
+  return function (array: T[]) {
+    const element = getRandomArrItem(array);
+    set.delete(element);
+  };
+}

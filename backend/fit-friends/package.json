@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "prisma": {
-    "seed": "tsx libs/database-service/src/lib/prisma/seed.ts"
+    "seed": "tsx libs/database-service/src/lib/prisma/seed/seed.ts"
   },
   "scripts": {
     "build": "nest build",
