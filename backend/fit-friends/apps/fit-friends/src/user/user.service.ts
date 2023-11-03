@@ -34,7 +34,7 @@ export class UserService {
     let certificatePath = '';
     if (trainerProfile?.certificates) {
       const { certificates } = trainerProfile;
-      certificatePath = (await this.staticService.getFile(certificates)) ?? '';
+      certificatePath = await this.staticService.getFile(certificates);
     }
 
     const userEntity = new UserEntity({

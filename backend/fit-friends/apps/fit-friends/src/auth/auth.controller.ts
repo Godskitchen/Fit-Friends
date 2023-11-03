@@ -10,7 +10,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { NewUserDto, UserRdo, AuthUserRdo } from '@app/user';
+import { NewUserDto, UserRdo, AuthUserRdo, LoginUserDto } from '@app/user';
 import { fillRDO } from '@libs/shared/helpers';
 import {
   RequestWithRefreshTokenPayload,
@@ -24,11 +24,42 @@ import {
   LocalAuthGuard,
   PublicGuard,
 } from '@libs/shared/guards';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiHeader,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiHeader({
+    name: 'Authorization',
+    required: false,
+    description: 'Заголовок авторизации не должен присутствовать',
+  })
+  @ApiCreatedResponse({
+    description: 'Новый пользователь успешно создан.',
+    type: UserRdo,
+  })
+  @ApiForbiddenResponse({
+    description: 'Маршрут доступен только для анонимных пользователей.',
+  })
+  @ApiConflictResponse({
+    description: 'Пользователь с таким email уже существует',
+  })
+  @ApiBadRequestResponse({
+    description:
+      'Не пройдена валидация полей DTO, какой-либо из загружаемых файлов не найден.',
+  })
   @Post('/register')
   @UseGuards(PublicGuard)
   public async register(
@@ -45,6 +76,16 @@ export class AuthController {
     return fillRDO(UserRdo, newUser, [newUser.role]);
   }
 
+  @ApiOkResponse({
+    description:
+      'Пользователь успешно авторизован. Получен новый JWT access token или актуальный token, если он был передан в заголовке авторизации. Новый JWT Refresh token устанавливается в cookies',
+    type: AuthUserRdo,
+  })
+  @ApiUnauthorizedResponse({ description: 'Неверный email или пароль' })
+  @ApiBadRequestResponse({
+    description: 'Не пройдена валидация полей DTO',
+  })
+  @ApiBody({ type: LoginUserDto })
   @UseGuards(LocalAuthGuard)
   @Post('/login')
   public async login(

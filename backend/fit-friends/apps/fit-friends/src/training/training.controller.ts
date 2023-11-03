@@ -26,13 +26,14 @@ import { UpdateTrainingDto } from './dto/update-training.dto';
 import { UserTrainingsQuery } from './queries/user-training.query';
 import { GeneralTrainingQuery } from './queries/general-training.query';
 
+@UseGuards(JwtAccessGuard)
 @Controller('/trainings')
 export class TrainingController {
   constructor(private readonly trainingService: TrainingService) {}
 
   @Post('/create')
   @Roles(Role.Trainer)
-  @UseGuards(JwtAccessGuard, RoleGuard)
+  @UseGuards(RoleGuard)
   public async createTraining(
     @Body(new ValidationPipe({ transform: true, whitelist: true }))
     dto: NewTrainingDto,
@@ -43,7 +44,6 @@ export class TrainingController {
   }
 
   @Get('/details/:trainingId')
-  @UseGuards(JwtAccessGuard)
   public async getTrainingDetails(
     @Param('trainingId', ParseIntPipe) id: number,
   ) {
@@ -53,7 +53,7 @@ export class TrainingController {
 
   @Patch('/update/:trainingId')
   @Roles(Role.Trainer)
-  @UseGuards(JwtAccessGuard, RoleGuard, ModifyTrainingGuard)
+  @UseGuards(RoleGuard, ModifyTrainingGuard)
   public async updateTrainingInfo(
     @Param('trainingId', ParseIntPipe) id: number,
     @Body(new ValidationPipe({ transform: true, whitelist: true }))
@@ -64,7 +64,6 @@ export class TrainingController {
   }
 
   @Get('/')
-  @UseGuards(JwtAccessGuard)
   public async getTrainingsCatalog(
     @Query(new ValidationPipe({ transform: true, whitelist: true }))
     query: GeneralTrainingQuery,
@@ -75,7 +74,7 @@ export class TrainingController {
 
   @Get('/mylist')
   @Roles(Role.Trainer)
-  @UseGuards(JwtAccessGuard, RoleGuard)
+  @UseGuards(RoleGuard)
   public async getTrainerTrainingsList(
     @Req() { user }: RequestWithAccessTokenPayload,
     @Query(new ValidationPipe({ transform: true, whitelist: true }))

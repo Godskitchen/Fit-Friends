@@ -1,7 +1,12 @@
 import { Expose, Transform, Type } from 'class-transformer';
 import { TrainerProfileRdo } from './trainer-profile.rdo';
 import { UserProfileRdo } from './user-profile.rdo';
-import { Gender, Role, TrainingRequestStatus } from '@libs/shared/app-types';
+import {
+  Gender,
+  Role,
+  TrainingRequestStatus,
+  Location,
+} from '@libs/shared/app-types';
 
 class TrainingRequestRdo {
   @Expose()

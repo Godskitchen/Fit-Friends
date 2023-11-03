@@ -31,17 +31,17 @@ import { FriendRdo } from './rdo/friend.rdo';
 import { FriendsQuery } from './queries/friends.query';
 
 @Controller('users')
+@UseGuards(JwtAccessGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(JwtAccessGuard)
   @Get('/details/:userId')
   public async getUserDetails(@Param('userId', ParseIntPipe) id: number) {
     const user = await this.userService.getDetails(id);
     return fillRDO(UserRdo, user, [user.role]);
   }
 
-  @UseGuards(JwtAccessGuard, ModifyProfileGuard)
+  @UseGuards(ModifyProfileGuard)
   @Patch('/details/:userId')
   public async updateUserData(
     @Param('userId', ParseIntPipe) id: number,
@@ -52,7 +52,6 @@ export class UserController {
     return fillRDO(UserRdo, updatedUser, [updatedUser.role]);
   }
 
-  @UseGuards(JwtAccessGuard)
   @Get('/')
   public async getUsers(
     @Query(new ValidationPipe({ transform: true, whitelist: true }))
@@ -62,7 +61,7 @@ export class UserController {
     return fillRDO(UserRdo, users, [Role.Trainer, Role.User]);
   }
 
-  @UseGuards(JwtAccessGuard, RoleGuard, FriendGuard)
+  @UseGuards(RoleGuard, FriendGuard)
   @Roles(Role.User)
   @Patch('/friends/add/:friendId')
   public async addFriend(
@@ -75,7 +74,7 @@ export class UserController {
     };
   }
 
-  @UseGuards(JwtAccessGuard, FriendGuard)
+  @UseGuards(FriendGuard)
   @Patch('/friends/remove/:friendId')
   public async removeFriend(
     @Param('friendId', ParseIntPipe) friendId: number,
@@ -87,7 +86,6 @@ export class UserController {
     };
   }
 
-  @UseGuards(JwtAccessGuard)
   @Get('/friends')
   public async getFriendList(
     @Req() { user }: RequestWithAccessTokenPayload,

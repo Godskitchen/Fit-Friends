@@ -17,11 +17,11 @@ import { fillRDO } from '@libs/shared/helpers';
 import { OrderRdo } from './rdo/order.rdo';
 import { OrderQuery } from './queries/order.query';
 
+@UseGuards(JwtAccessGuard, RoleGuard)
 @Controller('/orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
-  @UseGuards(JwtAccessGuard, RoleGuard)
   @Roles(Role.User)
   @Post('/create')
   public async createOrder(
@@ -33,7 +33,6 @@ export class OrderController {
     return fillRDO(OrderRdo, newOrder);
   }
 
-  @UseGuards(JwtAccessGuard, RoleGuard)
   @Roles(Role.Trainer)
   @Get('/mylist')
   public async getOrderList(

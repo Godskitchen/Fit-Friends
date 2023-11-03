@@ -9,3 +9,4 @@ export * from './lib/constants/errors/training.errors';
 export * from './lib/constants/errors/reply.errors';
 export * from './lib/constants/errors/training-request.errors';
 export * from './lib/constants/errors/subscription.errors';
+export * from './lib/constants/errors/static.errors';

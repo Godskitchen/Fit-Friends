@@ -1,4 +1,4 @@
-import { Gender, Role } from '@libs/shared/app-types';
+import { Gender, Role, Location } from '@libs/shared/app-types';
 import { UserProfileRdo } from './user-profile.rdo';
 import { TrainerProfileRdo } from './trainer-profile.rdo';
 import { Expose, Transform, Type } from 'class-transformer';

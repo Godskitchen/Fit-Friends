@@ -28,11 +28,13 @@ import { UpdateUserProfileDto } from './update-user-profile.dto';
 import { UpdateTrainerProfileDto } from './update-trainer-profile.dto';
 
 export class UpdateUserDto {
-  @Matches(NAME_PATTERN, { message: NAME_VALIDATION_MESSAGE })
+  @Matches(RegExp(NAME_PATTERN), { message: NAME_VALIDATION_MESSAGE })
   @IsOptional()
   name?: string;
 
-  @Matches(IMAGE_FILE_NAME_PATTERN, { message: IMAGE_FILE_VALIDATION_MESSAGE })
+  @Matches(RegExp(IMAGE_FILE_NAME_PATTERN, 'i'), {
+    message: IMAGE_FILE_VALIDATION_MESSAGE,
+  })
   @IsOptional()
   avatar?: string;
 

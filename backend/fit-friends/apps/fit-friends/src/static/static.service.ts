@@ -1,11 +1,12 @@
 import { FileDataEntity, FileDataRepository } from '@libs/database-service';
 import * as crypto from 'node:crypto';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ensureDir, readdir, writeFile } from 'fs-extra';
 import { FILENAME_PATTERN } from './dto/constants';
 import { getRandomArrItem } from '@libs/shared/helpers';
 import { BackgroundImageType } from '@libs/shared/app-types';
+import { StaticErrors } from '@libs/shared/common';
 
 type WritedFile = {
   fileName: string;
@@ -71,12 +72,12 @@ export class StaticService {
   public async getFile(filePath: string) {
     const match = filePath.match(FILENAME_PATTERN);
     if (!match) {
-      return undefined;
+      throw new BadRequestException(StaticErrors.FILE_NOT_EXIST);
     }
     const fileName = match[0];
     const fileData = await this.fileDataRepository.findByFileName(fileName);
     if (!fileData) {
-      return undefined;
+      throw new BadRequestException(StaticErrors.FILE_NOT_EXIST);
     }
     return this.getFullStaticPath(fileData.path);
   }

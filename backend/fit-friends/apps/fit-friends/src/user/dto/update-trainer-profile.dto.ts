@@ -49,7 +49,7 @@ export class UpdateTrainerProfileDto {
   @IsOptional()
   trainingType?: TrainingType[];
 
-  @Matches(CERTIFICATES_FILE_NAME_PATTERN, {
+  @Matches(RegExp(CERTIFICATES_FILE_NAME_PATTERN, 'i'), {
     message: CERTIFICATES_VALIDATION_MESSAGE,
   })
   @IsOptional()

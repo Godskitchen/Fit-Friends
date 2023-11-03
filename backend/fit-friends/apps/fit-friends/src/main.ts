@@ -4,7 +4,7 @@ import { Logger } from '@nestjs/common';
 import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
 
-// import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -13,15 +13,16 @@ async function bootstrap() {
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
 
-  // const config = new DocumentBuilder()
-  //   .addBearerAuth()
-  //   .setTitle('The «Guitar Shop» service')
-  //   .setDescription('service API')
-  //   .setVersion('1.0')
-  //   .build();
+  const config = new DocumentBuilder()
+    .addBearerAuth()
+    .addCookieAuth()
+    .setTitle('The «Fit Friends» service')
+    .setDescription('service API')
+    .setVersion('1.0')
+    .build();
 
-  // const document = SwaggerModule.createDocument(app, config);
-  // SwaggerModule.setup('spec', app, document);
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('spec', app, document);
 
   const configService = app.get(ConfigService);
 

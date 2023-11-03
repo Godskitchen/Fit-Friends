@@ -46,16 +46,14 @@ export const MAX_DATE_STRING_LENGTH = 10;
 
 export const ImageFormats = ['jpg', 'jpeg', 'png'];
 
-export const NAME_PATTERN = RegExp(
-  `^[a-zA-Zа-яА-Я]{${NAME_LENGTH.MIN},${NAME_LENGTH.MAX}}$`,
-);
+export const NAME_PATTERN = `^[a-zA-Zа-яА-Я]{${NAME_LENGTH.MIN},${NAME_LENGTH.MAX}}$`;
+export const BIRTH_DATE_PATTERN = '^d{4}-d{2}-d{2}$';
+export const MIN_DATE_TIMESTAMP = new Date('1970-01-01').getTime() / 1000;
+export const MAX_DATE_TIMESTAMP = new Date().getTime() / 1000;
 
-export const IMAGE_FILE_NAME_PATTERN = RegExp(
-  `\.(${ImageFormats.join('|')})$`,
-  'i',
-);
+export const IMAGE_FILE_NAME_PATTERN = `\.(${ImageFormats.join('|')})$`;
 
-export const CERTIFICATES_FILE_NAME_PATTERN = RegExp(`\.pdf$`, 'i');
+export const CERTIFICATES_FILE_NAME_PATTERN = `\.pdf$`;
 
 export const NAME_VALIDATION_MESSAGE = `$property: Имя должно иметь длину от ${NAME_LENGTH.MIN} до ${NAME_LENGTH.MAX} символов русского/английского алфавита`;
 export const EMAIL_VALIDATION_MESSAGE =
