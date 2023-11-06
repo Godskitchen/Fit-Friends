@@ -13,3 +13,4 @@ export type SortDirection = (typeof SortDirection)[keyof typeof SortDirection];
 
 export const DEFAULT_SORT_DIRECTION = 'desc';
 export const MAX_ITEMS_LIMIT = 50;
+export const MIN_PAGE_NUMBER = 1;

@@ -5,6 +5,7 @@ import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
 
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { REFRESH_TOKEN_NAME } from './auth';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -15,7 +16,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .addBearerAuth()
-    .addCookieAuth()
+    .addCookieAuth(REFRESH_TOKEN_NAME)
     .setTitle('The «Fit Friends» service')
     .setDescription('service API')
     .setVersion('1.0')

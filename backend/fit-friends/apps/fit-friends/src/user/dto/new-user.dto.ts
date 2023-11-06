@@ -62,7 +62,6 @@ export class NewUserDto {
     )}. При отсутствии свойства, пользователю будет предоставлен аватар по умолчанию`,
     pattern: IMAGE_FILE_NAME_PATTERN,
     example: 'avatar.jpg',
-    required: false,
   })
   @Matches(RegExp(IMAGE_FILE_NAME_PATTERN, 'i'), {
     message: IMAGE_FILE_VALIDATION_MESSAGE,
@@ -105,7 +104,7 @@ export class NewUserDto {
     description: 'Описание пользователя',
     minimum: ABOUT_INFO_LENGTH.MIN,
     maximum: ABOUT_INFO_LENGTH.MAX,
-    example: 'Подробное описание нового пользователя',
+    example: 'Подробное описание пользователя',
   })
   @Length(ABOUT_INFO_LENGTH.MIN, ABOUT_INFO_LENGTH.MAX, {
     message: ABOUT_INFO_VALIDATION_MESSAGE,

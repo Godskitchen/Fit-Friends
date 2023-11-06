@@ -2,10 +2,11 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Post,
   Req,
   Res,
-  UnauthorizedException,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
@@ -17,7 +18,7 @@ import {
   RequestWithUserInfo,
 } from '@libs/shared/app-types';
 import { Response } from 'express';
-import { AuthErrors, Token } from '@libs/shared/common';
+import { Token } from '@libs/shared/common';
 import {
   JwtAccessGuard,
   JwtRefreshGuard,
@@ -26,8 +27,10 @@ import {
 } from '@libs/shared/guards';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiConflictResponse,
+  ApiCookieAuth,
   ApiCreatedResponse,
   ApiForbiddenResponse,
   ApiHeader,
@@ -35,6 +38,8 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { REFRESH_TOKEN_NAME } from './auth.constants';
+import { AccessTokenRdo } from './rdo/access-token.rdo';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -80,6 +85,17 @@ export class AuthController {
     description:
       'Пользователь успешно авторизован. Получен новый JWT access token или актуальный token, если он был передан в заголовке авторизации. Новый JWT Refresh token устанавливается в cookies',
     type: AuthUserRdo,
+    headers: {
+      'Set-Cookie': {
+        example: `${REFRESH_TOKEN_NAME}=somerefreshtokenvalue`,
+        description: 'Установка refresh token в cookie',
+      },
+    },
+  })
+  @ApiHeader({
+    name: 'Authorization',
+    required: false,
+    description: 'Необязательная передача актуального access token',
   })
   @ApiUnauthorizedResponse({ description: 'Неверный email или пароль' })
   @ApiBadRequestResponse({
@@ -88,6 +104,7 @@ export class AuthController {
   @ApiBody({ type: LoginUserDto })
   @UseGuards(LocalAuthGuard)
   @Post('/login')
+  @HttpCode(HttpStatus.OK)
   public async login(
     @Token() accessToken: string | null,
     @Req() { user }: RequestWithUserInfo,
@@ -112,8 +129,25 @@ export class AuthController {
     ]);
   }
 
+  @ApiCookieAuth()
+  @ApiUnauthorizedResponse({
+    description:
+      'В cookie передан невалидный refresh token или не передан вовсе.',
+  })
+  @ApiOkResponse({
+    description:
+      'Получен новый JWT access token. Новый JWT Refresh token устанавливается в cookies',
+    type: AccessTokenRdo,
+    headers: {
+      'Set-Cookie': {
+        example: `${REFRESH_TOKEN_NAME}=somerefreshtokenvalue`,
+        description: 'Установка refresh token в cookie',
+      },
+    },
+  })
   @Post('/refresh')
   @UseGuards(JwtRefreshGuard)
+  @HttpCode(HttpStatus.OK)
   public async refreshTokens(
     @Req() { user }: RequestWithRefreshTokenPayload,
     @Res({ passthrough: true }) response: Response,
@@ -126,13 +160,18 @@ export class AuthController {
     return accessToken;
   }
 
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    description:
+      'Пользователь успешно авторизован, его access token актуален. Он же возвращается клиенту',
+    type: AccessTokenRdo,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Передан невалидный access token или не передан вовсе.',
+  })
   @Get('/')
   @UseGuards(JwtAccessGuard)
-  public async checkAuth(@Token() accessToken: string | null) {
-    if (!accessToken) {
-      throw new UnauthorizedException(AuthErrors.ACCESS_DENIED);
-    }
-
+  public async checkAuth(@Token() accessToken: string) {
     return { accessToken };
   }
 }

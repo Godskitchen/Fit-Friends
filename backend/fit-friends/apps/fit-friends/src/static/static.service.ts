@@ -63,8 +63,6 @@ export class StaticService {
       fileName: writedFile.fileName,
     });
 
-    await this.getDefaultBackgroundImage('trainings');
-
     const newFile = await this.fileDataRepository.create(fileData);
     return this.getFullStaticPath(newFile.path);
   }

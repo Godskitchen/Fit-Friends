@@ -3,6 +3,11 @@ export const MAX_FILE_AVATAR_SIZE = 1048576;
 export const imageExtensions = ['jpeg', 'jpg', 'png'];
 export const certificateExtensions = ['pdf'];
 export const videoExtensions = ['mov', 'avi', 'mp4'];
+export const FieldNames = {
+  AVATAR: 'avatar',
+  CERTIFICATE: 'certificate',
+  TRAINING_VIDEO: 'training-video',
+} as const;
 
 export const EXTENSION_PATTERN = /\.[0-9a-z]+$/i;
 export const FILENAME_PATTERN = /[^/\\]+$/;

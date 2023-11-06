@@ -29,7 +29,9 @@ export class FriendGuard implements CanActivate {
     }
 
     if (userId === friendId) {
-      throw new BadRequestException(UserErrors.FORBIDDEN_ADD_FRIEND_YOURSELF);
+      throw new BadRequestException(
+        UserErrors.FORBIDDEN_ADD_REMOVE_FRIEND_YOURSELF,
+      );
     }
     const friend = await this.userRepository.findById(friendId);
     if (!friend) {
