@@ -53,10 +53,6 @@ export const GENDER_VALIDATION_MESSAGE = `$property: Пол пользовате
   Gender,
 ).join(', ')}`;
 
-export const IMAGE_FILE_VALIDATION_MESSAGE = `$property: Изображения должны иметь один из следующих форматов: ${ImageFormats.join(
-  ', ',
-)}`;
-
 export const VIDEO_FILE_VALIDATION_MESSAGE = `$property: Видео должно иметь один из следующих форматов: ${VideoFormats.join(
   ', ',
 )}`;
