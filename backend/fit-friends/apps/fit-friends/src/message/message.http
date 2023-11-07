@@ -1,12 +1,12 @@
-@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiTmFtZdCi0YDQtdC90LXRgNCwIiwiZW1haWwiOiJ0ZXN0NUBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTg1MzQ2NDUsImV4cCI6MTY5ODYyMTA0NX0.I2srkl5sk-X_UHy2XQMebgBW1VJWOY1zzjU81jlK3NI
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsIm5hbWUiOiLQodCw0LLQtdC70LjQuSIsImVtYWlsIjoiaW5hZGVyQGh5YXR0LmNvbSIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNjk5MzExMTc2LCJleHAiOjE2OTkzOTc1NzZ9.M4YiYlttkDoAQylUtQPak0Prk5AN6dLg7cSls8iE9Z8
 #get user messages
 GET http://localhost:4000/api/messages HTTP/1.1
 Authorization: {{token}}
 
 ###
 
-#get user messages
-DELETE http://localhost:4000/api/messages/ HTTP/1.1
+#delete user message
+DELETE http://localhost:4000/api/messages/66bce12e-45a8-410c-991f-7254db89f6be HTTP/1.1
 Authorization: {{token}}
 
 ###

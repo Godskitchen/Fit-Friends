@@ -31,10 +31,7 @@ export const IMAGE_FILE_NAME_PATTERN = RegExp(
 
 export const VideoFormats = ['mov', 'avi', 'mp4'];
 
-export const VIDEO_FILE_NAME_PATTERN = RegExp(
-  `\.(${VideoFormats.join('|')})$`,
-  'i',
-);
+export const VIDEO_FILE_NAME_PATTERN = `\.(${VideoFormats.join('|')})$`;
 
 export const TITLE_VALIDATION_MESSAGE = `$property: Наименование должно иметь длину от ${TITLE_LENGTH.MIN} до ${TITLE_LENGTH.MAX} символов`;
 export const FITNESS_LEVEL_VALIDATION_MESSAGE = `$property: Уровень подготовки может принимать только следующие значения: ${Object.values(

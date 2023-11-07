@@ -1,6 +1,5 @@
 import { RequestWithAccessTokenPayload, Role } from '@libs/shared/app-types';
 import {
-  CreateBalanceGuard,
   JwtAccessGuard,
   ModifyBalanceGuard,
   RoleGuard,
@@ -10,43 +9,46 @@ import {
   Controller,
   Get,
   Patch,
-  Post,
   Query,
   Req,
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
-import { CreateBalanceDto } from './dto/create-balance.dto';
 import { BalanceService } from './balance.service';
 import { Roles } from '@libs/shared/common';
 import { fillRDO } from '@libs/shared/helpers';
 import { BalanceRdo } from './rdo/balance.rdo';
 import { UpdateBalanceDto } from './dto/update-balance.dto';
 import { BalanceQuery } from './queries/balance.query';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
 @UseGuards(JwtAccessGuard, RoleGuard)
-@Controller('/balance')
+@ApiTags('balance')
+@ApiBearerAuth()
+@ApiUnauthorizedResponse({
+  description: 'Пользователь неавторизован',
+})
+@Controller('balance')
 export class BalanceController {
   constructor(private readonly balanceService: BalanceService) {}
 
-  @Post('/create')
-  @UseGuards(CreateBalanceGuard)
-  @Roles(Role.User)
-  public async createBalance(
-    @Req() { user }: RequestWithAccessTokenPayload,
-    @Body(
-      new ValidationPipe({
-        whitelist: true,
-        transform: true,
-      }),
-    )
-    dto: CreateBalanceDto,
-  ) {
-    const newBalance = await this.balanceService.create(user.sub, dto);
-    return fillRDO(BalanceRdo, newBalance);
-  }
-
   @Patch('/update')
+  @ApiOkResponse({
+    description: 'Получена информация об измененном балансе пользователя',
+    type: BalanceRdo,
+  })
+  @ApiBadRequestResponse({ description: 'Не пройдена валидация полей DTO' })
+  @ApiForbiddenResponse({
+    description:
+      'Маршрут доступен только обычному пользователю. Запрещено изменять баланс другого пользователя',
+  })
   @UseGuards(ModifyBalanceGuard)
   @Roles(Role.User)
   public async updateBalance(
@@ -62,6 +64,16 @@ export class BalanceController {
     return fillRDO(BalanceRdo, balance);
   }
 
+  @ApiOkResponse({
+    description: 'Получен список балансов пользователя',
+    type: [BalanceRdo],
+  })
+  @ApiBadRequestResponse({
+    description: 'Не пройдена валидация полей query',
+  })
+  @ApiForbiddenResponse({
+    description: 'Маршрут доступен только обычному пользователю',
+  })
   @Get('/mylist')
   @Roles(Role.User)
   public async getUserBalance(

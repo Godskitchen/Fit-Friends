@@ -1,4 +1,8 @@
-import { RequestWithAccessTokenPayload, Role } from '@libs/shared/app-types';
+import {
+  MAX_ITEMS_LIMIT,
+  RequestWithAccessTokenPayload,
+  Role,
+} from '@libs/shared/app-types';
 import { Roles } from '@libs/shared/common';
 import {
   JwtAccessGuard,
@@ -25,13 +29,39 @@ import { TrainingRdo } from './rdo/training.rdo';
 import { UpdateTrainingDto } from './dto/update-training.dto';
 import { UserTrainingsQuery } from './queries/user-training.query';
 import { GeneralTrainingQuery } from './queries/general-training.query';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
 @UseGuards(JwtAccessGuard)
-@Controller('/trainings')
+@ApiTags('trainings')
+@ApiBearerAuth()
+@ApiUnauthorizedResponse({
+  description: 'Пользователь неавторизован',
+})
+@Controller('trainings')
 export class TrainingController {
   constructor(private readonly trainingService: TrainingService) {}
 
   @Post('/create')
+  @ApiCreatedResponse({
+    description: 'Новая тренировка успешно создана',
+    type: TrainingRdo,
+  })
+  @ApiBadRequestResponse({
+    description: 'Не пройдена валидация полей DTO',
+  })
+  @ApiForbiddenResponse({
+    description: 'Создание тренировки доступно только "тренерам"',
+  })
   @Roles(Role.Trainer)
   @UseGuards(RoleGuard)
   public async createTraining(
@@ -44,6 +74,20 @@ export class TrainingController {
   }
 
   @Get('/details/:trainingId')
+  @ApiOkResponse({
+    description: 'Получена информация о выбранной тренировке',
+    type: TrainingRdo,
+  })
+  @ApiBadRequestResponse({
+    description: 'Некорректный id тренировки',
+  })
+  @ApiNotFoundResponse({
+    description: 'Тренировка с таким id не найдена',
+  })
+  @ApiParam({
+    name: 'trainingId',
+    description: 'id тренировки - целое положительное число',
+  })
   public async getTrainingDetails(
     @Param('trainingId', ParseIntPipe) id: number,
   ) {
@@ -52,6 +96,23 @@ export class TrainingController {
   }
 
   @Patch('/update/:trainingId')
+  @ApiOkResponse({
+    description: 'Получена обновленная информация о выбранной тренировке',
+    type: TrainingRdo,
+  })
+  @ApiNotFoundResponse({
+    description: 'Тренировка с таким id не найдена.',
+  })
+  @ApiBadRequestResponse({
+    description: 'Некорректный id тренировки. Не пройдена валидация полей DTO',
+  })
+  @ApiForbiddenResponse({
+    description: 'Нельзя изменять тренировку другого пользователя.',
+  })
+  @ApiParam({
+    name: 'trainingId',
+    description: 'id тренировки - целое положительное число',
+  })
   @Roles(Role.Trainer)
   @UseGuards(RoleGuard, ModifyTrainingGuard)
   public async updateTrainingInfo(
@@ -64,6 +125,13 @@ export class TrainingController {
   }
 
   @Get('/')
+  @ApiOkResponse({
+    description: `Получен список тренировок. По умолчанию возвращается ${MAX_ITEMS_LIMIT} тренировок`,
+    type: [TrainingRdo],
+  })
+  @ApiBadRequestResponse({
+    description: 'Не пройдена валдиация полей query',
+  })
   public async getTrainingsCatalog(
     @Query(new ValidationPipe({ transform: true, whitelist: true }))
     query: GeneralTrainingQuery,
@@ -73,6 +141,16 @@ export class TrainingController {
   }
 
   @Get('/mylist')
+  @ApiOkResponse({
+    description: `Получен список тренировок тренера. По умолчанию возвращается ${MAX_ITEMS_LIMIT} тренировок`,
+    type: [TrainingRdo],
+  })
+  @ApiBadRequestResponse({
+    description: 'Не пройдена валдиация полей query',
+  })
+  @ApiForbiddenResponse({
+    description: 'Маршрут доступен только "тренерам"',
+  })
   @Roles(Role.Trainer)
   @UseGuards(RoleGuard)
   public async getTrainerTrainingsList(

@@ -47,7 +47,7 @@ export class CreateRequestGuard implements CanActivate {
       (recepient.userProfile &&
         recepient.userProfile.readyForWorkout === false) ||
       (recepient.trainerProfile &&
-        recepient.trainerProfile?.readyForWorkout === false)
+        recepient.trainerProfile.readyForWorkout === false)
     ) {
       throw new BadRequestException(
         TrainingRequestErrors.RECEPIENT_IS_NOT_READY,

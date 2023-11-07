@@ -23,15 +23,44 @@ import {
   createUpdateStatusMessage,
 } from './constants';
 import { UpdateStatusDto } from './dto/update-status.dto';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
 @Controller('training-requests')
+@ApiTags('training-requests')
+@ApiBearerAuth()
+@ApiUnauthorizedResponse({
+  description: 'Пользователь неавторизован',
+})
 @UseGuards(JwtAccessGuard)
 export class TrainingRequestController {
   constructor(
     private readonly trainingRequestService: TrainingRequestService,
   ) {}
 
+  @ApiOkResponse({
+    description: 'Заявка на тренировку успешно отправлена другу.',
+  })
   @Post('/create/:recepientId')
+  @ApiBadRequestResponse({
+    description:
+      'Невозможно отправить заявку самому себе. Получатель с указанным id не существует. Получатель не в друзьях у отправителя. Получатель не готов к тренировкам. Получатель ещё не ответил на последнюю заявку',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'Отправлять заявки на тренировку могут только обычные пользователи.',
+  })
+  @ApiParam({
+    name: 'recepientId',
+    description: 'id получателя - целое положительное число',
+  })
   @UseGuards(RoleGuard, CreateRequestGuard)
   @Roles(Role.User)
   public async createRequest(
@@ -49,6 +78,17 @@ export class TrainingRequestController {
     };
   }
 
+  @ApiOkResponse({
+    description: 'Полученная заявка на тренировку отклонена или принята.',
+  })
+  @ApiBadRequestResponse({
+    description:
+      'Заявка с выбранным id не найдена. Передан некорректный новый статус заявки.',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'Нельзя изменить статус заявки, отправленной другому пользователю.',
+  })
   @Patch('/update')
   @UseGuards(ModifyRequestStatusGuard)
   public async updateStatusRequest(

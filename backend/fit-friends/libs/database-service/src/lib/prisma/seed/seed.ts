@@ -25,7 +25,7 @@ import {
 const prisma = new PrismaClient();
 
 async function seed() {
-  const seedingApp = await NestFactory.create(SeedModule);
+  const seedingApp = await NestFactory.create(SeedModule, { logger: false });
   const configService = seedingApp.get(ConfigService);
 
   const host = configService.getOrThrow<string>('application.host');

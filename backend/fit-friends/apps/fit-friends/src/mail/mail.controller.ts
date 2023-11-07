@@ -19,12 +19,38 @@ import {
   createAddSubscriptionMessage,
   createRemoveSubscriptionMessage,
 } from '@libs/shared/helpers';
+import {
+  ApiBadRequestResponse,
+  ApiConflictResponse,
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
 @Controller('subscriptions')
+@ApiTags('subscriptions')
+@ApiUnauthorizedResponse({ description: 'Пользователь не авторизован' })
+@ApiForbiddenResponse({
+  description: 'Оформлять подписку могу только обычные пользователи',
+})
 @UseGuards(JwtAccessGuard, RoleGuard, SubscriptionGuard)
 export class MailController {
   constructor(private readonly mailservice: MailService) {}
 
+  @ApiOkResponse({ description: 'Подписка на тренера успешно оформлена' })
+  @ApiBadRequestResponse({
+    description:
+      'Тренер с выбранным id не найден. Пользователь с выбранным id не является тренером.',
+  })
+  @ApiConflictResponse({
+    description: 'Подписка на данного тренера уже оформлена',
+  })
+  @ApiParam({
+    name: 'trainerId',
+    description: 'id тренера - целое положительное число',
+  })
   @Post('/add/:trainerId')
   @Roles(Role.User)
   public async subscribeToTrainer(
@@ -35,6 +61,15 @@ export class MailController {
     return { message: createAddSubscriptionMessage(trainerId) };
   }
 
+  @ApiOkResponse({ description: 'Подписка на тренера успешно удалена' })
+  @ApiBadRequestResponse({
+    description:
+      'Тренер с выбранным id не найден. Пользователь с выбранным id не является тренером. Подписка на тренера ранее не оформлялась',
+  })
+  @ApiParam({
+    name: 'trainerId',
+    description: 'id тренера - целое положительное число',
+  })
   @Delete('/remove/:trainerId')
   @Roles(Role.User)
   public async unsubscribeToTrainer(

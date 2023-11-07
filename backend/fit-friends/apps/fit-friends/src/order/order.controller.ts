@@ -1,4 +1,8 @@
-import { RequestWithAccessTokenPayload, Role } from '@libs/shared/app-types';
+import {
+  MAX_ITEMS_LIMIT,
+  RequestWithAccessTokenPayload,
+  Role,
+} from '@libs/shared/app-types';
 import { Roles } from '@libs/shared/common';
 import { JwtAccessGuard, RoleGuard } from '@libs/shared/guards';
 import {
@@ -16,12 +20,37 @@ import { OrderService } from './order.service';
 import { fillRDO } from '@libs/shared/helpers';
 import { OrderRdo } from './rdo/order.rdo';
 import { OrderQuery } from './queries/order.query';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
+@ApiTags('orders')
+@ApiBearerAuth()
+@ApiUnauthorizedResponse({
+  description: 'Пользователь неавторизован',
+})
 @UseGuards(JwtAccessGuard, RoleGuard)
-@Controller('/orders')
+@Controller('orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
+  @ApiCreatedResponse({
+    description: 'Заказ создан успешно. Получена информация о заказе',
+    type: OrderRdo,
+  })
+  @ApiForbiddenResponse({
+    description: 'Данный маршрут доступен только обычным пользователям',
+  })
+  @ApiBadRequestResponse({
+    description:
+      'Не пройдена валидация полей DTO. Тренировка с указанным id не найдена',
+  })
   @Roles(Role.User)
   @Post('/create')
   public async createOrder(
@@ -33,6 +62,16 @@ export class OrderController {
     return fillRDO(OrderRdo, newOrder);
   }
 
+  @ApiOkResponse({
+    description: `Получен список заказов, приобретенных у данного тренера. По умолчанию возвращается ${MAX_ITEMS_LIMIT} заказов`,
+    type: [OrderRdo],
+  })
+  @ApiForbiddenResponse({
+    description: 'Данный маршрут доступен только тренерам',
+  })
+  @ApiBadRequestResponse({
+    description: 'Не пройдена валидация полей query',
+  })
   @Roles(Role.Trainer)
   @Get('/mylist')
   public async getOrderList(

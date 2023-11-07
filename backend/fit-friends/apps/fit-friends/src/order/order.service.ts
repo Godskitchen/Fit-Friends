@@ -1,11 +1,13 @@
 import {
+  BalanceRepository,
   OrderEntity,
   OrderRepository,
   TrainingRepository,
+  UserBalanceEntity,
 } from '@libs/database-service';
 import { NewOrderDto } from './dto/new-order.dto';
 import { TrainingErrors } from '@libs/shared/common';
-import { Inject, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject } from '@nestjs/common';
 import { OrderQuery } from './queries/order.query';
 
 export class OrderService {
@@ -13,6 +15,7 @@ export class OrderService {
     private readonly orderRepository: OrderRepository,
     @Inject(TrainingRepository)
     private readonly trainingRepository: TrainingRepository,
+    private readonly balanceRepository: BalanceRepository,
   ) {}
 
   public async create(
@@ -22,13 +25,13 @@ export class OrderService {
     const training = await this.trainingRepository.findById(trainingId);
 
     if (!training) {
-      throw new NotFoundException(TrainingErrors.TRAINING_NOT_FOUND);
+      throw new BadRequestException(TrainingErrors.TRAINING_NOT_FOUND);
     }
 
     const price = training.price;
     const sum = price * trainingCount;
 
-    return this.orderRepository.create(
+    const order = await this.orderRepository.create(
       new OrderEntity({
         orderType,
         trainingId,
@@ -39,6 +42,15 @@ export class OrderService {
         customerId: userId,
       }),
     );
+
+    await this.balanceRepository.createOrUpdate(
+      new UserBalanceEntity({
+        userId,
+        trainingId,
+        remainingAmount: trainingCount,
+      }),
+    );
+    return order;
   }
 
   public async getByUserId(trainerId: number, query: OrderQuery) {

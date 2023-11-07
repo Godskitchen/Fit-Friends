@@ -22,6 +22,7 @@ import { Roles } from '@libs/shared/common';
 import { Role } from '@libs/shared/app-types';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
   ApiCreatedResponse,
@@ -29,7 +30,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { AvatarDTO, CertificateDTO, TrainingVideoDTO } from './dto/static.dto';
+import { AvatarDto, CertificateDto, TrainingVideoDto } from './dto/static.dto';
 
 @ApiTags('static')
 @Controller('static')
@@ -49,7 +50,7 @@ export class StaticController {
     }`,
   })
   @ApiConsumes('multipart/form-data')
-  @ApiBody({ description: 'Изображение аватара', type: AvatarDTO })
+  @ApiBody({ description: 'Изображение аватара', type: AvatarDto })
   @Post('/upload/avatar')
   @UseInterceptors(FileInterceptor(FieldNames.AVATAR))
   public async uploadAvatar(
@@ -83,7 +84,7 @@ export class StaticController {
     )}. Параметр fieldName у input должен быть равен ${FieldNames.CERTIFICATE}`,
   })
   @ApiConsumes('multipart/form-data')
-  @ApiBody({ description: 'Файл сертификата', type: CertificateDTO })
+  @ApiBody({ description: 'Файл сертификата', type: CertificateDto })
   @Post('/upload/certificate')
   @UseInterceptors(FileInterceptor(FieldNames.CERTIFICATE))
   public async uploadCertificate(
@@ -124,7 +125,8 @@ export class StaticController {
     description: 'Загружать тренировки могут только "тренера"',
   })
   @ApiConsumes('multipart/form-data')
-  @ApiBody({ description: 'Видео тренировки', type: TrainingVideoDTO })
+  @ApiBody({ description: 'Видео тренировки', type: TrainingVideoDto })
+  @ApiBearerAuth()
   @Post('/upload/training-video')
   @UseGuards(JwtAccessGuard, RoleGuard)
   @Roles(Role.Trainer)

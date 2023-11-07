@@ -6,17 +6,34 @@ import {
   TEXT_VALIDATION_MESSAGE,
   TRAINING_ID_VALIDATION_MESSAGE,
 } from './constants';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class NewReplyDto {
+  @ApiProperty({
+    description: 'id тренировки. Целое положительное число',
+    example: 2,
+  })
   @IsPositive({ message: TRAINING_ID_VALIDATION_MESSAGE })
   @IsInt({ message: TRAINING_ID_VALIDATION_MESSAGE })
   trainingId: number;
 
+  @ApiProperty({
+    description: `Оценка тренировки. Целое число от ${RATING_VALUE.MIN} до ${RATING_VALUE.MAX}`,
+    maximum: RATING_VALUE.MAX,
+    minimum: RATING_VALUE.MIN,
+    example: RATING_VALUE.MAX,
+  })
   @Max(RATING_VALUE.MAX, { message: RATING_VALIDATION_MESSAGE })
   @Min(RATING_VALUE.MIN, { message: RATING_VALIDATION_MESSAGE })
   @IsInt({ message: RATING_VALIDATION_MESSAGE })
   rating: number;
 
+  @ApiProperty({
+    description: `Текст отзыва о тренировки. Длина от ${TEXT_LENGTH.MIN} до ${TEXT_LENGTH.MAX} символов`,
+    minLength: TEXT_LENGTH.MIN,
+    maxLength: TEXT_LENGTH.MAX,
+    example: 'Очень хорошая тренировка, стоит своих денег',
+  })
   @Length(TEXT_LENGTH.MIN, TEXT_LENGTH.MAX, {
     message: TEXT_VALIDATION_MESSAGE,
   })

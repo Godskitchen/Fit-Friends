@@ -1,15 +1,4 @@
-@user1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsIm5hbWUiOiJVc2VyT25lIiwiZW1haWwiOiJ1c2VyMUBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE2OTg2OTM2OTIsImV4cCI6MTY5ODc4MDA5Mn0.vohx7yWn_LJpNs7J9ClgZIqvFvYczfL0h0aU1df4DlY
-# create new balance
-POST http://localhost:4000/api/balance/create HTTP/1.1
-Authorization: {{user1}}
-Content-Type: application/json
-
-{
-  "trainingId": 1,
-  "remainingAmount": 2
-}
-
-###
+@user1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwLCJuYW1lIjoi0JLQu9Cw0LTQuNGB0LvQsNCyIiwiZW1haWwiOiJhbHlzaGEud2Fsa2VyQGpvaG5zLmJpeiIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNjk5MzA4OTMzLCJleHAiOjE2OTkzOTUzMzN9.G-8XHoq84NPRe3ECAw5zKN8rkTOP9xP-l_dUYMjzTQY
 
 # update balance
 PATCH  http://localhost:4000/api/balance/update HTTP/1.1

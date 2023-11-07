@@ -15,14 +15,20 @@ export class BalanceRepository {
     this.prismaConnector = dbService.prismaPostgresConnector;
   }
 
-  public async create(item: UserBalanceEntity): Promise<UserBalance> {
+  public async createOrUpdate(item: UserBalanceEntity): Promise<UserBalance> {
     const { userId, trainingId, remainingAmount } = item.toObject();
 
-    return this.prismaConnector.userBalance.create({
-      data: {
+    return this.prismaConnector.userBalance.upsert({
+      where: {
+        userId_trainingId: { userId, trainingId },
+      },
+      create: {
         remainingAmount,
         user: { connect: { userId } },
         training: { connect: { trainingId } },
+      },
+      update: {
+        remainingAmount: { increment: remainingAmount },
       },
       include: { training: true },
     });

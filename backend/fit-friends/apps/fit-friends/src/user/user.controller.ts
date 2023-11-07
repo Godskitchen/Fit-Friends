@@ -168,6 +168,7 @@ export class UserController {
 
   @ApiOkResponse({
     description: `Получен список друзей пользователя. По умолчанию возвращается ${MAX_ITEMS_LIMIT} пользователей`,
+    type: [FriendRdo],
   })
   @ApiBadRequestResponse({
     description: 'Не пройдена валидация полей query',
