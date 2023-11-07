@@ -42,6 +42,10 @@ async function seed() {
     'replies',
     'subscribers',
     '_subscriptions',
+    '_friends',
+    'user_balances',
+    'training_requests',
+    'refresh_tokens_data',
   ];
 
   for (const tableName of tableNames) {
