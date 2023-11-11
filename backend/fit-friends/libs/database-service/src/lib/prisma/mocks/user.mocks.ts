@@ -58,23 +58,23 @@ export const ABOUT_INFO = [
 ];
 
 export const BACK_USER_IMAGES = [
-  'default/users/user-1.png',
-  'default/users/user-2.png',
-  'default/users/user-3.png',
-  'default/users/user-4.png',
+  'users/backs/user-1.png',
+  'users/backs/user-2.png',
+  'users/backs/user-3.png',
+  'users/backs/user-4.png',
 ];
 
 export const PASSWORD = 'mockpass';
 
-export const AVATAR = 'default/users/avatar.png';
+export const AVATAR = 'users/avatar/avatar.png';
 
 export const CERTIFICATES = [
-  'default/certificates/1.pdf',
-  'default/certificates/2.pdf',
-  'default/certificates/3.pdf',
-  'default/certificates/4.pdf',
-  'default/certificates/5.pdf',
-  'default/certificates/6.pdf',
+  'certificates/1.pdf',
+  'certificates/2.pdf',
+  'certificates/3.pdf',
+  'certificates/4.pdf',
+  'certificates/5.pdf',
+  'certificates/6.pdf',
 ];
 
 export const ACHIEVEMENTS = [

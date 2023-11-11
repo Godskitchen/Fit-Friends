@@ -28,14 +28,14 @@ export const DESCRIPTIONS = [
   'Упражнения, объединяющие физическую активность и ментальную осведомленность для гармонии.',
 ];
 
-export const TRAINING_VIDEO = 'default/trainings/video.mov';
+export const TRAINING_VIDEO = 'trainings/video/video.mov';
 
 export const BACK_TRAINING_IMAGES = [
-  'default/trainings/training1.png',
-  'default/trainings/training2.png',
-  'default/trainings/training3.png',
-  'default/trainings/training4.png',
-  'default/trainings/training5.png',
-  'default/trainings/training6.png',
-  'default/trainings/training7.png',
+  'trainings/backs/training1.png',
+  'trainings/backs/training2.png',
+  'trainings/backs/training3.png',
+  'trainings/backs/training4.png',
+  'trainings/backs/training5.png',
+  'trainings/backs/training6.png',
+  'trainings/backs/training7.png',
 ];

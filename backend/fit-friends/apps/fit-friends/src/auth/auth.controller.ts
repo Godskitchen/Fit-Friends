@@ -11,7 +11,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { NewUserDto, UserRdo, AuthUserRdo, LoginUserDto } from '@app/user';
+import { NewUserDto, AuthUserRdo, LoginUserDto } from '@app/user';
 import { fillRDO } from '@libs/shared/helpers';
 import {
   RequestWithRefreshTokenPayload,
@@ -52,8 +52,15 @@ export class AuthController {
     description: 'Заголовок авторизации не должен присутствовать',
   })
   @ApiCreatedResponse({
-    description: 'Новый пользователь успешно создан.',
-    type: UserRdo,
+    description:
+      'Новый пользователь успешно создан. Получен новый JWT access token. Новый JWT Refresh token устанавливается в cookies',
+    type: AuthUserRdo,
+    headers: {
+      'Set-Cookie': {
+        example: `${REFRESH_TOKEN_NAME}=somerefreshtokenvalue`,
+        description: 'Установка refresh token в cookie',
+      },
+    },
   })
   @ApiForbiddenResponse({
     description: 'Маршрут доступен только для анонимных пользователей.',
@@ -75,10 +82,16 @@ export class AuthController {
       }),
     )
     dto: NewUserDto,
+    @Res({ passthrough: true }) response: Response,
   ) {
     const newUser = await this.authService.register(dto);
 
-    return fillRDO(UserRdo, newUser, [newUser.role]);
+    const newAccessToken = await this.authService.createNewTokens(
+      newUser,
+      response,
+    );
+
+    return fillRDO(AuthUserRdo, Object.assign(newUser, newAccessToken));
   }
 
   @ApiOkResponse({

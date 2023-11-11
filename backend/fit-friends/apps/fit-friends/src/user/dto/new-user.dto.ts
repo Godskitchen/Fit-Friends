@@ -1,6 +1,4 @@
 import { Gender, Role, Location } from '@libs/shared/app-types';
-import { UserProfileDto } from './user-profile.dto';
-import { TrainerProfileDto } from './trainer-profile.dto';
 import {
   IsDate,
   IsEmail,
@@ -9,7 +7,6 @@ import {
   Length,
   Matches,
   MaxDate,
-  ValidateNested,
   isDateString,
   maxLength,
 } from 'class-validator';
@@ -34,9 +31,8 @@ import {
   PASSWORD_VALIDATION_MESSAGE,
   ROLE_VALIDATION_MESSAGE,
 } from './constants';
-import { Transform, Type } from 'class-transformer';
+import { Transform } from 'class-transformer';
 import dayjs from 'dayjs';
-import { IsRedundant } from '@libs/shared/validate-decorators';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class NewUserDto {
@@ -140,24 +136,4 @@ export class NewUserDto {
   })
   @IsEnum(Location, { message: LOCATION_VALIDATION_MESSAGE })
   location: Location;
-
-  @ApiPropertyOptional({
-    description: `Опросник для пользователя. Свойство допускается только для пользователя с ролью ${Role.User}`,
-    type: [UserProfileDto],
-  })
-  @ValidateNested()
-  @IsRedundant()
-  @Type(() => UserProfileDto)
-  @IsOptional()
-  userProfile?: UserProfileDto;
-
-  @ApiPropertyOptional({
-    description: `Опросник для тренера. Свойство допускается только для пользователя с ролью ${Role.Trainer}`,
-    type: [TrainerProfileDto],
-  })
-  @ValidateNested()
-  @IsRedundant()
-  @Type(() => TrainerProfileDto)
-  @IsOptional()
-  trainerProfile?: TrainerProfileDto;
 }

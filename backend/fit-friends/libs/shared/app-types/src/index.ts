@@ -14,6 +14,7 @@ export * from './lib/interfaces/training-request.interface';
 export * from './lib/interfaces/reply.interface';
 
 export * from './lib/token-payload.type';
+export * from './lib/create-profile-data.type';
 export * from './lib/update-user-data.type';
 export * from './lib/update-training-data.type';
 export * from './lib/balance-data.type';

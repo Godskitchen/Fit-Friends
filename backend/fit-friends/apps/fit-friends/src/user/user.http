@@ -1,27 +1,63 @@
 
-@user1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwLCJuYW1lIjoi0JLQu9Cw0LTQuNGB0LvQsNCyIiwiZW1haWwiOiJhbHlzaGEud2Fsa2VyQGpvaG5zLmJpeiIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNjk5MzA4OTMzLCJleHAiOjE2OTkzOTUzMzN9.G-8XHoq84NPRe3ECAw5zKN8rkTOP9xP-l_dUYMjzTQY
+@user1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiVXNlck9uZSIsImVtYWlsIjoidXNlcjRAbWFpbC5sb2NhbCIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNjk5NzEyNjQ2LCJleHAiOjE2OTk3OTkwNDZ9.x5uWe8CZmnMVJWp1WXmxM_wI5tFmPnrK9VM9uiU2HlA
 @user2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsIm5hbWUiOiJVc2VyVHdvIiwiZW1haWwiOiJ1c2VyMkBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE2OTg2OTM3MjEsImV4cCI6MTY5ODc4MDEyMX0.QmISBWF2Jo-2xurspDnw69vs_UIXEKfyj_d6928Cxkk
 
 @user3 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsIm5hbWUiOiLQodCw0LLQtdC70LjQuSIsImVtYWlsIjoiaW5hZGVyQGh5YXR0LmNvbSIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNjk5MzExMTc2LCJleHAiOjE2OTkzOTc1NzZ9.M4YiYlttkDoAQylUtQPak0Prk5AN6dLg7cSls8iE9Z8
 
+@trainer1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE0LCJuYW1lIjoiVHJhaW5lck9uZSIsImVtYWlsIjoidHJhaW5lcjFAbWFpbC5sb2NhbCIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNjk5NzEzNDkwLCJleHAiOjE2OTk3OTk4OTB9.gxmmBdxiYr0gJMV2h1J6rIn0uOwf79wbO4q7Jdjqbmc
 # get user info
 GET  http://localhost:4000/api/users/details/3 HTTP/1.1
 
 ###
 
-# update user profile
-PATCH http://localhost:4000/api/users/details/5 HTTP/1.1
+# create user profile
+POST http://localhost:4000/api/users/details/13/create HTTP/1.1
+Authorization: {{user1}}
+Content-Type: application/json
+
+{
+  "userProfile": {
+    "fitnessLevel": "Pro",
+    "trainingType": ["Yoga", "Stretching"],
+    "caloriesToBurn": 1000,
+    "trainingDuration": "ThirtyToFiftyMinutes",
+    "dailyCaloriesIntake": 5000,
+    "readyForWorkout": true
+  }
+}
+
+###
+
+# create trainer profile
+POST http://localhost:4000/api/users/details/14/create HTTP/1.1
+Authorization: {{trainer1}}
+Content-Type: application/json
+
+{
+"trainerProfile": {
+    "fitnessLevel": "Beginner",
+    "trainingType": ["Yoga"],
+    "certificates": "2e512406-0cb7-4112-9707-9161aa7cbfe9.pdf",
+    "achievements": "Описание тренерских заслуг",
+    "readyForWorkout": false
+  }
+}
+###
+
+# update user info
+PATCH http://localhost:4000/api/users/details/13 HTTP/1.1
 Authorization: {{user1}}
 Content-Type: application/json
 
 {
   "avatar": "test.jpg",
-  "trainerProfile": {
+  "userProfile": {
     "certificates": "e17be906-322b-429f-8c68-93588ce49410.pdf"
   }
 }
-
 ###
+
+
 
 # get users
 Get http://localhost:4000/api/users?location=Udelnaya&fitnessLevel=Beginner,Amateur&trainingType=Boxing,Yoga HTTP/1.1

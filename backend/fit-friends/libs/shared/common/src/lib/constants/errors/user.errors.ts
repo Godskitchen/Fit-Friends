@@ -1,4 +1,7 @@
 export const UserErrors = {
+  PROFILE_NOT_COMPLETED: 'Профиль нового пользователя не заполнен',
+  EMPTY_PROFILE_DATA: 'Нет данных профиля',
+  PROFILE_ALREADY_EXISTS: 'Профиль этого пользователя уже существует',
   USER_NOT_FOUND: 'Пользователь с таким id не найден',
   INCORRECT_USER_ID_TYPE:
     'id пользователя должен быть целым положительным числом',

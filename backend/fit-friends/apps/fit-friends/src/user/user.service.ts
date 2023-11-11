@@ -13,6 +13,7 @@ import { BackgroundImageType } from '@libs/shared/app-types';
 import { MessageService } from '@app/message';
 import { FriendsQuery } from './queries/friends.query';
 import { createFriendRequestMessage, hashPassword } from '@libs/shared/helpers';
+import { NewProfileDto } from './dto/new-profile.dto';
 
 @Injectable()
 export class UserService {
@@ -29,13 +30,7 @@ export class UserService {
       throw new ConflictException(AuthErrors.USER_ALREADY_EXISTS);
     }
 
-    const { password, userProfile, trainerProfile, avatar, ...restData } = dto;
-
-    let certificatePath = '';
-    if (trainerProfile?.certificates) {
-      const { certificates } = trainerProfile;
-      certificatePath = await this.staticService.getFile(certificates);
-    }
+    const { password, avatar, ...restData } = dto;
 
     const userEntity = new UserEntity({
       ...restData,
@@ -46,13 +41,25 @@ export class UserService {
         BackgroundImageType.users,
       ),
       hashPassword: await hashPassword(password),
-      userProfile,
-      trainerProfile: trainerProfile
-        ? { ...trainerProfile, certificates: certificatePath }
-        : undefined,
     });
 
     return this.userRepository.create(userEntity);
+  }
+
+  public async createUserProfile(id: number, dto: NewProfileDto) {
+    const { trainerProfile, userProfile } = dto;
+
+    return this.userRepository.createProfile(id, {
+      ...userProfile,
+      trainerProfile: trainerProfile
+        ? {
+            ...trainerProfile,
+            certificates: await this.staticService.getFile(
+              trainerProfile.certificates,
+            ),
+          }
+        : undefined,
+    });
   }
 
   public async getDetails(userId: number) {

@@ -1,4 +1,4 @@
-@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiTmFtZdCi0YDQtdC90LXRgNCwIiwiZW1haWwiOiJ0ZXN0NUBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTg1MzQ2NDUsImV4cCI6MTY5ODYyMTA0NX0.I2srkl5sk-X_UHy2XQMebgBW1VJWOY1zzjU81jlK3NI
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI4LCJuYW1lIjoiVHJhaW5lck9uZSIsImVtYWlsIjoidHJhaW5lcjhAbWFpbC5sb2NhbCIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNjk5NzIyNzQzLCJleHAiOjE2OTk4MDkxNDN9.eOcyUDIA_ZevOqI6GkXzUj_lvDvakKjYr3Yri8Va67M
 #Upload user avatar
 POST http://localhost:4000/api/static/upload/avatar HTTP/1.1
 # Authorization: {{token}}
@@ -20,7 +20,7 @@ POST http://localhost:4000/api/static/upload/certificate HTTP/1.1
 Content-Type: multipart/form-data; boundary=boundary
 
 --boundary
-Content-Disposition: form-data; name="certificate"; filename="nafik.pdf"
+Content-Disposition: form-data; name="certificate"; filename="certificate.pdf"
 Content-Type: application/pdf
 
 < Q:/images/Оставьте брезгливость - съешьте лягушку.pdf

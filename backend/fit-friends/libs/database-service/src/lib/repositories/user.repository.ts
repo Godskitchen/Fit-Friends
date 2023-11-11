@@ -1,5 +1,6 @@
 import {
   BaseQuery,
+  CreateProfileData,
   Role,
   UpdateUserData,
   User,
@@ -25,21 +26,51 @@ export class UserRepository {
   }
 
   public async create(entity: UserEntity): Promise<User> {
-    const data = entity.toObject();
+    const {
+      name,
+      email,
+      avatarUrl,
+      hashPassword,
+      gender,
+      role,
+      aboutInfo,
+      birthDate,
+      location,
+      backgroundImage,
+    } = entity.toObject();
 
     return this.prismaConnector.user.create({
       data: {
-        ...data,
-        userProfile: data.userProfile
-          ? { create: { ...data.userProfile } }
-          : undefined,
-        trainerProfile: data.trainerProfile
-          ? { create: { ...data.trainerProfile } }
+        name,
+        email,
+        avatarUrl,
+        hashPassword,
+        gender,
+        role,
+        aboutInfo,
+        birthDate,
+        location,
+        backgroundImage,
+      },
+    });
+  }
+
+  public async createProfile(
+    userId: number,
+    profile: CreateProfileData,
+  ): Promise<User> {
+    const { userProfile, trainerProfile } = profile;
+    return this.prismaConnector.user.update({
+      where: { userId },
+      data: {
+        userProfile: userProfile ? { create: { ...userProfile } } : undefined,
+        trainerProfile: trainerProfile
+          ? { create: { ...trainerProfile } }
           : undefined,
       },
       include: {
-        userProfile: Boolean(data.userProfile),
-        trainerProfile: Boolean(data.trainerProfile),
+        userProfile: true,
+        trainerProfile: true,
       },
     });
   }
@@ -47,24 +78,12 @@ export class UserRepository {
   public async update(userId: number, data: UpdateUserData): Promise<User> {
     const { userProfile, trainerProfile, ...restInfo } = data;
     return this.prismaConnector.user.update({
-      where: {
-        userId,
-      },
+      where: { userId },
       data: {
         ...restInfo,
-        userProfile: {
-          update: {
-            data: userProfile,
-          },
-        },
-        trainerProfile: {
-          update: {
-            data: trainerProfile,
-          },
-        },
-        trainings: {
-          connect: [],
-        },
+        userProfile: { update: { data: userProfile } },
+        trainerProfile: { update: { data: trainerProfile } },
+        trainings: { connect: [] },
       },
       include: {
         userProfile: true,

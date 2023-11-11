@@ -7,6 +7,10 @@ import { FILENAME_PATTERN } from './dto/constants';
 import { getRandomArrItem } from '@libs/shared/helpers';
 import { BackgroundImageType } from '@libs/shared/app-types';
 import { StaticErrors } from '@libs/shared/common';
+import {
+  DEFAULT_AVATAR_LOCAL_PATH,
+  DEFAULT_FILES_ROOT_PATH,
+} from './static.constants';
 
 type WritedFile = {
   fileName: string;
@@ -31,8 +35,7 @@ export class StaticService {
     );
 
     const fileUUID = crypto.randomUUID();
-    const fileNamesplit = file.originalname.split('.');
-    const fileExtension = fileNamesplit[fileNamesplit.length - 1];
+    const fileExtension = file.originalname.split('.').pop();
     const fileName = `${fileUUID}.${fileExtension}`;
 
     const uploadPath = `${uploadRootDir}/${subDirectory}`;
@@ -91,18 +94,13 @@ export class StaticService {
   public async getDefaultBackgroundImage(
     type: keyof typeof BackgroundImageType,
   ) {
-    const uploadRootDir = this.configService.getOrThrow<string>(
-      'static.uploadDirectory',
-    );
+    const backsDir = `${DEFAULT_FILES_ROOT_PATH}/${type}/backs`;
 
-    const defaultDir = `/default/${type}`;
-
-    const images = await readdir(`${uploadRootDir}${defaultDir}`);
-    return this.getFullStaticPath(`${defaultDir}/${getRandomArrItem(images)}`);
+    const images = await readdir(backsDir);
+    return this.getFullStaticPath(`/${type}/backs/${getRandomArrItem(images)}`);
   }
 
   public async getDefaulAvatarImage() {
-    const defaultAvatarLocalPath = `/default/users/avatar.png`;
-    return this.getFullStaticPath(defaultAvatarLocalPath);
+    return this.getFullStaticPath(DEFAULT_AVATAR_LOCAL_PATH);
   }
 }

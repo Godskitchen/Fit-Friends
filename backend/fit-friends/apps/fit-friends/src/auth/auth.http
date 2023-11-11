@@ -1,4 +1,4 @@
-@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExLCJuYW1lIjoiVXNlck9uZSIsImVtYWlsIjoidXNlcjFAbWFpbC5sb2NhbCIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNjk5Mjk0NTgyLCJleHAiOjE2OTkzODA5ODJ9.Yz-JBKXBXIjOYmGa9s7O1rnYcjbfG_TtpLNdT5Axz-8
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiVXNlck9uZSIsImVtYWlsIjoidXNlcjRAbWFpbC5sb2NhbCIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNjk5NzEyNjQ2LCJleHAiOjE2OTk3OTkwNDZ9.x5uWe8CZmnMVJWp1WXmxM_wI5tFmPnrK9VM9uiU2HlA
 
 # Create a new user
 POST http://localhost:4000/api/auth/register HTTP/1.1
@@ -6,20 +6,12 @@ Content-Type: application/json
 
 {
   "name": "UserOne",
-  "email": "user1@mail.local",
+  "email": "user4@mail.local",
   "password": "123456",
   "gender": "Male",
   "role": "User",
   "aboutInfo": "about info text",
-  "location": "Udelnaya",
-  "userProfile": {
-    "fitnessLevel": "Amateur",
-    "trainingType": ["Boxing", "Running", "Stretching"],
-    "trainingDuration": "TenToThirtyMinutes",
-    "caloriesToBurn": 1000,
-    "dailyCaloriesIntake": 2000,
-    "readyForWorkout": true
-  }
+  "location": "Udelnaya"
 }
 
 //Beginner, Amateur, Pro
@@ -35,19 +27,13 @@ Content-Type: application/json
 
 {
   "name": "TrainerOne",
-  "email": "trainer1@mail.local",
+  "email": "trainer8@mail.local",
+  "avatar": "43a8fe2d-7b1d-4656-8f59-67b87727c686.jpg",
   "password": "123456",
   "gender": "Male",
   "role": "Trainer",
   "aboutInfo": "about info text",
-  "location": "Udelnaya",
-  "trainerProfile": {
-    "fitnessLevel": "Beginner",
-    "trainingType": ["Yoga"],
-    "certificates": "1.pdf",
-    "achievements": "Описание тренерских заслуг",
-    "readyForWorkout": false
-  }
+  "location": "Udelnaya"
 }
 
 ###

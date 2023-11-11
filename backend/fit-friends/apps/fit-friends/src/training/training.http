@@ -1,4 +1,4 @@
-@trainer1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksIm5hbWUiOiLQkNGA0LjQvdCwIiwiZW1haWwiOiJqb2FuMzdAY29sbGlucy5iaXoiLCJyb2xlIjoiVHJhaW5lciIsImlhdCI6MTY5OTMwODk4OSwiZXhwIjoxNjk5Mzk1Mzg5fQ.KiYNBrl-YwtKeXoyAvKIrS4tUq4VrEvjGOkIiHd6xik
+@trainer1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI4LCJuYW1lIjoiVHJhaW5lck9uZSIsImVtYWlsIjoidHJhaW5lcjhAbWFpbC5sb2NhbCIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNjk5NzIyNzQzLCJleHAiOjE2OTk4MDkxNDN9.eOcyUDIA_ZevOqI6GkXzUj_lvDvakKjYr3Yri8Va67M
 @trainer2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsIm5hbWUiOiJUcmFpbmVyVHdvIiwiZW1haWwiOiJ0cmFpbmVyMkBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTg4NzQ3MDgsImV4cCI6MTY5ODk2MTEwOH0.RfaZiVXCZBQ_H3g-AmTuKqlbPXFUhscpeoj-7vvPYS8
 
 @trainer3 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsIm5hbWUiOiJUcmFpbmVyVGhyZWUiLCJlbWFpbCI6InRyYWluZXIzQG1haWwubG9jYWwiLCJyb2xlIjoiVHJhaW5lciIsImlhdCI6MTY5ODg3NDc0NCwiZXhwIjoxNjk4OTYxMTQ0fQ.O5Wqg4SI6O5VcAD5sgD8K4hp8NNRwSzC-HJIDRsi4bU
@@ -16,7 +16,7 @@ Content-Type: application/json
   "caloriesToBurn": 1001,
   "description": "Описание тренировки",
   "gender": "Male",
-  "video": "4eb6c4d9-b7d4-49f0-9f36-9d4c331f6c29.avi",
+  "video": "e3196add-2a27-4f73-9cb0-f41ec870a146.avi",
   "isSpecialOffer": false
 }
 

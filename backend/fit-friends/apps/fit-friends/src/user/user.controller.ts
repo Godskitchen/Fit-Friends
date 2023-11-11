@@ -5,6 +5,7 @@ import {
   Param,
   ParseIntPipe,
   Patch,
+  Post,
   Query,
   Req,
   UseGuards,
@@ -14,6 +15,7 @@ import { UserService } from './user.service';
 import { fillRDO } from '@libs/shared/helpers';
 import { UserRdo } from './rdo/user.rdo';
 import {
+  CreateProfileGuard,
   FriendGuard,
   JwtAccessGuard,
   ModifyProfileGuard,
@@ -44,6 +46,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { NewProfileDto } from './dto/new-profile.dto';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -70,6 +73,31 @@ export class UserController {
   @Get('/details/:userId')
   public async getUserDetails(@Param('userId', ParseIntPipe) id: number) {
     const user = await this.userService.getDetails(id);
+    return fillRDO(UserRdo, user, [user.role]);
+  }
+
+  @ApiOkResponse({
+    description:
+      'Новый профиль пользователя успешно создан. Возвращена информация о нём',
+    type: UserRdo,
+  })
+  @ApiParam({
+    name: 'userId',
+    description: 'уникальный id пользователя - целое положительное число.',
+  })
+  @ApiBadRequestResponse({ description: 'Не пройдена валидация полей DTO' })
+  @ApiForbiddenResponse({
+    description: 'Попытка создать профиль другому пользователю',
+  })
+  @ApiConflictResponse({ description: 'Профиль пользователя уже существует' })
+  @UseGuards(CreateProfileGuard)
+  @Post('/details/:userId/create')
+  public async createProfile(
+    @Param('userId', ParseIntPipe) id: number,
+    @Body(new ValidationPipe({ transform: true, whitelist: true }))
+    dto: NewProfileDto,
+  ) {
+    const user = await this.userService.createUserProfile(id, dto);
     return fillRDO(UserRdo, user, [user.role]);
   }
 

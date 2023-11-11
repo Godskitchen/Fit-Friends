@@ -118,7 +118,7 @@ export class UpdateUserDto {
 
   @ApiPropertyOptional({
     description: `Опросник для пользователя. Свойство допускается только для пользователя с ролью ${Role.User}`,
-    type: [UpdateUserProfileDto],
+    type: UpdateUserProfileDto,
     required: false,
   })
   @ValidateNested()
@@ -128,7 +128,7 @@ export class UpdateUserDto {
 
   @ApiPropertyOptional({
     description: `Опросник для тренера. Свойство допускается только для пользователя с ролью ${Role.Trainer}`,
-    type: [UpdateTrainerProfileDto],
+    type: UpdateTrainerProfileDto,
     required: false,
   })
   @ValidateNested()
