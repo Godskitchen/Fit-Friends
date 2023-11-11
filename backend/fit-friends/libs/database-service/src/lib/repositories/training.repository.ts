@@ -140,4 +140,11 @@ export class TrainingRepository {
       orderBy: sort ? { [sort]: sortDirection } : { createdAt: sortDirection },
     });
   }
+
+  public async updateRating(trainingId: number, rating: number): Promise<void> {
+    await this.prismaConnector.training.update({
+      where: { trainingId },
+      data: { rating: parseFloat(rating.toFixed(1)) },
+    });
+  }
 }

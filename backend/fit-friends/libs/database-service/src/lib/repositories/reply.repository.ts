@@ -14,7 +14,7 @@ export class ReplyRepository {
   public async create(entity: ReplyEntity): Promise<Reply> {
     const { trainingId, authorId, rating, text } = entity.toObject();
 
-    const reply = await this.prismaConnector.reply.create({
+    return this.prismaConnector.reply.create({
       data: {
         rating,
         text,
@@ -25,22 +25,15 @@ export class ReplyRepository {
         author: { include: { userProfile: true } },
       },
     });
+  }
 
-    const averageRating = await this.prismaConnector.reply
+  public async getAverageRating(trainingId: number) {
+    return this.prismaConnector.reply
       .aggregate({
         where: { trainingId },
         _avg: { rating: true },
       })
-      .then((agg) => agg._avg.rating);
-
-    if (averageRating) {
-      await this.prismaConnector.training.update({
-        where: { trainingId },
-        data: { rating: parseFloat(averageRating.toFixed(1)) },
-      });
-    }
-
-    return reply;
+      .then((aggResult) => aggResult._avg.rating);
   }
 
   public async findById(replyId: number): Promise<Reply | null> {

@@ -17,7 +17,15 @@ export class ReplyService {
   ) {}
 
   public async createReply(dto: NewReplyDto, authorId: number) {
-    return this.replyRepository.create(new ReplyEntity({ ...dto, authorId }));
+    const reply = await this.replyRepository.create(
+      new ReplyEntity({ ...dto, authorId }),
+    );
+    const newRating = (await this.replyRepository.getAverageRating(
+      dto.trainingId,
+    )) as number;
+
+    await this.trainingRepository.updateRating(dto.trainingId, newRating);
+    return reply;
   }
 
   public async getTrainingReplies(trainingId: number, query: ReplyQuery) {
