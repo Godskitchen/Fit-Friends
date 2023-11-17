@@ -18,7 +18,12 @@ module.exports = {
     ],
     rules: {
       "@typescript-eslint/unbound-method": "off",
-      "jest/unbound-method": "error"
+      "jest/unbound-method": "error",
+      "@typescript-eslint/no-misused-promises": [2, {
+        "checksVoidReturn": {
+          "attributes": false
+        }
+      }]
     },
     }
   ]
