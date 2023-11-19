@@ -53,7 +53,7 @@ export default function LoginPage(): JSX.Element {
                               onFocus={() => onInputFocusHandler('email')}
                             />
                           </span>
-                          {errors.email ? <span className="custom-input__error">{errors.email.message}</span> : ''}
+                          {errors.email && <span className="custom-input__error">{errors.email.message}</span>}
                         </label>
                       </div>
                       <div className={`custom-input sign-in__input ${errors.password ? 'custom-input--error' : ''}`}>
@@ -65,11 +65,7 @@ export default function LoginPage(): JSX.Element {
                               onFocus={() => onInputFocusHandler('password')}
                             />
                           </span>
-                          {
-                            errors.password
-                              ? <span className="custom-input__error">{errors.password.message}</span>
-                              : ''
-                          }
+                          {errors.password && <span className="custom-input__error">{errors.password.message}</span>}
                         </label>
                       </div>
                       <button disabled={!formState.isValid} className="btn sign-in__button" type="submit">Продолжить</button>

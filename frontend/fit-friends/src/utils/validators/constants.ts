@@ -36,6 +36,7 @@ export enum TRAINING_TYPE_COUNT {
 }
 
 export const ImageFormats = ['jpeg', 'png'];
+export const CertificateFormats = ['pdf'];
 export const MAX_FILE_AVATAR_SIZE = 1048576;
 
 export const NAME_PATTERN = `^[a-zA-Zа-яА-Я]{${NAME_LENGTH.MIN},${NAME_LENGTH.MAX}}$`;
@@ -69,7 +70,7 @@ export const ACHIEVEMENTS_VALIDATION_MESSAGE = `Описание тренерс�
 //   FitnessLevel,
 // ).join(', ')}`;
 
-export const TRAINING_TYPE_COUNT_VALIDATION_MESSAGE = `Количество типов тренировки должно быть от ${TRAINING_TYPE_COUNT.MIN} до ${TRAINING_TYPE_COUNT.MAX}`;
+export const TRAINING_TYPE_COUNT_VALIDATION_MESSAGE = `Укажите от ${TRAINING_TYPE_COUNT.MIN} до ${TRAINING_TYPE_COUNT.MAX} видов тренировок`;
 // export const TRAINING_TYPE_VALIDATION_MESSAGE = `$property: Тип тренировки может принимать только следующие значения: ${Object.values(
 //   TrainingType,
 // ).join(', ')}`;
@@ -81,5 +82,6 @@ export const TRAINING_TYPE_COUNT_VALIDATION_MESSAGE = `Количество ти
 export const READY_FOR_WORKOUT_VALIDATION_MESSAGE =
   '$property: Должно быть булевым значением';
 
-export const CERTIFICATES_VALIDATION_MESSAGE =
-  '$property: Файл сертификата должен иметь формат "pdf"';
+export const CERTIFICATES_FORMAT_MESSAGE = 'Файл сертификата должен иметь формат "pdf"';
+// export const AVATAR_REQUIRED_MESSAGE = 'Добавьте Ваш аватар';
+// export const CERTIFICATE_REQUIRED_MESSAGE = 'Прикрепите Ваш сертификат';

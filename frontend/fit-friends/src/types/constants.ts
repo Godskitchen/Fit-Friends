@@ -1,7 +1,7 @@
 export enum Gender {
-  Male = 'Мужской',
-  Female = 'Женский',
-  No_Matter = 'Неважно'
+  Male = 'Male',
+  Female = 'Female',
+  NoMatter = 'NoMatter'
 }
 
 export enum Role {
@@ -10,9 +10,35 @@ export enum Role {
 }
 
 export enum Location {
-  Pionerskaya = 'Пионерская',
-  Petrogradskaya = 'Петроградская',
-  Udelnaya = 'Удельная',
-  Zvezdnaya = 'Звездная',
-  Sportivnaya = 'Спортивная'
+  Pionerskaya = 'Pionerskaya',
+  Petrogradskaya = 'Petrogradskaya',
+  Udelnaya = 'Udelnaya',
+  Zvezdnaya = 'Zvezdnaya',
+  Sportivnaya = 'Sportivnaya'
 }
+
+export enum Specialisation {
+  Yoga = 'yoga',
+  Running = 'running',
+  Power = 'power',
+  Aerobics = 'aerobics',
+  Crossfit = 'crossfit',
+  Boxing = 'boxing',
+  Pilates = 'pilates',
+  Stretching = 'stretching'
+}
+
+export enum SkillLevel {
+  Beginner = 'Beginner',
+  Amateur = 'Amateur',
+  Pro = 'Pro'
+}
+
+export enum TrainingDuration {
+  TenToThirtyMinutes = 'TenToThirtyMinutes',
+  ThirtyToFiftyMinutes = 'ThirtyToFiftyMinutes',
+  FiftyToEightyMinutes = 'FiftyToEightyMinutes',
+  EightyToOneHundredMinutes = 'EightyToOneHundredMinutes'
+}
+
+

@@ -30,13 +30,14 @@ export default function RegistrationPage(): JSX.Element {
     formState,
     setValue,
     getValues,
-    trigger
+    trigger,
   } = useForm<RegisterInputs>(
     {
       mode: 'onBlur',
       shouldFocusError: false,
       reValidateMode: 'onBlur',
-      defaultValues: {gender: Gender.Male, role: Role.Sportsman, agreement: true}}
+      defaultValues: {gender: Gender.Male, role: Role.Sportsman, agreement: true}
+    }
   );
 
   const onSubmitHandler: SubmitHandler<RegisterInputs> = (formData) => console.log(formData);
@@ -90,14 +91,8 @@ export default function RegistrationPage(): JSX.Element {
                               accept="image/png, image/jpeg"
                               {...register('avatar',
                                 {
-                                  validate: (files) => {
-                                    if (!files) {
-                                      setAvatarUploaded(false);
-                                      return true;
-                                    }
-                                    return avatarValidationHandler(files, setAvatarUploaded, setPicture);
-                                  },
-                                  onChange: () => {trigger('avatar');}
+                                  validate: (files) => avatarValidationHandler(files, setAvatarUploaded, setPicture),
+                                  onChange: () => {setTimeout(() => {trigger('avatar');}, 100);}
                                 }
                               )}
                             />
@@ -134,7 +129,7 @@ export default function RegistrationPage(): JSX.Element {
                                 onFocus={() => onInputFocusHandler('name')}
                               />
                             </span>
-                            {errors.name ? <span className="custom-input__error">{errors.name.message}</span> : ''}
+                            {errors.name && <span className="custom-input__error">{errors.name.message}</span>}
                           </label>
                         </div>
                         <div className={`custom-input ${errors.email ? 'custom-input--error' : ''}`}>
@@ -146,17 +141,19 @@ export default function RegistrationPage(): JSX.Element {
                                 onFocus={() => onInputFocusHandler('email')}
                               />
                             </span>
-                            {errors.email ? <span className="custom-input__error">{errors.email.message}</span> : ''}
+                            {errors.email && <span className="custom-input__error">{errors.email.message}</span>}
                           </label>
                         </div>
-                        <div className="custom-input">
+                        <div className={`custom-input ${errors.birthday ? 'custom-input--error' : ''}`}>
                           <label>
                             <span className="custom-input__label">Дата рождения</span>
                             <span className="custom-input__wrapper">
                               <input type="date"
-                                {...register('birthday', {required: false})} max={maxBirthDay}
+                                {...register('birthday', {required: 'Поле обязательно для заполнения'})} max={maxBirthDay}
+                                onFocus={() => onInputFocusHandler('birthday')}
                               />
                             </span>
+                            {errors.birthday && <span className="custom-input__error">{errors.birthday.message}</span>}
                           </label>
                         </div>
                         <div
@@ -181,18 +178,23 @@ export default function RegistrationPage(): JSX.Element {
                             </span>
                           </button>
                           {LocationList({locations: Object.values(Location), clickItemHandler: onClickLocationItemHandler})}
-                          {errors.location ? <span className="custom-select__error">{errors.location.message}</span> : ''}
+                          {errors.location && <span className="custom-select__error">{errors.location.message}</span>}
                         </div>
                         <div className={`custom-input ${errors.password ? 'custom-input--error' : ''}`}>
                           <label>
                             <span className="custom-input__label">Пароль</span>
                             <span className="custom-input__wrapper">
                               <input type="password" autoComplete="off"
-                                {...register('password', {required: 'Поле обязательно для заполнения', validate: passwordValidationHandler })}
+                                {...register('password',
+                                  {
+                                    required: 'Поле обязательно для заполнения',
+                                    validate: passwordValidationHandler
+                                  }
+                                )}
                                 onFocus={() => onInputFocusHandler('password')}
                               />
                             </span>
-                            {errors.password ? <span className="custom-input__error">{errors.password.message}</span> : ''}
+                            {errors.password && <span className="custom-input__error">{errors.password.message}</span>}
                           </label>
                         </div>
                         {GenderButtons({genders: Object.values(Gender), register})}
@@ -200,7 +202,7 @@ export default function RegistrationPage(): JSX.Element {
                       {RoleButtons({roles: Object.values(Role), register})}
                       <div className="sign-up__checkbox">
                         <label>
-                          <input type="checkbox" value="user-agreement" {...register('agreement', {required: true})} />
+                          <input type="checkbox" {...register('agreement', {required: true})} />
                           <span className="sign-up__checkbox-icon">
                             <svg width="9" height="6" aria-hidden="true">
                               <use xlinkHref="#arrow-check"></use>
@@ -223,3 +225,5 @@ export default function RegistrationPage(): JSX.Element {
     </Fragment>
   );
 }
+
+

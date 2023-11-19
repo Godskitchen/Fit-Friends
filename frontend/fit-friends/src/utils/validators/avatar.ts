@@ -2,18 +2,21 @@ import fileTypeChecker from 'file-type-checker';
 import { IMAGE_FILE_VALIDATION_MESSAGE, INCORRECT_SIZE_MESSAGE, ImageFormats, MAX_FILE_AVATAR_SIZE } from './constants';
 
 export const avatarValidationHandler = async (
-  files: FileList,
-  uploaderAvatarState: (value: boolean) => void,
-  pictureSetter: (value: string) => void) => {
-  if (files.length === 0) {
-    uploaderAvatarState(false);
-    return true;
+  avatar: FileList,
+  stateChanger: (value: boolean) => void,
+  pictureSetter: (value: string) => void,
+) => {
+  if (avatar.length === 0) {
+    stateChanger(false);
+    return false;
   }
-  const file = files[0];
+
+  const file = avatar[0];
   if (file.size > MAX_FILE_AVATAR_SIZE ) {
-    uploaderAvatarState(false);
+    stateChanger(false);
     return INCORRECT_SIZE_MESSAGE;
   }
+
   const isValidImage: boolean = await new Promise((resolve) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -23,10 +26,10 @@ export const avatarValidationHandler = async (
     reader.readAsArrayBuffer(file);
   });
   if (!isValidImage) {
-    uploaderAvatarState(false);
+    stateChanger(false);
     return IMAGE_FILE_VALIDATION_MESSAGE;
   }
   pictureSetter(URL.createObjectURL(file));
-  uploaderAvatarState(true);
+  stateChanger(true);
   return isValidImage;
 };
