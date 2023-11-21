@@ -105,6 +105,10 @@ export class AuthService {
       .catch(() => false);
   }
 
+  public async getProfile(userId: number) {
+    return this.userService.getDetails(userId);
+  }
+
   private async comparePassword(
     password: string,
     userPassword: string,

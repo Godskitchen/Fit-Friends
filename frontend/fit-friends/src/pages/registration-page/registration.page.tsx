@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { Fragment, MouseEvent, useRef, useState } from 'react';
+import { ChangeEvent, Fragment, MouseEvent, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Gender, Location, Role } from 'src/types/constants';
@@ -12,11 +12,14 @@ import { avatarValidationHandler } from 'src/utils/validators/avatar';
 import { RegisterInputs } from 'src/types/forms.type';
 import GenderButtons from 'src/components/gender-buttons/gender-buttons';
 import RoleButtons from 'src/components/role-buttons/role-buttons';
+import { registerAction } from 'src/store/api-actions';
+import { useAppDispatch } from 'src/hooks';
 
 
 const BIRTH_DAY_FORMAT = 'YYYY-MM-DD';
 
 export default function RegistrationPage(): JSX.Element {
+  const dispatch = useAppDispatch();
 
   const [isAvatarUploaded, setAvatarUploaded] = useState(false);
   const [picture, setPicture] = useState('');
@@ -31,6 +34,7 @@ export default function RegistrationPage(): JSX.Element {
     setValue,
     getValues,
     trigger,
+    setError,
   } = useForm<RegisterInputs>(
     {
       mode: 'onBlur',
@@ -40,11 +44,14 @@ export default function RegistrationPage(): JSX.Element {
     }
   );
 
-  const onSubmitHandler: SubmitHandler<RegisterInputs> = (formData) => console.log(formData);
+  const onSubmitHandler: SubmitHandler<RegisterInputs> = (formData) => {
+    console.log(formData);
+    dispatch(registerAction(formData));
+  };
   const onInputFocusHandler = (inputName: keyof RegisterInputs) => clearErrors(inputName);
   const maxBirthDay = dayjs().format(BIRTH_DAY_FORMAT);
   const onClickLocationItemHandler = (evt: MouseEvent<HTMLUListElement>) => {
-    const location = (evt.target as HTMLLIElement).textContent;
+    const location = (evt.target as HTMLLIElement).textContent as Location;
     if (location) {
       setValue('location', location, {shouldValidate: true});
     }
@@ -57,6 +64,21 @@ export default function RegistrationPage(): JSX.Element {
     setTimeout(() => {trigger('location');}, 100);
   };
   const onOpenLocationListBtnFocusHandler = () => clearErrors('location');
+  const avatarChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
+    avatarValidationHandler(evt.target.files)
+      .then((res) => {
+        if (res === true && evt.target.files) {
+          setAvatarUploaded(true);
+          setPicture(URL.createObjectURL(evt.target.files[0]));
+        } else {
+          if (typeof res === 'string') {
+            setError('avatar', {message: res});
+          }
+          setAvatarUploaded(false);
+          setPicture('');
+        }
+      });
+  };
 
   return (
     <Fragment>
@@ -91,13 +113,13 @@ export default function RegistrationPage(): JSX.Element {
                               accept="image/png, image/jpeg"
                               {...register('avatar',
                                 {
-                                  validate: (files) => avatarValidationHandler(files, setAvatarUploaded, setPicture),
-                                  onChange: () => {setTimeout(() => {trigger('avatar');}, 100);}
+                                  required: true,
+                                  onChange: avatarChangeHandler
                                 }
                               )}
                             />
                             {
-                              isAvatarUploaded
+                              isAvatarUploaded && picture
                                 ? (
                                   <span className="input-load-avatar__avatar" style={{overflow: 'auto'}}>
                                     <img src={picture} srcSet={picture} style={{height: '98px'}} width="98" height="98" alt="user avatar"/>
@@ -213,7 +235,12 @@ export default function RegistrationPage(): JSX.Element {
                           </span>
                         </label>
                       </div>
-                      <button disabled={!formState.isValid} className="btn sign-up__button" type="submit">Продолжить</button>
+                      <button
+                        disabled={!formState.isValid || !isAvatarUploaded || formState.isSubmitting}
+                        className="btn sign-up__button" type="submit"
+                      >
+                        Продолжить
+                      </button>
                     </div>
                   </form>
                 </div>

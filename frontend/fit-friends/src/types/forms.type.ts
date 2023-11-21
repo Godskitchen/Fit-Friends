@@ -1,11 +1,11 @@
-import { Gender, Role, SkillLevel, Specialisation, TrainingDuration } from './constants';
+import { Gender, Role, SkillLevel, Specialisation, TrainingDuration, Location } from './constants';
 
 export type RegisterInputs = {
   name: string;
   email: string;
   password: string;
   birthday: string;
-  location: string;
+  location: Location;
   gender: Gender;
   role: Role;
   avatar: FileList;

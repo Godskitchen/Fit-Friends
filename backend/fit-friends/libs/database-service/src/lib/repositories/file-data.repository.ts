@@ -21,4 +21,10 @@ export class FileDataRepository {
       where: { fileName },
     });
   }
+
+  public async findByHash(hash: string): Promise<FileData | null> {
+    return this.prismaConnector.fileData.findUnique({
+      where: { hash },
+    });
+  }
 }

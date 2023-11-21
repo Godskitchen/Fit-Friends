@@ -3,5 +3,6 @@ export interface FileData {
   originalName: string;
   path: string;
   size: number;
+  hash: string;
   mimetype: string;
 }

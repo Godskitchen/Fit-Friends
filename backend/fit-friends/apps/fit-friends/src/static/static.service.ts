@@ -57,6 +57,11 @@ export class StaticService {
   }
 
   public async uploadFile(file: Express.Multer.File, subDirectory: string) {
+    const fileHash = this.getFileHash(file);
+    const existFile = await this.fileDataRepository.findByHash(fileHash);
+    if (existFile) {
+      return this.getFullStaticPath(existFile.path);
+    }
     const writedFile = await this.writeFile(file, subDirectory);
     const fileData = new FileDataEntity({
       size: file.size,
@@ -64,6 +69,7 @@ export class StaticService {
       originalName: file.originalname,
       path: writedFile.path,
       fileName: writedFile.fileName,
+      hash: fileHash,
     });
 
     const newFile = await this.fileDataRepository.create(fileData);
@@ -102,5 +108,9 @@ export class StaticService {
 
   public async getDefaulAvatarImage() {
     return this.getFullStaticPath(DEFAULT_AVATAR_LOCAL_PATH);
+  }
+
+  private getFileHash(file: Express.Multer.File): string {
+    return crypto.createHash('md5').update(file.buffer).digest('hex');
   }
 }

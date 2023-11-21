@@ -30,7 +30,7 @@ export class UserService {
       throw new ConflictException(AuthErrors.USER_ALREADY_EXISTS);
     }
 
-    const { password, avatar, ...restData } = dto;
+    const { password, avatar, aboutInfo, ...restData } = dto;
 
     const userEntity = new UserEntity({
       ...restData,
@@ -41,6 +41,7 @@ export class UserService {
         BackgroundImageType.users,
       ),
       hashPassword: await hashPassword(password),
+      aboutInfo: aboutInfo ?? '',
     });
 
     return this.userRepository.create(userEntity);

@@ -10,22 +10,22 @@ export enum Role {
 }
 
 export enum Location {
-  Pionerskaya = 'Pionerskaya',
-  Petrogradskaya = 'Petrogradskaya',
-  Udelnaya = 'Udelnaya',
-  Zvezdnaya = 'Zvezdnaya',
-  Sportivnaya = 'Sportivnaya'
+  Pionerskaya = 'ст. м. Пионерская',
+  Petrogradskaya = 'ст. м. Петроградская',
+  Udelnaya = 'ст. м. Удельная',
+  Zvezdnaya = 'ст. м. Звездная',
+  Sportivnaya = 'ст. м. Спортивная'
 }
 
 export enum Specialisation {
-  Yoga = 'yoga',
-  Running = 'running',
-  Power = 'power',
-  Aerobics = 'aerobics',
-  Crossfit = 'crossfit',
-  Boxing = 'boxing',
-  Pilates = 'pilates',
-  Stretching = 'stretching'
+  Yoga = 'Yoga',
+  Running = 'Running',
+  Power = 'Power',
+  Aerobics = 'Aerobics',
+  Crossfit = 'Crossfit',
+  Boxing = 'Boxing',
+  Pilates = 'Pilates',
+  Stretching = 'Stretching'
 }
 
 export enum SkillLevel {

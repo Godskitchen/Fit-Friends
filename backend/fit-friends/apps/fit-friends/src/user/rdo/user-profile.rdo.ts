@@ -1,4 +1,8 @@
-import { FitnessLevel, TrainingType } from '@libs/shared/app-types';
+import {
+  FitnessLevel,
+  TrainingDuration,
+  TrainingType,
+} from '@libs/shared/app-types';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 
@@ -18,6 +22,10 @@ export class UserProfileRdo {
   @ApiProperty({ example: 1500 })
   @Expose()
   caloriesToBurn: number;
+
+  @ApiProperty({ example: TrainingDuration.FiftyToEightyMinutes })
+  @Expose()
+  trainingDuration: TrainingDuration;
 
   @ApiProperty({ example: 1500 })
   @Expose()

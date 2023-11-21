@@ -14,6 +14,7 @@ import { AuthService } from './auth.service';
 import { NewUserDto, AuthUserRdo, LoginUserDto } from '@app/user';
 import { fillRDO } from '@libs/shared/helpers';
 import {
+  RequestWithAccessTokenPayload,
   RequestWithRefreshTokenPayload,
   RequestWithUserInfo,
 } from '@libs/shared/app-types';
@@ -184,7 +185,13 @@ export class AuthController {
   })
   @Get('/')
   @UseGuards(JwtAccessGuard)
-  public async checkAuth(@Token() accessToken: string) {
-    return { accessToken };
+  public async checkAuth(
+    @Token() accessToken: string,
+    @Req() { user }: RequestWithAccessTokenPayload,
+  ) {
+    const existUser = await this.authService.getProfile(user.sub);
+    return fillRDO(AuthUserRdo, Object.assign(existUser, accessToken), [
+      user.role,
+    ]);
   }
 }

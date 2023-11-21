@@ -8,6 +8,12 @@ type SkillButtonsProps = {
   register: UseFormRegister<QuestionnaireUserInputs>;
 }
 
+const SkillButtonValue = {
+  Beginner: 'Новичок',
+  Amateur: 'Любитель',
+  Pro: 'Профессионал'
+};
+
 export default function SkillUserButtons({skills, register}: SkillButtonsProps) : JSX.Element {
 
   return (
@@ -20,7 +26,7 @@ export default function SkillUserButtons({skills, register}: SkillButtonsProps) 
               <label>
                 <input type="radio" value={skill} {...register('skillLevel')} />
                 <span className="custom-toggle-radio__icon"></span>
-                <span className="custom-toggle-radio__label">{skill}</span>
+                <span className="custom-toggle-radio__label">{SkillButtonValue[skill]}</span>
               </label>
             </div>
           ))

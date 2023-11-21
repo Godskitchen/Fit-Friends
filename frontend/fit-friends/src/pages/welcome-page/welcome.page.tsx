@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
-import { AppRoute } from 'src/const';
+import { AppRoute } from 'src/app-constants';
 
 export default function WelcomePage(): JSX.Element {
   const navigate = useNavigate();

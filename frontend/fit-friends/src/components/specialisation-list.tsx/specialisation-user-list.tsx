@@ -14,14 +14,14 @@ type SpecialisationListProps = {
 }
 
 const TypeButtonValue = {
-  yoga: 'Йога',
-  running: 'Бег',
-  power: 'Силовые',
-  aerobics: 'Аэробика',
-  crossfit: 'Кроссфит',
-  boxing: 'Бокс',
-  pilates: 'Пилатес',
-  stretching: 'Стрейчинг'
+  Yoga: 'Йога',
+  Running: 'Бег',
+  Power: 'Силовые',
+  Aerobics: 'Аэробика',
+  Crossfit: 'Кроссфит',
+  Boxing: 'Бокс',
+  Pilates: 'Пилатес',
+  Stretching: 'Стрейчинг'
 };
 
 export default function SpecialisationUserList({types, register, control, trigger}: SpecialisationListProps): JSX.Element {

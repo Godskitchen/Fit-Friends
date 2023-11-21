@@ -96,7 +96,7 @@ export class NewUserDto {
   @IsEnum(Role, { message: ROLE_VALIDATION_MESSAGE })
   role: Role;
 
-  @ApiProperty({
+  @ApiPropertyOptional({
     description: 'Описание пользователя',
     minimum: ABOUT_INFO_LENGTH.MIN,
     maximum: ABOUT_INFO_LENGTH.MAX,
@@ -105,7 +105,8 @@ export class NewUserDto {
   @Length(ABOUT_INFO_LENGTH.MIN, ABOUT_INFO_LENGTH.MAX, {
     message: ABOUT_INFO_VALIDATION_MESSAGE,
   })
-  aboutInfo: string;
+  @IsOptional()
+  aboutInfo?: string;
 
   @ApiPropertyOptional({
     description:
