@@ -41,4 +41,10 @@ export enum TrainingDuration {
   EightyToOneHundredMinutes = 'EightyToOneHundredMinutes'
 }
 
+export enum HeaderNavTab {
+  Home = 'Home',
+  Profile = 'Profile',
+  Friends = 'Friends',
+}
+
 

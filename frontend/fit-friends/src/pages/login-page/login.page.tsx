@@ -2,6 +2,8 @@
 import { Fragment } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useAppDispatch } from 'src/hooks';
+import { loginAction } from 'src/store/api-actions';
 import { LoginInputs } from 'src/types/forms.type';
 import { emailValidationHandler } from 'src/utils/validators/email';
 import { passwordValidationHandler } from 'src/utils/validators/password';
@@ -9,6 +11,7 @@ import { passwordValidationHandler } from 'src/utils/validators/password';
 
 export default function LoginPage(): JSX.Element {
 
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -17,7 +20,10 @@ export default function LoginPage(): JSX.Element {
     formState
   } = useForm<LoginInputs>({mode: 'onBlur', shouldFocusError: false, reValidateMode: 'onBlur'});
 
-  const onSubmitHandler: SubmitHandler<LoginInputs> = (formData) => console.log(formData);
+  const onSubmitHandler: SubmitHandler<LoginInputs> = (formData) => {
+    console.log(formData);
+    dispatch(loginAction(formData));
+  };
   const onInputFocusHandler = (inputName: keyof LoginInputs) => clearErrors(inputName);
 
   return (

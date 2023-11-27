@@ -1,16 +1,16 @@
 import { Fragment } from 'react';
-import { UseFormRegister, Control, UseFormTrigger, useWatch } from 'react-hook-form';
+import { UseFormRegister, Control, UseFormTrigger, useWatch} from 'react-hook-form';
 import { Specialisation } from 'src/types/constants';
-import { QuestionnaireUserInputs } from 'src/types/forms.type';
+import { QuestionnaireCoachInputs } from 'src/types/forms.type';
 import { TRAINING_TYPE_COUNT } from 'src/utils/validators/constants';
 import { specialisationValidationHandler } from 'src/utils/validators/specialisation';
 
 
 type SpecialisationListProps = {
   types: Specialisation[];
-  register: UseFormRegister<QuestionnaireUserInputs>;
-  control: Control<QuestionnaireUserInputs>;
-  trigger: UseFormTrigger<QuestionnaireUserInputs>;
+  register: UseFormRegister<QuestionnaireCoachInputs>;
+  control: Control<QuestionnaireCoachInputs>;
+  trigger: UseFormTrigger<QuestionnaireCoachInputs>;
 }
 
 const TypeButtonValue = {
@@ -24,9 +24,9 @@ const TypeButtonValue = {
   Stretching: 'Стрейчинг'
 };
 
-export default function SpecialisationUserList({types, register, control, trigger}: SpecialisationListProps): JSX.Element {
+export default function SpecialisationCoachRegList({types, register, control, trigger}: SpecialisationListProps): JSX.Element {
 
-  const selectedSpecs = useWatch<QuestionnaireUserInputs, 'specialisations'>({control, name: 'specialisations'});
+  const selectedSpecs = useWatch<QuestionnaireCoachInputs, 'specialisations'>({control, name: 'specialisations'});
   const handleCheckboxChange = (value: Specialisation) => {
     if (selectedSpecs.includes(value)) {
       selectedSpecs.splice(selectedSpecs.indexOf(value), 1);

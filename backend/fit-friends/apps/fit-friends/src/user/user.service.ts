@@ -87,7 +87,7 @@ export class UserService {
 
     return this.userRepository.update(id, {
       ...restData,
-      avatarUrl: avatar ? await this.staticService.getFile(avatar) : undefined,
+      avatarUrl: avatar ? await this.staticService.getFile(avatar) : avatar,
       trainerProfile: trainerProfile
         ? { ...trainerProfile, certificates: certificatePath }
         : undefined,

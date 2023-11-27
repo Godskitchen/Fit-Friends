@@ -19,7 +19,7 @@ export type NewUserDto = {
   location: LocationToServer;
 };
 
-export type NewUserProfileDto = {
+type NewUserProfileDto = {
   fitnessLevel: FitnessLevelToServer;
   trainingType: SpecialisationToServer[];
   trainingDuration: TrainingDurationToServer;
@@ -28,10 +28,15 @@ export type NewUserProfileDto = {
   readyForWorkout: boolean;
 }
 
-export type NewTrainerProfileDto = {
+type NewTrainerProfileDto = {
   fitnessLevel: FitnessLevelToServer;
   trainingType: SpecialisationToServer[];
   certificates: string;
   achievements: string;
   readyForWorkout: boolean;
+}
+
+export type NewProfileDto = {
+  trainerProfile?: NewTrainerProfileDto;
+  userProfile?: NewUserProfileDto;
 }

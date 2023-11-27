@@ -1,16 +1,15 @@
-import { Location } from 'src/types/constants';
 import {MouseEvent} from 'react';
 
-type LocationListProps = {
-  locations: Location[];
+type DropDownListProps = {
+  items: string[];
   clickItemHandler: (evt: MouseEvent<HTMLUListElement>) => void;
 };
 
 
-export default function LocationList({locations, clickItemHandler}: LocationListProps): JSX.Element {
+export default function DropDownList({items, clickItemHandler}: DropDownListProps): JSX.Element {
   return (
     <ul className="custom-select__list" onClick={clickItemHandler} role="listbox">
-      {locations.map((location) => (<li key={location} className='custom-select__item'>{location}</li>))}
+      {items.map((item) => (<li key={item} className='custom-select__item'>{item}</li>))}
     </ul>
   );
 }

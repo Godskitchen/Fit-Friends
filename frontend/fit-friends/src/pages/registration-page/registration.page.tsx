@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { ChangeEvent, Fragment, MouseEvent, useRef, useState } from 'react';
+import { ChangeEvent, Fragment, MouseEvent, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Gender, Location, Role } from 'src/types/constants';
@@ -7,23 +7,29 @@ import { emailValidationHandler } from 'src/utils/validators/email';
 import { nameValidationHandler } from 'src/utils/validators/name';
 import { passwordValidationHandler } from 'src/utils/validators/password';
 import dayjs from 'dayjs';
-import LocationList from 'src/components/location-list/location-list';
+import DropDownList from 'src/components/location-list/location-list';
 import { avatarValidationHandler } from 'src/utils/validators/avatar';
 import { RegisterInputs } from 'src/types/forms.type';
 import GenderButtons from 'src/components/gender-buttons/gender-buttons';
 import RoleButtons from 'src/components/role-buttons/role-buttons';
 import { registerAction } from 'src/store/api-actions';
-import { useAppDispatch } from 'src/hooks';
+import { useAppDispatch, useAppSelector } from 'src/hooks';
+import { getFormErrors } from 'src/store/user-process/user-process.selectors';
+import { HttpStatusCode } from 'src/services/server-api';
+import { clearFormErrorsAction } from 'src/store/user-process/user-process.reducer';
 
 
 const BIRTH_DAY_FORMAT = 'YYYY-MM-DD';
 
 export default function RegistrationPage(): JSX.Element {
   const dispatch = useAppDispatch();
+  const formErrors = useAppSelector(getFormErrors);
+  const conflictError = formErrors[HttpStatusCode.CONFLICT];
 
   const [isAvatarUploaded, setAvatarUploaded] = useState(false);
   const [picture, setPicture] = useState('');
-  const divRef = useRef<HTMLDivElement>(null);
+
+  const locationBlockRef = useRef<HTMLDivElement>(null);
 
   const {
     register,
@@ -48,19 +54,22 @@ export default function RegistrationPage(): JSX.Element {
     console.log(formData);
     dispatch(registerAction(formData));
   };
-  const onInputFocusHandler = (inputName: keyof RegisterInputs) => clearErrors(inputName);
+  const onInputFocusHandler = (inputName: keyof RegisterInputs) => {
+    dispatch(clearFormErrorsAction());
+    clearErrors(inputName);
+  };
   const maxBirthDay = dayjs().format(BIRTH_DAY_FORMAT);
   const onClickLocationItemHandler = (evt: MouseEvent<HTMLUListElement>) => {
     const location = (evt.target as HTMLLIElement).textContent as Location;
     if (location) {
       setValue('location', location, {shouldValidate: true});
     }
-    divRef.current?.classList.remove('is-open');
+    locationBlockRef.current?.classList.remove('is-open');
   };
 
-  const onOpenLocationListBtnClickHandler = () => divRef.current?.classList.toggle('is-open');
+  const onOpenLocationListBtnClickHandler = () => locationBlockRef.current?.classList.toggle('is-open');
   const onOpenLocationListBtnBlurHandler = () => {
-    divRef.current?.classList.remove('is-open');
+    locationBlockRef.current?.classList.remove('is-open');
     setTimeout(() => {trigger('location');}, 100);
   };
   const onOpenLocationListBtnFocusHandler = () => clearErrors('location');
@@ -79,6 +88,12 @@ export default function RegistrationPage(): JSX.Element {
         }
       });
   };
+
+  useEffect(() => {
+    if (conflictError) {
+      setError('email', {message: conflictError});
+    }
+  }, [conflictError, setError]);
 
   return (
     <Fragment>
@@ -180,7 +195,7 @@ export default function RegistrationPage(): JSX.Element {
                         </div>
                         <div
                           className={`custom-select ${!getValues('location') ? 'custom-select--not-selected' : ''} ${errors.location ? 'is-invalid' : ''}`}
-                          ref={divRef}
+                          ref={locationBlockRef}
                         >
                           <span className="custom-select__label">Ваша локация</span>
                           <input className='visually-hidden location' {...register('location', {required: 'Поле обязательно для заполнения'})} />
@@ -199,7 +214,7 @@ export default function RegistrationPage(): JSX.Element {
                               </svg>
                             </span>
                           </button>
-                          {LocationList({locations: Object.values(Location), clickItemHandler: onClickLocationItemHandler})}
+                          {DropDownList({items: Object.values(Location), clickItemHandler: onClickLocationItemHandler})}
                           {errors.location && <span className="custom-select__error">{errors.location.message}</span>}
                         </div>
                         <div className={`custom-input ${errors.password ? 'custom-input--error' : ''}`}>
@@ -237,7 +252,8 @@ export default function RegistrationPage(): JSX.Element {
                       </div>
                       <button
                         disabled={!formState.isValid || !isAvatarUploaded || formState.isSubmitting}
-                        className="btn sign-up__button" type="submit"
+                        className="btn sign-up__button"
+                        type="submit"
                       >
                         Продолжить
                       </button>

@@ -47,7 +47,7 @@ export class UpdateUserDto {
   @ApiPropertyOptional({
     description: `Наименование изображения аватара. Файл должен быть предварительно загружен на сервер. Доступные форматы: ${ImageFormats.join(
       ',',
-    )}.`,
+    )}. При передаче null значения, удаляет аватар пользователя, но не сам файл из базы`,
     pattern: IMAGE_FILE_NAME_PATTERN,
     example: 'avatar.jpg',
     required: false,
@@ -56,7 +56,7 @@ export class UpdateUserDto {
     message: IMAGE_FILE_VALIDATION_MESSAGE,
   })
   @IsOptional()
-  avatar?: string;
+  avatar?: string | null;
 
   @ApiProperty({
     description: `Пол пользователя. Доступные варианты: ${Object.values(

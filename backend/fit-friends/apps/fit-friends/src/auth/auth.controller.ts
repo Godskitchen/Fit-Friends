@@ -159,19 +159,20 @@ export class AuthController {
       },
     },
   })
-  @Post('/refresh')
+  @Get('/refresh')
   @UseGuards(JwtRefreshGuard)
   @HttpCode(HttpStatus.OK)
   public async refreshTokens(
     @Req() { user }: RequestWithRefreshTokenPayload,
     @Res({ passthrough: true }) response: Response,
   ) {
-    const accessToken = await this.authService.refreshTokens(
+    console.log(user);
+    const userWithToken = await this.authService.refreshTokens(
       user.sub,
       response,
     );
 
-    return accessToken;
+    return fillRDO(AuthUserRdo, userWithToken, [userWithToken.role]);
   }
 
   @ApiBearerAuth()

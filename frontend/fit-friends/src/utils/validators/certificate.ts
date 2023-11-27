@@ -2,11 +2,9 @@ import fileTypeChecker from 'file-type-checker';
 import { CERTIFICATES_FORMAT_MESSAGE, CertificateFormats } from './constants';
 
 export const certificateValidationHandler = async (
-  certificate: FileList,
-  stateChanger: (value: boolean) => void,
+  certificate: FileList | null,
 ) => {
-  if (certificate.length === 0) {
-    stateChanger(false);
+  if (!certificate || certificate.length === 0) {
     return false;
   }
   const file = certificate[0];
@@ -20,10 +18,8 @@ export const certificateValidationHandler = async (
     reader.readAsArrayBuffer(file);
   });
   if (!isValidCertificate) {
-    stateChanger(false);
     return CERTIFICATES_FORMAT_MESSAGE;
   }
-  stateChanger(true);
   return isValidCertificate;
 };
 

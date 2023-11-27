@@ -48,10 +48,8 @@ export class AuthService {
     return existUser;
   }
 
-  public async createNewTokens(
-    { userId, name, email, role }: User,
-    response: Response,
-  ) {
+  public async createNewTokens(user: User, response: Response) {
+    const { userId, name, email, role } = user;
     if (await this.refreshTokenService.isExists(userId)) {
       await this.refreshTokenService.deleteRefreshSession(userId);
     }
@@ -74,7 +72,7 @@ export class AuthService {
 
     this.setRefreshTokenToCookies(refreshToken, tokenData, response);
 
-    return { accessToken };
+    return Object.assign(user, { accessToken });
   }
 
   private setRefreshTokenToCookies(

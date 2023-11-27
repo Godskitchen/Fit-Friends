@@ -1,15 +1,33 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 import { Fragment } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import SkillUserButtons from 'src/components/skill-buttons/skill-user-buttons';
-import SpecialisationUserList from 'src/components/specialisation-list.tsx/specialisation-user-list';
+import LoadingScreen from 'src/components/loading-screen/loading-screen';
+import SkillButtons from 'src/components/skill-buttons/skill-buttons';
+import SpecialisationUserRegList from 'src/components/specialisation-reg-list.tsx/specialisation-user-reg-list';
 import trainingDurationButtons from 'src/components/training-duration-buttons/training-duration-buttons';
+import { useAppDispatch, useAppSelector } from 'src/hooks';
+import { createUserProfileAction } from 'src/store/api-actions';
+import { getUserInfo } from 'src/store/user-process/user-process.selectors';
 import { SkillLevel, Specialisation, TrainingDuration } from 'src/types/constants';
 import { QuestionnaireUserInputs } from 'src/types/forms.type';
 import { caloriesIntakeValidationHandler, caloriesToBurnValidationHandler } from 'src/utils/validators/calories';
 
+
+const questionnaireUserFieldPaths = {
+  specialisations: 'specialisations',
+  skillLevel: 'skillLevel',
+  trainingDuration: 'trainingDuration',
+  caloriesToBurn: 'caloriesToBurn',
+  dailyCaloriesIntake: 'dailyCaloriesIntake'
+} as const;
+
+
 export default function QuestionnaireUserPage (): JSX.Element {
+
+  const dispatch = useAppDispatch();
+  const userInfo = useAppSelector(getUserInfo);
 
   const {
     register,
@@ -32,8 +50,19 @@ export default function QuestionnaireUserPage (): JSX.Element {
     }
   );
 
+  if (userInfo === undefined) {
+    return <LoadingScreen/>;
+  }
+
+  if (userInfo === null) {
+    return <p>Error</p>;
+  }
+
   const onInputFocusHandler = (inputName: keyof QuestionnaireUserInputs) => clearErrors(inputName);
-  const onSubmitHandler: SubmitHandler<QuestionnaireUserInputs> = (formData) => console.log(formData);
+  const onSubmitHandler: SubmitHandler<QuestionnaireUserInputs> = (formData) => {
+    console.log(formData);
+    // dispatch(createUserProfileAction(Object.assign(formData, {userId: userInfo.userId})));
+  };
 
   return (
     <Fragment>
@@ -59,7 +88,7 @@ export default function QuestionnaireUserPage (): JSX.Element {
                       <h1 className="visually-hidden">Опросник</h1>
                       <div className="questionnaire-user__wrapper">
                         <div className="questionnaire-user__block">
-                          {SpecialisationUserList({
+                          {SpecialisationUserRegList({
                             types: Object.values(Specialisation),
                             register,
                             control,
@@ -74,9 +103,10 @@ export default function QuestionnaireUserPage (): JSX.Element {
                           })}
                         </div>
                         <div className="questionnaire-user__block">
-                          {SkillUserButtons({
+                          {SkillButtons({
                             skills: Object.values(SkillLevel),
                             register,
+                            fieldPaths: questionnaireUserFieldPaths
                           })}
                         </div>
                         <div className="questionnaire-user__block">

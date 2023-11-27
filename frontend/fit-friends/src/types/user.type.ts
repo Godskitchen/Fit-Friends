@@ -17,7 +17,7 @@ export type KnownError = {
   statusCode: number;
 }
 
-export type AuthDto = {
+export type AuthData = {
   email: string;
   password: string;
 }
@@ -45,6 +45,7 @@ export type UserInfo = {
   name: string;
   email: string;
   gender: Gender;
+  aboutInfo: string;
   role: Role;
   birthday: string;
   avatar: string;
@@ -55,4 +56,4 @@ export type UserInfo = {
   trainerProfile?: TrainerProfileInfo;
 };
 
-export type AuthUserInfo = UserInfo & {accessToken: string}
+// export type AuthUserInfo = UserInfo & {accessToken: string}

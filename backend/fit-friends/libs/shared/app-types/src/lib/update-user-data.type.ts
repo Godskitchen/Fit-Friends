@@ -25,7 +25,7 @@ export type UpdateUserProfileData = {
 
 export type UpdateUserData = {
   name?: string;
-  avatarUrl?: string;
+  avatarUrl?: string | null;
   gender?: Gender;
   aboutInfo?: string;
   birthDate?: Date;

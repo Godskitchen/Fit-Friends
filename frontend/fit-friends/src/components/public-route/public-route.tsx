@@ -1,17 +1,24 @@
 import { Navigate } from 'react-router-dom';
-import { AuthorizationStatus } from 'src/app-constants';
+import { AppRoute, AuthorizationStatus } from 'src/app-constants';
+import { useAppSelector } from 'src/hooks';
+import { getUserInfo } from 'src/store/user-process/user-process.selectors';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 type PublicRouteProps = {
   authorizationStatus: AuthorizationStatus;
-  authRoute: string;
   children: JSX.Element;
 }
 
-export default function PublicRoute({ authorizationStatus, children, authRoute }: PublicRouteProps): JSX.Element {
+export default function PublicRoute({ authorizationStatus, children }: PublicRouteProps): JSX.Element {
+  const userInfo = useAppSelector(getUserInfo);
+
+  if (userInfo === undefined) {
+    return <LoadingScreen />;
+  }
 
   return (
     authorizationStatus === AuthorizationStatus.NoAuth
       ? children
-      : <Navigate to={authRoute} />
+      : <Navigate to={AppRoute.Main} />
   );
 }

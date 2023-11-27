@@ -1,17 +1,17 @@
 /* eslint-disable no-console */
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AxiosInstance, AxiosError } from 'axios';
+import axios, { AxiosInstance, AxiosError } from 'axios';
 import { ApiRoute, AppRoute } from 'src/app-constants';
 import { saveToken, dropToken } from 'src/services/auth-token';
-import { HttpStatusCode, shouldDisplayError } from 'src/services/server-api';
+import { HttpStatusCode, REQUEST_TIMEOUT, SERVER_URL, shouldDisplayError } from 'src/services/server-api';
 import { Role } from 'src/types/constants';
 import { QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs } from 'src/types/forms.type';
 import { AppDispatch, State } from 'src/types/state.type';
-import { AuthDto, AuthUserInfo, KnownError, UserInfo } from 'src/types/user.type';
-import { adaptNewUserToClient } from 'src/utils/adapters/adapter-to-client';
+import { AuthData, KnownError, UserInfo } from 'src/types/user.type';
 import { adaptCoachProfileToServer, adaptRegisterUserToServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
 import { AuthUserRdo, UserRdo } from 'src/utils/adapters/api-rdos/auth-user.rdo';
 import { redirectAction } from './redirect.action';
+import { adaptUserToClient } from 'src/utils/adapters/adapter-to-client';
 
 export const registerAction = createAsyncThunk<
   UserInfo,
@@ -38,7 +38,7 @@ export const registerAction = createAsyncThunk<
       const {data} = await serverApi.post<AuthUserRdo>(ApiRoute.Register, adaptRegisterUserToServer({...registerData, avatar}));
       const {accessToken, ...userData} = data;
       saveToken(accessToken);
-      const adaptedData = adaptNewUserToClient(userData);
+      const adaptedData = adaptUserToClient(userData);
       const questionnaireRoute = adaptedData.role === Role.Coach ? AppRoute.QuestionnaireCoach : AppRoute.QuestionnaireUser;
       dispatch(redirectAction(questionnaireRoute));
       console.log('userData', userData);
@@ -55,24 +55,19 @@ export const registerAction = createAsyncThunk<
 
 export const createUserProfileAction = createAsyncThunk<
   UserInfo,
-  QuestionnaireUserInputs,
+  QuestionnaireUserInputs & {userId: number},
   {
     dispatch: AppDispatch;
-    state: State;
     extra: AxiosInstance;
     rejectValue: KnownError;
   }
 >(
   'user/createUserProfile',
-  async (userProfileData, { dispatch, extra: serverApi, rejectWithValue, getState }) => {
+  async (userProfileData, { dispatch, extra: serverApi, rejectWithValue }) => {
     try {
-      const userId = getState().USER.userInfo?.userId;
-      if (!userId) {
-        return Promise.reject('Пользователь не найден');
-      }
-
+      const userId = userProfileData.userId;
       const {data: userData} = await serverApi.post<UserRdo>(`${ApiRoute.UserDetails}/${userId}/create`, adaptUserProfileToServer({...userProfileData, readyForWorkout: false}));
-      const adaptedData = adaptNewUserToClient(userData);
+      const adaptedData = adaptUserToClient(userData);
       dispatch(redirectAction(AppRoute.Main));
       console.log('userData', userData);
       return adaptedData;
@@ -89,22 +84,17 @@ export const createUserProfileAction = createAsyncThunk<
 
 export const createCoachProfileAction = createAsyncThunk<
   UserInfo,
-  QuestionnaireCoachInputs,
+  QuestionnaireCoachInputs & {userId: number},
   {
     dispatch: AppDispatch;
-    state: State;
     extra: AxiosInstance;
     rejectValue: KnownError;
   }
 >(
   'user/createCoachProfile',
-  async (coachProfileData, { dispatch, extra: serverApi, rejectWithValue, getState }) => {
+  async (coachProfileData, { dispatch, extra: serverApi, rejectWithValue }) => {
     try {
-      const userId = getState().USER.userInfo?.userId;
-      if (!userId) {
-        return Promise.reject('Пользователь не найден');
-      }
-
+      const userId = coachProfileData.userId;
       const certificateFile = coachProfileData.certificates[0];
       const form = new FormData();
       form.append('certificate', certificateFile, certificateFile.name);
@@ -116,7 +106,7 @@ export const createCoachProfileAction = createAsyncThunk<
       );
 
       const {data: userData} = await serverApi.post<UserRdo>(`${ApiRoute.UserDetails}/${userId}/create`, adaptCoachProfileToServer({...coachProfileData, certificates: certificate}));
-      const adaptedData = adaptNewUserToClient(userData);
+      const adaptedData = adaptUserToClient(userData);
       dispatch(redirectAction(AppRoute.Main));
       console.log('userData', userData);
       return adaptedData;
@@ -131,21 +121,20 @@ export const createCoachProfileAction = createAsyncThunk<
 );
 
 
-export const loginAction = createAsyncThunk<UserInfo, AuthDto,
+export const loginAction = createAsyncThunk<UserInfo, AuthData,
   {
     dispatch: AppDispatch;
-    state: State;
-    extra: AxiosInstance;
   }>(
     'user/login',
-    async (authDto, { dispatch, extra: serverApi }) => {
-      const { data } = await serverApi.post<AuthUserInfo>(ApiRoute.Login, authDto);
-      const { accessToken, ...userInfo } = data;
+    async (authData, { dispatch }) => {
+      const { data } = await axios.post<AuthUserRdo>(ApiRoute.Login, authData, {withCredentials: true, baseURL: SERVER_URL, timeout: REQUEST_TIMEOUT});
+      const { accessToken, ...userData } = data;
 
       saveToken(accessToken);
-      // dispatch(redirect(AppRoute.Main));
+      dispatch(redirectAction(AppRoute.Main));
 
-      return userInfo;
+      const adaptedData = adaptUserToClient(userData);
+      return adaptedData;
     },
   );
 
@@ -153,8 +142,10 @@ export const checkAuthAction = createAsyncThunk<UserInfo, undefined, {extra: Axi
   'user/checkAuth',
   async (_arg, { extra: serverApi }) => {
     try {
-      const { data: userInfo } = await serverApi.get<UserInfo>(ApiRoute.Login);
-      return userInfo;
+      const { data } = await serverApi.get<AuthUserRdo>(ApiRoute.CheckAuth);
+      const {accessToken, ...userData} = data;
+      const adaptedData = adaptUserToClient(userData);
+      return adaptedData;
     } catch (error) {
       const axiosError = error as AxiosError;
 
@@ -165,15 +156,5 @@ export const checkAuthAction = createAsyncThunk<UserInfo, undefined, {extra: Axi
       return Promise.reject(error);
     }
   },
-
-  // export const checkFirstAuthAction = createAsyncThunk<UserInfo, undefined, {extra: AxiosInstance}>(
-//   'user/checkFirstAuth',
-//   async (_arg, { extra: serverApi }) => {
-//     const { data: userInfo } = await serverApi.get<UserInfo>(ApiRoute.Login, {
-//       ignoreAuthError: true,
-//     } as CustomAxiosRequestConfig);
-//     return userInfo;
-//   },
-// );
 );
 

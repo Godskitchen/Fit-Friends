@@ -3,10 +3,11 @@ import { AuthUserRdo, TrainerProfileRdo, UserProfileRdo } from './api-rdos/auth-
 import { Gender, Location, Role, SkillLevel, Specialisation, TrainingDuration } from 'src/types/constants';
 import { RoleToServer } from './adaprters-constants';
 
-export const adaptNewUserToClient = (rdo: Omit<AuthUserRdo, 'accessToken'>): UserInfo => ({
+export const adaptUserToClient = (rdo: Omit<AuthUserRdo, 'accessToken'>): UserInfo => ({
   userId: rdo.userId,
   name: rdo.name,
   email: rdo.email,
+  aboutInfo: rdo.aboutInfo,
   gender: Gender[rdo.gender],
   location: Location[rdo.location],
   role: rdo.role === RoleToServer.Coach ? Role.Coach : Role.Sportsman,
@@ -15,6 +16,7 @@ export const adaptNewUserToClient = (rdo: Omit<AuthUserRdo, 'accessToken'>): Use
   createdAt: rdo.createdAt,
   backgroundImage: rdo.backgroundImage,
   userProfile: rdo.userProfile ? adaptUserProfileToClient(rdo.userProfile) : undefined,
+  trainerProfile: rdo.trainerProfile ? adaptTrainerProfileToClient(rdo.trainerProfile) : undefined,
 });
 
 export const adaptUserProfileToClient = (rdo: UserProfileRdo): UserProfileInfo => ({

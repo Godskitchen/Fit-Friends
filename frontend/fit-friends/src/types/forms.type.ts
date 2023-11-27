@@ -32,3 +32,14 @@ export type QuestionnaireUserInputs = {
   caloriesToBurn: number;
   dailyCaloriesIntake: number;
 }
+
+export type CoachInfoInputs = {
+  avatar: FileList | null;
+  name: string;
+  aboutInfo: string;
+  individualTraining: boolean;
+  specialisations: Specialisation[];
+  location: Location;
+  gender: Gender;
+  skillLevel: SkillLevel;
+}

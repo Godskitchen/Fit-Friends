@@ -8,7 +8,13 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { REFRESH_TOKEN_NAME } from './auth';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule, {
+    cors: {
+      origin: 'http://localhost:3001',
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      credentials: true,
+    },
+  });
   app.use(cookieParser());
 
   const globalPrefix = 'api';
