@@ -1,14 +1,17 @@
 /* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { getUserInfo } from 'src/store/user-process/user-process.selectors';
 import LoadingScreen from '../loading-screen/loading-screen';
-import { useEffect, useState, MouseEvent, useRef} from 'react';
+import { useState, MouseEvent, useRef, ChangeEvent} from 'react';
 import { Specialisation, Location, Gender, SkillLevel } from 'src/types/constants';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
-import { CoachInfoInputs } from 'src/types/forms.type';
-import SpecialisationList from '../specialisation-reg-list.tsx/specialisation-list';
+import { ProfileInfoInputs } from 'src/types/forms.type';
+import ProfileSpecialisationList from '../specialisation-list.tsx/profile-specialisation-list';
 import DropDownList from '../location-list/location-list';
+import { avatarValidationHandler } from 'src/utils/validators/avatar';
+import { nameValidationHandler } from 'src/utils/validators/name';
+import { aboutInfoValidationHandler } from 'src/utils/validators/about-info';
+import { updateProfileAction } from 'src/store/api-actions';
 
 
 const GenderValueType = {
@@ -35,27 +38,27 @@ const SkillConvert = {
   'Профессионал': 'Pro'
 };
 
-export default function UserInfo(): JSX.Element {
+
+export default function UserInfoDesk(): JSX.Element {
   const dispatch = useAppDispatch();
   const userInfo = useAppSelector(getUserInfo);
   const [isEditMode, setEditMode] = useState(false);
 
-  const locationBlockRef = useRef<HTMLDivElement>(null);
-  const genderBlockRef = useRef<HTMLDivElement>(null);
-  const skillBlockRef = useRef<HTMLDivElement>(null);
+  const locationBlockRef = useRef<HTMLDivElement | null>(null);
+  const genderBlockRef = useRef<HTMLDivElement | null>(null);
+  const skillBlockRef = useRef<HTMLDivElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const {
     register,
     control,
     formState: { errors },
-    clearErrors,
     formState,
     setValue,
     getValues,
     trigger,
     setError,
-    watch
-  } = useForm<CoachInfoInputs>(
+  } = useForm<ProfileInfoInputs>(
     {
       mode: 'onChange',
       shouldFocusError: false,
@@ -67,10 +70,14 @@ export default function UserInfo(): JSX.Element {
         specialisations: userInfo.trainerProfile.specialisations,
         location: userInfo.location,
         gender: userInfo.gender,
-        skillLevel: userInfo.trainerProfile.skillLevel
+        skillLevel: userInfo.trainerProfile.skillLevel,
+        shouldDeleteAvatar: false,
       } : {}
     }
   );
+
+  const [isAvatarUploaded, setAvatarUploaded] = useState(true);
+  const [picture, setPicture] = useState(userInfo?.avatar);
 
   const onClickLocationItemHandler = (evt: MouseEvent<HTMLUListElement>) => {
     const location = (evt.target as HTMLLIElement).textContent as Location;
@@ -96,41 +103,78 @@ export default function UserInfo(): JSX.Element {
     skillBlockRef.current?.classList.remove('is-open');
   };
 
+
+  const avatarChangeHandler = ({target}: ChangeEvent<HTMLInputElement>) => {
+    avatarValidationHandler(target.files)
+      .then((res) => {
+        if (res === true && target.files) {
+          setAvatarUploaded(true);
+          setPicture(URL.createObjectURL(target.files[0]));
+          setValue('shouldDeleteAvatar', false);
+        } else {
+          if (typeof res === 'string') {
+            setError('avatar', {message: res});
+          }
+          setAvatarUploaded(false);
+          setValue('shouldDeleteAvatar', false);
+          setPicture('');
+        }
+      });
+  };
   const onOpenLocationListBtnClickHandler = () => locationBlockRef.current?.classList.toggle('is-open');
   const onOpenGenderListBtnClickHandler = () => genderBlockRef.current?.classList.toggle('is-open');
   const onOpenSkillListBtnClickHandler = () => skillBlockRef.current?.classList.toggle('is-open');
 
-  const selectedSpecs = useWatch<CoachInfoInputs, 'specialisations'>({control, name: 'specialisations'});
+  const selectedSpecs = useWatch<ProfileInfoInputs, 'specialisations'>({control, name: 'specialisations'});
 
-  const onSubmitHandler: SubmitHandler<CoachInfoInputs> = (formData) => {
-    console.log('formData', formData);
-  };
-
-  useEffect(() => {
-    const subscription = watch((data) => {
-      console.log(data);
-    });
-
-    return () => { subscription.unsubscribe(); };
-  }, [watch]);
+  const {ref: avatarRef, name, disabled, onChange, onBlur} = register('avatar', {
+    required: false,
+    onChange: avatarChangeHandler,
+    onBlur: () => {trigger('avatar');},
+    disabled: !isEditMode,
+  });
 
   if (!userInfo || !userInfo.trainerProfile) {
     return <LoadingScreen />;
   }
+
+  if (userInfo === null) {
+    return <p>Error</p>;
+  }
+
+  const onSubmitHandler: SubmitHandler<ProfileInfoInputs> = (formData) => {
+    setValue('specialisations', selectedSpecs);
+    console.log('formData', formData);
+    dispatch(updateProfileAction(Object.assign(
+      formData, {userId: userInfo.userId, role: userInfo.role}
+    )));
+  };
 
   return (
     <section className="user-info-edit">
       <div className="user-info-edit__header">
         <div className="input-load-avatar">
           <label>
-            <input className="visually-hidden" type="file" name="avatar" accept="image/png, image/jpeg" disabled={!isEditMode}/>
+            <input
+              className="visually-hidden"
+              type="file"
+              name={name}
+              accept="image/png, image/jpeg"
+              disabled={disabled}
+              onChange={onChange}
+              onBlur={onBlur}
+              ref={(element) => {
+                avatarRef(element);
+                fileInputRef.current = element;
+              }}
+            />
             {
-              userInfo.avatar
+              picture && isAvatarUploaded
                 ? (
                   <span className="input-load-avatar__avatar" style={{overflow: 'auto'}}>
                     <img
-                      src={userInfo.avatar}
-                      srcSet={userInfo.avatar}
+                      src={picture}
+                      srcSet={picture}
                       style={{height: '98px'}}
                       width="98" height="98" alt="user avatar"
                     />
@@ -149,12 +193,27 @@ export default function UserInfo(): JSX.Element {
         {
           isEditMode && (
             <div className="user-info-edit__controls">
-              <button className="user-info-edit__control-btn" aria-label="обновить">
+              <button
+                className="user-info-edit__control-btn"
+                aria-label="обновить"
+                onClick={() => {
+                  if (fileInputRef.current) {
+                    fileInputRef.current.click();
+                  }
+                }}
+              >
                 <svg width="16" height="16" aria-hidden="true">
                   <use xlinkHref="#icon-change"></use>
                 </svg>
               </button>
-              <button className="user-info-edit__control-btn" aria-label="удалить">
+              <button
+                className="user-info-edit__control-btn"
+                aria-label="удалить"
+                onClick={() => {
+                  setAvatarUploaded(false);
+                  setValue('shouldDeleteAvatar', true);
+                }}
+              >
                 <svg width="14" height="16" aria-hidden="true">
                   <use xlinkHref="#icon-trash"></use>
                 </svg>
@@ -163,6 +222,7 @@ export default function UserInfo(): JSX.Element {
           )
         }
       </div>
+      {errors.avatar && <span style={{fontSize: '0.9em', color: '#e4001b', display: 'block'}}>{errors.avatar.message}</span>}
       <form className="user-info-edit__form">
         {
           isEditMode
@@ -175,7 +235,7 @@ export default function UserInfo(): JSX.Element {
                   setEditMode(false);
                   onSubmitHandler(getValues());
                 }}
-                disabled={!isEditMode || !formState.isValid}
+                disabled={!isEditMode || !formState.isValid || formState.isSubmitting || !!errors.avatar}
               >
                 <svg width="12" height="12" aria-hidden="true">
                   <use xlinkHref="#icon-edit"></use>
@@ -199,29 +259,32 @@ export default function UserInfo(): JSX.Element {
         }
         <div className="user-info-edit__section">
           <h2 className="user-info-edit__title">Обо мне</h2>
-          <div className={`custom-input ${!isEditMode ? 'custom-input--readonly' : ''} user-info-edit__input`}>
+          <div className={`custom-input ${!isEditMode ? 'custom-input--readonly' : ''} user-info-edit__input ${errors.name ? 'custom-input--error' : ''}`}>
             <label>
               <span className="custom-input__label">Имя</span>
               <span className="custom-input__wrapper">
                 <input
                   type="text"
                   disabled={!isEditMode}
-                  {...register('name', {required: true, minLength: 1, maxLength: 15})}
+                  {...register('name', {required: 'Поле обязательно для заполнения', validate: nameValidationHandler})}
                 />
               </span>
+              {errors.name && <span className="custom-input__error">{errors.name.message}</span>}
             </label>
           </div>
           <div className={`custom-textarea ${!isEditMode ? 'custom-input--readonly' : ''} user-info-edit__textarea`}>
             <label>
               <span className="custom-textarea__label">Описание</span>
               <textarea
+                style={errors.aboutInfo ? {border: '1px solid #e4001b', backgroundColor: 'transparent'} : {}}
                 placeholder="Добавьте сюда свое описание"
                 disabled={!isEditMode}
-                {...register('aboutInfo', {required: false, minLength: 10, maxLength: 20})}
+                {...register('aboutInfo', {required: true, validate: aboutInfoValidationHandler})}
               >
               </textarea>
             </label>
           </div>
+          {errors.aboutInfo && <span style={{color: '#e4001b'}}>{errors.aboutInfo.message}</span>}
         </div>
         <div className="user-info-edit__section user-info-edit__section--status">
           <h2 className="user-info-edit__title user-info-edit__title--status">Статус</h2>
@@ -241,13 +304,21 @@ export default function UserInfo(): JSX.Element {
             </label>
           </div>
         </div>
-        <SpecialisationList
-          trigger={trigger}
-          register={register}
-          isEditMode={isEditMode}
-          types={Object.values(Specialisation)}
-          selectedSpecs={selectedSpecs}
-        />
+        <div className="user-info-edit__section">
+          <h2 className="user-info-edit__title user-info-edit__title--specialization">Специализация</h2>
+          <div className="specialization-checkbox user-info-edit__specialization">
+            {
+              ProfileSpecialisationList({
+                types: Object.values(Specialisation),
+                trigger,
+                register,
+                selectedSpecs,
+                isEditMode
+              })
+            }
+          </div>
+          {errors.specialisations && <span style={{color: '#e4001b'}}>{errors.specialisations.message}</span>}
+        </div>
         <div ref={locationBlockRef} className={`custom-select ${!isEditMode ? 'custom-select--readonly' : ''} user-info-edit__select`}>
           <span className="custom-select__label">Локация</span>
           <input className='visually-hidden location' {...register('location')} />

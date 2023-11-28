@@ -166,7 +166,6 @@ export class AuthController {
     @Req() { user }: RequestWithRefreshTokenPayload,
     @Res({ passthrough: true }) response: Response,
   ) {
-    console.log(user);
     const userWithToken = await this.authService.refreshTokens(
       user.sub,
       response,

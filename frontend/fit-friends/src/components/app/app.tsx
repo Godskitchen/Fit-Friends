@@ -17,7 +17,7 @@ import { getAuthCheckedStatus } from 'src/store/user-process/user-process.select
 import NotFoundPage from 'src/pages/not-found-page/not-found.page';
 import ForbiddenPage from 'src/pages/forbidden-page/forbidden-page';
 import PersonalAccountCoachPage from 'src/pages/personal-account/personal-account-coach.page';
-import QuestionnaireCoachPageTest from 'src/pages/questionnaire-page/questionnaire-coach.page-test';
+import QuestionnaireCoachPageTest from 'src/pages/questionnaire-page/questionnaire-coach.page';
 
 export default function App(): JSX.Element {
 

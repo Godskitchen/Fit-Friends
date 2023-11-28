@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { UserProcess } from '../../types/state.type';
-import { checkAuthAction, createCoachProfileAction, createUserProfileAction, loginAction, registerAction } from '../api-actions';
+import { checkAuthAction, createCoachProfileAction, createUserProfileAction, loginAction, registerAction, updateProfileAction } from '../api-actions';
 import { AuthorizationStatus, SliceNameSpace } from 'src/app-constants';
 import { HttpStatusCode } from 'src/services/server-api';
 
@@ -126,8 +126,16 @@ export const userProcess = createSlice({
             state.formErrors[payload.statusCode] = Array.isArray(payload.message) ? payload.message.join('') : payload.message;
           }
         }
+      })
+      .addCase(updateProfileAction.fulfilled, (state, {payload}) => {
+        state.userInfo = payload;
+        state.formErrors = {
+          [HttpStatusCode.CONFLICT]: '',
+          [HttpStatusCode.SERVER_INTERNAL]: '',
+          [HttpStatusCode.BAD_REQUEST]: {},
+          [HttpStatusCode.UNAUTHORIZED]: ''
+        };
       });
-
   },
 });
 

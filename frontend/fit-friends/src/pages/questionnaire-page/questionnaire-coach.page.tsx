@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 import { ChangeEvent, Fragment, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import LoadingScreen from 'src/components/loading-screen/loading-screen';
 import SkillButtons from 'src/components/skill-buttons/skill-buttons';
-import SpecialisationCoachRegList from 'src/components/specialisation-reg-list.tsx/specialisation-coach-reg-list';
+import RegSpecialisationList from 'src/components/specialisation-list.tsx/reg-specialisation-list';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { createCoachProfileAction } from 'src/store/api-actions';
 import { getUserInfo } from 'src/store/user-process/user-process.selectors';
@@ -23,7 +22,7 @@ const questionnaireCoachFieldPaths = {
   individualTraining: 'individualTraining'
 } as const;
 
-export default function QuestionnaireCoachPage(): JSX.Element {
+export default function QuestionnaireCoachPageTest(): JSX.Element {
 
   const dispatch = useAppDispatch();
   const userInfo = useAppSelector(getUserInfo);
@@ -48,11 +47,12 @@ export default function QuestionnaireCoachPage(): JSX.Element {
     handleSubmit,
     formState,
     formState: {errors},
-    control,
     trigger,
+    control,
     setError,
     clearErrors,
-    getValues
+    getValues,
+    setValue
   } = useForm<QuestionnaireCoachInputs>(
     {
       mode: 'onBlur',
@@ -61,20 +61,29 @@ export default function QuestionnaireCoachPage(): JSX.Element {
       defaultValues: {
         specialisations: [],
         skillLevel: SkillLevel.Amateur,
-        individualTraining: false
+        individualTraining: false,
+        certificates: undefined,
+        description: '',
       }
     }
   );
+
+  const selectedSpecs = useWatch<QuestionnaireCoachInputs, 'specialisations'>({control, name: 'specialisations'});
 
   if (userInfo === undefined) {
     return <LoadingScreen/>;
   }
 
+  if (userInfo === null) {
+    return <p>Error</p>;
+  }
+
 
   const onInputFocusHandler = (inputName: keyof QuestionnaireCoachInputs) => clearErrors(inputName);
   const onSubmitHandler: SubmitHandler<QuestionnaireCoachInputs> = (formData) => {
+    setValue('specialisations', selectedSpecs);
     console.log(formData);
-    // dispatch(createCoachProfileAction(Object.assign(formData, {userId: userInfo.userId})));
+    dispatch(createCoachProfileAction(Object.assign(formData, {userId: userInfo.userId})));
   };
 
   return (
@@ -101,20 +110,28 @@ export default function QuestionnaireCoachPage(): JSX.Element {
                       <h1 className="visually-hidden">Опросник</h1>
                       <div className="questionnaire-coach__wrapper">
                         <div className="questionnaire-coach__block">
-                          {SpecialisationCoachRegList({
-                            types: Object.values(Specialisation),
-                            register,
-                            control,
-                            trigger
-                          })}
+                          <span className="questionnaire-coach__legend">Ваша специализация (тип) тренировок</span>
+                          <div className="specialization-checkbox questionnaire-coach__specializations">
+                            {
+                              RegSpecialisationList({
+                                types: Object.values(Specialisation),
+                                trigger,
+                                register,
+                                fieldPaths: questionnaireCoachFieldPaths,
+                                selectedSpecs,
+                              })
+                            }
+                          </div>
                           {errors.specialisations && <span style={{color: '#e4001b'}}>{errors.specialisations.message}</span>}
                         </div>
                         <div className="questionnaire-coach__block">
-                          {SkillButtons({
-                            skills: Object.values(SkillLevel),
-                            register,
-                            fieldPaths: questionnaireCoachFieldPaths
-                          })}
+                          {
+                            SkillButtons({
+                              skills: Object.values(SkillLevel),
+                              register,
+                              fieldPaths: questionnaireCoachFieldPaths
+                            })
+                          }
                         </div>
                         <div className="questionnaire-coach__block">
                           <span className="questionnaire-coach__legend">Ваши дипломы и сертификаты</span>

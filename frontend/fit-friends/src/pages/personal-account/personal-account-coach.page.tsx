@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Header from 'src/components/header/header';
-import UserInfo from 'src/components/user-info/user-info';
+import UserInfoDesk from 'src/components/user-info-desk/user-info-desk';
 import { HeaderNavTab } from 'src/types/constants';
 
 export default function PersonalAccountCoachPage() : JSX.Element {
@@ -18,7 +18,7 @@ export default function PersonalAccountCoachPage() : JSX.Element {
             <div className="container">
               <div className="inner-page__wrapper">
                 <h1 className="visually-hidden">Личный кабинет</h1>
-                <UserInfo />
+                <UserInfoDesk />
                 <div className="inner-page__content">
                   <div className="personal-account-coach">
                     <div className="personal-account-coach__navigation">

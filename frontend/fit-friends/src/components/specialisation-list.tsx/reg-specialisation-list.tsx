@@ -3,7 +3,7 @@ import { Specialisation } from 'src/types/constants';
 import { TRAINING_TYPE_COUNT } from 'src/utils/validators/constants';
 import { specialisationValidationHandler } from 'src/utils/validators/specialisation';
 
-type SkillLeveFieldPath<T extends FieldValues> = {
+type SpecialisationFieldPath<T extends FieldValues> = {
   specialisations: FieldPath<T>;
 }
 
@@ -11,7 +11,7 @@ type SpecialisationListProps<T extends FieldValues> = {
   types: Specialisation[];
   register: UseFormRegister<T>;
   trigger: UseFormTrigger<T>;
-  fieldPaths: SkillLeveFieldPath<T>;
+  fieldPaths: SpecialisationFieldPath<T>;
   selectedSpecs: Specialisation[];
 }
 
@@ -26,7 +26,7 @@ const TypeButtonValue = {
   Stretching: 'Стрейчинг'
 };
 
-export default function SpecialisationListTest<T extends FieldValues>({types, register, trigger, fieldPaths, selectedSpecs}: SpecialisationListProps<T>): JSX.Element[] {
+export default function RegSpecialisationList<T extends FieldValues>({types, register, trigger, fieldPaths, selectedSpecs}: SpecialisationListProps<T>): JSX.Element[] {
 
   const handleCheckboxChange = (value: Specialisation) => {
     if (selectedSpecs.includes(value)) {

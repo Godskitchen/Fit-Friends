@@ -33,8 +33,9 @@ export type QuestionnaireUserInputs = {
   dailyCaloriesIntake: number;
 }
 
-export type CoachInfoInputs = {
+export type ProfileInfoInputs = {
   avatar: FileList | null;
+  shouldDeleteAvatar: boolean;
   name: string;
   aboutInfo: string;
   individualTraining: boolean;

@@ -5,10 +5,10 @@ import { ApiRoute, AppRoute } from 'src/app-constants';
 import { saveToken, dropToken } from 'src/services/auth-token';
 import { HttpStatusCode, REQUEST_TIMEOUT, SERVER_URL, shouldDisplayError } from 'src/services/server-api';
 import { Role } from 'src/types/constants';
-import { QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs } from 'src/types/forms.type';
+import { ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs } from 'src/types/forms.type';
 import { AppDispatch, State } from 'src/types/state.type';
 import { AuthData, KnownError, UserInfo } from 'src/types/user.type';
-import { adaptCoachProfileToServer, adaptRegisterUserToServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
+import { adaptCoachProfileToServer, adaptRegisterUserToServer, adaptUpdateProfiletoServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
 import { AuthUserRdo, UserRdo } from 'src/utils/adapters/api-rdos/auth-user.rdo';
 import { redirectAction } from './redirect.action';
 import { adaptUserToClient } from 'src/utils/adapters/adapter-to-client';
@@ -105,7 +105,11 @@ export const createCoachProfileAction = createAsyncThunk<
         {headers: {'Content-Type': 'multipart/form-data; boundary=boundary'}},
       );
 
-      const {data: userData} = await serverApi.post<UserRdo>(`${ApiRoute.UserDetails}/${userId}/create`, adaptCoachProfileToServer({...coachProfileData, certificates: certificate}));
+      const {data: userData} = await serverApi.post<UserRdo>(
+        `${ApiRoute.UserDetails}/${userId}/create`,
+        adaptCoachProfileToServer({...coachProfileData, certificates: certificate})
+      );
+
       const adaptedData = adaptUserToClient(userData);
       dispatch(redirectAction(AppRoute.Main));
       console.log('userData', userData);
@@ -155,6 +159,33 @@ export const checkAuthAction = createAsyncThunk<UserInfo, undefined, {extra: Axi
 
       return Promise.reject(error);
     }
+  },
+);
+
+export const updateProfileAction = createAsyncThunk<UserInfo, ProfileInfoInputs & {userId: number; role: Role}, {extra: AxiosInstance}>(
+  'user/updateProfile',
+  async(updateData, {extra: serverApi}) => {
+    const userId = updateData.userId;
+    const role = updateData.role;
+    let avatar: string | null | undefined;
+
+    if (updateData.shouldDeleteAvatar === true) {
+      avatar = null;
+    } else if (updateData.avatar && updateData.avatar?.length !== 0) {
+      const image = updateData.avatar[0];
+      const form = new FormData();
+      form.append('avatar', image, image.name);
+
+      const {data: avatarUrl} = await serverApi.post<string>(
+        ApiRoute.UploadAvatar,
+        form,
+        {headers: {'Content-Type': 'multipart/form-data; boundary=boundary'}},
+      );
+      avatar = avatarUrl;
+    }
+    const { data } = await serverApi.patch<UserRdo>(`${ApiRoute.UserDetails}/${userId}`, adaptUpdateProfiletoServer({...updateData, avatar}, role));
+    const adaptedData = adaptUserToClient(data);
+    return adaptedData;
   },
 );
 

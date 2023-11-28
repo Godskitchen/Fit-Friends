@@ -39,6 +39,17 @@ export type TrainerProfileInfo = {
   individualTraining: boolean;
 }
 
+export type UpdateProfileInfo = {
+  name: string;
+  aboutInfo: string;
+  location: Location;
+  gender: Gender;
+  avatar?: string | null;
+  skillLevel: SkillLevel;
+  specialisations: Specialisation[];
+  individualTraining: boolean;
+}
+
 
 export type UserInfo = {
   userId: number;
@@ -55,5 +66,3 @@ export type UserInfo = {
   userProfile?: UserProfileInfo;
   trainerProfile?: TrainerProfileInfo;
 };
-
-// export type AuthUserInfo = UserInfo & {accessToken: string}

@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 import { Fragment } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import LoadingScreen from 'src/components/loading-screen/loading-screen';
 import SkillButtons from 'src/components/skill-buttons/skill-buttons';
-import SpecialisationUserRegList from 'src/components/specialisation-reg-list.tsx/specialisation-user-reg-list';
+import RegSpecialisationList from 'src/components/specialisation-list.tsx/reg-specialisation-list';
 import trainingDurationButtons from 'src/components/training-duration-buttons/training-duration-buttons';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { createUserProfileAction } from 'src/store/api-actions';
@@ -36,6 +35,7 @@ export default function QuestionnaireUserPage (): JSX.Element {
     formState: {errors},
     control,
     trigger,
+    setValue,
     clearErrors,
   } = useForm<QuestionnaireUserInputs>(
     {
@@ -50,6 +50,8 @@ export default function QuestionnaireUserPage (): JSX.Element {
     }
   );
 
+  const selectedSpecs = useWatch<QuestionnaireUserInputs, 'specialisations'>({control, name: 'specialisations'});
+
   if (userInfo === undefined) {
     return <LoadingScreen/>;
   }
@@ -60,8 +62,9 @@ export default function QuestionnaireUserPage (): JSX.Element {
 
   const onInputFocusHandler = (inputName: keyof QuestionnaireUserInputs) => clearErrors(inputName);
   const onSubmitHandler: SubmitHandler<QuestionnaireUserInputs> = (formData) => {
+    setValue('specialisations', selectedSpecs);
     console.log(formData);
-    // dispatch(createUserProfileAction(Object.assign(formData, {userId: userInfo.userId})));
+    dispatch(createUserProfileAction(Object.assign(formData, {userId: userInfo.userId})));
   };
 
   return (
@@ -88,12 +91,15 @@ export default function QuestionnaireUserPage (): JSX.Element {
                       <h1 className="visually-hidden">Опросник</h1>
                       <div className="questionnaire-user__wrapper">
                         <div className="questionnaire-user__block">
-                          {SpecialisationUserRegList({
-                            types: Object.values(Specialisation),
-                            register,
-                            control,
-                            trigger,
-                          })}
+                          {
+                            RegSpecialisationList({
+                              types: Object.values(Specialisation),
+                              register,
+                              trigger,
+                              fieldPaths: questionnaireUserFieldPaths,
+                              selectedSpecs
+                            })
+                          }
                           {errors.specialisations && <span style={{color: '#e4001b'}}>{errors.specialisations.message}</span>}
                         </div>
                         <div className="questionnaire-user__block">
