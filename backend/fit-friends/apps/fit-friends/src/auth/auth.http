@@ -1,14 +1,14 @@
 @token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiVXNlck9uZSIsImVtYWlsIjoidXNlcjRAbWFpbC5sb2NhbCIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNjk5NzEyNjQ2LCJleHAiOjE2OTk3OTkwNDZ9.x5uWe8CZmnMVJWp1WXmxM_wI5tFmPnrK9VM9uiU2HlA
-
+@female = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsIm5hbWUiOiJGcmllbmRGZW1hbGUiLCJlbWFpbCI6ImZyaWVuZEZlbWFsZUBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE3MDEyODc2NTAsImV4cCI6MTcwMTI4ODU1MH0.OYcUX5FDpYhbji6HhURr8l1Aup9jxoKMH6QQCh4fpis
 # Create a new user
 POST http://localhost:4000/api/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "UserOne",
-  "email": "user4@mail.local",
+  "name": "FriendFemale",
+  "email": "friendFemale@mail.local",
   "password": "123456",
-  "gender": "Male",
+  "gender": "Female",
   "role": "User",
   "aboutInfo": "about info text",
   "location": "Udelnaya"
@@ -43,8 +43,8 @@ POST http://localhost:4000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "inader@hyatt.com",
-  "password": "mockpass"
+  "email": "friendMale@mail.local",
+  "password": "123456"
 }
 
 //Trainer "email": "alysha.walker@johns.biz", "password": "mockpass"

@@ -12,7 +12,11 @@ import { StaticService } from '@app/static';
 import { BackgroundImageType } from '@libs/shared/app-types';
 import { MessageService } from '@app/message';
 import { FriendsQuery } from './queries/friends.query';
-import { createFriendRequestMessage, hashPassword } from '@libs/shared/helpers';
+import {
+  createRemoveFriendMessage,
+  createaddFriendMessage,
+  hashPassword,
+} from '@libs/shared/helpers';
 import { NewProfileDto } from './dto/new-profile.dto';
 
 @Injectable()
@@ -103,12 +107,21 @@ export class UserService {
 
     await this.messageService.createMessage({
       recepientId: friendId,
-      text: createFriendRequestMessage(userName),
+      text: createaddFriendMessage(userName),
     });
   }
 
-  public async removeFriend(userId: number, friendId: number) {
+  public async removeFriend(
+    userId: number,
+    userName: string,
+    friendId: number,
+  ) {
     await this.userRepository.removeFriend(userId, friendId);
+
+    await this.messageService.createMessage({
+      recepientId: friendId,
+      text: createRemoveFriendMessage(userName),
+    });
   }
 
   public async getFriendList(userId: number, query: FriendsQuery) {

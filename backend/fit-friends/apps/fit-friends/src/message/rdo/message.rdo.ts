@@ -9,4 +9,8 @@ export class MessageRdo {
   @ApiProperty({ example: 'Текст сообщения' })
   @Expose()
   text: string;
+
+  @ApiProperty({ example: 'Дата создания сообщения' })
+  @Expose()
+  createdAt: string;
 }

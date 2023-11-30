@@ -1,8 +1,8 @@
 
-@user1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiVXNlck9uZSIsImVtYWlsIjoidXNlcjRAbWFpbC5sb2NhbCIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNjk5NzEyNjQ2LCJleHAiOjE2OTk3OTkwNDZ9.x5uWe8CZmnMVJWp1WXmxM_wI5tFmPnrK9VM9uiU2HlA
-@user2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsIm5hbWUiOiJVc2VyVHdvIiwiZW1haWwiOiJ1c2VyMkBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE2OTg2OTM3MjEsImV4cCI6MTY5ODc4MDEyMX0.QmISBWF2Jo-2xurspDnw69vs_UIXEKfyj_d6928Cxkk
+@female = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsIm5hbWUiOiJGcmllbmRGZW1hbGUiLCJlbWFpbCI6ImZyaWVuZEZlbWFsZUBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE3MDEyODc2NTAsImV4cCI6MTcwMTI4ODU1MH0.OYcUX5FDpYhbji6HhURr8l1Aup9jxoKMH6QQCh4fpis
+@male = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsIm5hbWUiOiJGcmllbmRNYWxlIiwiZW1haWwiOiJmcmllbmRNYWxlQG1haWwubG9jYWwiLCJyb2xlIjoiVXNlciIsImlhdCI6MTcwMTI5ODM0MiwiZXhwIjoxNzAxMzg0NzQyfQ.3hK62tIMFLRGquWsl5M5HVJGFU3SViMap6A9RpUxZ8c
 
-@user3 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsIm5hbWUiOiLQodCw0LLQtdC70LjQuSIsImVtYWlsIjoiaW5hZGVyQGh5YXR0LmNvbSIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNjk5MzExMTc2LCJleHAiOjE2OTkzOTc1NzZ9.M4YiYlttkDoAQylUtQPak0Prk5AN6dLg7cSls8iE9Z8
+@me = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsIm5hbWUiOiJmcm9udFUiLCJlbWFpbCI6IkRpZU15R29kQGdtYWlsLmNvbSIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNzAxMjg3ODk4LCJleHAiOjE3MDEyODg3OTh9.IDVCgZuP2Tgnz74F1AeXHsHn3QK2NLbDrrtYcrJjrvg
 
 @trainer1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE0LCJuYW1lIjoiVHJhaW5lck9uZSIsImVtYWlsIjoidHJhaW5lcjFAbWFpbC5sb2NhbCIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNjk5NzEzNDkwLCJleHAiOjE2OTk3OTk4OTB9.gxmmBdxiYr0gJMV2h1J6rIn0uOwf79wbO4q7Jdjqbmc
 # get user info
@@ -12,7 +12,7 @@ GET  http://localhost:4000/api/users/details/3 HTTP/1.1
 
 # create user profile
 POST http://localhost:4000/api/users/details/13/create HTTP/1.1
-Authorization: {{user1}}
+Authorization: {{male}}
 Content-Type: application/json
 
 {
@@ -46,7 +46,7 @@ Content-Type: application/json
 
 # update user info
 PATCH http://localhost:4000/api/users/details/13 HTTP/1.1
-Authorization: {{user1}}
+Authorization: {{male}}
 Content-Type: application/json
 
 {
@@ -61,20 +61,20 @@ Content-Type: application/json
 
 # get users
 Get http://localhost:4000/api/users?location=Udelnaya&fitnessLevel=Beginner,Amateur&trainingType=Boxing,Yoga HTTP/1.1
-Authorization: {{user1}}
+Authorization: {{male}}
 ###
 
 # add friend
-PATCH  http://localhost:4000/api/users/friends/add/3 HTTP/1.1
-Authorization: {{user1}}
+PATCH  http://localhost:4000/api/users/friends/add/5 HTTP/1.1
+Authorization: {{male}}
 ###
 
 # remove friend
-PATCH http://localhost:4000/api/users/friends/remove/3 HTTP/1.1
-Authorization: {{user2}}
+PATCH http://localhost:4000/api/users/friends/remove/5 HTTP/1.1
+Authorization: {{male}}
 ###
 
 # get friendlist
 GET  http://localhost:4000/api/users/friends/ HTTP/1.1
-Authorization: {{user3}}
+Authorization: {{male}}
 ###

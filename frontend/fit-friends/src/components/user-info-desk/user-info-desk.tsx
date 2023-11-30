@@ -143,8 +143,6 @@ export default function UserInfoDesk(): JSX.Element {
   }
 
   const onSubmitHandler: SubmitHandler<ProfileInfoInputs> = (formData) => {
-    setValue('specialisations', selectedSpecs);
-    console.log('formData', formData);
     dispatch(updateProfileAction(Object.assign(
       formData, {userId: userInfo.userId, role: userInfo.role}
     )));

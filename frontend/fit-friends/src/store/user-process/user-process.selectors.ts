@@ -6,6 +6,7 @@ export const getAuthorizationStatus = (state: State): AuthorizationStatus => sta
 export const getAuthCheckedStatus = (state: State): boolean => (getAuthorizationStatus(state)) !== AuthorizationStatus.Unknown;
 
 export const getUserInfo = (state: State): UserInfo | null | undefined => state[SliceNameSpace.User].userInfo;
+export const getCoachCertificates = (state: State) => state[SliceNameSpace.User].userInfo?.trainerProfile?.certificates;
 export const getProfileStatus = (state: State): boolean => {
   const userInfo = getUserInfo(state);
 
@@ -13,3 +14,4 @@ export const getProfileStatus = (state: State): boolean => {
 };
 
 export const getFormErrors = (state: State) => state[SliceNameSpace.User].formErrors;
+export const getNotifications = (state: State) => state[SliceNameSpace.User].notifications;

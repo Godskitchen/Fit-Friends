@@ -2,10 +2,12 @@ import { AuthorizationStatus } from 'src/app-constants';
 import { UserInfo } from './user.type';
 import { store } from 'src/store';
 import { HttpStatusCode } from 'src/services/server-api';
+import { Message } from './message.type';
 
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
   userInfo?: UserInfo | null ;
+  notifications: Message[];
   formErrors: {
     [key: number]: string | Record<string, string>;
     [HttpStatusCode.CONFLICT]: string;

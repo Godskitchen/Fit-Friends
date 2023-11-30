@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { UserProcess } from '../../types/state.type';
-import { checkAuthAction, createCoachProfileAction, createUserProfileAction, loginAction, registerAction, updateProfileAction } from '../api-actions';
+import { checkAuthAction, createCoachProfileAction, createUserProfileAction, deleteNotificationAction, getNotificationsAction, loginAction, registerAction, updateProfileAction } from '../api-actions';
 import { AuthorizationStatus, SliceNameSpace } from 'src/app-constants';
 import { HttpStatusCode } from 'src/services/server-api';
 
 const initialState: UserProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
   userInfo: undefined,
+  notifications: [],
   formErrors: {
     [HttpStatusCode.CONFLICT]: '',
     [HttpStatusCode.SERVER_INTERNAL]: '',
@@ -135,7 +136,14 @@ export const userProcess = createSlice({
           [HttpStatusCode.BAD_REQUEST]: {},
           [HttpStatusCode.UNAUTHORIZED]: ''
         };
+      })
+      .addCase(getNotificationsAction.fulfilled, (state, {payload}) => {
+        state.notifications = [...payload];
+      })
+      .addCase(deleteNotificationAction.fulfilled, (state, {payload}) => {
+        state.notifications = [...payload];
       });
+
   },
 });
 

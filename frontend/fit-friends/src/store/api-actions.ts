@@ -12,6 +12,7 @@ import { adaptCoachProfileToServer, adaptRegisterUserToServer, adaptUpdateProfil
 import { AuthUserRdo, UserRdo } from 'src/utils/adapters/api-rdos/auth-user.rdo';
 import { redirectAction } from './redirect.action';
 import { adaptUserToClient } from 'src/utils/adapters/adapter-to-client';
+import { Message } from 'src/types/message.type';
 
 export const registerAction = createAsyncThunk<
   UserInfo,
@@ -187,5 +188,22 @@ export const updateProfileAction = createAsyncThunk<UserInfo, ProfileInfoInputs 
     const adaptedData = adaptUserToClient(data);
     return adaptedData;
   },
+);
+
+export const getNotificationsAction = createAsyncThunk<Message[], undefined, {extra: AxiosInstance}> (
+  'user/getNotifications',
+  async(_arg, {extra: serverApi}) => {
+    const {data: notifications} = await serverApi.get<Message[]>(ApiRoute.Notifications);
+    return notifications;
+  },
+);
+
+export const deleteNotificationAction = createAsyncThunk<Message[], string, {extra: AxiosInstance}>(
+  'user/deleteNotification',
+  async(messageId, {extra: serverApi}) => {
+    await serverApi.delete(`${ApiRoute.Notifications}/${messageId}`);
+    const {data: notifications} = await serverApi.get<Message[]>(ApiRoute.Notifications);
+    return notifications;
+  }
 );
 

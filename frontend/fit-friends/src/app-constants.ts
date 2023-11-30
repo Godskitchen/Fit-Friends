@@ -18,7 +18,8 @@ export enum ApiRoute {
   UserDetails = '/users/details',
   Login = '/auth/login',
   CheckAuth = '/auth',
-  RefreshTokens = '/auth/refresh'
+  RefreshTokens = '/auth/refresh',
+  Notifications = '/messages'
 }
 
 export enum SliceNameSpace {

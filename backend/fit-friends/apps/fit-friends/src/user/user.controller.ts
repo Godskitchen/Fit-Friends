@@ -188,7 +188,7 @@ export class UserController {
     @Param('friendId', ParseIntPipe) friendId: number,
     @Req() { user }: RequestWithAccessTokenPayload,
   ) {
-    await this.userService.removeFriend(user.sub, friendId);
+    await this.userService.removeFriend(user.sub, user.name, friendId);
     return {
       message: createRemoveFriendMessage(friendId),
     };

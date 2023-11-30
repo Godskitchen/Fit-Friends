@@ -1,6 +1,5 @@
 import { UseFormRegister, UseFormTrigger, FieldPath, FieldValues} from 'react-hook-form';
 import { Specialisation } from 'src/types/constants';
-import { TRAINING_TYPE_COUNT } from 'src/utils/validators/constants';
 import { specialisationValidationHandler } from 'src/utils/validators/specialisation';
 
 type SpecialisationFieldPath<T extends FieldValues> = {
@@ -49,7 +48,6 @@ export default function RegSpecialisationList<T extends FieldValues>({types, reg
               {
                 validate: () => specialisationValidationHandler(selectedSpecs),
                 onChange: () => handleCheckboxChange(type),
-                disabled: selectedSpecs.length >= TRAINING_TYPE_COUNT.MAX && !selectedSpecs.includes(type),
               })
             }
           />
