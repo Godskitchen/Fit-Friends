@@ -1,6 +1,6 @@
 import { ChangeEvent, useRef, useState } from 'react';
 import getPdfThumbnail from 'src/utils/pdf-thumbnailer';
-import { certificateValidationHandler } from 'src/utils/validators/certificate';
+import { certificateValidationHandler } from 'src/utils/validators/user/certificate';
 
 type CertificateCardProps = {
   image: string;

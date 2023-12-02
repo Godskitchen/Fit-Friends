@@ -83,6 +83,7 @@ export class NewTrainingDto {
   })
   @Min(PRICE_MIN, { message: PRICE_VALIDATION_MESSAGE })
   @IsInt({ message: PRICE_VALIDATION_MESSAGE })
+  @Type(() => Number)
   price: number;
 
   @ApiProperty({
@@ -94,6 +95,7 @@ export class NewTrainingDto {
   @Max(CALORIES_TO_BURN.MAX, { message: CALORIES_TO_BURN_VALIDATION_MESSAGE })
   @Min(CALORIES_TO_BURN.MIN, { message: CALORIES_TO_BURN_VALIDATION_MESSAGE })
   @IsInt({ message: CALORIES_TO_BURN_VALIDATION_MESSAGE })
+  @Type(() => Number)
   caloriesToBurn: number;
 
   @ApiProperty({

@@ -1,10 +1,10 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import CertificateCard from '../app/certificate-card/certificate-card';
-import { certificateValidationHandler } from 'src/utils/validators/certificate';
+import CertificateCard from '../certificate-card/certificate-card';
+import { certificateValidationHandler } from 'src/utils/validators/user/certificate';
 import getPdfThumbnail from 'src/utils/pdf-thumbnailer';
 import { useAppSelector } from 'src/hooks';
 import { getCoachCertificates } from 'src/store/user-process/user-process.selectors';
-import LoadingScreen from '../loading-screen/loading-screen';
+import LoadingScreen from '../loading-components/loading-screen';
 import { customAlphabet } from 'nanoid';
 
 const nanoid = customAlphabet('1234567890', 10);

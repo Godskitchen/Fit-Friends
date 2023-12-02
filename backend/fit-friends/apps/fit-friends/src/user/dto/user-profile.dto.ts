@@ -27,7 +27,7 @@ import {
   TRAINING_TYPE_COUNT_VALIDATION_MESSAGE,
   TRAINING_TYPE_VALIDATION_MESSAGE,
 } from './constants';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UserProfileDto {
@@ -91,6 +91,7 @@ export class UserProfileDto {
   @Max(CALORIES_TO_BURN.MIN, { message: CALORIES_TO_BURN_VALIDATION_MESSAGE })
   @Min(CALORIES_TO_BURN.MIN, { message: CALORIES_TO_BURN_VALIDATION_MESSAGE })
   @IsInt({ message: CALORIES_TO_BURN_VALIDATION_MESSAGE })
+  @Type(() => Number)
   caloriesToBurn: number;
 
   @ApiProperty({
@@ -106,6 +107,7 @@ export class UserProfileDto {
     message: DAILY_CALORIES_INTAKE_VALIDATION_MESSAGE,
   })
   @IsInt({ message: DAILY_CALORIES_INTAKE_VALIDATION_MESSAGE })
+  @Type(() => Number)
   dailyCaloriesIntake: number;
 
   @ApiProperty({

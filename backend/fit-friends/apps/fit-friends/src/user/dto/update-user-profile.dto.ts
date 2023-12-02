@@ -1,4 +1,4 @@
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsEnum,
   ArrayMinSize,
@@ -95,6 +95,7 @@ export class UpdateUserProfileDto {
   @Max(CALORIES_TO_BURN.MIN, { message: CALORIES_TO_BURN_VALIDATION_MESSAGE })
   @Min(CALORIES_TO_BURN.MIN, { message: CALORIES_TO_BURN_VALIDATION_MESSAGE })
   @IsInt({ message: CALORIES_TO_BURN_VALIDATION_MESSAGE })
+  @Type(() => Number)
   @IsOptional()
   caloriesToBurn?: number;
 
@@ -111,6 +112,7 @@ export class UpdateUserProfileDto {
     message: DAILY_CALORIES_INTAKE_VALIDATION_MESSAGE,
   })
   @IsInt({ message: DAILY_CALORIES_INTAKE_VALIDATION_MESSAGE })
+  @Type(() => Number)
   @IsOptional()
   dailyCaloriesIntake?: number;
 

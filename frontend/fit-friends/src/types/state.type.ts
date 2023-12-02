@@ -3,10 +3,12 @@ import { UserInfo } from './user.type';
 import { store } from 'src/store';
 import { HttpStatusCode } from 'src/services/server-api';
 import { Message } from './message.type';
+import { MyTraining } from './training.type';
 
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
   userInfo?: UserInfo | null ;
+  myTrainings?: MyTraining[];
   notifications: Message[];
   formErrors: {
     [key: number]: string | Record<string, string>;
@@ -17,6 +19,9 @@ export type UserProcess = {
   };
 };
 
+export type AppData = {
+  isDataUploadingStatus: boolean;
+}
 
 export type State = ReturnType<typeof store.getState>;
 

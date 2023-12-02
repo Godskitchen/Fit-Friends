@@ -1,10 +1,13 @@
 import { FitnessLevelToServer, GenderToServer, LocationToServer, RoleToServer, SpecialisationToServer, TrainingDurationToServer } from 'src/utils/adapters/adaprters-constants';
 import { NewUserDto, NewProfileDto } from 'src/utils/adapters/api-dtos/new-user.dto';
-import { RegisterData, TrainerProfileInfo, UpdateProfileInfo, UserProfileInfo } from 'src/types/user.type';
+import {RegisterInfo, TrainerProfileInfo, UpdateProfileInfo, UserProfileInfo } from 'src/types/user.type';
 import { UpdateUserDto } from './api-dtos/update-user.dto';
 import { Role } from 'src/types/constants';
+import { NewTrainingDto } from './api-dtos/new-training.dto';
+import { NewTrainingInfo } from 'src/types/training.type';
 
-export const adaptRegisterUserToServer = (newUser: RegisterData): NewUserDto => ({
+
+export const adaptRegisterUserToServer = (newUser: RegisterInfo): NewUserDto => ({
   name: newUser.name,
   email: newUser.email,
   password: newUser.password,
@@ -55,4 +58,15 @@ export const adaptUpdateProfiletoServer = (updateProfile: UpdateProfileInfo, rol
   } : undefined
 });
 
-
+export const adaptNewTrainingToServer = (newTraining: NewTrainingInfo): NewTrainingDto => ({
+  title: newTraining.title,
+  fitnessLevel: FitnessLevelToServer[newTraining.skillLevel],
+  trainingDuration: TrainingDurationToServer[newTraining.trainingDuration],
+  trainingType: SpecialisationToServer[newTraining.specialisation],
+  price: newTraining.price,
+  caloriesToBurn: newTraining.caloriesToBurn,
+  description: newTraining.description,
+  gender: GenderToServer[newTraining.gender],
+  video: newTraining.trainingVideo,
+  isSpecialOffer: false,
+});

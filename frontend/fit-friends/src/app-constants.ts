@@ -8,18 +8,22 @@ export enum AppRoute {
   QuestionnaireUser = '/questionnaire_user',
   Forbidden = '/forbidden',
   CoachAccount = '/account_coach',
+  CreateTraining = '/create_training',
   UserAccount = '/account_user'
 }
 
 export enum ApiRoute {
   UploadAvatar = '/static/upload/avatar',
   UploadCertificate = '/static/upload/certificate',
+  UploadTrainingVideo = 'static/upload/training-video',
   Register = '/auth/register',
   UserDetails = '/users/details',
   Login = '/auth/login',
   CheckAuth = '/auth',
   RefreshTokens = '/auth/refresh',
-  Notifications = '/messages'
+  Notifications = '/messages',
+  CreateTraining = '/trainings/create',
+  MyTrainings = '/trainings/mylist'
 }
 
 export enum SliceNameSpace {

@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { AppRoute } from 'src/app-constants';
 import CertificateSlider from 'src/components/certificate-list/certificate-list';
 import Header from 'src/components/header/header';
 import UserInfoDesk from 'src/components/user-info-desk/user-info-desk';
@@ -14,7 +15,7 @@ export default function PersonalAccountCoachPage() : JSX.Element {
         <title>Личный кабинет — FitFriends</title>
       </Helmet>
       <div className="wrapper">
-        <Header activeTab={HeaderNavTab.Profile} />
+        <Header activeTab={HeaderNavTab.Home} profileButtonNavigateLink={AppRoute.CoachAccount} />
         <main>
           <section className="inner-page">
             <div className="container">
@@ -32,7 +33,7 @@ export default function PersonalAccountCoachPage() : JSX.Element {
                         </div>
                         <span className="thumbnail-link__text">Мои тренировки</span>
                       </Link>
-                      <Link className="thumbnail-link thumbnail-link--theme-light" to="#">
+                      <Link className="thumbnail-link thumbnail-link--theme-light" to={`${AppRoute.CoachAccount}${AppRoute.CreateTraining}`}>
                         <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
                           <svg width="30" height="26" aria-hidden="true">
                             <use xlinkHref="#icon-add"></use>
@@ -60,8 +61,8 @@ export default function PersonalAccountCoachPage() : JSX.Element {
                         <div className="thumbnail-spec-gym">
                           <div className="thumbnail-spec-gym__image">
                             <picture>
-                              <source type="image/webp" srcSet="img/content/thumbnails/nearest-gym-01.webp, img/content/thumbnails/nearest-gym-01@2x.webp 2x" />
-                              <img src="img/content/thumbnails/nearest-gym-01.jpg" srcSet="img/content/thumbnails/nearest-gym-01@2x.jpg 2x" width="330" height="190" alt="" />
+                              <source type="image/webp" srcSet="/img/content/thumbnails/nearest-gym-01.webp, /img/content/thumbnails/nearest-gym-01@2x.webp 2x" />
+                              <img src="/img/content/thumbnails/nearest-gym-01.jpg" srcSet="/img/content/thumbnails/nearest-gym-01@2x.jpg 2x" width="330" height="190" alt="" />
                             </picture>
                           </div>
                           <div className="thumbnail-spec-gym__header">

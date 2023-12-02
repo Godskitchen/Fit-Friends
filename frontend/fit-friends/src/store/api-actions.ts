@@ -5,10 +5,10 @@ import { ApiRoute, AppRoute } from 'src/app-constants';
 import { saveToken, dropToken } from 'src/services/auth-token';
 import { HttpStatusCode, REQUEST_TIMEOUT, SERVER_URL, shouldDisplayError } from 'src/services/server-api';
 import { Role } from 'src/types/constants';
-import { ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs } from 'src/types/forms.type';
+import { CreateTrainingInputs, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs } from 'src/types/forms.type';
 import { AppDispatch, State } from 'src/types/state.type';
 import { AuthData, KnownError, UserInfo } from 'src/types/user.type';
-import { adaptCoachProfileToServer, adaptRegisterUserToServer, adaptUpdateProfiletoServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
+import { adaptCoachProfileToServer, adaptNewTrainingToServer, adaptRegisterUserToServer, adaptUpdateProfiletoServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
 import { AuthUserRdo, UserRdo } from 'src/utils/adapters/api-rdos/auth-user.rdo';
 import { redirectAction } from './redirect.action';
 import { adaptUserToClient } from 'src/utils/adapters/adapter-to-client';
@@ -204,6 +204,32 @@ export const deleteNotificationAction = createAsyncThunk<Message[], string, {ext
     await serverApi.delete(`${ApiRoute.Notifications}/${messageId}`);
     const {data: notifications} = await serverApi.get<Message[]>(ApiRoute.Notifications);
     return notifications;
+  }
+);
+
+export const createTrainingAction = createAsyncThunk<void, CreateTrainingInputs,
+{
+  dispatch: AppDispatch;
+  extra: AxiosInstance;
+}> (
+  'user/createTraining',
+  async(newTrainingData, {dispatch, extra: serverApi}) => {
+    try {
+      const trainingVideoFile = newTrainingData.trainingVideo[0];
+      const form = new FormData();
+      form.append('training_video', trainingVideoFile, trainingVideoFile.name);
+
+      const {data: trainingVideoUrl} = await serverApi.post<string>(
+        ApiRoute.UploadTrainingVideo,
+        form,
+        {headers: {'Content-Type': 'multipart/form-data; boundary=boundary'}},
+      );
+      await serverApi.post(`${ApiRoute.CreateTraining}`, adaptNewTrainingToServer({...newTrainingData, trainingVideo: trainingVideoUrl}));
+      dispatch(redirectAction(AppRoute.CoachAccount));
+    } catch(error) {
+      console.log(error);
+      throw error;
+    }
   }
 );
 

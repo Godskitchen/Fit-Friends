@@ -1,6 +1,6 @@
 import { UseFormRegister, UseFormTrigger, FieldPath, FieldValues} from 'react-hook-form';
 import { Specialisation } from 'src/types/constants';
-import { specialisationValidationHandler } from 'src/utils/validators/specialisation';
+import { specialisationValidationHandler } from 'src/utils/validators/user/specialisation';
 
 type SpecialisationFieldPath<T extends FieldValues> = {
   specialisations: FieldPath<T>;

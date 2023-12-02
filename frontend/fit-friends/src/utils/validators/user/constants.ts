@@ -42,7 +42,6 @@ export const MAX_FILE_AVATAR_SIZE = 1048576;
 export const NAME_PATTERN = `^[a-zA-Zа-яА-Я]{${NAME_LENGTH.MIN},${NAME_LENGTH.MAX}}$`;
 export const EMAIL_PATTERN = '^(([^<>()[\\]\\.,;:\\s@\\"]+(\\.[^<>()[\\]\\.,;:\\s@\\"]+)*)|(\\".+\\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$';
 
-// export const CERTIFICATES_FILE_NAME_PATTERN = `\.pdf$`;
 
 export const NAME_VALIDATION_MESSAGE = `Имя должно иметь длину от ${NAME_LENGTH.MIN} до ${NAME_LENGTH.MAX} символов русского/английского алфавита`;
 export const EMAIL_VALIDATION_MESSAGE = 'Некорректный формат email';
@@ -63,8 +62,8 @@ export const LOCATION_VALIDATION_MESSAGE = `Расположение польз�
 
 export const ABOUT_INFO_VALIDATION_MESSAGE = `Описание должно иметь длину от ${ABOUT_INFO_LENGTH.MIN} до ${ABOUT_INFO_LENGTH.MAX} символов`;
 export const BIRTH_DATE_VALIDATION_MESSAGE = 'Дата рождения должна иметь формат "YYYY-MM-DD" и не может быть больше текущей даты';
-export const CALORIES_TO_BURN_VALIDATION_MESSAGE = `Количество калорий для сброса должно быть целым числом от ${CALORIES_TO_BURN.MIN} до ${CALORIES_TO_BURN.MAX}`;
-export const DAILY_CALORIES_INTAKE_VALIDATION_MESSAGE = `Количество ежедневно затрачиваемых калорий должно быть целым числом от ${DAILY_CALORIES_INTAKE.MIN} до ${DAILY_CALORIES_INTAKE.MAX}`;
+export const CALORIES_TO_BURN_VALIDATION_MESSAGE = `Калории должно быть целым числом от ${CALORIES_TO_BURN.MIN} до ${CALORIES_TO_BURN.MAX}`;
+export const DAILY_CALORIES_INTAKE_VALIDATION_MESSAGE = `Калории должно быть целым числом от ${DAILY_CALORIES_INTAKE.MIN} до ${DAILY_CALORIES_INTAKE.MAX}`;
 export const ACHIEVEMENTS_VALIDATION_MESSAGE = `Описание тренерских заслуг должно иметь длину от ${ACHIEVEMENTS.MIN} до ${ACHIEVEMENTS.MAX} символов`;
 // export const FITNESS_LEVEL_VALIDATION_MESSAGE = `$property: Уровень подготовки может принимать только следующие значения: ${Object.values(
 //   FitnessLevel,
@@ -79,9 +78,6 @@ export const TRAINING_TYPE_COUNT_VALIDATION_MESSAGE = `Укажите от ${TRA
 //   TrainingDuration,
 // ).join(', ')}`;
 
-export const READY_FOR_WORKOUT_VALIDATION_MESSAGE =
-  '$property: Должно быть булевым значением';
-
-export const CERTIFICATES_FORMAT_MESSAGE = 'Файл сертификата должен иметь формат "pdf"';
+export const CERTIFICATES_FORMAT_MESSAGE = 'Некорректный формат файла';
 // export const AVATAR_REQUIRED_MESSAGE = 'Добавьте Ваш аватар';
 // export const CERTIFICATE_REQUIRED_MESSAGE = 'Прикрепите Ваш сертификат';

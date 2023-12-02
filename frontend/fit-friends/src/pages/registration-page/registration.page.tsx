@@ -1,14 +1,13 @@
-/* eslint-disable no-console */
 import { ChangeEvent, Fragment, MouseEvent, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Gender, Location, Role } from 'src/types/constants';
-import { emailValidationHandler } from 'src/utils/validators/email';
-import { nameValidationHandler } from 'src/utils/validators/name';
-import { passwordValidationHandler } from 'src/utils/validators/password';
+import { emailValidationHandler } from 'src/utils/validators/user/email';
+import { nameValidationHandler } from 'src/utils/validators/user/name';
+import { passwordValidationHandler } from 'src/utils/validators/user/password';
 import dayjs from 'dayjs';
-import DropDownList from 'src/components/location-list/location-list';
-import { avatarValidationHandler } from 'src/utils/validators/avatar';
+import DropDownList from 'src/components/dropdown-list/dropdown-list';
+import { avatarValidationHandler } from 'src/utils/validators/user/avatar';
 import { RegisterInputs } from 'src/types/forms.type';
 import GenderButtons from 'src/components/gender-buttons/gender-buttons';
 import RoleButtons from 'src/components/role-buttons/role-buttons';
@@ -51,7 +50,6 @@ export default function RegistrationPage(): JSX.Element {
   );
 
   const onSubmitHandler: SubmitHandler<RegisterInputs> = (formData) => {
-    console.log(formData);
     dispatch(registerAction(formData));
   };
   const onInputFocusHandler = (inputName: keyof RegisterInputs) => {
@@ -123,9 +121,7 @@ export default function RegistrationPage(): JSX.Element {
                         <div className="input-load-avatar">
                           <label>
                             <input
-                              className="visually-hidden"
-                              type="file"
-                              accept="image/png, image/jpeg"
+                              className="visually-hidden" type="file" accept="image/png, image/jpeg"
                               {...register('avatar',
                                 {
                                   required: true,
@@ -166,7 +162,7 @@ export default function RegistrationPage(): JSX.Element {
                                 onFocus={() => onInputFocusHandler('name')}
                               />
                             </span>
-                            {errors.name && <span className="custom-input__error">{errors.name.message}</span>}
+                            <span className="custom-input__error">{errors.name?.message}</span>
                           </label>
                         </div>
                         <div className={`custom-input ${errors.email ? 'custom-input--error' : ''}`}>
@@ -178,7 +174,7 @@ export default function RegistrationPage(): JSX.Element {
                                 onFocus={() => onInputFocusHandler('email')}
                               />
                             </span>
-                            {errors.email && <span className="custom-input__error">{errors.email.message}</span>}
+                            <span className="custom-input__error">{errors.email?.message}</span>
                           </label>
                         </div>
                         <div className={`custom-input ${errors.birthday ? 'custom-input--error' : ''}`}>
@@ -190,7 +186,7 @@ export default function RegistrationPage(): JSX.Element {
                                 onFocus={() => onInputFocusHandler('birthday')}
                               />
                             </span>
-                            {errors.birthday && <span className="custom-input__error">{errors.birthday.message}</span>}
+                            <span className="custom-input__error">{errors.birthday?.message}</span>
                           </label>
                         </div>
                         <div
@@ -198,8 +194,8 @@ export default function RegistrationPage(): JSX.Element {
                           ref={locationBlockRef}
                         >
                           <span className="custom-select__label">Ваша локация</span>
+                          {getValues('location') && <div className="custom-select__placeholder" style={{bottom: '0px', top: '42px'}}>{getValues('location')}</div>}
                           <input className='visually-hidden location' {...register('location', {required: 'Поле обязательно для заполнения'})} />
-                          {getValues('location') ? <div className="custom-select__placeholder">{getValues('location')}</div> : ''}
                           <button
                             className="custom-select__button"
                             type="button" aria-label="Выберите одну из опций"
@@ -214,8 +210,8 @@ export default function RegistrationPage(): JSX.Element {
                               </svg>
                             </span>
                           </button>
+                          <span className="custom-select__error" style={{bottom: '0px', top: '85px'}}>{errors.location?.message}</span>
                           {DropDownList({items: Object.values(Location), clickItemHandler: onClickLocationItemHandler})}
-                          {errors.location && <span className="custom-select__error">{errors.location.message}</span>}
                         </div>
                         <div className={`custom-input ${errors.password ? 'custom-input--error' : ''}`}>
                           <label>
@@ -231,7 +227,7 @@ export default function RegistrationPage(): JSX.Element {
                                 onFocus={() => onInputFocusHandler('password')}
                               />
                             </span>
-                            {errors.password && <span className="custom-input__error">{errors.password.message}</span>}
+                            <span className="custom-input__error">{errors.password?.message}</span>
                           </label>
                         </div>
                         {GenderButtons({genders: Object.values(Gender), register})}

@@ -6,7 +6,7 @@ export const videoExtensions = ['mov', 'avi', 'mp4'];
 export const FieldNames = {
   AVATAR: 'avatar',
   CERTIFICATE: 'certificate',
-  TRAINING_VIDEO: 'training-video',
+  TRAINING_VIDEO: 'training_video',
 } as const;
 
 export const EXTENSION_PATTERN = /\.[0-9a-z]+$/i;

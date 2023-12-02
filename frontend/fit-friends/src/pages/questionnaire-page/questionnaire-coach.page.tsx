@@ -1,8 +1,7 @@
-/* eslint-disable no-console */
 import { ChangeEvent, Fragment, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
-import LoadingScreen from 'src/components/loading-screen/loading-screen';
+import LoadingScreen from 'src/components/loading-components/loading-screen';
 import SkillButtons from 'src/components/skill-buttons/skill-buttons';
 import RegSpecialisationList from 'src/components/specialisation-list.tsx/reg-specialisation-list';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
@@ -10,8 +9,8 @@ import { createCoachProfileAction } from 'src/store/api-actions';
 import { getUserInfo } from 'src/store/user-process/user-process.selectors';
 import { SkillLevel, Specialisation } from 'src/types/constants';
 import { QuestionnaireCoachInputs } from 'src/types/forms.type';
-import { certificateValidationHandler } from 'src/utils/validators/certificate';
-import { descriptionValidationHandler } from 'src/utils/validators/description';
+import { certificateValidationHandler } from 'src/utils/validators/user/certificate';
+import { descriptionValidationHandler } from 'src/utils/validators/user/description';
 
 
 const questionnaireCoachFieldPaths = {
@@ -33,6 +32,7 @@ export default function QuestionnaireCoachPageTest(): JSX.Element {
       .then((res) => {
         if (res === true && evt.target.files) {
           setCertificateUploaded(true);
+          trigger('certificates');
         } else {
           if (typeof res === 'string') {
             setError('certificates', {message: res});
@@ -52,7 +52,6 @@ export default function QuestionnaireCoachPageTest(): JSX.Element {
     setError,
     clearErrors,
     getValues,
-    setValue
   } = useForm<QuestionnaireCoachInputs>(
     {
       mode: 'onBlur',
@@ -62,7 +61,6 @@ export default function QuestionnaireCoachPageTest(): JSX.Element {
         specialisations: [],
         skillLevel: SkillLevel.Amateur,
         individualTraining: false,
-        certificates: undefined,
         description: '',
       }
     }
@@ -81,8 +79,6 @@ export default function QuestionnaireCoachPageTest(): JSX.Element {
 
   const onInputFocusHandler = (inputName: keyof QuestionnaireCoachInputs) => clearErrors(inputName);
   const onSubmitHandler: SubmitHandler<QuestionnaireCoachInputs> = (formData) => {
-    setValue('specialisations', selectedSpecs);
-    console.log(formData);
     dispatch(createCoachProfileAction(Object.assign(formData, {userId: userInfo.userId})));
   };
 
@@ -137,7 +133,7 @@ export default function QuestionnaireCoachPageTest(): JSX.Element {
                           <span className="questionnaire-coach__legend">Ваши дипломы и сертификаты</span>
                           <div className="drag-and-drop questionnaire-coach__drag-and-drop">
                             <label>
-                              <span className="drag-and-drop__label" style={{border: `${errors.certificates && errors.certificates.message ? '1px solid #e4001b' : ''}`}} tabIndex={0}>
+                              <span className="drag-and-drop__label" style={{border: `${errors.certificates ? '1px solid #e4001b' : ''}`}} tabIndex={0}>
                                 {!isCertificateUploaded ? 'Загрузите сюда файл формата PDF' : getValues('certificates')[0].name}
                                 <svg width="20" height="20" aria-hidden="true">
                                   <use xlinkHref="#icon-import"></use>
@@ -160,7 +156,7 @@ export default function QuestionnaireCoachPageTest(): JSX.Element {
                         </div>
                         <div className="questionnaire-coach__block">
                           <span className="questionnaire-coach__legend">Расскажите о своём опыте, который мы сможем проверить</span>
-                          <div className="custom-textarea questionnaire-coach__textarea">
+                          <div className={`custom-textarea questionnaire-coach__textarea ${errors.description ? 'custom-textarea--error' : ''}`}>
                             <label>
                               <textarea
                                 style={errors.description ? {border: '1px solid #e4001b', backgroundColor: 'transparent'} : {}}
@@ -172,9 +168,9 @@ export default function QuestionnaireCoachPageTest(): JSX.Element {
                                 onFocus={() => onInputFocusHandler('description')}
                               >
                               </textarea>
+                              <span className='custom-textarea__error'>{errors.description?.message}</span>
                             </label>
                           </div>
-                          {errors.description && <span style={{color: '#e4001b'}}>{errors.description.message}</span>}
                           <div className="questionnaire-coach__checkbox">
                             <label>
                               <input type="checkbox" {...register('individualTraining')} />

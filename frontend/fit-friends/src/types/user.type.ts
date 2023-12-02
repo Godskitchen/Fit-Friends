@@ -1,6 +1,6 @@
 import { Gender, Role, Location, SkillLevel, Specialisation, TrainingDuration } from './constants';
 
-export type RegisterData = {
+export type RegisterInfo = {
   name: string;
   email: string;
   password: string;

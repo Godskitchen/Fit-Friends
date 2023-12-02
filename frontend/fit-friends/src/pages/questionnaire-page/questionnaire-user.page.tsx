@@ -1,8 +1,7 @@
-/* eslint-disable no-console */
 import { Fragment } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
-import LoadingScreen from 'src/components/loading-screen/loading-screen';
+import LoadingScreen from 'src/components/loading-components/loading-screen';
 import SkillButtons from 'src/components/skill-buttons/skill-buttons';
 import RegSpecialisationList from 'src/components/specialisation-list.tsx/reg-specialisation-list';
 import trainingDurationButtons from 'src/components/training-duration-buttons/training-duration-buttons';
@@ -11,7 +10,7 @@ import { createUserProfileAction } from 'src/store/api-actions';
 import { getUserInfo } from 'src/store/user-process/user-process.selectors';
 import { SkillLevel, Specialisation, TrainingDuration } from 'src/types/constants';
 import { QuestionnaireUserInputs } from 'src/types/forms.type';
-import { caloriesIntakeValidationHandler, caloriesToBurnValidationHandler } from 'src/utils/validators/calories';
+import { caloriesIntakeValidationHandler, caloriesToBurnValidationHandler } from 'src/utils/validators/user/calories';
 
 
 const questionnaireUserFieldPaths = {
@@ -35,7 +34,6 @@ export default function QuestionnaireUserPage (): JSX.Element {
     formState: {errors},
     control,
     trigger,
-    setValue,
     clearErrors,
   } = useForm<QuestionnaireUserInputs>(
     {
@@ -62,8 +60,6 @@ export default function QuestionnaireUserPage (): JSX.Element {
 
   const onInputFocusHandler = (inputName: keyof QuestionnaireUserInputs) => clearErrors(inputName);
   const onSubmitHandler: SubmitHandler<QuestionnaireUserInputs> = (formData) => {
-    setValue('specialisations', selectedSpecs);
-    console.log(formData);
     dispatch(createUserProfileAction(Object.assign(formData, {userId: userInfo.userId})));
   };
 
@@ -91,15 +87,18 @@ export default function QuestionnaireUserPage (): JSX.Element {
                       <h1 className="visually-hidden">Опросник</h1>
                       <div className="questionnaire-user__wrapper">
                         <div className="questionnaire-user__block">
-                          {
-                            RegSpecialisationList({
-                              types: Object.values(Specialisation),
-                              register,
-                              trigger,
-                              fieldPaths: questionnaireUserFieldPaths,
-                              selectedSpecs
-                            })
-                          }
+                          <span className="questionnaire-coach__legend">Ваша специализация (тип) тренировок</span>
+                          <div className="specialization-checkbox questionnaire-coach__specializations">
+                            {
+                              RegSpecialisationList({
+                                types: Object.values(Specialisation),
+                                register,
+                                trigger,
+                                fieldPaths: questionnaireUserFieldPaths,
+                                selectedSpecs
+                              })
+                            }
+                          </div>
                           {errors.specialisations && <span style={{color: '#e4001b'}}>{errors.specialisations.message}</span>}
                         </div>
                         <div className="questionnaire-user__block">
@@ -131,13 +130,13 @@ export default function QuestionnaireUserPage (): JSX.Element {
                                   />
                                   <span className="custom-input__text">ккал</span>
                                 </span>
+                                <span className="custom-input__error">{errors.caloriesToBurn?.message}</span>
                               </label>
                             </div>
                           </div>
-                          {errors.caloriesToBurn && <span style={{color: '#e4001b'}}>{errors.caloriesToBurn.message}</span>}
                           <div className="questionnaire-user__calories-waste">
                             <span className="questionnaire-user__legend">Сколько калорий тратить в день</span>
-                            <div className="custom-input custom-input--with-text-right questionnaire-user__input">
+                            <div className={`custom-input custom-input--with-text-right questionnaire-user__input ${errors.dailyCaloriesIntake ? 'custom-input--error' : ''}`}>
                               <label>
                                 <span className="custom-input__wrapper">
                                   <input
@@ -150,10 +149,10 @@ export default function QuestionnaireUserPage (): JSX.Element {
                                   />
                                   <span className="custom-input__text">ккал</span>
                                 </span>
+                                <span className="custom-input__error">{errors.dailyCaloriesIntake?.message}</span>
                               </label>
                             </div>
                           </div>
-                          {errors.dailyCaloriesIntake && <span style={{color: '#e4001b'}}>{errors.dailyCaloriesIntake.message}</span>}
                         </div>
                       </div>
                       <button

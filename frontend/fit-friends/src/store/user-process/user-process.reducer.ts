@@ -8,6 +8,7 @@ const initialState: UserProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
   userInfo: undefined,
   notifications: [],
+  myTrainings: undefined,
   formErrors: {
     [HttpStatusCode.CONFLICT]: '',
     [HttpStatusCode.SERVER_INTERNAL]: '',

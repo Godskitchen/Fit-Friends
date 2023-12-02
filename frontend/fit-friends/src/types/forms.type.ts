@@ -44,3 +44,15 @@ export type ProfileInfoInputs = {
   gender: Gender;
   skillLevel: SkillLevel;
 }
+
+export type CreateTrainingInputs ={
+  title: string;
+  description: string;
+  specialisation: Specialisation;
+  trainingDuration: TrainingDuration;
+  skillLevel: SkillLevel;
+  gender: Gender;
+  caloriesToBurn: number;
+  price: number;
+  trainingVideo: FileList;
+}

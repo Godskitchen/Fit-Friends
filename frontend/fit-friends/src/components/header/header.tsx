@@ -8,8 +8,9 @@ import { getNotificationsAction } from 'src/store/api-actions';
 
 type HeaderProps = {
   activeTab: HeaderNavTab;
+  profileButtonNavigateLink: string;
 }
-export default function Header({activeTab}: HeaderProps) {
+export default function Header({activeTab, profileButtonNavigateLink}: HeaderProps) {
 
   const dispatch = useAppDispatch();
 
@@ -37,7 +38,7 @@ export default function Header({activeTab}: HeaderProps) {
               </Link>
             </li>
             <li className="main-nav__item">
-              <Link className={`main-nav__link ${activeTab === HeaderNavTab.Profile ? 'is-active' : ''}`} to="#" aria-label="Личный кабинет">
+              <Link className={`main-nav__link ${activeTab === HeaderNavTab.Profile ? 'is-active' : ''}`} to={profileButtonNavigateLink} aria-label="Личный кабинет">
                 <svg width="16" height="18" aria-hidden="true">
                   <use xlinkHref="#icon-user"></use>
                 </svg>

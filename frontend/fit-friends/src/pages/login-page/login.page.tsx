@@ -5,8 +5,8 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useAppDispatch } from 'src/hooks';
 import { loginAction } from 'src/store/api-actions';
 import { LoginInputs } from 'src/types/forms.type';
-import { emailValidationHandler } from 'src/utils/validators/email';
-import { passwordValidationHandler } from 'src/utils/validators/password';
+import { emailValidationHandler } from 'src/utils/validators/user/email';
+import { passwordValidationHandler } from 'src/utils/validators/user/password';
 
 
 export default function LoginPage(): JSX.Element {

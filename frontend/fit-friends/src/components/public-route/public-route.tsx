@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from 'src/app-constants';
 import { useAppSelector } from 'src/hooks';
 import { getUserInfo } from 'src/store/user-process/user-process.selectors';
-import LoadingScreen from '../loading-screen/loading-screen';
+import LoadingScreen from '../loading-components/loading-screen';
 
 type PublicRouteProps = {
   authorizationStatus: AuthorizationStatus;

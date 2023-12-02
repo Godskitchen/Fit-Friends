@@ -1,16 +1,16 @@
 /* eslint-disable no-console */
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { getUserInfo } from 'src/store/user-process/user-process.selectors';
-import LoadingScreen from '../loading-screen/loading-screen';
+import LoadingScreen from '../loading-components/loading-screen';
 import { useState, MouseEvent, useRef, ChangeEvent} from 'react';
 import { Specialisation, Location, Gender, SkillLevel } from 'src/types/constants';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { ProfileInfoInputs } from 'src/types/forms.type';
 import ProfileSpecialisationList from '../specialisation-list.tsx/profile-specialisation-list';
-import DropDownList from '../location-list/location-list';
-import { avatarValidationHandler } from 'src/utils/validators/avatar';
-import { nameValidationHandler } from 'src/utils/validators/name';
-import { aboutInfoValidationHandler } from 'src/utils/validators/about-info';
+import DropDownList from '../dropdown-list/dropdown-list';
+import { avatarValidationHandler } from 'src/utils/validators/user/avatar';
+import { nameValidationHandler } from 'src/utils/validators/user/name';
+import { aboutInfoValidationHandler } from 'src/utils/validators/user/about-info';
 import { updateProfileAction } from 'src/store/api-actions';
 
 
@@ -81,25 +81,19 @@ export default function UserInfoDesk(): JSX.Element {
 
   const onClickLocationItemHandler = (evt: MouseEvent<HTMLUListElement>) => {
     const location = (evt.target as HTMLLIElement).textContent as Location;
-    if (location) {
-      setValue('location', location, {shouldValidate: true});
-    }
+    setValue('location', location, {shouldValidate: true});
     locationBlockRef.current?.classList.remove('is-open');
   };
 
   const onClickGenderItemHandler = (evt: MouseEvent<HTMLUListElement>) => {
     const gender = (evt.target as HTMLLIElement).textContent as keyof typeof GenderConvert;
-    if (gender) {
-      setValue('gender', GenderConvert[gender] as Gender, {shouldValidate: true});
-    }
+    setValue('gender', GenderConvert[gender] as Gender, {shouldValidate: true});
     genderBlockRef.current?.classList.remove('is-open');
   };
 
   const onClickSkillItemHandler = (evt: MouseEvent<HTMLUListElement>) => {
     const skillLevel = (evt.target as HTMLLIElement).textContent as keyof typeof SkillConvert;
-    if (skillLevel) {
-      setValue('skillLevel', SkillConvert[skillLevel] as SkillLevel, {shouldValidate: true});
-    }
+    setValue('skillLevel', SkillConvert[skillLevel] as SkillLevel, {shouldValidate: true});
     skillBlockRef.current?.classList.remove('is-open');
   };
 

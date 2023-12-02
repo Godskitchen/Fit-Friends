@@ -2,7 +2,7 @@ import { UseFormRegister, UseFormTrigger } from 'react-hook-form';
 import { Specialisation } from 'src/types/constants';
 import { ProfileInfoInputs } from 'src/types/forms.type';
 // import { TRAINING_TYPE_COUNT } from 'src/utils/validators/constants';
-import { specialisationValidationHandler } from 'src/utils/validators/specialisation';
+import { specialisationValidationHandler } from 'src/utils/validators/user/specialisation';
 
 type SpecialisationListProps = {
   types: Specialisation[];
