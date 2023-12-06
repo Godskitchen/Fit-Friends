@@ -6,7 +6,6 @@ import {
   IsInt,
   IsOptional,
   IsPositive,
-  Max,
   Min,
 } from 'class-validator';
 import {
@@ -41,7 +40,7 @@ export class UserTrainingsQuery {
 
   @ApiPropertyOptional({
     description:
-      'Пагинация списка. Запрашиваемый номер страницы списка трениовок. Положительное целое число',
+      'Пагинация списка. Запрашиваемый номер страницы списка тренировок. Положительное целое число',
     minimum: MIN_PAGE_NUMBER,
   })
   @IsPositive()
@@ -51,17 +50,31 @@ export class UserTrainingsQuery {
   public page?: number;
 
   @ApiPropertyOptional({
-    description: `Фильтр тренировок по рейтингу. Целое число от ${RATING.MIN} до ${RATING.MAX}`,
+    description: `Фильтр тренировок по рейтингу. Допускается как ввод диапазона "от" и "до" через ",", так и одно значение, в этом случае будет выбран диапазон от ${RATING.MIN} до переданного значения. Целые неотрицательные числа`,
     minimum: RATING.MIN,
     maximum: RATING.MAX,
-    example: RATING.MAX,
+    example: '1,5',
   })
-  @Max(RATING.MAX)
-  @Min(RATING.MIN)
-  @IsInt()
-  @Type(() => Number)
+  @ArrayMinSize(RANGE_ARRAYS_SIZE)
+  @ArrayMaxSize(RANGE_ARRAYS_SIZE)
+  @Min(RATING.MIN, { each: true })
+  @IsInt({ each: true })
+  @Transform(({ value }) => {
+    if (value) {
+      const ratingRange = (value as string)
+        .split(',')
+        .map((it: string) => +it)
+        .sort((num1, num2) => num1 - num2);
+
+      if (ratingRange.length < RANGE_ARRAYS_SIZE) {
+        ratingRange.unshift(RATING.MIN);
+      }
+      return ratingRange;
+    }
+    return value;
+  })
   @IsOptional()
-  public rating?: number;
+  public rating?: number[];
 
   @ApiPropertyOptional({
     description: `Фильтр тренировок по цене. Допускается как ввод диапазона "от" и "до" через ",", так и одно значение, в этом случае будет выбран диапазон от ${MIN_PRICE} до переданного значения. Целые неотрицательные числа`,

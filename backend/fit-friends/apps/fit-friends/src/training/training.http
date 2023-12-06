@@ -1,22 +1,23 @@
+@me = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsIm5hbWUiOiJmcm9udFXQvtC70L7Qu9C-0LvQvtC70LsiLCJlbWFpbCI6IkRpZU15R29kQGdtYWlsLmNvbSIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNzAxODA2NDkzLCJleHAiOjE3MDE4OTI4OTN9.DhAJWAO01rcXl2Jp1qJSgI56Z4UpMds4qALyc2ZAAo8
 @trainer1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI4LCJuYW1lIjoiVHJhaW5lck9uZSIsImVtYWlsIjoidHJhaW5lcjhAbWFpbC5sb2NhbCIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNjk5NzIyNzQzLCJleHAiOjE2OTk4MDkxNDN9.eOcyUDIA_ZevOqI6GkXzUj_lvDvakKjYr3Yri8Va67M
 @trainer2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsIm5hbWUiOiJUcmFpbmVyVHdvIiwiZW1haWwiOiJ0cmFpbmVyMkBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTg4NzQ3MDgsImV4cCI6MTY5ODk2MTEwOH0.RfaZiVXCZBQ_H3g-AmTuKqlbPXFUhscpeoj-7vvPYS8
 
 @trainer3 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsIm5hbWUiOiJUcmFpbmVyVGhyZWUiLCJlbWFpbCI6InRyYWluZXIzQG1haWwubG9jYWwiLCJyb2xlIjoiVHJhaW5lciIsImlhdCI6MTY5ODg3NDc0NCwiZXhwIjoxNjk4OTYxMTQ0fQ.O5Wqg4SI6O5VcAD5sgD8K4hp8NNRwSzC-HJIDRsi4bU
 #create new training
 POST http://localhost:4000/api/trainings/create HTTP/1.1
-Authorization: {{trainer1}}
+Authorization: {{me}}
 Content-Type: application/json
 
 {
-  "title": "title",
+  "title": "training14",
   "fitnessLevel": "Pro",
   "trainingDuration": "FiftyToEightyMinutes",
   "trainingType": "Stretching",
-  "price": 200,
+  "price": 2000,
   "caloriesToBurn": 1001,
   "description": "Описание тренировки",
   "gender": "Male",
-  "video": "e3196add-2a27-4f73-9cb0-f41ec870a146.avi",
+  "video": "17abc4d4-2c26-4631-b1c6-205b7e8abe4f.avi",
   "isSpecialOffer": false
 }
 
@@ -37,8 +38,8 @@ Content-Type: application/json
 }
 ###
 
-#
-GET http://localhost:4000/api/trainings/?sort=price&sortDirection=asc&trainingType=Yoga HTTP/1.1
-Authorization: {{trainer1}}
+# get my trainingslist
+GET http://localhost:4000/api/trainings/mylist HTTP/1.1
+Authorization: {{me}}
 
 ###

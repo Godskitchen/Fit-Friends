@@ -1,0 +1,78 @@
+.slider{
+  height: 1px;
+  width: 100%;
+  position: relative;
+  background: #aeaeae;
+}
+
+.slider .progress {
+  height: 100%;
+  background-color: #333333;
+  position: absolute;
+  left: 0%;
+  right: 0%;
+}
+
+.range-input {
+  position: relative;
+}
+
+.range-input--raiting {
+  margin-bottom: 33px;
+}
+
+.range-min-value,
+.range-max-value {
+  position: absolute;
+  top: 15px;
+}
+
+.range-min-value {
+  left: 0%
+}
+
+.range-max-value {
+  right: 0%
+}
+
+input[type="range"] {
+  position: absolute;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 1px;
+  top: -2px;
+  background: none;
+  pointer-events: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  background-color: #333333;
+  border-radius: 50%;
+  -webkit-transition: 0.3s ease;
+  -o-transition: 0.3s ease;
+  transition: 0.3s ease;
+  pointer-events: auto;
+  border: none;
+  cursor: pointer;
+}
+
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background-color: #adadad;
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  -webkit-box-shadow: 0 0 2px 2px #c5ec2a;
+  box-shadow: 0 0 2px 2px #c5ec2a;
+}
+
+
+
+
+
+

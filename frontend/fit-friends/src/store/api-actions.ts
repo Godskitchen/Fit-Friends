@@ -5,14 +5,16 @@ import { ApiRoute, AppRoute } from 'src/app-constants';
 import { saveToken, dropToken } from 'src/services/auth-token';
 import { HttpStatusCode, REQUEST_TIMEOUT, SERVER_URL, shouldDisplayError } from 'src/services/server-api';
 import { Role } from 'src/types/constants';
-import { CreateTrainingInputs, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs } from 'src/types/forms.type';
+import { CreateTrainingInputs, MyTrainingsFitersState, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs } from 'src/types/forms.type';
 import { AppDispatch, State } from 'src/types/state.type';
 import { AuthData, KnownError, UserInfo } from 'src/types/user.type';
 import { adaptCoachProfileToServer, adaptNewTrainingToServer, adaptRegisterUserToServer, adaptUpdateProfiletoServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
 import { AuthUserRdo, UserRdo } from 'src/utils/adapters/api-rdos/auth-user.rdo';
 import { redirectAction } from './redirect.action';
-import { adaptUserToClient } from 'src/utils/adapters/adapter-to-client';
+import { adaptMyTrainingsListToClient, adaptUserToClient } from 'src/utils/adapters/adapter-to-client';
 import { Message } from 'src/types/message.type';
+import { TrainingList } from 'src/types/training.type';
+import { TrainingListRdo } from 'src/utils/adapters/api-rdos/training.rdo';
 
 export const registerAction = createAsyncThunk<
   UserInfo,
@@ -214,22 +216,39 @@ export const createTrainingAction = createAsyncThunk<void, CreateTrainingInputs,
 }> (
   'user/createTraining',
   async(newTrainingData, {dispatch, extra: serverApi}) => {
-    try {
-      const trainingVideoFile = newTrainingData.trainingVideo[0];
-      const form = new FormData();
-      form.append('training_video', trainingVideoFile, trainingVideoFile.name);
+    const trainingVideoFile = newTrainingData.trainingVideo[0];
+    const form = new FormData();
+    form.append('training_video', trainingVideoFile, trainingVideoFile.name);
 
-      const {data: trainingVideoUrl} = await serverApi.post<string>(
-        ApiRoute.UploadTrainingVideo,
-        form,
-        {headers: {'Content-Type': 'multipart/form-data; boundary=boundary'}},
-      );
-      await serverApi.post(`${ApiRoute.CreateTraining}`, adaptNewTrainingToServer({...newTrainingData, trainingVideo: trainingVideoUrl}));
-      dispatch(redirectAction(AppRoute.CoachAccount));
-    } catch(error) {
-      console.log(error);
-      throw error;
-    }
+    const {data: trainingVideoUrl} = await serverApi.post<string>(
+      ApiRoute.UploadTrainingVideo,
+      form,
+      {headers: {'Content-Type': 'multipart/form-data; boundary=boundary'}},
+    );
+    await serverApi.post(`${ApiRoute.CreateTraining}`, adaptNewTrainingToServer({...newTrainingData, trainingVideo: trainingVideoUrl}));
+    dispatch(redirectAction(AppRoute.CoachAccount));
   }
 );
 
+
+export const getMyTrainingsAction = createAsyncThunk<TrainingList, MyTrainingsFitersState,
+{
+  extra: AxiosInstance;
+}>(
+  'user/getMyTrainings',
+  async(filtersQuery, {extra: serverApi}) => {
+    const {data} = await serverApi.get<TrainingListRdo>(ApiRoute.MyTrainings, {params: filtersQuery});
+    return adaptMyTrainingsListToClient(data);
+  }
+);
+
+export const addMoreTrainingsToListAction = createAsyncThunk<TrainingList, MyTrainingsFitersState,
+{
+  extra: AxiosInstance;
+}>(
+  'user/addMyTrainingsToList',
+  async(filtersQuery, {extra: serverApi}) => {
+    const {data} = await serverApi.get<TrainingListRdo>(ApiRoute.MyTrainings, {params: filtersQuery});
+    return adaptMyTrainingsListToClient(data);
+  }
+);

@@ -9,7 +9,8 @@ export enum AppRoute {
   Forbidden = '/forbidden',
   CoachAccount = '/account_coach',
   CreateTraining = '/create_training',
-  UserAccount = '/account_user'
+  UserAccount = '/account_user',
+  MyTrainings = '/my_trainings'
 }
 
 export enum ApiRoute {

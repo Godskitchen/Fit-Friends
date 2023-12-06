@@ -1,14 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { UserProcess } from '../../types/state.type';
-import { checkAuthAction, createCoachProfileAction, createUserProfileAction, deleteNotificationAction, getNotificationsAction, loginAction, registerAction, updateProfileAction } from '../api-actions';
+import {
+  addMoreTrainingsToListAction,
+  checkAuthAction,
+  createCoachProfileAction,
+  createUserProfileAction,
+  deleteNotificationAction,
+  getMyTrainingsAction,
+  getNotificationsAction,
+  loginAction,
+  registerAction,
+  updateProfileAction
+} from '../api-actions';
 import { AuthorizationStatus, SliceNameSpace } from 'src/app-constants';
 import { HttpStatusCode } from 'src/services/server-api';
+import { MyTrainingsFitersState } from 'src/types/forms.type';
 
 const initialState: UserProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
   userInfo: undefined,
   notifications: [],
-  myTrainings: undefined,
+  myTrainingsList: undefined,
+  totalTrainingsCount: 0,
+  trainingsFilterState: {},
   formErrors: {
     [HttpStatusCode.CONFLICT]: '',
     [HttpStatusCode.SERVER_INTERNAL]: '',
@@ -28,6 +42,9 @@ export const userProcess = createSlice({
         [HttpStatusCode.BAD_REQUEST]: {},
         [HttpStatusCode.UNAUTHORIZED]: ''
       };
+    },
+    setFiltersStateAction: (state, {payload}: PayloadAction<MyTrainingsFitersState>) => {
+      state.trainingsFilterState = payload;
     }
   },
   extraReducers(builder) {
@@ -139,13 +156,26 @@ export const userProcess = createSlice({
         };
       })
       .addCase(getNotificationsAction.fulfilled, (state, {payload}) => {
-        state.notifications = [...payload];
+        state.notifications = payload;
       })
       .addCase(deleteNotificationAction.fulfilled, (state, {payload}) => {
-        state.notifications = [...payload];
+        state.notifications = payload;
+      })
+      .addCase(getMyTrainingsAction.fulfilled, (state, {payload}) => {
+        state.myTrainingsList = payload.trainingList;
+        state.totalTrainingsCount = payload.totalTrainingsCount;
+      })
+      .addCase(getMyTrainingsAction.rejected, (state) => {
+        state.myTrainingsList = null;
+        state.totalTrainingsCount = 0;
+      })
+      .addCase(addMoreTrainingsToListAction.fulfilled, (state, {payload}) => {
+        if (state.myTrainingsList) {
+          state.myTrainingsList = [...state.myTrainingsList, ...payload.trainingList];
+          state.totalTrainingsCount = payload.totalTrainingsCount;
+        }
       });
-
   },
 });
 
-export const {clearFormErrorsAction} = userProcess.actions;
+export const {clearFormErrorsAction, setFiltersStateAction} = userProcess.actions;

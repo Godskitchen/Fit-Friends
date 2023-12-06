@@ -31,11 +31,11 @@ export const DESCRIPTIONS = [
 export const TRAINING_VIDEO = 'trainings/video/video.mov';
 
 export const BACK_TRAINING_IMAGES = [
-  'trainings/backs/training1.png',
-  'trainings/backs/training2.png',
-  'trainings/backs/training3.png',
-  'trainings/backs/training4.png',
-  'trainings/backs/training5.png',
-  'trainings/backs/training6.png',
-  'trainings/backs/training7.png',
+  'trainings/backs/training1.jpg',
+  'trainings/backs/training2.jpg',
+  'trainings/backs/training3.jpg',
+  'trainings/backs/training4.jpg',
+  'trainings/backs/training5.jpg',
+  'trainings/backs/training6.jpg',
+  'trainings/backs/training7.jpg',
 ];

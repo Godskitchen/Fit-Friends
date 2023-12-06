@@ -75,9 +75,23 @@ export class TrainingRepository {
       ? trainingDuration.map((value) => ({ trainingDuration: value }))
       : [];
 
-    const ratingFilter = rating ? { gte: rating, lt: rating + 1 } : undefined;
+    const ratingFilter = rating
+      ? { gte: rating[0], lte: rating[1] }
+      : undefined;
 
-    return this.prismaConnector.training.findMany({
+    const totalTrainingsCount = await this.prismaConnector.training.count({
+      where: {
+        AND: [
+          { trainerId },
+          { price: priceFilter },
+          { caloriesToBurn: caloriesFilter },
+          { OR: durationFilter },
+          { rating: ratingFilter },
+        ],
+      },
+    });
+
+    const trainingList = await this.prismaConnector.training.findMany({
       where: {
         AND: [
           { trainerId },
@@ -94,6 +108,8 @@ export class TrainingRepository {
       },
       orderBy: { createdAt: sortDirection },
     });
+
+    return { totalTrainingsCount, trainingList };
   }
 
   public async findAll({

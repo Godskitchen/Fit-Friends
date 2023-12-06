@@ -45,7 +45,7 @@ export type ProfileInfoInputs = {
   skillLevel: SkillLevel;
 }
 
-export type CreateTrainingInputs ={
+export type CreateTrainingInputs = {
   title: string;
   description: string;
   specialisation: Specialisation;
@@ -55,4 +55,13 @@ export type CreateTrainingInputs ={
   caloriesToBurn: number;
   price: number;
   trainingVideo: FileList;
+}
+
+export type MyTrainingsFitersState = {
+  price?: string;
+  caloriesToBurn?: string;
+  rating?: string;
+  trainingDuration?: string;
+  page?: string;
+  limit?: string;
 }

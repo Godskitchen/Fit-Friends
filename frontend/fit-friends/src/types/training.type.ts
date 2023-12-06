@@ -15,6 +15,11 @@ export type MyTraining = {
   isSpecialOffer: boolean;
 };
 
+export type TrainingList = {
+  trainingList: MyTraining[];
+  totalTrainingsCount: number;
+}
+
 export type NewTrainingInfo = {
   title: string;
   description: string;

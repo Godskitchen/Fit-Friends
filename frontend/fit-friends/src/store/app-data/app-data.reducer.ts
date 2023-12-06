@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { SliceNameSpace } from 'src/app-constants';
+import { addMoreTrainingsToListAction, createTrainingAction } from '../api-actions';
 import { AppData } from 'src/types/state.type';
-import { createTrainingAction } from '../api-actions';
 
 const initialState: AppData = {
-  isDataUploadingStatus: false
+  dataUploadingStatus: false,
+  trainingsDownloadingStatus: false
 };
 
 export const appData = createSlice({
@@ -14,13 +15,22 @@ export const appData = createSlice({
   extraReducers(builder) {
     builder
       .addCase(createTrainingAction.fulfilled, (state) => {
-        state.isDataUploadingStatus = false;
+        state.dataUploadingStatus = false;
       })
       .addCase(createTrainingAction.pending, (state) => {
-        state.isDataUploadingStatus = true;
+        state.dataUploadingStatus = true;
       })
       .addCase(createTrainingAction.rejected, (state) => {
-        state.isDataUploadingStatus = false;
+        state.dataUploadingStatus = false;
+      })
+      .addCase(addMoreTrainingsToListAction.fulfilled, (state) => {
+        state.trainingsDownloadingStatus = false;
+      })
+      .addCase(addMoreTrainingsToListAction.pending, (state) => {
+        state.trainingsDownloadingStatus = true;
+      })
+      .addCase(addMoreTrainingsToListAction.rejected, (state) => {
+        state.trainingsDownloadingStatus = false;
       });
   }
 });

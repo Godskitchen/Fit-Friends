@@ -40,6 +40,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { TrainingListRdo } from './rdo/training-list.rdo';
 
 @UseGuards(JwtAccessGuard)
 @ApiTags('trainings')
@@ -142,8 +143,8 @@ export class TrainingController {
 
   @Get('/mylist')
   @ApiOkResponse({
-    description: `Получен список тренировок тренера. По умолчанию возвращается ${MAX_ITEMS_LIMIT} тренировок`,
-    type: [TrainingRdo],
+    description: `Получен список тренировок тренера а также их общее количество без учета лимита. По умолчанию возвращается ${MAX_ITEMS_LIMIT} тренировок`,
+    type: TrainingListRdo,
   })
   @ApiBadRequestResponse({
     description: 'Не пройдена валдиация полей query',
@@ -162,6 +163,6 @@ export class TrainingController {
       user.sub,
       query,
     );
-    return fillRDO(TrainingRdo, trainingList, [Role.Trainer]);
+    return fillRDO(TrainingListRdo, trainingList, [Role.Trainer]);
   }
 }

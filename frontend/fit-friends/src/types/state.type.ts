@@ -4,11 +4,14 @@ import { store } from 'src/store';
 import { HttpStatusCode } from 'src/services/server-api';
 import { Message } from './message.type';
 import { MyTraining } from './training.type';
+import { MyTrainingsFitersState } from './forms.type';
 
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
   userInfo?: UserInfo | null ;
-  myTrainings?: MyTraining[];
+  myTrainingsList?: MyTraining[] | null;
+  totalTrainingsCount: number;
+  trainingsFilterState: MyTrainingsFitersState;
   notifications: Message[];
   formErrors: {
     [key: number]: string | Record<string, string>;
@@ -20,7 +23,8 @@ export type UserProcess = {
 };
 
 export type AppData = {
-  isDataUploadingStatus: boolean;
+  dataUploadingStatus: boolean;
+  trainingsDownloadingStatus: boolean;
 }
 
 export type State = ReturnType<typeof store.getState>;

@@ -13,7 +13,15 @@ export enum CALORIES_TO_BURN {
   MAX = 5000,
 }
 
-export const PRICE_MIN = 0;
+export enum PRICE {
+  MIN = 0,
+  MAX = 10000,
+}
+
+export enum RATING {
+  MIN = 0,
+  MAX = 5,
+}
 
 export const VideoFormats = ['mov', 'avi', 'mp4'];
 
@@ -32,7 +40,7 @@ export const TITLE_VALIDATION_MESSAGE = `Наименование должно �
 //   TrainingType,
 // ).join(', ')}`;
 
-export const PRICE_VALIDATION_MESSAGE = 'Стоимость тренировки должна быть целым неотрицательным числом';
+export const PRICE_VALIDATION_MESSAGE = `Стоимость тренировки должна быть целым неотрицательным числом от ${PRICE.MIN} до ${PRICE.MAX}`;
 export const DESCRIPTION_VALIDATION_MESSAGE = `Описание тренировки должно иметь длину от ${TRAINING_DESCRIPTION_LENGTH.MIN} до ${TRAINING_DESCRIPTION_LENGTH.MAX} символов`;
 
 // export const GENDER_VALIDATION_MESSAGE = `$property: Пол пользователя, для которого предназначена тренировка, может принимать только следующие значения: ${Object.values(

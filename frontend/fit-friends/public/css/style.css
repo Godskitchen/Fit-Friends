@@ -10873,17 +10873,6 @@ input:active + .custom-textarea__text {
     box-shadow: 0 0 2px 2px #c5ec2a;
   }
 
-  .filter-raiting__min-toggle:hover:not(.focus-visible),
-  .filter-raiting__max-toggle:hover:not(.focus-visible) {
-    background-color: #adadad;
-  }
-
-  .filter-raiting__min-toggle:active:not(.focus-visible),
-  .filter-raiting__max-toggle:active:not(.focus-visible) {
-    -webkit-box-shadow: 0 0 2px 2px #c5ec2a;
-    box-shadow: 0 0 2px 2px #c5ec2a;
-  }
-
   .btn-show-more:hover:not(.focus-visible) {
     border-color: #adadad;
   }
