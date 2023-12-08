@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { AppRoute } from 'src/app-constants';
 import { Specialisation } from 'src/types/constants';
 import { MyTraining } from 'src/types/training.type';
 
@@ -18,6 +19,7 @@ type TrainingCardProp = {
 }
 
 export default function TrainingCard({card:{
+  trainingId,
   title,
   specialisation,
   description,
@@ -72,7 +74,7 @@ export default function TrainingCard({card:{
             </p>
           </div>
           <div className="thumbnail-training__button-wrapper">
-            <Link className="btn btn--small thumbnail-training__button-catalog" to="#">Подробнее</Link>
+            <Link className="btn btn--small thumbnail-training__button-catalog" to={`${AppRoute.CoachAccount}${AppRoute.MyTrainings}/${trainingId}`}>Подробнее</Link>
             <Link className="btn btn--small btn--outlined thumbnail-training__button-catalog" to="#">Отзывы</Link>
           </div>
         </div>

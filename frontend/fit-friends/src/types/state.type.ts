@@ -3,7 +3,7 @@ import { UserInfo } from './user.type';
 import { store } from 'src/store';
 import { HttpStatusCode } from 'src/services/server-api';
 import { Message } from './message.type';
-import { MyTraining } from './training.type';
+import { MyTraining, Training } from './training.type';
 import { MyTrainingsFitersState } from './forms.type';
 
 export type UserProcess = {
@@ -25,7 +25,9 @@ export type UserProcess = {
 export type AppData = {
   dataUploadingStatus: boolean;
   trainingsDownloadingStatus: boolean;
+  trainingInfo?: Training | null;
 }
+
 
 export type State = ReturnType<typeof store.getState>;
 

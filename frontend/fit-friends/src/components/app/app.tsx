@@ -20,6 +20,7 @@ import PersonalAccountCoachPage from 'src/pages/personal-account/personal-accoun
 import QuestionnaireCoachPageTest from 'src/pages/questionnaire-page/questionnaire-coach.page';
 import CreateTrainingPage from 'src/pages/create-training-page/create-training.page';
 import MyTrainingsPage from '../../pages/my-trainings-page/my-trainings.page';
+import CoachTrainingInfoPage from '../training-page/coach-training-info-page';
 
 export default function App(): JSX.Element {
 
@@ -93,6 +94,10 @@ export default function App(): JSX.Element {
         <Route
           path={`${AppRoute.CoachAccount}${AppRoute.MyTrainings}`}
           element={<MyTrainingsPage />}
+        />
+        <Route
+          path={`${AppRoute.CoachAccount}${AppRoute.MyTrainings}/:trainingId`}
+          element={<CoachTrainingInfoPage />}
         />
         <Route
           path={AppRoute.Forbidden}

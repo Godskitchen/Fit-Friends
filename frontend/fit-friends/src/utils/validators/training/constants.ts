@@ -23,7 +23,7 @@ export enum RATING {
   MAX = 5,
 }
 
-export const VideoFormats = ['mov', 'avi', 'mp4'];
+export const VideoFormats = ['mov', 'mp4'];
 
 export const VIDEO_FILE_NAME_PATTERN = `\\.(${VideoFormats.join('|')})$`;
 

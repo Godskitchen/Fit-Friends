@@ -1,0 +1,123 @@
+.training-video__player {
+  object-fit: fill;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #ffffff;
+  border-radius: 20px;
+}
+
+.player__controls {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-left: 38px;
+  padding-right: 38px;
+  padding-bottom: 14px;
+  padding-top: 18px;
+  height: 69px;
+  border-radius: 0px 0px 20px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.50);
+  background: rgba(51, 51, 51, 0.20);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.training-video__player:hover~.player__controls,
+.player__controls:hover {
+  opacity: 1;
+}
+
+video::-webkit-media-controls {
+  display:none !important;
+}
+
+video::-moz-media-controls {
+  display:none !important;
+}
+
+.player__controls-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+}
+
+
+.player__progress__bar {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  border: none;
+  height: 6px;
+  display: block;
+}
+
+.player__progress__bar::-moz-progress-bar {
+    background: #B5B5B5;
+    border: none;
+    border-radius: 5px;
+}
+
+.player__progress__bar::-webkit-progress-bar {
+    z-index: 9999;
+    background: #B5B5B5;
+    border: none;
+    border-radius: 5px;
+}
+
+.player__progress__bar::-webkit-progress-value {
+    background: #C5EC2A;
+    border: none;
+    height: 6px;
+    display: block;
+    border-radius: 5px;
+}
+
+.player__progress__bar::-moz-progress-value {
+  background: #C5EC2A;
+  border: none;
+  height: 6px;
+  display: block;
+  border-radius: 5px;
+}
+
+.player__time-value {
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.player__full-screen {
+  margin-left: auto;
+}
+
+.player__full-screen {
+  font-size: 0;
+  display: block;
+  border: none;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  background: none;
+  -webkit-transition: 0.2s -webkit-transform;
+  transition: 0.2s -webkit-transform;
+  transition: 0.2s transform;
+  transition: 0.2s transform, 0.2s -webkit-transform;
+}
+
+.player__full-screen img,
+.player__full-screen svg {
+    vertical-align: top;
+}
+.player__full-screen:hover {
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
+}
+
+

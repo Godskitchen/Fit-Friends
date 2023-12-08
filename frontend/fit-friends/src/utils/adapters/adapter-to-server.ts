@@ -3,8 +3,8 @@ import { NewUserDto, NewProfileDto } from 'src/utils/adapters/api-dtos/new-user.
 import {RegisterInfo, TrainerProfileInfo, UpdateProfileInfo, UserProfileInfo } from 'src/types/user.type';
 import { UpdateUserDto } from './api-dtos/update-user.dto';
 import { Role } from 'src/types/constants';
-import { NewTrainingDto } from './api-dtos/new-training.dto';
-import { NewTrainingInfo } from 'src/types/training.type';
+import { NewTrainingDto, UpdateTrainingDto } from './api-dtos/new-training.dto';
+import { NewTrainingInfo, UpdateTrainingInfo } from 'src/types/training.type';
 
 
 export const adaptRegisterUserToServer = (newUser: RegisterInfo): NewUserDto => ({
@@ -40,20 +40,20 @@ export const adaptCoachProfileToServer = (newProfile: TrainerProfileInfo): NewPr
   }
 });
 
-export const adaptUpdateProfiletoServer = (updateProfile: UpdateProfileInfo, role: Role): UpdateUserDto => ({
+export const adaptUpdateProfiletoServer = (updateProfile: Partial<UpdateProfileInfo>, role: Role): UpdateUserDto => ({
   name: updateProfile.name,
-  aboutInfo: updateProfile.aboutInfo ? updateProfile.aboutInfo : undefined,
-  location: LocationToServer[updateProfile.location],
-  gender: GenderToServer[updateProfile.gender],
+  aboutInfo: updateProfile.aboutInfo,
+  location: updateProfile.location ? LocationToServer[updateProfile.location] : undefined,
+  gender: updateProfile.gender ? GenderToServer[updateProfile.gender] : undefined,
   avatar: updateProfile.avatar,
   userProfile: role === Role.Sportsman ? {
-    fitnessLevel: FitnessLevelToServer[updateProfile.skillLevel],
-    trainingType: updateProfile.specialisations.map((value) => SpecialisationToServer[value]),
+    fitnessLevel: updateProfile.skillLevel ? FitnessLevelToServer[updateProfile.skillLevel] : undefined,
+    trainingType: updateProfile.specialisations ? updateProfile.specialisations.map((value) => SpecialisationToServer[value]) : undefined,
     readyForWorkout: updateProfile.individualTraining
   } : undefined,
   trainerProfile: role === Role.Coach ? {
-    fitnessLevel: FitnessLevelToServer[updateProfile.skillLevel],
-    trainingType: updateProfile.specialisations.map((value) => SpecialisationToServer[value]),
+    fitnessLevel: updateProfile.skillLevel ? FitnessLevelToServer[updateProfile.skillLevel] : undefined,
+    trainingType: updateProfile.specialisations ? updateProfile.specialisations.map((value) => SpecialisationToServer[value]) : undefined,
     readyForWorkout: updateProfile.individualTraining
   } : undefined
 });
@@ -69,4 +69,12 @@ export const adaptNewTrainingToServer = (newTraining: NewTrainingInfo): NewTrain
   gender: GenderToServer[newTraining.gender],
   video: newTraining.trainingVideo,
   isSpecialOffer: false,
+});
+
+export const adaptUpdateTrainingToServer = (updateTraining: UpdateTrainingInfo): UpdateTrainingDto => ({
+  title: updateTraining.title,
+  description: updateTraining.description,
+  isSpecialOffer: updateTraining.isSpecialOffer,
+  price: updateTraining.price,
+  video: updateTraining.trainingVideo
 });

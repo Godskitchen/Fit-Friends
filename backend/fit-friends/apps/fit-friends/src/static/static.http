@@ -1,3 +1,5 @@
+@me = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsIm5hbWUiOiJmcm9udFVzZSIsImVtYWlsIjoiRGllTXlHb2RAZ21haWwuY29tIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE3MDIwMjEyMDUsImV4cCI6MTcwMjEwNzYwNX0.ZTB1wvkZWYouRVxg8RGRq8iqc2bcDvKbGIIagkidwtQ
+
 @token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI4LCJuYW1lIjoiVHJhaW5lck9uZSIsImVtYWlsIjoidHJhaW5lcjhAbWFpbC5sb2NhbCIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNjk5NzIyNzQzLCJleHAiOjE2OTk4MDkxNDN9.eOcyUDIA_ZevOqI6GkXzUj_lvDvakKjYr3Yri8Va67M
 #Upload user avatar
 POST http://localhost:4000/api/static/upload/avatar HTTP/1.1
@@ -31,14 +33,14 @@ Content-Type: application/pdf
 
 #Upload video training
 POST http://localhost:4000/api/static/upload/training-video HTTP/1.1
-Authorization: {{token}}
+Authorization: {{me}}
 Content-Type: multipart/form-data; boundary=boundary
 
 --boundary
-Content-Disposition: form-data; name="training-video"; filename="3.avi"
-Content-Type: video/avi
+Content-Disposition: form-data; name="training_video"; filename="2.mov"
+Content-Type: video/mov
 
-< Q:/images/3.avi
+< Q:/images/2.mov
 
 --boundary--
 

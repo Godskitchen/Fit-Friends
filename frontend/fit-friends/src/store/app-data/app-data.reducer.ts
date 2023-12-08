@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { SliceNameSpace } from 'src/app-constants';
-import { addMoreTrainingsToListAction, createTrainingAction } from '../api-actions';
+import { addMoreTrainingsToListAction, createTrainingAction, getTrainingDetailsAction, updateTrainingAction } from '../api-actions';
 import { AppData } from 'src/types/state.type';
 
 const initialState: AppData = {
   dataUploadingStatus: false,
-  trainingsDownloadingStatus: false
+  trainingsDownloadingStatus: false,
+  trainingInfo: undefined,
 };
 
 export const appData = createSlice({
@@ -31,6 +32,28 @@ export const appData = createSlice({
       })
       .addCase(addMoreTrainingsToListAction.rejected, (state) => {
         state.trainingsDownloadingStatus = false;
+      })
+      .addCase(getTrainingDetailsAction.fulfilled, (state, {payload}) => {
+        state.trainingsDownloadingStatus = false;
+        state.trainingInfo = payload;
+      })
+      .addCase(getTrainingDetailsAction.pending, (state) => {
+        state.trainingsDownloadingStatus = true;
+      })
+      .addCase(getTrainingDetailsAction.rejected, (state) => {
+        state.trainingsDownloadingStatus = false;
+        state.trainingInfo = null;
+      })
+      .addCase(updateTrainingAction.fulfilled, (state, {payload}) => {
+        state.dataUploadingStatus = false;
+        state.trainingInfo = payload;
+      })
+      .addCase(updateTrainingAction.pending, (state) => {
+        state.dataUploadingStatus = true;
+      })
+      .addCase(updateTrainingAction.rejected, (state) => {
+        state.dataUploadingStatus = false;
+        state.trainingInfo = null;
       });
   }
 });

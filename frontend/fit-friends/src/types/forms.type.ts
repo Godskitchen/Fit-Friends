@@ -57,6 +57,14 @@ export type CreateTrainingInputs = {
   trainingVideo: FileList;
 }
 
+export type UpdateTrainingInputs = {
+  title: string;
+  description: string;
+  price: number;
+  isSpecialOffer?: boolean;
+  video?: FileList;
+}
+
 export type MyTrainingsFitersState = {
   price?: string;
   caloriesToBurn?: string;

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 import {FormEvent, useEffect, useRef, useState} from 'react';
 import './range-slider.css';
@@ -11,6 +10,8 @@ import { useAppDispatch } from 'src/hooks';
 import { getMyTrainingsAction } from 'src/store/api-actions';
 import { MyTrainingsFitersState } from 'src/types/forms.type';
 import { setFiltersStateAction } from 'src/store/user-process/user-process.reducer';
+import { useNavigate } from 'react-router-dom';
+import { AppRoute } from 'src/app-constants';
 
 const defaultDurationsState: Record<string, boolean> = {
   TenToThirtyMinutes: false,
@@ -32,6 +33,7 @@ const INITIAL_PAGE_NUMBER = 1;
 export default function MyTrainingsFilterDesk(): JSX.Element {
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -53,7 +55,7 @@ export default function MyTrainingsFilterDesk(): JSX.Element {
 
   const [durationsState, setDurationsState] = useState(defaultDurationsState);
 
-  const formSubmit = (evt: FormEvent<HTMLFormElement>) => {
+  const onFormSubmitHandle = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     const price = queryParamsRangeBuilder(minFieldPrice, maxFieldPrice, PRICE.MAX, PRICE.MIN);
     const calories = queryParamsRangeBuilder(minFieldCalories, maxFieldCalories, CALORIES_TO_BURN.MAX, CALORIES_TO_BURN.MIN);
@@ -73,6 +75,10 @@ export default function MyTrainingsFilterDesk(): JSX.Element {
       .then(() => {dispatch(setFiltersStateAction(query));});
   };
 
+  const onBtnBackClickHandle = () => {
+    navigate(AppRoute.CoachAccount);
+  };
+
   useEffect(() => {
     const initialQuery = {
       limit: `${CARD_LIMIT_PER_PAGE}`,
@@ -85,14 +91,14 @@ export default function MyTrainingsFilterDesk(): JSX.Element {
 
   return (
     <div className="my-training-form__wrapper">
-      <button className="btn-flat btn-flat--underlined my-training-form__btnback" type="button">
+      <button className="btn-flat btn-flat--underlined my-training-form__btnback" type="button" onClick={onBtnBackClickHandle}>
         <svg width="14" height="10" aria-hidden="true">
           <use xlinkHref="#arrow-left"></use>
         </svg>
         <span>Назад</span>
       </button>
       <h3 className="my-training-form__title">фильтры</h3>
-      <form ref={formRef} className="my-training-form__form" onSubmit={formSubmit}>
+      <form ref={formRef} className="my-training-form__form" onSubmit={onFormSubmitHandle}>
         <InputRangeFilter
           timeoutRef={timeoutRef}
           formRef={formRef}

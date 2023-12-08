@@ -1,9 +1,11 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { getUserInfo } from 'src/store/user-process/user-process.selectors';
 import LoadingScreen from '../loading-components/loading-screen';
 import { useState, MouseEvent, useRef, ChangeEvent} from 'react';
-import { Specialisation, Location, Gender, SkillLevel } from 'src/types/constants';
+import { Specialisation, Location, Gender, SkillLevel, Role } from 'src/types/constants';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { ProfileInfoInputs } from 'src/types/forms.type';
 import ProfileSpecialisationList from '../specialisation-list.tsx/profile-specialisation-list';
@@ -12,6 +14,7 @@ import { avatarValidationHandler } from 'src/utils/validators/user/avatar';
 import { nameValidationHandler } from 'src/utils/validators/user/name';
 import { aboutInfoValidationHandler } from 'src/utils/validators/user/about-info';
 import { updateProfileAction } from 'src/store/api-actions';
+import { compareArrays } from 'src/utils/helpers';
 
 
 const GenderValueType = {
@@ -52,8 +55,7 @@ export default function UserInfoDesk(): JSX.Element {
   const {
     register,
     control,
-    formState: { errors },
-    formState,
+    formState: { errors, isValid, isSubmitting },
     setValue,
     getValues,
     trigger,
@@ -137,9 +139,31 @@ export default function UserInfoDesk(): JSX.Element {
   }
 
   const onSubmitHandler: SubmitHandler<ProfileInfoInputs> = (formData) => {
-    dispatch(updateProfileAction(Object.assign(
-      formData, {userId: userInfo.userId, role: userInfo.role}
-    )));
+    const sendData: Partial<ProfileInfoInputs> = {
+      name: formData.name !== userInfo.name ? formData.name : undefined,
+      aboutInfo: formData.aboutInfo !== userInfo.aboutInfo ? formData.aboutInfo : undefined,
+      individualTraining: formData.individualTraining !== userInfo.trainerProfile?.individualTraining ? formData.individualTraining : undefined,
+      location: formData.location !== userInfo.location ? formData.location : undefined,
+      gender: formData.gender !== userInfo.gender ? formData.gender : undefined,
+      skillLevel: formData.skillLevel !== userInfo.trainerProfile?.skillLevel ? formData.skillLevel : undefined,
+      specialisations: !compareArrays(formData.specialisations, userInfo.trainerProfile?.specialisations) ? formData.specialisations : undefined,
+      avatar: formData.shouldDeleteAvatar ? null : formData.avatar?.length !== 0 ? formData.avatar : undefined,
+    };
+
+    let isProfileUpdated = false;
+
+    for (const value of Object.values(sendData)) {
+      if (value !== undefined) {
+        isProfileUpdated = true;
+        break;
+      }
+    }
+
+    if (isProfileUpdated) {
+      dispatch(updateProfileAction(Object.assign(
+        sendData, {userId: userInfo.userId, role: userInfo.role}
+      )));
+    }
   };
 
   return (
@@ -187,6 +211,7 @@ export default function UserInfoDesk(): JSX.Element {
             <div className="user-info-edit__controls">
               <button
                 className="user-info-edit__control-btn"
+                type="button"
                 aria-label="обновить"
                 onClick={() => {
                   if (fileInputRef.current) {
@@ -200,6 +225,7 @@ export default function UserInfoDesk(): JSX.Element {
               </button>
               <button
                 className="user-info-edit__control-btn"
+                type="button"
                 aria-label="удалить"
                 onClick={() => {
                   setAvatarUploaded(false);
@@ -221,13 +247,13 @@ export default function UserInfoDesk(): JSX.Element {
             ? (
               <button
                 className="btn-flat btn-flat--underlined user-info-edit__save-button"
-                type="submit"
+                type="button"
                 aria-label="Сохранить"
-                onClick={ () => {
+                onClick={() => {
                   setEditMode(false);
                   onSubmitHandler(getValues());
                 }}
-                disabled={!isEditMode || !formState.isValid || formState.isSubmitting || !!errors.avatar}
+                disabled={!isEditMode || !isValid || isSubmitting || !!errors.avatar}
               >
                 <svg width="12" height="12" aria-hidden="true">
                   <use xlinkHref="#icon-edit"></use>
@@ -240,7 +266,7 @@ export default function UserInfoDesk(): JSX.Element {
                 className="btn-flat btn-flat--underlined user-info__edit-button"
                 type="button"
                 aria-label="Редактировать"
-                onClick={(evt) => {evt.preventDefault(); setEditMode(true); trigger();}}
+                onClick={() => {setEditMode(true);}}
               >
                 <svg width="12" height="12" aria-hidden="true">
                   <use xlinkHref="#icon-edit"></use>

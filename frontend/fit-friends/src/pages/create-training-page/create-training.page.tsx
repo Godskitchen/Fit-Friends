@@ -332,7 +332,7 @@ export default function CreateTrainingPage(): JSX.Element {
                           <div className="drag-and-drop create-training__drag-and-drop">
                             <label>
                               <span className="drag-and-drop__label" style={{border: `${errors.trainingVideo ? '1px solid #e4001b' : ''}`}} tabIndex={0}>
-                                {!isVideoUploaded || !getValues('trainingVideo').length ? 'Загрузите сюда файлы формата MOV, AVI или MP4' : getValues('trainingVideo')[0].name}
+                                {!isVideoUploaded || !getValues('trainingVideo').length ? 'Загрузите сюда файлы формата MOV или MP4' : getValues('trainingVideo')[0].name}
                                 <svg width="20" height="20" aria-hidden="true">
                                   <use xlinkHref="#icon-import-video"></use>
                                 </svg>
@@ -340,8 +340,7 @@ export default function CreateTrainingPage(): JSX.Element {
                               <input
                                 type="file"
                                 tabIndex={-1}
-                                accept=".mov, .avi, .mp4"
-
+                                accept=".mov, .mp4"
                                 {...register('trainingVideo',
                                   {
                                     required: true,

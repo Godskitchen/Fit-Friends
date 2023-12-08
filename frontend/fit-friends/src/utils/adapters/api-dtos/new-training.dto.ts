@@ -12,3 +12,5 @@ export type NewTrainingDto = {
   video: string;
   isSpecialOffer: boolean;
 };
+
+export type UpdateTrainingDto = Partial<NewTrainingDto>;

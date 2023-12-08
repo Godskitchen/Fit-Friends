@@ -24,7 +24,9 @@ export enum ApiRoute {
   RefreshTokens = '/auth/refresh',
   Notifications = '/messages',
   CreateTraining = '/trainings/create',
-  MyTrainings = '/trainings/mylist'
+  MyTrainings = '/trainings/mylist',
+  TrainingDetails = '/trainings/details',
+  UpdateTraining = '/trainings/update'
 }
 
 export enum SliceNameSpace {

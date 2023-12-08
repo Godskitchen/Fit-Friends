@@ -5,16 +5,16 @@ import { ApiRoute, AppRoute } from 'src/app-constants';
 import { saveToken, dropToken } from 'src/services/auth-token';
 import { HttpStatusCode, REQUEST_TIMEOUT, SERVER_URL, shouldDisplayError } from 'src/services/server-api';
 import { Role } from 'src/types/constants';
-import { CreateTrainingInputs, MyTrainingsFitersState, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs } from 'src/types/forms.type';
+import { CreateTrainingInputs, MyTrainingsFitersState, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs, UpdateTrainingInputs } from 'src/types/forms.type';
 import { AppDispatch, State } from 'src/types/state.type';
 import { AuthData, KnownError, UserInfo } from 'src/types/user.type';
-import { adaptCoachProfileToServer, adaptNewTrainingToServer, adaptRegisterUserToServer, adaptUpdateProfiletoServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
+import { adaptCoachProfileToServer, adaptNewTrainingToServer, adaptRegisterUserToServer, adaptUpdateProfiletoServer, adaptUpdateTrainingToServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
 import { AuthUserRdo, UserRdo } from 'src/utils/adapters/api-rdos/auth-user.rdo';
 import { redirectAction } from './redirect.action';
-import { adaptMyTrainingsListToClient, adaptUserToClient } from 'src/utils/adapters/adapter-to-client';
+import { adaptMyTrainingsListToClient, adaptTrainingToClient, adaptUserToClient } from 'src/utils/adapters/adapter-to-client';
 import { Message } from 'src/types/message.type';
-import { TrainingList } from 'src/types/training.type';
-import { TrainingListRdo } from 'src/utils/adapters/api-rdos/training.rdo';
+import { Training, TrainingList } from 'src/types/training.type';
+import { TrainingListRdo, TrainingRdo } from 'src/utils/adapters/api-rdos/training.rdo';
 
 export const registerAction = createAsyncThunk<
   UserInfo,
@@ -44,7 +44,6 @@ export const registerAction = createAsyncThunk<
       const adaptedData = adaptUserToClient(userData);
       const questionnaireRoute = adaptedData.role === Role.Coach ? AppRoute.QuestionnaireCoach : AppRoute.QuestionnaireUser;
       dispatch(redirectAction(questionnaireRoute));
-      console.log('userData', userData);
       return adaptedData;
     } catch (err) {
       const error = err as AxiosError<KnownError>;
@@ -72,7 +71,6 @@ export const createUserProfileAction = createAsyncThunk<
       const {data: userData} = await serverApi.post<UserRdo>(`${ApiRoute.UserDetails}/${userId}/create`, adaptUserProfileToServer({...userProfileData, readyForWorkout: false}));
       const adaptedData = adaptUserToClient(userData);
       dispatch(redirectAction(AppRoute.Main));
-      console.log('userData', userData);
       return adaptedData;
     } catch (err) {
       const error = err as AxiosError<KnownError>;
@@ -165,16 +163,14 @@ export const checkAuthAction = createAsyncThunk<UserInfo, undefined, {extra: Axi
   },
 );
 
-export const updateProfileAction = createAsyncThunk<UserInfo, ProfileInfoInputs & {userId: number; role: Role}, {extra: AxiosInstance}>(
+export const updateProfileAction = createAsyncThunk<UserInfo, Partial<ProfileInfoInputs> & {userId: number; role: Role}, {extra: AxiosInstance}>(
   'user/updateProfile',
   async(updateData, {extra: serverApi}) => {
     const userId = updateData.userId;
     const role = updateData.role;
     let avatar: string | null | undefined;
 
-    if (updateData.shouldDeleteAvatar === true) {
-      avatar = null;
-    } else if (updateData.avatar && updateData.avatar?.length !== 0) {
+    if (updateData.avatar) {
       const image = updateData.avatar[0];
       const form = new FormData();
       form.append('avatar', image, image.name);
@@ -185,6 +181,8 @@ export const updateProfileAction = createAsyncThunk<UserInfo, ProfileInfoInputs 
         {headers: {'Content-Type': 'multipart/form-data; boundary=boundary'}},
       );
       avatar = avatarUrl;
+    } else {
+      avatar = updateData.avatar;
     }
     const { data } = await serverApi.patch<UserRdo>(`${ApiRoute.UserDetails}/${userId}`, adaptUpdateProfiletoServer({...updateData, avatar}, role));
     const adaptedData = adaptUserToClient(data);
@@ -242,6 +240,7 @@ export const getMyTrainingsAction = createAsyncThunk<TrainingList, MyTrainingsFi
   }
 );
 
+
 export const addMoreTrainingsToListAction = createAsyncThunk<TrainingList, MyTrainingsFitersState,
 {
   extra: AxiosInstance;
@@ -250,5 +249,43 @@ export const addMoreTrainingsToListAction = createAsyncThunk<TrainingList, MyTra
   async(filtersQuery, {extra: serverApi}) => {
     const {data} = await serverApi.get<TrainingListRdo>(ApiRoute.MyTrainings, {params: filtersQuery});
     return adaptMyTrainingsListToClient(data);
+  }
+);
+
+
+export const getTrainingDetailsAction = createAsyncThunk<Training, string,
+{
+  extra: AxiosInstance;
+}>(
+  'data/getTrainingDetails',
+  async(trainingId, {extra: serverApi}) => {
+    const {data} = await serverApi.get<TrainingRdo>(`${ApiRoute.TrainingDetails}/${trainingId}`);
+    return adaptTrainingToClient(data);
+  }
+);
+
+export const updateTrainingAction = createAsyncThunk<Training, Partial<UpdateTrainingInputs> & {trainingId: number},
+{
+  extra: AxiosInstance;
+}>(
+  'data/updateTraining',
+  async(updateData, {extra: serverApi}) => {
+    const {trainingId, video, ...restData} = {...updateData};
+    let uploadedVideo: string | undefined;
+    if (video) {
+      const trainingVideoFile = video[0];
+      const form = new FormData();
+      form.append('training_video', trainingVideoFile, trainingVideoFile.name);
+
+      const {data: trainingVideoUrl} = await serverApi.post<string>(
+        ApiRoute.UploadTrainingVideo,
+        form,
+        {headers: {'Content-Type': 'multipart/form-data; boundary=boundary'}},
+      );
+      uploadedVideo = trainingVideoUrl;
+    }
+
+    const {data} = await serverApi.patch<TrainingRdo>(`${ApiRoute.UpdateTraining}/${trainingId}`, adaptUpdateTrainingToServer({...restData, trainingVideo: uploadedVideo}));
+    return adaptTrainingToClient(data);
   }
 );

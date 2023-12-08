@@ -3,7 +3,7 @@ import { AuthUserRdo, TrainerProfileRdo, UserProfileRdo } from './api-rdos/auth-
 import { Gender, Location, Role, SkillLevel, Specialisation, TrainingDuration } from 'src/types/constants';
 import { RoleToServer } from './adaprters-constants';
 import { TrainingListRdo, TrainingRdo } from './api-rdos/training.rdo';
-import { MyTraining, TrainingList } from 'src/types/training.type';
+import { MyTraining, Training, TrainingList } from 'src/types/training.type';
 
 export const adaptUserToClient = (rdo: Omit<AuthUserRdo, 'accessToken'>): UserInfo => ({
   userId: rdo.userId,
@@ -58,4 +58,21 @@ export const adaptMyTrainingToClient = (rdo: TrainingRdo): MyTraining => ({
   gender: Gender[rdo.gender],
   rating: rdo.rating,
   isSpecialOffer: rdo.isSpecialOffer
+});
+
+export const adaptTrainingToClient = (rdo: TrainingRdo): Training => ({
+  trainingId: rdo.trainingId,
+  title: rdo.title,
+  backgroundImage: rdo.backgroundImage,
+  skillLevel: SkillLevel[rdo.fitnessLevel],
+  trainingDuration: TrainingDuration[rdo.trainingDuration],
+  specialisation: Specialisation[rdo.trainingType],
+  caloriesToBurn: rdo.caloriesToBurn,
+  price: rdo.price,
+  description: rdo.description,
+  gender: Gender[rdo.gender],
+  rating: rdo.rating,
+  isSpecialOffer: rdo.isSpecialOffer,
+  trainer: adaptUserToClient(rdo.trainer),
+  video: rdo.video
 });
