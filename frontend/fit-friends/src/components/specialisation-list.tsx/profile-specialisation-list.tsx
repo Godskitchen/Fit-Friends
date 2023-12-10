@@ -1,7 +1,6 @@
 import { UseFormRegister, UseFormTrigger } from 'react-hook-form';
-import { Specialisation } from 'src/types/constants';
+import { Specialisation, SpecialisationFieldValue } from 'src/types/constants';
 import { ProfileInfoInputs } from 'src/types/forms.type';
-// import { TRAINING_TYPE_COUNT } from 'src/utils/validators/constants';
 import { specialisationValidationHandler } from 'src/utils/validators/user/specialisation';
 
 type SpecialisationListProps = {
@@ -11,17 +10,6 @@ type SpecialisationListProps = {
   isEditMode: boolean;
   selectedSpecs: Specialisation[];
 }
-
-const TypeButtonValue = {
-  Yoga: 'Йога',
-  Running: 'Бег',
-  Power: 'Силовые',
-  Aerobics: 'Аэробика',
-  Crossfit: 'Кроссфит',
-  Boxing: 'Бокс',
-  Pilates: 'Пилатес',
-  Stretching: 'Стрейчинг'
-};
 
 export default function ProfileSpecialisationList({types, register, trigger, isEditMode, selectedSpecs}: SpecialisationListProps): JSX.Element[] {
 
@@ -50,7 +38,7 @@ export default function ProfileSpecialisationList({types, register, trigger, isE
               })
             }
           />
-          <span className="btn-checkbox__btn">{TypeButtonValue[type]}</span>
+          <span className="btn-checkbox__btn">{SpecialisationFieldValue[type]}</span>
         </label>
       </div>
     ))

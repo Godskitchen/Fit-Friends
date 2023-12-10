@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { UserProcess } from '../../types/state.type';
 import {
   addMoreTrainingsToListAction,
@@ -14,15 +14,13 @@ import {
 } from '../api-actions';
 import { AuthorizationStatus, SliceNameSpace } from 'src/app-constants';
 import { HttpStatusCode } from 'src/services/server-api';
-import { MyTrainingsFitersState } from 'src/types/forms.type';
 
 const initialState: UserProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
   userInfo: undefined,
   notifications: [],
   myTrainingsList: undefined,
-  totalTrainingsCount: 0,
-  trainingsFilterState: {},
+  totalMyTrainingsCount: 0,
   formErrors: {
     [HttpStatusCode.CONFLICT]: '',
     [HttpStatusCode.SERVER_INTERNAL]: '',
@@ -43,9 +41,6 @@ export const userProcess = createSlice({
         [HttpStatusCode.UNAUTHORIZED]: ''
       };
     },
-    setFiltersStateAction: (state, {payload}: PayloadAction<MyTrainingsFitersState>) => {
-      state.trainingsFilterState = payload;
-    }
   },
   extraReducers(builder) {
     builder
@@ -163,19 +158,15 @@ export const userProcess = createSlice({
       })
       .addCase(getMyTrainingsAction.fulfilled, (state, {payload}) => {
         state.myTrainingsList = payload.trainingList;
-        state.totalTrainingsCount = payload.totalTrainingsCount;
-      })
-      .addCase(getMyTrainingsAction.rejected, (state) => {
-        state.myTrainingsList = null;
-        state.totalTrainingsCount = 0;
+        state.totalMyTrainingsCount = payload.totalTrainingsCount;
       })
       .addCase(addMoreTrainingsToListAction.fulfilled, (state, {payload}) => {
         if (state.myTrainingsList) {
           state.myTrainingsList = [...state.myTrainingsList, ...payload.trainingList];
-          state.totalTrainingsCount = payload.totalTrainingsCount;
+          state.totalMyTrainingsCount = payload.totalTrainingsCount;
         }
       });
   },
 });
 
-export const {clearFormErrorsAction, setFiltersStateAction} = userProcess.actions;
+export const { clearFormErrorsAction } = userProcess.actions;

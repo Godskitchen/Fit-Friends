@@ -47,6 +47,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { NewProfileDto } from './dto/new-profile.dto';
+import { UserListRdo } from './rdo/user-list.rdo';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -127,7 +128,7 @@ export class UserController {
   }
 
   @ApiOkResponse({
-    description: `Получен список пользователей. По умолчанию возвращается ${MAX_ITEMS_LIMIT} пользователей`,
+    description: `Получен список пользователей с учетом примененных фильтров, а также их общее количество. По умолчанию возвращается ${MAX_ITEMS_LIMIT} пользователей`,
     type: [UserRdo],
   })
   @ApiBadRequestResponse({
@@ -135,11 +136,12 @@ export class UserController {
   })
   @Get('/')
   public async getUsers(
+    @Req() { user }: RequestWithAccessTokenPayload,
     @Query(new ValidationPipe({ transform: true, whitelist: true }))
     userQuery: UserQuery,
   ) {
-    const users = await this.userService.getMany(userQuery);
-    return fillRDO(UserRdo, users, [Role.Trainer, Role.User]);
+    const users = await this.userService.getMany(userQuery, user.sub);
+    return fillRDO(UserListRdo, users, [Role.Trainer, Role.User]);
   }
 
   @ApiOkResponse({

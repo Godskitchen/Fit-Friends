@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import DropDownList from 'src/components/dropdown-list/dropdown-list';
 import { avatarValidationHandler } from 'src/utils/validators/user/avatar';
 import { RegisterInputs } from 'src/types/forms.type';
-import GenderButtons from 'src/components/gender-buttons/gender-buttons';
+import GenderButtons from 'src/components/radio-buttons/gender-buttons';
 import RoleButtons from 'src/components/role-buttons/role-buttons';
 import { registerAction } from 'src/store/api-actions';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
@@ -45,7 +45,7 @@ export default function RegistrationPage(): JSX.Element {
       mode: 'onBlur',
       shouldFocusError: false,
       reValidateMode: 'onBlur',
-      defaultValues: {gender: Gender.Male, role: Role.Sportsman, agreement: true}
+      defaultValues: {gender: Gender.Male, role: Role.User, agreement: true}
     }
   );
 
@@ -58,7 +58,8 @@ export default function RegistrationPage(): JSX.Element {
   };
   const maxBirthDay = dayjs().format(BIRTH_DAY_FORMAT);
   const onClickLocationItemHandler = (evt: MouseEvent<HTMLUListElement>) => {
-    const location = (evt.target as HTMLLIElement).textContent as Location;
+    const locationWithPrefix = (evt.target as HTMLLIElement).textContent as string;
+    const location = locationWithPrefix.split(' ')[2] as Location;
     if (location) {
       setValue('location', location, {shouldValidate: true});
     }
@@ -194,7 +195,7 @@ export default function RegistrationPage(): JSX.Element {
                           ref={locationBlockRef}
                         >
                           <span className="custom-select__label">Ваша локация</span>
-                          {getValues('location') && <div className="custom-select__placeholder" style={{bottom: '0px', top: '42px'}}>{getValues('location')}</div>}
+                          {getValues('location') && <div className="custom-select__placeholder" style={{bottom: '0px', top: '42px'}}>{`ст. м. ${getValues('location')}`}</div>}
                           <input className='visually-hidden location' {...register('location', {required: 'Поле обязательно для заполнения'})} />
                           <button
                             className="custom-select__button"
@@ -211,7 +212,7 @@ export default function RegistrationPage(): JSX.Element {
                             </span>
                           </button>
                           <span className="custom-select__error" style={{bottom: '0px', top: '85px'}}>{errors.location?.message}</span>
-                          {DropDownList({items: Object.values(Location), clickItemHandler: onClickLocationItemHandler})}
+                          {DropDownList({items: Object.values(Location), clickItemHandler: onClickLocationItemHandler, valuePrefix: 'ст. м. '})}
                         </div>
                         <div className={`custom-input ${errors.password ? 'custom-input--error' : ''}`}>
                           <label>
@@ -230,7 +231,7 @@ export default function RegistrationPage(): JSX.Element {
                             <span className="custom-input__error">{errors.password?.message}</span>
                           </label>
                         </div>
-                        {GenderButtons({genders: Object.values(Gender), register})}
+                        {GenderButtons({register})}
                       </div>
                       {RoleButtons({roles: Object.values(Role), register})}
                       <div className="sign-up__checkbox">

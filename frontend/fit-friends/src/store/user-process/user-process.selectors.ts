@@ -1,5 +1,4 @@
 import { AuthorizationStatus, SliceNameSpace } from 'src/app-constants';
-import { MyTrainingsFitersState } from 'src/types/forms.type';
 import { State } from 'src/types/state.type';
 import { MyTraining } from 'src/types/training.type';
 import { UserInfo } from 'src/types/user.type';
@@ -20,5 +19,4 @@ export const getFormErrors = (state: State) => state[SliceNameSpace.User].formEr
 export const getNotifications = (state: State) => state[SliceNameSpace.User].notifications;
 
 export const getMyTrainings = (state: State): MyTraining[] | null | undefined => state[SliceNameSpace.User].myTrainingsList;
-export const getTrainingsFiltersState = (state: State): MyTrainingsFitersState => state[SliceNameSpace.User].trainingsFilterState;
-export const getTotalTrainingsCount = (state: State): number => state[SliceNameSpace.User].totalTrainingsCount;
+export const getTotalMyTrainingsCount = (state: State): number => state[SliceNameSpace.User].totalMyTrainingsCount;

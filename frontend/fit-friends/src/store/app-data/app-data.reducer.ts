@@ -1,12 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { SliceNameSpace } from 'src/app-constants';
-import { addMoreTrainingsToListAction, createTrainingAction, getTrainingDetailsAction, updateTrainingAction } from '../api-actions';
+import { addMoreTrainingsToListAction, addMoreUsersToListAction, createTrainingAction, getTrainingDetailsAction, getUsersListAction, updateTrainingAction } from '../api-actions';
 import { AppData } from 'src/types/state.type';
 
 const initialState: AppData = {
   dataUploadingStatus: false,
   trainingsDownloadingStatus: false,
+  usersDownloadingStatus: false,
   trainingInfo: undefined,
+  userList: undefined,
+  totalUsersCount: 0
 };
 
 export const appData = createSlice({
@@ -54,6 +57,31 @@ export const appData = createSlice({
       .addCase(updateTrainingAction.rejected, (state) => {
         state.dataUploadingStatus = false;
         state.trainingInfo = null;
+      })
+      .addCase(getUsersListAction.fulfilled, (state, {payload}) => {
+        state.usersDownloadingStatus = false;
+        state.userList = payload.userList;
+        state.totalUsersCount = payload.totalUsersCount;
+      })
+      .addCase(getUsersListAction.pending, (state) => {
+        state.usersDownloadingStatus = true;
+      })
+      .addCase(getUsersListAction.rejected, (state) => {
+        state.usersDownloadingStatus = false;
+        state.userList = null;
+      })
+      .addCase(addMoreUsersToListAction.fulfilled, (state, {payload}) => {
+        state.usersDownloadingStatus = false;
+        if (state.userList) {
+          state.userList = [...state.userList, ...payload.userList];
+          state.totalUsersCount = payload.totalUsersCount;
+        }
+      })
+      .addCase(addMoreUsersToListAction.pending, (state) => {
+        state.usersDownloadingStatus = true;
+      })
+      .addCase(addMoreUsersToListAction.rejected, (state) => {
+        state.usersDownloadingStatus = false;
       });
   }
 });

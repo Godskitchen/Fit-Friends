@@ -1,15 +1,15 @@
-import { FitnessLevelToServer, GenderToServer, LocationToServer, RoleToServer, SpecialisationToServer, TrainingDurationToServer } from '../adaprters-constants';
+import { Gender, Location, Role, SkillLevel, Specialisation, TrainingDuration } from 'src/types/constants';
 
 export type AuthUserRdo = {
   userId: number;
   name: string;
   email: string;
   avatarUrl: string;
-  gender: GenderToServer;
-  role: RoleToServer;
+  gender: Gender;
+  role: keyof typeof Role;
   aboutInfo: string;
   birthDate: string;
-  location: LocationToServer;
+  location: keyof typeof Location;
   backgroundImage: string;
   createdAt: string;
   userProfile?: UserProfileRdo;
@@ -18,21 +18,26 @@ export type AuthUserRdo = {
 };
 
 export type UserProfileRdo = {
-  fitnessLevel: FitnessLevelToServer;
-  trainingType: SpecialisationToServer[];
-  trainingDuration: TrainingDurationToServer;
+  fitnessLevel: SkillLevel;
+  trainingType: Specialisation[];
+  trainingDuration: TrainingDuration;
   caloriesToBurn: number;
   dailyCaloriesIntake: number;
   readyForWorkout: boolean;
 }
 
 export type TrainerProfileRdo = {
-  fitnessLevel: FitnessLevelToServer;
-  trainingType: SpecialisationToServer[];
+  fitnessLevel: SkillLevel;
+  trainingType: Specialisation[];
   certificates: string;
   achievements: string;
   readyForWorkout: boolean;
 }
 
 export type UserRdo = Omit<AuthUserRdo, 'accessToken'>;
+
+export type UserListRdo = {
+  userList: UserRdo[];
+  totalUsersCount: number;
+}
 

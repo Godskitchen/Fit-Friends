@@ -4,14 +4,13 @@ import { store } from 'src/store';
 import { HttpStatusCode } from 'src/services/server-api';
 import { Message } from './message.type';
 import { MyTraining, Training } from './training.type';
-import { MyTrainingsFitersState } from './forms.type';
+import { MyTrainingsFitersState, UsersCatalogFiltersState } from './forms.type';
 
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
   userInfo?: UserInfo | null ;
   myTrainingsList?: MyTraining[] | null;
-  totalTrainingsCount: number;
-  trainingsFilterState: MyTrainingsFitersState;
+  totalMyTrainingsCount: number;
   notifications: Message[];
   formErrors: {
     [key: number]: string | Record<string, string>;
@@ -25,7 +24,15 @@ export type UserProcess = {
 export type AppData = {
   dataUploadingStatus: boolean;
   trainingsDownloadingStatus: boolean;
+  usersDownloadingStatus: boolean;
   trainingInfo?: Training | null;
+  userList?: UserInfo[] | null;
+  totalUsersCount: number;
+}
+
+export type MainProcess = {
+  myTrainingsFilterState: MyTrainingsFitersState;
+  usersCatalogFilterState: UsersCatalogFiltersState;
 }
 
 

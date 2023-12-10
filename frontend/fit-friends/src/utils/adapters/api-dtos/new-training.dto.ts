@@ -1,14 +1,14 @@
-import { FitnessLevelToServer, GenderToServer, SpecialisationToServer, TrainingDurationToServer } from '../adaprters-constants';
+import { Gender, SkillLevel, Specialisation, TrainingDuration } from 'src/types/constants';
 
 export type NewTrainingDto = {
   title: string;
-  fitnessLevel: FitnessLevelToServer;
-  trainingDuration: TrainingDurationToServer;
-  trainingType: SpecialisationToServer;
+  fitnessLevel: SkillLevel;
+  trainingDuration: TrainingDuration;
+  trainingType: Specialisation;
   price: number;
   caloriesToBurn: number;
   description: string;
-  gender: GenderToServer;
+  gender: Gender;
   video: string;
   isSpecialOffer: boolean;
 };

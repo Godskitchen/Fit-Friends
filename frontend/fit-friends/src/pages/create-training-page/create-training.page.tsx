@@ -1,7 +1,7 @@
 import { Fragment, useRef, MouseEvent, useState, ChangeEvent } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import TrainingGenderButtons from 'src/components/gender-buttons/training-gender-buttons';
+import TrainingGenderButtons from 'src/components/radio-buttons/training-gender-buttons';
 import Header from 'src/components/header/header';
 import DropDownList from 'src/components/dropdown-list/dropdown-list';
 import { Gender, HeaderNavTab, SkillLevel, Specialisation, TrainingDuration } from 'src/types/constants';
@@ -305,7 +305,7 @@ export default function CreateTrainingPage(): JSX.Element {
                               <span className="custom-select__error" style={{bottom: '0px', top: '85px'}}>{errors.skillLevel?.message}</span>
                               {DropDownList({items: Object.values(SkillLevelValue), clickItemHandler: onClickSkillLevelItemHandler})}
                             </div>
-                            <TrainingGenderButtons genders={Object.values(Gender)} register={register} />
+                            <TrainingGenderButtons register={register} />
                           </div>
                         </div>
                         <div className="create-training__block">

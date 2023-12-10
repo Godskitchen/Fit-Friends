@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { FieldPath, FieldValues, UseFormRegister } from 'react-hook-form';
-import { SkillLevel } from 'src/types/constants';
+import { SkillFieldValue, SkillLevel } from 'src/types/constants';
 
 type SkillLeveFieldPath<T extends FieldValues> = {
   skillLevel: FieldPath<T>;
@@ -11,12 +11,6 @@ type SkillButtonsProps<T extends FieldValues> = {
   register: UseFormRegister<T>;
   fieldPaths: SkillLeveFieldPath<T>;
 }
-
-const SkillButtonValue = {
-  Beginner: 'Новичок',
-  Amateur: 'Любитель',
-  Pro: 'Профессионал'
-};
 
 export default function SkillButtons<T extends FieldValues>({skills, register, fieldPaths}: SkillButtonsProps<T>) : JSX.Element {
 
@@ -30,7 +24,7 @@ export default function SkillButtons<T extends FieldValues>({skills, register, f
               <label>
                 <input type="radio" value={skill} {...register(fieldPaths.skillLevel)} />
                 <span className="custom-toggle-radio__icon"></span>
-                <span className="custom-toggle-radio__label">{SkillButtonValue[skill]}</span>
+                <span className="custom-toggle-radio__label">{SkillFieldValue[skill]}</span>
               </label>
             </div>
           ))

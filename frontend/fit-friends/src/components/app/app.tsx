@@ -17,10 +17,11 @@ import { getAuthCheckedStatus } from 'src/store/user-process/user-process.select
 import NotFoundPage from 'src/pages/not-found-page/not-found.page';
 import ForbiddenPage from 'src/pages/forbidden-page/forbidden-page';
 import PersonalAccountCoachPage from 'src/pages/personal-account/personal-account-coach.page';
-import QuestionnaireCoachPageTest from 'src/pages/questionnaire-page/questionnaire-coach.page';
 import CreateTrainingPage from 'src/pages/create-training-page/create-training.page';
 import MyTrainingsPage from '../../pages/my-trainings-page/my-trainings.page';
 import CoachTrainingInfoPage from '../training-page/coach-training-info-page';
+import PersonalAccountUserPage from 'src/pages/personal-account/personal-account-user.page';
+import UsersCatalogPage from 'src/pages/users-catalog-page/users-catalog-page';
 
 export default function App(): JSX.Element {
 
@@ -47,33 +48,20 @@ export default function App(): JSX.Element {
     <HelmetProvider>
       <Routes>
         <Route
-          path={AppRoute.Test}
-          element={<QuestionnaireCoachPageTest />}
-        />
-        <Route
           path={AppRoute.Welcome}
           element={<WelcomePage />}
         />
         <Route
           path={AppRoute.Registration}
-          element=
-            {
-              <RegistrationPage />
-            }
+          element={<RegistrationPage />}
         />
         <Route
           path={AppRoute.QuestionnaireCoach}
-          element=
-            {
-              <QuestionnaireCoachPage />
-            }
+          element={<QuestionnaireCoachPage />}
         />
         <Route
           path={AppRoute.QuestionnaireUser}
-          element=
-            {
-              <QuestionnaireUserPage />
-            }
+          element={<QuestionnaireUserPage />}
         />
         <Route
           path={AppRoute.Login}
@@ -88,6 +76,10 @@ export default function App(): JSX.Element {
           element={<PersonalAccountCoachPage />}
         />
         <Route
+          path={AppRoute.UserAccount}
+          element={<PersonalAccountUserPage />}
+        />
+        <Route
           path={`${AppRoute.CoachAccount}${AppRoute.CreateTraining}`}
           element={<CreateTrainingPage />}
         />
@@ -98,6 +90,10 @@ export default function App(): JSX.Element {
         <Route
           path={`${AppRoute.CoachAccount}${AppRoute.MyTrainings}/:trainingId`}
           element={<CoachTrainingInfoPage />}
+        />
+        <Route
+          path={AppRoute.UsersCatalog}
+          element={<UsersCatalogPage />}
         />
         <Route
           path={AppRoute.Forbidden}

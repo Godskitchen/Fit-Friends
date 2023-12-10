@@ -5,13 +5,13 @@ import { ApiRoute, AppRoute } from 'src/app-constants';
 import { saveToken, dropToken } from 'src/services/auth-token';
 import { HttpStatusCode, REQUEST_TIMEOUT, SERVER_URL, shouldDisplayError } from 'src/services/server-api';
 import { Role } from 'src/types/constants';
-import { CreateTrainingInputs, MyTrainingsFitersState, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs, UpdateTrainingInputs } from 'src/types/forms.type';
+import { CreateTrainingInputs, MyTrainingsFitersState, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs, UpdateTrainingInputs, UsersCatalogFiltersState } from 'src/types/forms.type';
 import { AppDispatch, State } from 'src/types/state.type';
-import { AuthData, KnownError, UserInfo } from 'src/types/user.type';
+import { AuthData, KnownError, UserInfo, UserList } from 'src/types/user.type';
 import { adaptCoachProfileToServer, adaptNewTrainingToServer, adaptRegisterUserToServer, adaptUpdateProfiletoServer, adaptUpdateTrainingToServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
-import { AuthUserRdo, UserRdo } from 'src/utils/adapters/api-rdos/auth-user.rdo';
+import { AuthUserRdo, UserListRdo, UserRdo } from 'src/utils/adapters/api-rdos/auth-user.rdo';
 import { redirectAction } from './redirect.action';
-import { adaptMyTrainingsListToClient, adaptTrainingToClient, adaptUserToClient } from 'src/utils/adapters/adapter-to-client';
+import { adaptMyTrainingsListToClient, adaptTrainingToClient, adaptUserToClient, adaptUsersListToClient } from 'src/utils/adapters/adapter-to-client';
 import { Message } from 'src/types/message.type';
 import { Training, TrainingList } from 'src/types/training.type';
 import { TrainingListRdo, TrainingRdo } from 'src/utils/adapters/api-rdos/training.rdo';
@@ -42,7 +42,7 @@ export const registerAction = createAsyncThunk<
       const {accessToken, ...userData} = data;
       saveToken(accessToken);
       const adaptedData = adaptUserToClient(userData);
-      const questionnaireRoute = adaptedData.role === Role.Coach ? AppRoute.QuestionnaireCoach : AppRoute.QuestionnaireUser;
+      const questionnaireRoute = adaptedData.role === Role.Trainer ? AppRoute.QuestionnaireCoach : AppRoute.QuestionnaireUser;
       dispatch(redirectAction(questionnaireRoute));
       return adaptedData;
     } catch (err) {
@@ -287,5 +287,25 @@ export const updateTrainingAction = createAsyncThunk<Training, Partial<UpdateTra
 
     const {data} = await serverApi.patch<TrainingRdo>(`${ApiRoute.UpdateTraining}/${trainingId}`, adaptUpdateTrainingToServer({...restData, trainingVideo: uploadedVideo}));
     return adaptTrainingToClient(data);
+  }
+);
+
+export const getUsersListAction = createAsyncThunk<UserList, UsersCatalogFiltersState, {
+  extra: AxiosInstance;
+}>(
+  'data/getUsersList',
+  async(filtersQuery, {extra: serverApi}) => {
+    const {data} = await serverApi.get<UserListRdo>(ApiRoute.UsersList, {params: filtersQuery});
+    return adaptUsersListToClient(data);
+  }
+);
+
+export const addMoreUsersToListAction = createAsyncThunk<UserList, UsersCatalogFiltersState, {
+  extra: AxiosInstance;
+}>(
+  'data/addUsersToList',
+  async(filtersQuery, {extra: serverApi}) => {
+    const {data} = await serverApi.get<UserListRdo>(ApiRoute.UsersList, {params: filtersQuery});
+    return adaptUsersListToClient(data);
   }
 );

@@ -55,7 +55,7 @@ export class UserService {
     const { trainerProfile, userProfile } = dto;
 
     return this.userRepository.createProfile(id, {
-      ...userProfile,
+      userProfile,
       trainerProfile: trainerProfile
         ? {
             ...trainerProfile,
@@ -98,8 +98,8 @@ export class UserService {
     });
   }
 
-  public async getMany(userQuery: UserQuery) {
-    return this.userRepository.find(userQuery);
+  public async getMany(userQuery: UserQuery, userId: number) {
+    return this.userRepository.find(userQuery, userId);
   }
 
   public async addFriend(userId: number, userName: string, friendId: number) {

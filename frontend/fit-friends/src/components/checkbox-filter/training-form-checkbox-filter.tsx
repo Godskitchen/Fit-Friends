@@ -10,7 +10,7 @@ type CheckboxFilterProps = {
   currentCheckBoxesGroupState: Record<string, boolean>;
 }
 
-export default function CheckBoxFilter(
+export default function TrainingFormCheckBoxFilter(
   {
     title,
     filterName,

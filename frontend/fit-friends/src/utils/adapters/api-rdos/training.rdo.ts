@@ -1,17 +1,17 @@
-import { FitnessLevelToServer, GenderToServer, SpecialisationToServer, TrainingDurationToServer } from '../adaprters-constants';
+import { Gender, SkillLevel, Specialisation, TrainingDuration } from 'src/types/constants';
 import { UserRdo } from './auth-user.rdo';
 
 export type TrainingRdo = {
   trainingId: number;
   title: string;
   backgroundImage: string;
-  fitnessLevel: FitnessLevelToServer;
-  trainingDuration: TrainingDurationToServer;
-  trainingType: SpecialisationToServer;
+  fitnessLevel: SkillLevel;
+  trainingDuration: TrainingDuration;
+  trainingType: Specialisation;
   price: number;
   caloriesToBurn: number;
   description: string;
-  gender: GenderToServer;
+  gender: Gender;
   rating: number;
   video: string;
   trainer: UserRdo;

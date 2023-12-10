@@ -73,3 +73,12 @@ export type MyTrainingsFitersState = {
   page?: string;
   limit?: string;
 }
+
+export type UsersCatalogFiltersState = {
+  location?: string;
+  trainingType?: string;
+  fitnessLevel?: string;
+  page?: string;
+  limit?: string;
+  sort?: string;
+}

@@ -1,5 +1,5 @@
 
-@female = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsIm5hbWUiOiJGcmllbmRGZW1hbGUiLCJlbWFpbCI6ImZyaWVuZEZlbWFsZUBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE3MDEyODc2NTAsImV4cCI6MTcwMTI4ODU1MH0.OYcUX5FDpYhbji6HhURr8l1Aup9jxoKMH6QQCh4fpis
+@female = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsIm5hbWUiOiJGcmllbmRGZW1hbGUiLCJlbWFpbCI6ImZyaWVuZEZlbWFsZUBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE3MDIxNDQ5OTcsImV4cCI6MTcwMjIzMTM5N30.MNNiwbVpfdrMuxL8DF8Yd7qbfOTdGnIMvDywtDSz_dI
 @male = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsIm5hbWUiOiJGcmllbmRNYWxlIiwiZW1haWwiOiJmcmllbmRNYWxlQG1haWwubG9jYWwiLCJyb2xlIjoiVXNlciIsImlhdCI6MTcwMTI5ODM0MiwiZXhwIjoxNzAxMzg0NzQyfQ.3hK62tIMFLRGquWsl5M5HVJGFU3SViMap6A9RpUxZ8c
 
 @me = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsIm5hbWUiOiJmcm9udFUiLCJlbWFpbCI6IkRpZU15R29kQGdtYWlsLmNvbSIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNzAxMjg3ODk4LCJleHAiOjE3MDEyODg3OTh9.IDVCgZuP2Tgnz74F1AeXHsHn3QK2NLbDrrtYcrJjrvg
@@ -65,13 +65,13 @@ Authorization: {{male}}
 ###
 
 # add friend
-PATCH  http://localhost:4000/api/users/friends/add/5 HTTP/1.1
-Authorization: {{male}}
+PATCH  http://localhost:4000/api/users/friends/add/8 HTTP/1.1
+Authorization: {{female}}
 ###
 
 # remove friend
-PATCH http://localhost:4000/api/users/friends/remove/5 HTTP/1.1
-Authorization: {{male}}
+PATCH http://localhost:4000/api/users/friends/remove/8 HTTP/1.1
+Authorization: {{female}}
 ###
 
 # get friendlist

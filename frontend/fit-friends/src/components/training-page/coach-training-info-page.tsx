@@ -8,7 +8,7 @@ import LoadingScreen from '../loading-components/loading-screen';
 import NotFoundPage from 'src/pages/not-found-page/not-found.page';
 import { getTrainingDetailsAction, updateTrainingAction } from 'src/store/api-actions';
 import Header from '../header/header';
-import { Gender, HeaderNavTab, Specialisation, TrainingDuration } from 'src/types/constants';
+import { Gender, HeaderNavTab, Specialisation, SpecialisationHashTagValue, TrainingDuration } from 'src/types/constants';
 import { AppRoute } from 'src/app-constants';
 import { Helmet } from 'react-helmet-async';
 import ReviewsSideBar from '../reviews-side-bar/reviews-side-bar';
@@ -19,17 +19,6 @@ import { descriptionValidationHandler } from 'src/utils/validators/training/desc
 import TrainingVideoSection from '../training-video-section/video-section';
 import { priceStringValidationHandler } from 'src/utils/validators/training/price';
 
-
-const SpecialisationHashTagValue: Record<Specialisation, string> = {
-  Yoga: '#йога',
-  Running: '#бег',
-  Power: '#силовые',
-  Aerobics: '#аэробика',
-  Crossfit: '#кроссфит',
-  Boxing: '#бокс',
-  Pilates: '#пилатес',
-  Stretching: '#стрейчинг'
-};
 
 const GenderHashTagValue: Record<Gender, string> = {
   Male: '#для_мужчин',

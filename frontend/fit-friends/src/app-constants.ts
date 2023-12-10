@@ -8,9 +8,10 @@ export enum AppRoute {
   QuestionnaireUser = '/questionnaire_user',
   Forbidden = '/forbidden',
   CoachAccount = '/account_coach',
-  CreateTraining = '/create_training',
   UserAccount = '/account_user',
-  MyTrainings = '/my_trainings'
+  CreateTraining = '/create_training',
+  MyTrainings = '/my_trainings',
+  UsersCatalog = '/users_catalog'
 }
 
 export enum ApiRoute {
@@ -26,7 +27,8 @@ export enum ApiRoute {
   CreateTraining = '/trainings/create',
   MyTrainings = '/trainings/mylist',
   TrainingDetails = '/trainings/details',
-  UpdateTraining = '/trainings/update'
+  UpdateTraining = '/trainings/update',
+  UsersList = '/users'
 }
 
 export enum SliceNameSpace {

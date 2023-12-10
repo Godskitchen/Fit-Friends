@@ -21,14 +21,14 @@ export const queryParamsRangeBuilder = (
   return value;
 };
 
-export const queryParamDurationBuilder = (durationsState: Record<string, boolean>) => {
-  let durations = '';
-  Object.entries(durationsState).forEach(([key, value]) => {
+export const queryParamCheckBoxBuilder = (checkBoxGroupState: Record<string, boolean>) => {
+  let values = '';
+  Object.entries(checkBoxGroupState).forEach(([key, value]) => {
     if (value) {
-      durations = durations.concat(key, ' ');
+      values = values.concat(key, ' ');
     }
   });
-  return durations.trim().replaceAll(' ', ',');
+  return values.trim().replaceAll(' ', ',');
 };
 
 export const compareArrays = <T>(arr1: T, arr2: T): boolean => {
@@ -55,5 +55,11 @@ export const compareArrays = <T>(arr1: T, arr2: T): boolean => {
 export const formatVideoDurationTime = (rawTime: number): string => {
   const normalizedValue = dayjs.duration(rawTime, 'seconds');
   return normalizedValue.format(`${normalizedValue.hours() === 0 ? '' : 'HH[:]'}mm[:]ss`);
+};
+
+export const formatNumber = (number: number): string => {
+  const reversedNumber = `${number}`.split('').reverse().join('');
+  const formattedNumber = reversedNumber.replace(/(\d{3})/g, '$1 ').trim();
+  return formattedNumber.split('').reverse().join('');
 };
 

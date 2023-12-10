@@ -66,3 +66,8 @@ export type UserInfo = {
   userProfile?: UserProfileInfo;
   trainerProfile?: TrainerProfileInfo;
 };
+
+export type UserList = {
+  userList: UserInfo[];
+  totalUsersCount: number;
+}

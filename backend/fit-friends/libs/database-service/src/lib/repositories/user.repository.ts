@@ -112,14 +112,10 @@ export class UserRepository {
     });
   }
 
-  public async find({
-    limit,
-    page,
-    location,
-    fitnessLevel,
-    trainingType,
-    sort,
-  }: UserQuery): Promise<User[]> {
+  public async find(
+    { limit, page, location, fitnessLevel, trainingType, sort }: UserQuery,
+    userId: number,
+  ) {
     const locationFilter = location
       ? location.map((value) => ({ location: value }))
       : [];
@@ -132,9 +128,39 @@ export class UserRepository {
       ? { hasSome: trainingType }
       : undefined;
 
-    return this.prismaConnector.user.findMany({
+    const totalUsersCount = await this.prismaConnector.user.count({
       where: {
         AND: [
+          { userId: { not: userId } },
+          { OR: locationFilter },
+          {
+            OR: [
+              {
+                userProfile: {
+                  AND: [
+                    { OR: fitnessLevelFilter },
+                    { trainingType: trainingTypeFilter },
+                  ],
+                },
+              },
+              {
+                trainerProfile: {
+                  AND: [
+                    { OR: fitnessLevelFilter },
+                    { trainingType: trainingTypeFilter },
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+      },
+    });
+
+    const userList = await this.prismaConnector.user.findMany({
+      where: {
+        AND: [
+          { userId: { not: userId } },
           { OR: locationFilter },
           {
             OR: [
@@ -168,6 +194,8 @@ export class UserRepository {
         userProfile: true,
       },
     });
+
+    return { totalUsersCount, userList };
   }
 
   public async addFriend(userId: number, friendId: number) {

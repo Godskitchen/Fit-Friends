@@ -1,23 +1,24 @@
-import { FitnessLevelToServer, GenderToServer, LocationToServer, SpecialisationToServer } from '../adaprters-constants';
+import { Gender, SkillLevel, Specialisation } from 'src/types/constants';
+import { LocationToServer } from '../adaprters-constants';
 
 export type UpdateUserDto = {
   name?: string;
   avatar?: string | null;
-  gender?: GenderToServer;
+  gender?: Gender;
   aboutInfo?: string;
-  location?: LocationToServer;
+  location?: (typeof LocationToServer)[keyof typeof LocationToServer];
   userProfile?: UpdateUserProfileDto;
   trainerProfile?: UpdateTrainerProfileDto;
 }
 
 export type UpdateUserProfileDto = {
-  fitnessLevel?: FitnessLevelToServer;
-  trainingType?: SpecialisationToServer[];
+  fitnessLevel?: SkillLevel;
+  trainingType?: Specialisation[];
   readyForWorkout?: boolean;
 }
 
 export type UpdateTrainerProfileDto = {
-  fitnessLevel?: FitnessLevelToServer;
-  trainingType?: SpecialisationToServer[];
+  fitnessLevel?: SkillLevel;
+  trainingType?: Specialisation[];
   readyForWorkout?: boolean;
 }

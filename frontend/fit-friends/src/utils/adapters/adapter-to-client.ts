@@ -1,18 +1,17 @@
-import { TrainerProfileInfo, UserInfo, UserProfileInfo } from 'src/types/user.type';
-import { AuthUserRdo, TrainerProfileRdo, UserProfileRdo } from './api-rdos/auth-user.rdo';
-import { Gender, Location, Role, SkillLevel, Specialisation, TrainingDuration } from 'src/types/constants';
-import { RoleToServer } from './adaprters-constants';
+import { TrainerProfileInfo, UserInfo, UserList, UserProfileInfo } from 'src/types/user.type';
+import { AuthUserRdo, TrainerProfileRdo, UserListRdo, UserProfileRdo } from './api-rdos/auth-user.rdo';
 import { TrainingListRdo, TrainingRdo } from './api-rdos/training.rdo';
 import { MyTraining, Training, TrainingList } from 'src/types/training.type';
+import { Role, Location } from 'src/types/constants';
 
 export const adaptUserToClient = (rdo: Omit<AuthUserRdo, 'accessToken'>): UserInfo => ({
   userId: rdo.userId,
   name: rdo.name,
   email: rdo.email,
   aboutInfo: rdo.aboutInfo,
-  gender: Gender[rdo.gender],
+  gender: rdo.gender,
   location: Location[rdo.location],
-  role: rdo.role === RoleToServer.Coach ? Role.Coach : Role.Sportsman,
+  role: Role[rdo.role],
   birthday: rdo.birthDate,
   avatar: rdo.avatarUrl,
   createdAt: rdo.createdAt,
@@ -22,17 +21,17 @@ export const adaptUserToClient = (rdo: Omit<AuthUserRdo, 'accessToken'>): UserIn
 });
 
 export const adaptUserProfileToClient = (rdo: UserProfileRdo): UserProfileInfo => ({
-  skillLevel: SkillLevel[rdo.fitnessLevel],
-  specialisations: rdo.trainingType.map((type) => Specialisation[type]),
-  trainingDuration: TrainingDuration[rdo.trainingDuration],
+  skillLevel: rdo.fitnessLevel,
+  specialisations: rdo.trainingType,
+  trainingDuration: rdo.trainingDuration,
   caloriesToBurn: rdo.caloriesToBurn,
   dailyCaloriesIntake: rdo.dailyCaloriesIntake,
   readyForWorkout: rdo.readyForWorkout,
 });
 
 export const adaptTrainerProfileToClient = (rdo: TrainerProfileRdo): TrainerProfileInfo => ({
-  skillLevel: SkillLevel[rdo.fitnessLevel],
-  specialisations: rdo.trainingType.map((type) => Specialisation[type]),
+  skillLevel: rdo.fitnessLevel,
+  specialisations: rdo.trainingType,
   certificates: rdo.certificates,
   description: rdo.achievements,
   individualTraining: rdo.readyForWorkout,
@@ -49,13 +48,13 @@ export const adaptMyTrainingToClient = (rdo: TrainingRdo): MyTraining => ({
   trainingId: rdo.trainingId,
   title: rdo.title,
   backgroundImage: rdo.backgroundImage,
-  skillLevel: SkillLevel[rdo.fitnessLevel],
-  trainingDuration: TrainingDuration[rdo.trainingDuration],
-  specialisation: Specialisation[rdo.trainingType],
+  skillLevel: rdo.fitnessLevel,
+  trainingDuration: rdo.trainingDuration,
+  specialisation: rdo.trainingType,
   caloriesToBurn: rdo.caloriesToBurn,
   price: rdo.price,
   description: rdo.description,
-  gender: Gender[rdo.gender],
+  gender: rdo.gender,
   rating: rdo.rating,
   isSpecialOffer: rdo.isSpecialOffer
 });
@@ -64,15 +63,20 @@ export const adaptTrainingToClient = (rdo: TrainingRdo): Training => ({
   trainingId: rdo.trainingId,
   title: rdo.title,
   backgroundImage: rdo.backgroundImage,
-  skillLevel: SkillLevel[rdo.fitnessLevel],
-  trainingDuration: TrainingDuration[rdo.trainingDuration],
-  specialisation: Specialisation[rdo.trainingType],
+  skillLevel: rdo.fitnessLevel,
+  trainingDuration: rdo.trainingDuration,
+  specialisation: rdo.trainingType,
   caloriesToBurn: rdo.caloriesToBurn,
   price: rdo.price,
   description: rdo.description,
-  gender: Gender[rdo.gender],
+  gender: rdo.gender,
   rating: rdo.rating,
   isSpecialOffer: rdo.isSpecialOffer,
   trainer: adaptUserToClient(rdo.trainer),
   video: rdo.video
+});
+
+export const adaptUsersListToClient = (rdo: UserListRdo): UserList => ({
+  userList: rdo.userList.map((user) => adaptUserToClient(user)),
+  totalUsersCount: rdo.totalUsersCount
 });

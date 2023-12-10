@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { getUserInfo } from 'src/store/user-process/user-process.selectors';
 import LoadingScreen from '../loading-components/loading-screen';
 import { useState, MouseEvent, useRef, ChangeEvent} from 'react';
-import { Specialisation, Location, Gender, SkillLevel, Role } from 'src/types/constants';
+import { Specialisation, Location, Role, GenderFieldValue, GenderFieldToValueConvert, SkillFieldToValueConvert, SkillFieldValue } from 'src/types/constants';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { ProfileInfoInputs } from 'src/types/forms.type';
 import ProfileSpecialisationList from '../specialisation-list.tsx/profile-specialisation-list';
@@ -17,31 +17,6 @@ import { updateProfileAction } from 'src/store/api-actions';
 import { compareArrays } from 'src/utils/helpers';
 
 
-const GenderValueType = {
-  Male: 'Мужской',
-  Female: 'Женский',
-  NoMatter: 'Неважно'
-};
-
-const GenderConvert = {
-  'Мужской': 'Male',
-  'Женский': 'Female',
-  'Неважно': 'NoMatter',
-};
-
-const SkillValueType = {
-  Beginner: 'Новичок',
-  Amateur: 'Любитель',
-  Pro: 'Профессионал'
-};
-
-const SkillConvert = {
-  'Новичок': 'Beginner',
-  'Любитель': 'Amateur',
-  'Профессионал': 'Pro'
-};
-
-
 export default function UserInfoDesk(): JSX.Element {
   const dispatch = useAppDispatch();
   const userInfo = useAppSelector(getUserInfo);
@@ -51,6 +26,32 @@ export default function UserInfoDesk(): JSX.Element {
   const genderBlockRef = useRef<HTMLDivElement | null>(null);
   const skillBlockRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  let defaultFormValues = {};
+
+  if (userInfo && userInfo.trainerProfile) {
+    defaultFormValues = {
+      name: userInfo.name,
+      aboutInfo: userInfo.aboutInfo,
+      individualTraining: userInfo.trainerProfile.individualTraining,
+      specialisations: userInfo.trainerProfile.specialisations,
+      location: userInfo.location,
+      gender: userInfo.gender,
+      skillLevel: userInfo.trainerProfile.skillLevel,
+      shouldDeleteAvatar: false,
+    };
+  } else if (userInfo && userInfo.userProfile) {
+    defaultFormValues = {
+      name: userInfo.name,
+      aboutInfo: userInfo.aboutInfo,
+      individualTraining: userInfo.userProfile.readyForWorkout,
+      specialisations: userInfo.userProfile.specialisations,
+      location: userInfo.location,
+      gender: userInfo.gender,
+      skillLevel: userInfo.userProfile.skillLevel,
+      shouldDeleteAvatar: false,
+    };
+  }
 
   const {
     register,
@@ -65,16 +66,7 @@ export default function UserInfoDesk(): JSX.Element {
       mode: 'onChange',
       shouldFocusError: false,
       reValidateMode: 'onChange',
-      defaultValues: (userInfo && userInfo.trainerProfile) ? {
-        name: userInfo.name,
-        aboutInfo: userInfo.aboutInfo,
-        individualTraining: userInfo.trainerProfile.individualTraining,
-        specialisations: userInfo.trainerProfile.specialisations,
-        location: userInfo.location,
-        gender: userInfo.gender,
-        skillLevel: userInfo.trainerProfile.skillLevel,
-        shouldDeleteAvatar: false,
-      } : {}
+      defaultValues: defaultFormValues
     }
   );
 
@@ -82,20 +74,21 @@ export default function UserInfoDesk(): JSX.Element {
   const [picture, setPicture] = useState(userInfo?.avatar);
 
   const onClickLocationItemHandler = (evt: MouseEvent<HTMLUListElement>) => {
-    const location = (evt.target as HTMLLIElement).textContent as Location;
+    const locationWithPrefix = (evt.target as HTMLLIElement).textContent as string;
+    const location = locationWithPrefix.split(' ')[2] as Location;
     setValue('location', location, {shouldValidate: true});
     locationBlockRef.current?.classList.remove('is-open');
   };
 
   const onClickGenderItemHandler = (evt: MouseEvent<HTMLUListElement>) => {
-    const gender = (evt.target as HTMLLIElement).textContent as keyof typeof GenderConvert;
-    setValue('gender', GenderConvert[gender] as Gender, {shouldValidate: true});
+    const gender = (evt.target as HTMLLIElement).textContent as keyof typeof GenderFieldToValueConvert;
+    setValue('gender', GenderFieldToValueConvert[gender], {shouldValidate: true});
     genderBlockRef.current?.classList.remove('is-open');
   };
 
   const onClickSkillItemHandler = (evt: MouseEvent<HTMLUListElement>) => {
-    const skillLevel = (evt.target as HTMLLIElement).textContent as keyof typeof SkillConvert;
-    setValue('skillLevel', SkillConvert[skillLevel] as SkillLevel, {shouldValidate: true});
+    const skillLevel = (evt.target as HTMLLIElement).textContent as keyof typeof SkillFieldToValueConvert;
+    setValue('skillLevel', SkillFieldToValueConvert[skillLevel], {shouldValidate: true});
     skillBlockRef.current?.classList.remove('is-open');
   };
 
@@ -117,6 +110,7 @@ export default function UserInfoDesk(): JSX.Element {
         }
       });
   };
+
   const onOpenLocationListBtnClickHandler = () => locationBlockRef.current?.classList.toggle('is-open');
   const onOpenGenderListBtnClickHandler = () => genderBlockRef.current?.classList.toggle('is-open');
   const onOpenSkillListBtnClickHandler = () => skillBlockRef.current?.classList.toggle('is-open');
@@ -130,7 +124,9 @@ export default function UserInfoDesk(): JSX.Element {
     disabled: !isEditMode,
   });
 
-  if (!userInfo || !userInfo.trainerProfile) {
+  if (!userInfo
+    || (userInfo.role === Role.Trainer && !userInfo.trainerProfile)
+    || (userInfo.role === Role.User && !userInfo.userProfile)) {
     return <LoadingScreen />;
   }
 
@@ -266,7 +262,7 @@ export default function UserInfoDesk(): JSX.Element {
                 className="btn-flat btn-flat--underlined user-info__edit-button"
                 type="button"
                 aria-label="Редактировать"
-                onClick={() => {setEditMode(true);}}
+                onClick={() => {setEditMode(true); trigger();}}
               >
                 <svg width="12" height="12" aria-hidden="true">
                   <use xlinkHref="#icon-edit"></use>
@@ -318,7 +314,7 @@ export default function UserInfoDesk(): JSX.Element {
                   <use xlinkHref="#arrow-check"></use>
                 </svg>
               </span>
-              <span className="custom-toggle__label">Готов тренировать</span>
+              <span className="custom-toggle__label">{userInfo.role === Role.Trainer ? 'Готов тренировать' : 'Готов к тренировке'}</span>
             </label>
           </div>
         </div>
@@ -340,7 +336,7 @@ export default function UserInfoDesk(): JSX.Element {
         <div ref={locationBlockRef} className={`custom-select ${!isEditMode ? 'custom-select--readonly' : ''} user-info-edit__select`}>
           <span className="custom-select__label">Локация</span>
           <input className='visually-hidden location' {...register('location')} />
-          <div className="custom-select__placeholder">{getValues('location')}</div>
+          <div className="custom-select__placeholder">{`ст. м. ${getValues('location')}`}</div>
           <button
             className="custom-select__button"
             type="button"
@@ -355,12 +351,12 @@ export default function UserInfoDesk(): JSX.Element {
               </svg>
             </span>
           </button>
-          {DropDownList({items: Object.values(Location), clickItemHandler: onClickLocationItemHandler})}
+          {DropDownList({items: Object.values(Location), clickItemHandler: onClickLocationItemHandler, valuePrefix: 'ст. м. '})}
         </div>
         <div ref={genderBlockRef} className={`custom-select ${!isEditMode ? 'custom-select--readonly' : ''} user-info-edit__select`}>
           <span className="custom-select__label">Пол</span>
           <input className='visually-hidden gender' {...register('gender')} />
-          <div className="custom-select__placeholder">{GenderValueType[getValues('gender')]}</div>
+          <div className="custom-select__placeholder">{GenderFieldValue[getValues('gender')]}</div>
           <button
             className="custom-select__button"
             type="button"
@@ -375,12 +371,12 @@ export default function UserInfoDesk(): JSX.Element {
               </svg>
             </span>
           </button>
-          {DropDownList({items: Object.values(GenderValueType), clickItemHandler: onClickGenderItemHandler})}
+          {DropDownList({items: Object.values(GenderFieldValue), clickItemHandler: onClickGenderItemHandler})}
         </div>
         <div ref={skillBlockRef} className={`custom-select ${!isEditMode ? 'custom-select--readonly' : ''} user-info-edit__select`}>
           <span className="custom-select__label">Уровень</span>
           <input className='visually-hidden gender' {...register('skillLevel')} />
-          <div className="custom-select__placeholder">{SkillValueType[getValues('skillLevel')]}</div>
+          <div className="custom-select__placeholder">{SkillFieldValue[getValues('skillLevel')]}</div>
           <button
             className="custom-select__button"
             type="button"
@@ -395,7 +391,7 @@ export default function UserInfoDesk(): JSX.Element {
               </svg>
             </span>
           </button>
-          {DropDownList({items: Object.values(SkillValueType), clickItemHandler: onClickSkillItemHandler})}
+          {DropDownList({items: Object.values(SkillFieldValue), clickItemHandler: onClickSkillItemHandler})}
         </div>
       </form>
     </section>

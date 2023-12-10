@@ -88,7 +88,7 @@ export class UserProfileDto {
     maximum: CALORIES_TO_BURN.MAX,
     example: 1500,
   })
-  @Max(CALORIES_TO_BURN.MIN, { message: CALORIES_TO_BURN_VALIDATION_MESSAGE })
+  @Max(CALORIES_TO_BURN.MAX, { message: CALORIES_TO_BURN_VALIDATION_MESSAGE })
   @Min(CALORIES_TO_BURN.MIN, { message: CALORIES_TO_BURN_VALIDATION_MESSAGE })
   @IsInt({ message: CALORIES_TO_BURN_VALIDATION_MESSAGE })
   @Type(() => Number)

@@ -5,25 +5,26 @@ import { Helmet } from 'react-helmet-async';
 import { Fragment } from 'react';
 import MyTrainingsFilterDesk from '../../components/my-trainings-filter-desk/my-trainings-filter-desk';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
-import { getMyTrainings, getTotalTrainingsCount, getTrainingsFiltersState } from 'src/store/user-process/user-process.selectors';
+import { getMyTrainings, getTotalMyTrainingsCount} from 'src/store/user-process/user-process.selectors';
+import {getMyTrainingsFiltersState} from 'src/store/main-process/main-process.selectors';
 import LoadingBlock from 'src/components/loading-components/loading-block';
 import MyTrainingsList from 'src/components/my-trainings-list/my-trainings-list';
 import { getTrainingsDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import { addMoreTrainingsToListAction } from 'src/store/api-actions';
-import { setFiltersStateAction } from 'src/store/user-process/user-process.reducer';
+import { setMyTrainingsFiltersStateAction } from 'src/store/main-process/main-process.reducer';
 
 export default function MyTrainingsPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
   const trainings = useAppSelector(getMyTrainings);
   const isLoading = useAppSelector(getTrainingsDownloadingStatus);
-  const filterState = useAppSelector(getTrainingsFiltersState);
-  const totalTrainingsCount = useAppSelector(getTotalTrainingsCount);
+  const filterState = useAppSelector(getMyTrainingsFiltersState);
+  const totalTrainingsCount = useAppSelector(getTotalMyTrainingsCount);
 
   const onShowMoreBtnClickHandle = () => {
     const newFilterState = {...filterState, page: filterState.page ? `${+filterState.page + 1}` : filterState.page};
     dispatch(addMoreTrainingsToListAction(newFilterState))
-      .then(() => {dispatch(setFiltersStateAction(newFilterState));});
+      .then(() => {dispatch(setMyTrainingsFiltersStateAction(newFilterState));});
   };
 
   const onReturnToTopBtnHandle = () => {

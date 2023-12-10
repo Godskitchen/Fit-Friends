@@ -4,27 +4,21 @@ import './range-slider.css';
 import InputRangeFilter from '../range-filters/input-range-filter';
 import { CALORIES_TO_BURN, PRICE, RATING } from 'src/utils/validators/training/constants';
 import RangeFilter from '../range-filters/range-filter';
-import CheckBoxFilter from '../checkbox-filter/checkbox-filter';
-import { queryParamDurationBuilder, queryParamsRangeBuilder } from 'src/utils/helpers';
+import TrainingFormCheckBoxFilter from '../checkbox-filter/training-form-checkbox-filter';
+import { queryParamCheckBoxBuilder, queryParamsRangeBuilder } from 'src/utils/helpers';
 import { useAppDispatch } from 'src/hooks';
 import { getMyTrainingsAction } from 'src/store/api-actions';
 import { MyTrainingsFitersState } from 'src/types/forms.type';
-import { setFiltersStateAction } from 'src/store/user-process/user-process.reducer';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from 'src/app-constants';
+import { DurationFieldValue } from 'src/types/constants';
+import { setMyTrainingsFiltersStateAction } from 'src/store/main-process/main-process.reducer';
 
 const defaultDurationsState: Record<string, boolean> = {
   TenToThirtyMinutes: false,
   ThirtyToFiftyMinutes: false,
   FiftyToEightyMinutes: false,
   EightyToOneHundredMinutes: false
-};
-
-const durationBtnValue: Record<string, string> = {
-  TenToThirtyMinutes: '10 мин - 30 мин',
-  ThirtyToFiftyMinutes: '30 мин - 50 мин',
-  FiftyToEightyMinutes: '50 мин - 80 мин',
-  EightyToOneHundredMinutes: '80 мин - 100 мин',
 };
 
 const CARD_LIMIT_PER_PAGE = 6;
@@ -60,7 +54,7 @@ export default function MyTrainingsFilterDesk(): JSX.Element {
     const price = queryParamsRangeBuilder(minFieldPrice, maxFieldPrice, PRICE.MAX, PRICE.MIN);
     const calories = queryParamsRangeBuilder(minFieldCalories, maxFieldCalories, CALORIES_TO_BURN.MAX, CALORIES_TO_BURN.MIN);
     const rating = queryParamsRangeBuilder(`${minRating}`, `${maxRating}`, RATING.MAX, RATING.MIN);
-    const durations = queryParamDurationBuilder(durationsState);
+    const durations = queryParamCheckBoxBuilder(durationsState);
 
     const query: MyTrainingsFitersState = {
       limit: `${CARD_LIMIT_PER_PAGE}`,
@@ -72,7 +66,7 @@ export default function MyTrainingsFilterDesk(): JSX.Element {
     };
 
     dispatch(getMyTrainingsAction(query))
-      .then(() => {dispatch(setFiltersStateAction(query));});
+      .then(() => {dispatch(setMyTrainingsFiltersStateAction(query));});
   };
 
   const onBtnBackClickHandle = () => {
@@ -86,7 +80,7 @@ export default function MyTrainingsFilterDesk(): JSX.Element {
     };
 
     dispatch(getMyTrainingsAction(initialQuery))
-      .then(() => {dispatch(setFiltersStateAction(initialQuery));});
+      .then(() => {dispatch(setMyTrainingsFiltersStateAction(initialQuery));});
   }, [dispatch]);
 
   return (
@@ -143,14 +137,14 @@ export default function MyTrainingsFilterDesk(): JSX.Element {
           title='Рейтинг'
           filterName='raiting'
         />
-        <CheckBoxFilter
+        <TrainingFormCheckBoxFilter
           title='Длительность'
           filterName='duration'
           formRef={formRef}
           timeoutRef={timeoutRef}
           setterCheckboxValues={setDurationsState}
           currentCheckBoxesGroupState={durationsState}
-          checkBoxBtnValues={durationBtnValue}
+          checkBoxBtnValues={DurationFieldValue}
         />
       </form>
     </div>
