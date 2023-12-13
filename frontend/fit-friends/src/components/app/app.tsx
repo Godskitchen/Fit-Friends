@@ -16,12 +16,13 @@ import { getAuthCheckedStatus } from 'src/store/user-process/user-process.select
 // import PublicRoute from '../public-route/public-route';
 import NotFoundPage from 'src/pages/not-found-page/not-found.page';
 import ForbiddenPage from 'src/pages/forbidden-page/forbidden-page';
-import PersonalAccountCoachPage from 'src/pages/personal-account/personal-account-coach.page';
+import PersonalAccountCoachPage from 'src/pages/personal-account-page/personal-account-coach.page';
 import CreateTrainingPage from 'src/pages/create-training-page/create-training.page';
 import MyTrainingsPage from '../../pages/my-trainings-page/my-trainings.page';
-import CoachTrainingInfoPage from '../training-page/coach-training-info-page';
-import PersonalAccountUserPage from 'src/pages/personal-account/personal-account-user.page';
+import CoachTrainingInfoPage from '../../pages/training-page/coach-training-info-page';
+import PersonalAccountUserPage from 'src/pages/personal-account-page/personal-account-user.page';
 import UsersCatalogPage from 'src/pages/users-catalog-page/users-catalog-page';
+import MyFriendsPage from 'src/pages/my-friends-page/my-friends-page';
 
 export default function App(): JSX.Element {
 
@@ -94,6 +95,14 @@ export default function App(): JSX.Element {
         <Route
           path={AppRoute.UsersCatalog}
           element={<UsersCatalogPage />}
+        />
+        <Route
+          path={`${AppRoute.UserAccount}${AppRoute.MyFriends}`}
+          element={<MyFriendsPage />}
+        />
+        <Route
+          path={`${AppRoute.CoachAccount}${AppRoute.MyFriends}`}
+          element={<MyFriendsPage />}
         />
         <Route
           path={AppRoute.Forbidden}

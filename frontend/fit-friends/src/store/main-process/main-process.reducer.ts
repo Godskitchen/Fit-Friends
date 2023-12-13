@@ -1,11 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { SliceNameSpace } from 'src/app-constants';
-import { MyTrainingsFitersState, UsersCatalogFiltersState } from 'src/types/forms.type';
+import { FriendsQueryState, MyTrainingsFitersState, UsersCatalogFiltersState } from 'src/types/forms.type';
 import { MainProcess } from 'src/types/state.type';
 
 const initialState: MainProcess = {
   myTrainingsFilterState: {},
-  usersCatalogFilterState: {}
+  usersCatalogFilterState: {},
+  friendsQueryState: {}
 };
 
 export const mainProcess = createSlice({
@@ -17,8 +18,15 @@ export const mainProcess = createSlice({
     },
     setUsersCatalogFilterStateAction: (state, {payload}: PayloadAction<UsersCatalogFiltersState>) => {
       state.usersCatalogFilterState = payload;
+    },
+    setFriendsQueryStateAction: (state, {payload}: PayloadAction<FriendsQueryState>) => {
+      state.friendsQueryState = payload;
     }
   },
 });
 
-export const {setMyTrainingsFiltersStateAction, setUsersCatalogFilterStateAction} = mainProcess.actions;
+export const {
+  setMyTrainingsFiltersStateAction,
+  setUsersCatalogFilterStateAction,
+  setFriendsQueryStateAction
+} = mainProcess.actions;

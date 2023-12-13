@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Location, SpecialisationFieldValue } from 'src/types/constants';
 import UsersCatalogCheckBoxFilter from '../checkbox-filter/users-catalog-checkbox-filter';
 import SkillButtons from '../radio-buttons/skill-buttons';

@@ -1,4 +1,5 @@
 import { Gender, Role, Location, SkillLevel, Specialisation, TrainingDuration } from './constants';
+import { TrainingRequest } from './training-request.type';
 
 export type RegisterInfo = {
   name: string;
@@ -67,7 +68,17 @@ export type UserInfo = {
   trainerProfile?: TrainerProfileInfo;
 };
 
+export type FriendInfo = UserInfo & {
+  trainingRequestsAsSender: TrainingRequest[];
+  trainingRequestsAsRecepient: TrainingRequest[];
+}
+
 export type UserList = {
   userList: UserInfo[];
   totalUsersCount: number;
+}
+
+export type FriendList = {
+  friendList: FriendInfo[];
+  totalFriendsCount: number;
 }

@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { UserProcess } from '../../types/state.type';
 import {
+  addFriendsToListAction,
   addMoreTrainingsToListAction,
   checkAuthAction,
   createCoachProfileAction,
   createUserProfileAction,
   deleteNotificationAction,
+  getFriendListAction,
   getMyTrainingsAction,
   getNotificationsAction,
   loginAction,
@@ -21,6 +23,8 @@ const initialState: UserProcess = {
   notifications: [],
   myTrainingsList: undefined,
   totalMyTrainingsCount: 0,
+  friendList: undefined,
+  totalFriendsCount: 0,
   formErrors: {
     [HttpStatusCode.CONFLICT]: '',
     [HttpStatusCode.SERVER_INTERNAL]: '',
@@ -160,10 +164,28 @@ export const userProcess = createSlice({
         state.myTrainingsList = payload.trainingList;
         state.totalMyTrainingsCount = payload.totalTrainingsCount;
       })
+      .addCase(getMyTrainingsAction.rejected, (state) => {
+        state.myTrainingsList = null;
+        state.totalMyTrainingsCount = 0;
+      })
       .addCase(addMoreTrainingsToListAction.fulfilled, (state, {payload}) => {
         if (state.myTrainingsList) {
           state.myTrainingsList = [...state.myTrainingsList, ...payload.trainingList];
           state.totalMyTrainingsCount = payload.totalTrainingsCount;
+        }
+      })
+      .addCase(getFriendListAction.fulfilled, (state, {payload}) => {
+        state.friendList = payload.friendList;
+        state.totalFriendsCount = payload.totalFriendsCount;
+      })
+      .addCase(getFriendListAction.rejected, (state) => {
+        state.friendList = null;
+        state.totalFriendsCount = 0;
+      })
+      .addCase(addFriendsToListAction.fulfilled, (state, {payload}) => {
+        if (state.friendList) {
+          state.friendList = [...state.friendList, ...payload.friendList];
+          state.totalFriendsCount = payload.totalFriendsCount;
         }
       });
   },

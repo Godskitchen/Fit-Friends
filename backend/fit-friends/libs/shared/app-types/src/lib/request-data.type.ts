@@ -1,6 +1,6 @@
 import { TrainingRequestStatus } from '..';
 
 export type TrainingRequestData = {
-  requestId: string;
+  id: string;
   status: TrainingRequestStatus;
 };

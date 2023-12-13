@@ -1,24 +1,31 @@
 import { Link } from 'react-router-dom';
-import { HeaderNavTab } from 'src/types/constants';
+import { HeaderNavTab, Role } from 'src/types/constants';
 import NotificationsList from '../notifications-list/notifications-list';
-import { useAppDispatch } from 'src/hooks';
+import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { useEffect } from 'react';
 import { getNotificationsAction } from 'src/store/api-actions';
+import { AppRoute } from 'src/app-constants';
+import { getUserInfo } from 'src/store/user-process/user-process.selectors';
+import LoadingBlock from '../loading-components/loading-block';
 
 
 type HeaderProps = {
   activeTab: HeaderNavTab;
-  profileButtonNavigateLink: string;
 }
-export default function Header({activeTab, profileButtonNavigateLink}: HeaderProps) {
+export default function Header({activeTab}: HeaderProps) {
 
   const dispatch = useAppDispatch();
+  const myProfile = useAppSelector(getUserInfo);
 
   useEffect(() => {
     dispatch(getNotificationsAction());
     const intervalId = setInterval(() => {dispatch(getNotificationsAction());}, 30000);
     return () => clearInterval(intervalId);
   }, [dispatch]);
+
+  if (!myProfile) {
+    return <LoadingBlock />;
+  }
 
   return (
     <header className="header">
@@ -31,21 +38,25 @@ export default function Header({activeTab, profileButtonNavigateLink}: HeaderPro
         <nav className="main-nav">
           <ul className="main-nav__list">
             <li className="main-nav__item">
-              <Link className={`main-nav__link ${activeTab === HeaderNavTab.Home ? 'is-active' : ''}`} to="#" aria-label="На главную">
+              <Link className={`main-nav__link ${activeTab === HeaderNavTab.Home ? 'is-active' : ''}`} to={myProfile.role === Role.User ? AppRoute.Main : AppRoute.CoachAccount} aria-label="На главную">
                 <svg width="18" height="18" aria-hidden="true">
                   <use xlinkHref="#icon-home"></use>
                 </svg>
               </Link>
             </li>
             <li className="main-nav__item">
-              <Link className={`main-nav__link ${activeTab === HeaderNavTab.Profile ? 'is-active' : ''}`} to={profileButtonNavigateLink} aria-label="Личный кабинет">
+              <Link className={`main-nav__link ${activeTab === HeaderNavTab.Profile ? 'is-active' : ''}`} to={myProfile.role === Role.User ? AppRoute.UserAccount : AppRoute.CoachAccount} aria-label="Личный кабинет">
                 <svg width="16" height="18" aria-hidden="true">
                   <use xlinkHref="#icon-user"></use>
                 </svg>
               </Link>
             </li>
             <li className="main-nav__item">
-              <Link className={`main-nav__link ${activeTab === HeaderNavTab.Friends ? 'is-active' : ''}`} to="#" aria-label="Друзья">
+              <Link
+                className={`main-nav__link ${activeTab === HeaderNavTab.Friends ? 'is-active' : ''}`}
+                to={myProfile.role === Role.User ? `${AppRoute.UserAccount}${AppRoute.MyFriends}` : `${AppRoute.CoachAccount}${AppRoute.MyFriends}`}
+                aria-label="Друзья"
+              >
                 <svg width="22" height="16" aria-hidden="true">
                   <use xlinkHref="#icon-friends"></use>
                 </svg>

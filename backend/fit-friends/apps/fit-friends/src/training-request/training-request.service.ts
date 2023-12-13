@@ -1,10 +1,13 @@
 import { MessageService } from '@app/message';
 import { TrainingRequestRepository } from '@libs/database-service';
 import { TrainingRequestEntity } from '@libs/database-service/lib/entities/training-request.entity';
-import { TrainingRequestStatus } from '@libs/shared/app-types';
+import { Role, TrainingRequestStatus } from '@libs/shared/app-types';
 import { Injectable } from '@nestjs/common';
 import { UpdateStatusDto } from './dto/update-status.dto';
-import { createTrainingRequestMessage } from '@libs/shared/helpers';
+import {
+  createAnsweredTrainingRequestMessage,
+  createTrainingRequestMessage,
+} from '@libs/shared/helpers';
 
 @Injectable()
 export class TrainingRequestService {
@@ -15,7 +18,7 @@ export class TrainingRequestService {
 
   public async createRequest(
     senderId: number,
-    userName: string,
+    senderName: string,
     recepientId: number,
   ) {
     const request = await this.requestRepository.create(
@@ -28,13 +31,28 @@ export class TrainingRequestService {
 
     await this.messageService.createMessage({
       recepientId,
-      text: createTrainingRequestMessage(userName),
+      text: createTrainingRequestMessage(senderName),
     });
 
     return request;
   }
 
-  public async updateStatus({ status, requestId }: UpdateStatusDto) {
-    return this.requestRepository.update(status, requestId);
+  public async updateStatus(
+    { status, id }: UpdateStatusDto,
+    senderName: string,
+    senderRole: Role,
+  ) {
+    const updatedRequest = await this.requestRepository.update(status, id);
+
+    await this.messageService.createMessage({
+      recepientId: updatedRequest.senderId,
+      text: createAnsweredTrainingRequestMessage(
+        senderName,
+        senderRole,
+        status,
+      ),
+    });
+
+    return updatedRequest;
   }
 }

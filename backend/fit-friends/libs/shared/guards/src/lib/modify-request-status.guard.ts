@@ -21,15 +21,15 @@ export class ModifyRequestStatusGuard implements CanActivate {
   async canActivate(cxt: ExecutionContext) {
     const { body, user } = cxt.switchToHttp().getRequest<Request>();
     const payload = user as AccessTokenPayload;
-    const { status, requestId } = body as TrainingRequestData;
+    const { status, id } = body as TrainingRequestData;
 
-    if (!uuidValidate(requestId)) {
+    if (!uuidValidate(id)) {
       throw new BadRequestException(
         TrainingRequestErrors.INCORRECT_REQUEST_ID_TYPE,
       );
     }
 
-    const trainingRequest = await this.requestRepository.findById(requestId);
+    const trainingRequest = await this.requestRepository.findById(id);
 
     if (!trainingRequest) {
       throw new BadRequestException(

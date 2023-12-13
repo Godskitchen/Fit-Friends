@@ -1,22 +1,20 @@
 /* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Fragment, useEffect, useState, FocusEvent, ChangeEvent, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { getDataUploadingStatus, getTrainingInfo, getTrainingsDownloadingStatus } from 'src/store/app-data/app-data.selectors';
-import LoadingScreen from '../loading-components/loading-screen';
+import LoadingScreen from '../../components/loading-components/loading-screen';
 import NotFoundPage from 'src/pages/not-found-page/not-found.page';
 import { getTrainingDetailsAction, updateTrainingAction } from 'src/store/api-actions';
-import Header from '../header/header';
-import { Gender, HeaderNavTab, Specialisation, SpecialisationHashTagValue, TrainingDuration } from 'src/types/constants';
-import { AppRoute } from 'src/app-constants';
+import Header from '../../components/header/header';
+import { Gender, HeaderNavTab, SpecialisationHashTagValue, TrainingDuration } from 'src/types/constants';
 import { Helmet } from 'react-helmet-async';
-import ReviewsSideBar from '../reviews-side-bar/reviews-side-bar';
+import ReviewsSideBar from '../../components/reviews-side-bar/reviews-side-bar';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {UpdateTrainingInputs } from 'src/types/forms.type';
 import { titleValidationHandler } from 'src/utils/validators/training/title';
 import { descriptionValidationHandler } from 'src/utils/validators/training/description';
-import TrainingVideoSection from '../training-video-section/video-section';
+import TrainingVideoSection from '../../components/training-video-section/video-section';
 import { priceStringValidationHandler } from 'src/utils/validators/training/price';
 
 
@@ -45,11 +43,7 @@ export default function CoachTrainingInfoPage(): JSX.Element {
 
   const {
     register,
-    handleSubmit,
     formState: {errors, isValid, isSubmitting},
-    trigger,
-    setError,
-    clearErrors,
     getValues,
     setValue,
   } = useForm<UpdateTrainingInputs>(
@@ -152,7 +146,7 @@ export default function CoachTrainingInfoPage(): JSX.Element {
         <title>Карточка тренировки — FitFriends</title>
       </Helmet>
       <div className="wrapper">
-        <Header activeTab={HeaderNavTab.Home} profileButtonNavigateLink={AppRoute.CoachAccount}/>
+        <Header activeTab={HeaderNavTab.Home}/>
         <main>
           <section className="inner-page">
             <div className="container">

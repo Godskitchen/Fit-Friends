@@ -20,3 +20,6 @@ export const getNotifications = (state: State) => state[SliceNameSpace.User].not
 
 export const getMyTrainings = (state: State): MyTraining[] | null | undefined => state[SliceNameSpace.User].myTrainingsList;
 export const getTotalMyTrainingsCount = (state: State): number => state[SliceNameSpace.User].totalMyTrainingsCount;
+
+export const getFriendList = (state:State) => state[SliceNameSpace.User].friendList;
+export const getTotalFriendsCount = (state:State) => state[SliceNameSpace.User].totalFriendsCount;

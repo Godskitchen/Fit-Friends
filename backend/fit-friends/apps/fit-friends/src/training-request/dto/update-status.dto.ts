@@ -13,7 +13,7 @@ export class UpdateStatusDto {
     example: '543k5jff-kkf3kk-343kk-343',
   })
   @IsUUID(UUID_VERSION, { message: REQUEST_ID_VALIDATION_MESSAGE })
-  requestId: string;
+  id: string;
 
   @ApiProperty({
     description: `Обновленный статус заявки. Доступные варианты: ${TrainingRequestStatus.Accepted} или ${TrainingRequestStatus.Declined}`,

@@ -227,8 +227,15 @@ export class UserRepository {
   public async getFriends(
     userId: number,
     { limit, page, sortDirection }: BaseQuery,
-  ): Promise<User[]> {
-    return this.prismaConnector.user
+  ) {
+    const totalFriendsCount = await this.prismaConnector.user
+      .findUnique({
+        where: { userId },
+        select: { friends: true },
+      })
+      .then((user) => (user ? user.friends.length : 0));
+
+    const friendList = await this.prismaConnector.user
       .findUnique({
         where: { userId },
         select: {
@@ -250,6 +257,8 @@ export class UserRepository {
         },
       })
       .then((user) => (user ? user.friends : []));
+
+    return { friendList, totalFriendsCount };
   }
 
   public async findFriend(userId: number, friendId: number) {

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { SliceNameSpace } from 'src/app-constants';
-import { addMoreTrainingsToListAction, addMoreUsersToListAction, createTrainingAction, getTrainingDetailsAction, getUsersListAction, updateTrainingAction } from '../api-actions';
+import { addFriendsToListAction, addMoreTrainingsToListAction, addMoreUsersToListAction, createTrainingAction, getFriendListAction, getTrainingDetailsAction, getUsersListAction, updateTrainingAction } from '../api-actions';
 import { AppData } from 'src/types/state.type';
 
 const initialState: AppData = {
@@ -81,6 +81,24 @@ export const appData = createSlice({
         state.usersDownloadingStatus = true;
       })
       .addCase(addMoreUsersToListAction.rejected, (state) => {
+        state.usersDownloadingStatus = false;
+      })
+      .addCase(getFriendListAction.fulfilled, (state) => {
+        state.usersDownloadingStatus = false;
+      })
+      .addCase(getFriendListAction.pending, (state) => {
+        state.usersDownloadingStatus = true;
+      })
+      .addCase(getFriendListAction.rejected, (state) => {
+        state.usersDownloadingStatus = false;
+      })
+      .addCase(addFriendsToListAction.fulfilled, (state) => {
+        state.usersDownloadingStatus = false;
+      })
+      .addCase(addFriendsToListAction.pending, (state) => {
+        state.usersDownloadingStatus = true;
+      })
+      .addCase(addFriendsToListAction.rejected, (state) => {
         state.usersDownloadingStatus = false;
       });
   }

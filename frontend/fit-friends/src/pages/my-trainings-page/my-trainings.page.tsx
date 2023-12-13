@@ -1,6 +1,5 @@
 import { HeaderNavTab } from 'src/types/constants';
 import Header from '../../components/header/header';
-import { AppRoute } from 'src/app-constants';
 import { Helmet } from 'react-helmet-async';
 import { Fragment } from 'react';
 import MyTrainingsFilterDesk from '../../components/my-trainings-filter-desk/my-trainings-filter-desk';
@@ -37,7 +36,7 @@ export default function MyTrainingsPage(): JSX.Element {
         <title>Мои тренировки — FitFriends</title>
       </Helmet>
       <div className="wrapper">
-        <Header activeTab={HeaderNavTab.Home} profileButtonNavigateLink={AppRoute.CoachAccount} />
+        <Header activeTab={HeaderNavTab.Home} />
         <main>
           <section className="inner-page">
             <div className="container">

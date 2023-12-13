@@ -5,16 +5,18 @@ import { ApiRoute, AppRoute } from 'src/app-constants';
 import { saveToken, dropToken } from 'src/services/auth-token';
 import { HttpStatusCode, REQUEST_TIMEOUT, SERVER_URL, shouldDisplayError } from 'src/services/server-api';
 import { Role } from 'src/types/constants';
-import { CreateTrainingInputs, MyTrainingsFitersState, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs, UpdateTrainingInputs, UsersCatalogFiltersState } from 'src/types/forms.type';
+import { CreateTrainingInputs, FriendsQueryState, MyTrainingsFitersState, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs, UpdateTrainingInputs, UsersCatalogFiltersState } from 'src/types/forms.type';
 import { AppDispatch, State } from 'src/types/state.type';
-import { AuthData, KnownError, UserInfo, UserList } from 'src/types/user.type';
+import { AuthData, FriendList, KnownError, UserInfo, UserList } from 'src/types/user.type';
 import { adaptCoachProfileToServer, adaptNewTrainingToServer, adaptRegisterUserToServer, adaptUpdateProfiletoServer, adaptUpdateTrainingToServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
 import { AuthUserRdo, UserListRdo, UserRdo } from 'src/utils/adapters/api-rdos/auth-user.rdo';
 import { redirectAction } from './redirect.action';
-import { adaptMyTrainingsListToClient, adaptTrainingToClient, adaptUserToClient, adaptUsersListToClient } from 'src/utils/adapters/adapter-to-client';
+import { adaptFriendListToClient, adaptMyTrainingsListToClient, adaptTrainingToClient, adaptUserToClient, adaptUsersListToClient } from 'src/utils/adapters/adapter-to-client';
 import { Message } from 'src/types/message.type';
 import { Training, TrainingList } from 'src/types/training.type';
 import { TrainingListRdo, TrainingRdo } from 'src/utils/adapters/api-rdos/training.rdo';
+import { FriendListRdo } from 'src/utils/adapters/api-rdos/friend.rdo';
+import { TrainingRequest } from 'src/types/training-request.type';
 
 export const registerAction = createAsyncThunk<
   UserInfo,
@@ -309,3 +311,43 @@ export const addMoreUsersToListAction = createAsyncThunk<UserList, UsersCatalogF
     return adaptUsersListToClient(data);
   }
 );
+
+export const getFriendListAction = createAsyncThunk<FriendList, FriendsQueryState, {
+  extra: AxiosInstance;
+}>(
+  'user/getFriendList',
+  async(friendsQuery, {extra: serverApi}) => {
+    const {data} = await serverApi.get<FriendListRdo>(ApiRoute.FriendsList, {params: friendsQuery});
+    return adaptFriendListToClient(data);
+  }
+);
+
+export const addFriendsToListAction = createAsyncThunk<FriendList, FriendsQueryState, {
+  extra: AxiosInstance;
+}>(
+  'user/addFriendsToList',
+  async(friendsQuery, {extra: serverApi}) => {
+    const {data} = await serverApi.get<FriendListRdo>(ApiRoute.FriendsList, {params: friendsQuery});
+    console.log(data);
+    return adaptFriendListToClient(data);
+  }
+);
+
+export const createTrainingRequestStatusAction = createAsyncThunk<void, number, {
+  extra: AxiosInstance;
+}>(
+  'user/createTrainingRequestStatus',
+  async(recepientId, {extra: serverApi}) => {
+    await serverApi.post(`${ApiRoute.CreateTrainingRequest}/${recepientId}`);
+  }
+);
+
+export const updateTrainingRequestStatusAction = createAsyncThunk<void, TrainingRequest, {
+  extra: AxiosInstance;
+}>(
+  'user/updateTrainingRequestStatus',
+  async(trainingRequest, {extra: serverApi}) => {
+    await serverApi.patch(ApiRoute.UpdateTrainingRequest, trainingRequest);
+  }
+);
+

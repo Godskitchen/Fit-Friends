@@ -1,6 +1,5 @@
 import { Fragment } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { AppRoute } from 'src/app-constants';
 import Header from 'src/components/header/header';
 import LoadingBlock from 'src/components/loading-components/loading-block';
 import UserList from 'src/components/user-list/user-list';
@@ -36,7 +35,7 @@ export default function UsersCatalogPage(): JSX.Element {
         <title>Каталог пользователей — FitFriends</title>
       </Helmet>
       <div className="wrapper">
-        <Header activeTab={HeaderNavTab.Home} profileButtonNavigateLink={AppRoute.UserAccount} />
+        <Header activeTab={HeaderNavTab.Home} />
         <main>
           <section className="inner-page">
             <div className="container">

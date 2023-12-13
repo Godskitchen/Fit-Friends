@@ -48,6 +48,7 @@ import {
 } from '@nestjs/swagger';
 import { NewProfileDto } from './dto/new-profile.dto';
 import { UserListRdo } from './rdo/user-list.rdo';
+import { FriendListRdo } from './rdo/friend-list.rdo';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -197,7 +198,7 @@ export class UserController {
   }
 
   @ApiOkResponse({
-    description: `Получен список друзей пользователя. По умолчанию возвращается ${MAX_ITEMS_LIMIT} пользователей`,
+    description: `Получен список друзей пользователя вместе с текущими заявками на тренировку, а также их общее количество. По умолчанию возвращается ${MAX_ITEMS_LIMIT} пользователей`,
     type: [FriendRdo],
   })
   @ApiBadRequestResponse({
@@ -210,6 +211,6 @@ export class UserController {
     query: FriendsQuery,
   ) {
     const friendList = await this.userService.getFriendList(user.sub, query);
-    return fillRDO(FriendRdo, friendList, [Role.Trainer, Role.User]);
+    return fillRDO(FriendListRdo, friendList, [Role.Trainer, Role.User]);
   }
 }

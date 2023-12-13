@@ -17,6 +17,8 @@ export type AuthUserRdo = {
   accessToken: string;
 };
 
+export type UserRdo = Omit<AuthUserRdo, 'accessToken'>;
+
 export type UserProfileRdo = {
   fitnessLevel: SkillLevel;
   trainingType: Specialisation[];
@@ -33,8 +35,6 @@ export type TrainerProfileRdo = {
   achievements: string;
   readyForWorkout: boolean;
 }
-
-export type UserRdo = Omit<AuthUserRdo, 'accessToken'>;
 
 export type UserListRdo = {
   userList: UserRdo[];

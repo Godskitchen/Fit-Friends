@@ -3,20 +3,22 @@
 
 @user3 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsIm5hbWUiOiLQodCw0LLQtdC70LjQuSIsImVtYWlsIjoiaW5hZGVyQGh5YXR0LmNvbSIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNjk5MzExMTc2LCJleHAiOjE2OTkzOTc1NzZ9.M4YiYlttkDoAQylUtQPak0Prk5AN6dLg7cSls8iE9Z8
 
+@me = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUxLCJuYW1lIjoiZnJvbnRVc2VyIiwiZW1haWwiOiIyODYwMDU4QG1haWwucnUiLCJyb2xlIjoiVXNlciIsImlhdCI6MTcwMjQxMDQ3MywiZXhwIjoxNzAyNDk2ODczfQ.f4C0S64Sop--P8f8lsESyl8wmYhwlUhOpod608vh6Ao
+@friendUser = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsIm5hbWUiOiLQktC70LDQtNC40YHQu9Cw0LIiLCJlbWFpbCI6ImhxcmxndXptNUBob3RtYWlsLmNvbSIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzAyNDE1OTYxLCJleHAiOjE3MDI1MDIzNjF9.RDf2qArp_DQaCEa8VcxkVa29ZmMnfbrQYURQEDvPiiQ
 # Create Training Request
-POST http://localhost:4000/api/training-requests/create/3 HTTP/1.1
-Authorization: {{user1}}
+POST http://localhost:4000/api/training-requests/create/51 HTTP/1.1
+Authorization: {{friendUser}}
 
 ###
 
 #Update Training Request
 PATCH http://localhost:4000/api/training-requests/update HTTP/1.1
-Authorization: {{user2}}
+Authorization: {{friendUser}}
 Content-Type: application/json
 
 {
-  "requestId": "be3aad11-d80f-4c87-92c6-3b6be0a85969",
-  "status": "Declined"
+  "id": "4339a582-fec1-4e0c-9f5e-5c6789cd2333",
+  "status": "Accepted"
 }
 
 ###

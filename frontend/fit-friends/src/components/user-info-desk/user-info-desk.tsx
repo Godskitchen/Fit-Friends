@@ -1,6 +1,4 @@
 /* eslint-disable no-nested-ternary */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { getUserInfo } from 'src/store/user-process/user-process.selectors';
 import LoadingScreen from '../loading-components/loading-screen';

@@ -15,7 +15,7 @@ export default function PersonalAccountCoachPage() : JSX.Element {
         <title>Личный кабинет — FitFriends</title>
       </Helmet>
       <div className="wrapper">
-        <Header activeTab={HeaderNavTab.Home} profileButtonNavigateLink={AppRoute.CoachAccount} />
+        <Header activeTab={HeaderNavTab.Home} />
         <main>
           <section className="inner-page">
             <div className="container">

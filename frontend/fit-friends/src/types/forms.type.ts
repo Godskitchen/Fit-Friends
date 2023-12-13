@@ -82,3 +82,8 @@ export type UsersCatalogFiltersState = {
   limit?: string;
   sort?: string;
 }
+
+export type FriendsQueryState = {
+  page?: string;
+  limit?: string;
+}

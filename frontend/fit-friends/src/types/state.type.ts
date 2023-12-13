@@ -1,15 +1,17 @@
 import { AuthorizationStatus } from 'src/app-constants';
-import { UserInfo } from './user.type';
+import { FriendInfo, UserInfo } from './user.type';
 import { store } from 'src/store';
 import { HttpStatusCode } from 'src/services/server-api';
 import { Message } from './message.type';
 import { MyTraining, Training } from './training.type';
-import { MyTrainingsFitersState, UsersCatalogFiltersState } from './forms.type';
+import { FriendsQueryState, MyTrainingsFitersState, UsersCatalogFiltersState } from './forms.type';
 
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
   userInfo?: UserInfo | null ;
   myTrainingsList?: MyTraining[] | null;
+  friendList?: FriendInfo[] | null;
+  totalFriendsCount: number;
   totalMyTrainingsCount: number;
   notifications: Message[];
   formErrors: {
@@ -33,6 +35,7 @@ export type AppData = {
 export type MainProcess = {
   myTrainingsFilterState: MyTrainingsFitersState;
   usersCatalogFilterState: UsersCatalogFiltersState;
+  friendsQueryState: FriendsQueryState;
 }
 
 

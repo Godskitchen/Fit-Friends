@@ -15,7 +15,6 @@ import BlockUI from 'src/components/block-UI/block-UI';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { createTrainingAction } from 'src/store/api-actions';
 import { getDataUploadingStatus } from 'src/store/app-data/app-data.selectors';
-import { AppRoute } from 'src/app-constants';
 
 
 const SpecialisationValue = {
@@ -170,7 +169,7 @@ export default function CreateTrainingPage(): JSX.Element {
         <title>Создать тренировку — FitFriends</title>
       </Helmet>
       <div className="wrapper">
-        <Header activeTab={HeaderNavTab.Home} profileButtonNavigateLink={AppRoute.CoachAccount} />
+        <Header activeTab={HeaderNavTab.Home} />
         <main>
           <div className="popup-form popup-form--create-training">
             <div className="popup-form__wrapper">

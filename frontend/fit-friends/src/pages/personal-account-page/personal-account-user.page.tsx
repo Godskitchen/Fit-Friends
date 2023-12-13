@@ -1,7 +1,6 @@
 import { Fragment } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { AppRoute } from 'src/app-constants';
 import Header from 'src/components/header/header';
 import LoadingBlock from 'src/components/loading-components/loading-block';
 import UserInfoDesk from 'src/components/user-info-desk/user-info-desk';
@@ -26,7 +25,7 @@ export default function PersonalAccountUserPage() : JSX.Element {
         <title>Личный кабинет — FitFriends</title>
       </Helmet>
       <div className="wrapper">
-        <Header activeTab={HeaderNavTab.Profile} profileButtonNavigateLink={AppRoute.UserAccount} />
+        <Header activeTab={HeaderNavTab.Profile} />
         <main>
           <section className="inner-page">
             <div className="container">

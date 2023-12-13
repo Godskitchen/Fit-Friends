@@ -92,10 +92,15 @@ export class TrainingRequestController {
   @Patch('/update')
   @UseGuards(ModifyRequestStatusGuard)
   public async updateStatusRequest(
+    @Req() { user }: RequestWithAccessTokenPayload,
     @Body(new ValidationPipe({ transform: true, whitelist: true }))
     dto: UpdateStatusDto,
   ) {
-    const request = await this.trainingRequestService.updateStatus(dto);
+    const request = await this.trainingRequestService.updateStatus(
+      dto,
+      user.name,
+      user.role,
+    );
     return {
       message: createUpdateStatusMessage(request),
     };
