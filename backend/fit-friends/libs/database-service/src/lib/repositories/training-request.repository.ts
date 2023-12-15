@@ -43,14 +43,6 @@ export class TrainingRequestRepository {
     });
   }
 
-  public async findAllByRecepientId(
-    recepientId: number,
-  ): Promise<TrainingRequest[]> {
-    return this.prismaConnector.trainingRequest.findMany({
-      where: { recepientId },
-    });
-  }
-
   public async findById(requestId: string): Promise<TrainingRequest | null> {
     return this.prismaConnector.trainingRequest.findUnique({
       where: { id: requestId },

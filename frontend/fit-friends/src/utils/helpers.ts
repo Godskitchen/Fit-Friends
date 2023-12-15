@@ -63,3 +63,40 @@ export const formatNumber = (number: number): string => {
   return formattedNumber.split('').reverse().join('');
 };
 
+export const handleKeyDown = (
+  evt: globalThis.KeyboardEvent,
+  modalRef: React.MutableRefObject<HTMLDivElement | null>,
+  closeModalFunction: () => void
+) => {
+  const isTabPressed = evt.key === 'Tab';
+  const isEscapePressed = evt.key === 'Escape';
+
+  if (isEscapePressed) {
+    closeModalFunction();
+    return;
+  }
+
+  if (!isTabPressed) {
+    return;
+  }
+
+  const focusableElements = modalRef.current?.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+
+  const firstElement = focusableElements?.[0] as HTMLElement;
+  const lastElement = focusableElements?.[focusableElements.length - 1] as HTMLElement;
+
+  if (evt.shiftKey) {
+    if (document.activeElement === firstElement) {
+      evt.preventDefault();
+      lastElement?.focus();
+    }
+  } else {
+    if (document.activeElement === lastElement) {
+      evt.preventDefault();
+      firstElement?.focus();
+    }
+  }
+};
+

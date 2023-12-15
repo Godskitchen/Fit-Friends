@@ -1,8 +1,32 @@
-import { Gender, Role, Location } from '@libs/shared/app-types';
+import {
+  Gender,
+  Role,
+  Location,
+  TrainingRequestStatus,
+} from '@libs/shared/app-types';
 import { UserProfileRdo } from './user-profile.rdo';
 import { TrainerProfileRdo } from './trainer-profile.rdo';
 import { Expose, Transform, Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+
+class TrainingRequestRdo {
+  @ApiProperty({
+    example: '232k-3klk23-ekl3',
+    description: 'id заявки на тренировку',
+  })
+  @Expose()
+  id: string;
+
+  @ApiProperty({
+    enum: TrainingRequestStatus,
+    example: TrainingRequestStatus.Declined,
+    description: `Статус заявки. Возможные значения ${Object.values(
+      TrainingRequestStatus,
+    ).join(',')}`,
+  })
+  @Expose()
+  status: TrainingRequestStatus;
+}
 
 export class UserRdo {
   @ApiProperty({ example: 2 })
@@ -63,4 +87,25 @@ export class UserRdo {
     obj.role === Role.Trainer ? value : undefined,
   )
   trainerProfile: TrainerProfileRdo;
+
+  @ApiPropertyOptional({ example: false })
+  @Expose()
+  @Type(() => Boolean)
+  isFriend: boolean;
+
+  @ApiProperty({
+    type: [TrainingRequestRdo],
+    description: 'Ваша заявка на тренировку пользователю.',
+  })
+  @Expose()
+  @Type(() => TrainingRequestRdo)
+  trainingRequestsAsRecepient: TrainingRequestRdo[];
+
+  @ApiProperty({
+    type: [TrainingRequestRdo],
+    description: 'Заявка Вам на тренировку от пользователя',
+  })
+  @Expose()
+  @Type(() => TrainingRequestRdo)
+  trainingRequestsAsSender: TrainingRequestRdo[];
 }

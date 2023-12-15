@@ -32,7 +32,10 @@ export enum ApiRoute {
   UsersList = '/users',
   FriendsList = '/users/friends',
   CreateTrainingRequest = '/training-requests/create',
-  UpdateTrainingRequest = '/training-requests/update'
+  UpdateTrainingRequest = '/training-requests/update',
+  CheckSubscription = '/subscriptions/check',
+  AddSubscription = '/subscriptions/add',
+  RemoveSubscription = 'subscriptions/remove'
 }
 
 export enum SliceNameSpace {

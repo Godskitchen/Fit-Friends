@@ -1,0 +1,15 @@
+.user-card__status--not-ready {
+  border: 1px solid #cfcfcf;
+  color: #adadad;
+}
+
+.user-card__status--not-ready::after {
+    content: "";
+    position: absolute;
+    top: 14px;
+    left: 20px;
+    width: 8px;
+    height: 8px ;
+    background-color: #cfcfcf;
+    border-radius: 100px
+}

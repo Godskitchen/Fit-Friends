@@ -102,14 +102,54 @@ export class UserRepository {
     });
   }
 
-  public async findById(id: number): Promise<User | null> {
-    return this.prismaConnector.user.findUnique({
-      where: { userId: id },
+  public async findById(
+    userId: number,
+    requestorId?: number,
+  ): Promise<(User & { isFriend?: boolean }) | null> {
+    let isFriend: boolean | undefined;
+    if (requestorId) {
+      isFriend = await this.prismaConnector.user
+        .findUnique({
+          where: { userId: userId },
+          select: {
+            friends: {
+              where: { userId: requestorId },
+              select: { userId: true },
+            },
+          },
+        })
+        .then((entry) => {
+          if (entry) {
+            return entry.friends.length > 0;
+          }
+
+          return false;
+        });
+    }
+
+    const user = await this.prismaConnector.user.findUnique({
+      where: { userId: userId },
       include: {
         userProfile: true,
         trainerProfile: true,
+        ...(requestorId
+          ? {
+              trainingRequestsAsRecepient: {
+                where: { senderId: requestorId },
+              },
+              trainingRequestsAsSender: {
+                where: { recepientId: requestorId },
+              },
+            }
+          : {}),
       },
     });
+
+    if (user) {
+      return { ...user, isFriend };
+    }
+
+    return user;
   }
 
   public async find(

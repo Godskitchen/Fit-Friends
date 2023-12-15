@@ -19,7 +19,7 @@ import { HttpStatusCode } from 'src/services/server-api';
 
 const initialState: UserProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
-  userInfo: undefined,
+  myProfileInfo: undefined,
   notifications: [],
   myTrainingsList: undefined,
   totalMyTrainingsCount: 0,
@@ -49,7 +49,7 @@ export const userProcess = createSlice({
   extraReducers(builder) {
     builder
       .addCase(registerAction.fulfilled, (state, {payload}) => {
-        state.userInfo = payload;
+        state.myProfileInfo = payload;
         state.authorizationStatus = AuthorizationStatus.Auth;
         state.formErrors = {
           [HttpStatusCode.CONFLICT]: '',
@@ -59,7 +59,7 @@ export const userProcess = createSlice({
         };
       })
       .addCase(registerAction.rejected, (state, {payload}) => {
-        state.userInfo = null;
+        state.myProfileInfo = null;
         if (payload && payload.statusCode) {
           if (payload.statusCode === HttpStatusCode.BAD_REQUEST) {
             if (Array.isArray(payload.message)) {
@@ -77,15 +77,15 @@ export const userProcess = createSlice({
       })
       .addCase(loginAction.fulfilled, (state, {payload}) => {
         state.authorizationStatus = AuthorizationStatus.Auth;
-        state.userInfo = payload;
+        state.myProfileInfo = payload;
       })
       .addCase(loginAction.rejected, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
-        state.userInfo = null;
+        state.myProfileInfo = null;
       })
       .addCase(checkAuthAction.fulfilled, (state, {payload}) => {
         state.authorizationStatus = AuthorizationStatus.Auth;
-        state.userInfo = payload;
+        state.myProfileInfo = payload;
         state.formErrors = {
           [HttpStatusCode.CONFLICT]: '',
           [HttpStatusCode.SERVER_INTERNAL]: '',
@@ -95,10 +95,10 @@ export const userProcess = createSlice({
       })
       .addCase(checkAuthAction.rejected, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
-        state.userInfo = null;
+        state.myProfileInfo = null;
       })
       .addCase(createUserProfileAction.fulfilled, (state, {payload}) => {
-        state.userInfo = payload;
+        state.myProfileInfo = payload;
         state.formErrors = {
           [HttpStatusCode.CONFLICT]: '',
           [HttpStatusCode.SERVER_INTERNAL]: '',
@@ -121,7 +121,7 @@ export const userProcess = createSlice({
         }
       })
       .addCase(createCoachProfileAction.fulfilled, (state, {payload}) => {
-        state.userInfo = payload;
+        state.myProfileInfo = payload;
         state.formErrors = {
           [HttpStatusCode.CONFLICT]: '',
           [HttpStatusCode.SERVER_INTERNAL]: '',
@@ -146,7 +146,7 @@ export const userProcess = createSlice({
         }
       })
       .addCase(updateProfileAction.fulfilled, (state, {payload}) => {
-        state.userInfo = payload;
+        state.myProfileInfo = payload;
         state.formErrors = {
           [HttpStatusCode.CONFLICT]: '',
           [HttpStatusCode.SERVER_INTERNAL]: '',

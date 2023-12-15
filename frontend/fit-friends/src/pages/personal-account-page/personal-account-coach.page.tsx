@@ -41,7 +41,7 @@ export default function PersonalAccountCoachPage() : JSX.Element {
                         </div>
                         <span className="thumbnail-link__text">Создать тренировку</span>
                       </Link>
-                      <Link className="thumbnail-link thumbnail-link--theme-light" to="#">
+                      <Link className="thumbnail-link thumbnail-link--theme-light" to={`${AppRoute.CoachAccount}${AppRoute.MyFriends}`}>
                         <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
                           <svg width="30" height="26" aria-hidden="true">
                             <use xlinkHref="#icon-friends"></use>

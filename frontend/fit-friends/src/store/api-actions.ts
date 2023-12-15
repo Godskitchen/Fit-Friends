@@ -9,13 +9,12 @@ import { CreateTrainingInputs, FriendsQueryState, MyTrainingsFitersState, Profil
 import { AppDispatch, State } from 'src/types/state.type';
 import { AuthData, FriendList, KnownError, UserInfo, UserList } from 'src/types/user.type';
 import { adaptCoachProfileToServer, adaptNewTrainingToServer, adaptRegisterUserToServer, adaptUpdateProfiletoServer, adaptUpdateTrainingToServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
-import { AuthUserRdo, UserListRdo, UserRdo } from 'src/utils/adapters/api-rdos/auth-user.rdo';
+import { AuthUserRdo, FriendListRdo, UserListRdo, UserRdo } from 'src/utils/adapters/api-rdos/user.rdo';
 import { redirectAction } from './redirect.action';
 import { adaptFriendListToClient, adaptMyTrainingsListToClient, adaptTrainingToClient, adaptUserToClient, adaptUsersListToClient } from 'src/utils/adapters/adapter-to-client';
 import { Message } from 'src/types/message.type';
 import { Training, TrainingList } from 'src/types/training.type';
 import { TrainingListRdo, TrainingRdo } from 'src/utils/adapters/api-rdos/training.rdo';
-import { FriendListRdo } from 'src/utils/adapters/api-rdos/friend.rdo';
 import { TrainingRequest } from 'src/types/training-request.type';
 
 export const registerAction = createAsyncThunk<
@@ -348,6 +347,63 @@ export const updateTrainingRequestStatusAction = createAsyncThunk<void, Training
   'user/updateTrainingRequestStatus',
   async(trainingRequest, {extra: serverApi}) => {
     await serverApi.patch(ApiRoute.UpdateTrainingRequest, trainingRequest);
+  }
+);
+
+
+export const getUserDetailsAction = createAsyncThunk<UserInfo, string, {
+  extra: AxiosInstance;
+}>(
+  'data/getUserDetails',
+  async(userId, {extra: serverApi}) => {
+    const {data} = await serverApi.get<UserRdo & {isFriend: boolean}>(`${ApiRoute.UserDetails}/${userId}`);
+    return adaptUserToClient(data);
+  }
+);
+
+export const addUserToFriendsAction = createAsyncThunk<void, number, {
+  extra: AxiosInstance;
+}>(
+  'data/addUserToFriends',
+  async(userId, {extra: serverApi}) => {
+    await serverApi.patch(`${ApiRoute.FriendsList}/add/${userId}`);
+  }
+);
+
+export const removeUserFromFriendsAction = createAsyncThunk<void, number, {
+  extra: AxiosInstance;
+}>(
+  'data/removeUserFromFriends',
+  async(userId, {extra: serverApi}) => {
+    await serverApi.patch(`${ApiRoute.FriendsList}/remove/${userId}`);
+  }
+);
+
+export const checkUserSubscriptionAction = createAsyncThunk<boolean, number, {
+  extra: AxiosInstance;
+}>(
+  'data/checkUserSubscription',
+  async(trainerId, {extra: serverApi}) => {
+    const {data: isSubscribed} = await serverApi.get<boolean>(`${ApiRoute.CheckSubscription}/${trainerId}`);
+    return isSubscribed;
+  }
+);
+
+export const subscribeToCoachAction = createAsyncThunk<void, number, {
+  extra: AxiosInstance;
+}>(
+  'data/subscribeToCoach',
+  async(trainerId, {extra: serverApi}) => {
+    await serverApi.post(`${ApiRoute.AddSubscription}/${trainerId}`);
+  }
+);
+
+export const unsubscribeToCoachAction = createAsyncThunk<void, number, {
+  extra: AxiosInstance;
+}>(
+  'data/unsubscribeToCoach',
+  async(trainerId, {extra: serverApi}) => {
+    await serverApi.delete(`${ApiRoute.RemoveSubscription}/${trainerId}`);
   }
 );
 

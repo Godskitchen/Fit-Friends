@@ -7,7 +7,7 @@ import RegSpecialisationList from 'src/components/specialisation-list.tsx/reg-sp
 import trainingDurationButtons from 'src/components/training-duration-buttons/training-duration-buttons';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { createUserProfileAction } from 'src/store/api-actions';
-import { getUserInfo } from 'src/store/user-process/user-process.selectors';
+import { getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
 import { SkillLevel, Specialisation, TrainingDuration } from 'src/types/constants';
 import { QuestionnaireUserInputs } from 'src/types/forms.type';
 import { caloriesIntakeValidationHandler, caloriesToBurnValidationHandler } from 'src/utils/validators/user/calories';
@@ -25,7 +25,7 @@ const questionnaireUserFieldPaths = {
 export default function QuestionnaireUserPage (): JSX.Element {
 
   const dispatch = useAppDispatch();
-  const userInfo = useAppSelector(getUserInfo);
+  const userInfo = useAppSelector(getMyProfileInfo);
 
   const {
     register,

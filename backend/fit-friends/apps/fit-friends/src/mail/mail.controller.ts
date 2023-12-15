@@ -1,6 +1,7 @@
 import {
   Controller,
   Delete,
+  Get,
   Param,
   ParseIntPipe,
   Post,
@@ -35,7 +36,7 @@ import {
 @ApiForbiddenResponse({
   description: 'Оформлять подписку могу только обычные пользователи',
 })
-@UseGuards(JwtAccessGuard, RoleGuard, SubscriptionGuard)
+@UseGuards(JwtAccessGuard, RoleGuard)
 export class MailController {
   constructor(private readonly mailservice: MailService) {}
 
@@ -52,6 +53,7 @@ export class MailController {
     description: 'id тренера - целое положительное число',
   })
   @Post('/add/:trainerId')
+  @UseGuards(SubscriptionGuard)
   @Roles(Role.User)
   public async subscribeToTrainer(
     @Param('trainerId', ParseIntPipe) trainerId: number,
@@ -71,6 +73,7 @@ export class MailController {
     description: 'id тренера - целое положительное число',
   })
   @Delete('/remove/:trainerId')
+  @UseGuards(SubscriptionGuard)
   @Roles(Role.User)
   public async unsubscribeToTrainer(
     @Param('trainerId', ParseIntPipe) trainerId: number,
@@ -78,5 +81,29 @@ export class MailController {
   ) {
     await this.mailservice.removeSubscription(user.email, trainerId);
     return { message: createRemoveSubscriptionMessage(trainerId) };
+  }
+
+  @ApiOkResponse({
+    description: 'Результат - подписан ли пользователь на тренера или нет',
+  })
+  @ApiBadRequestResponse({
+    description:
+      'Тренер с выбранным id не найден. Пользователь с выбранным id не является тренером. Подписка на тренера ранее не оформлялась',
+  })
+  @ApiParam({
+    name: 'trainerId',
+    description: 'id тренера - целое положительное число',
+  })
+  @Get('/check/:trainerId')
+  @Roles(Role.User)
+  public async checkSubscription(
+    @Param('trainerId', ParseIntPipe) trainerId: number,
+    @Req() { user }: RequestWithAccessTokenPayload,
+  ) {
+    const subscription = await this.mailservice.checkSubscription(
+      user.email,
+      trainerId,
+    );
+    return subscription ? true : false;
   }
 }

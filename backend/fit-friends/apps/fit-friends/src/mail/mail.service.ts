@@ -78,4 +78,8 @@ export class MailService {
         );
       });
   }
+
+  public async checkSubscription(email: string, trainerId: number) {
+    return this.subscriberRepository.findByTrainerId(email, trainerId);
+  }
 }

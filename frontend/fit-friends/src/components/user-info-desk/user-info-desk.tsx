@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import { useAppDispatch, useAppSelector } from 'src/hooks';
-import { getUserInfo } from 'src/store/user-process/user-process.selectors';
+import { getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
 import LoadingScreen from '../loading-components/loading-screen';
 import { useState, MouseEvent, useRef, ChangeEvent} from 'react';
 import { Specialisation, Location, Role, GenderFieldValue, GenderFieldToValueConvert, SkillFieldToValueConvert, SkillFieldValue } from 'src/types/constants';
@@ -17,7 +17,7 @@ import { compareArrays } from 'src/utils/helpers';
 
 export default function UserInfoDesk(): JSX.Element {
   const dispatch = useAppDispatch();
-  const userInfo = useAppSelector(getUserInfo);
+  const userInfo = useAppSelector(getMyProfileInfo);
   const [isEditMode, setEditMode] = useState(false);
 
   const locationBlockRef = useRef<HTMLDivElement | null>(null);

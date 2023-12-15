@@ -1,4 +1,5 @@
 import { Gender, Location, Role, SkillLevel, Specialisation, TrainingDuration } from 'src/types/constants';
+import { TrainingRequestStatus } from 'src/types/training-request.type';
 
 export type AuthUserRdo = {
   userId: number;
@@ -15,6 +16,9 @@ export type AuthUserRdo = {
   userProfile?: UserProfileRdo;
   trainerProfile?: TrainerProfileRdo;
   accessToken: string;
+  isFriend?: boolean;
+  trainingRequestsAsSender: TrainingRequestRdo[];
+  trainingRequestsAsRecepient: TrainingRequestRdo[];
 };
 
 export type UserRdo = Omit<AuthUserRdo, 'accessToken'>;
@@ -39,5 +43,15 @@ export type TrainerProfileRdo = {
 export type UserListRdo = {
   userList: UserRdo[];
   totalUsersCount: number;
+}
+
+export type TrainingRequestRdo = {
+  id: string;
+  status: TrainingRequestStatus;
+}
+
+export type FriendListRdo = {
+  friendList: UserRdo[];
+  totalFriendsCount: number;
 }
 

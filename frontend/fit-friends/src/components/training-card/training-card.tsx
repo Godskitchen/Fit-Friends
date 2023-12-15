@@ -1,18 +1,8 @@
+import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from 'src/app-constants';
-import { Specialisation } from 'src/types/constants';
+import { SpecialisationHashTagValue } from 'src/types/constants';
 import { MyTraining } from 'src/types/training.type';
-
-const SpecialisationHashTagValue: Record<Specialisation, string> = {
-  [Specialisation.Aerobics]: '#аэробика',
-  [Specialisation.Boxing]: '#бокс',
-  [Specialisation.Yoga]: '#йога',
-  [Specialisation.Running]: '#бег',
-  [Specialisation.Power]: '#силовые',
-  [Specialisation.Crossfit]: '#кроссфит',
-  [Specialisation.Pilates]: '#пилатес',
-  [Specialisation.Stretching]: '#стрейчинг'
-};
 
 type TrainingCardProp = {
   card: MyTraining;
@@ -24,28 +14,39 @@ export default function TrainingCard({card:{
   specialisation,
   description,
   price,
+  isSpecialOffer,
   backgroundImage,
   rating,
   caloriesToBurn
 }}: TrainingCardProp): JSX.Element {
+
+  let currentPrice = price;
+  if (isSpecialOffer) {
+    currentPrice = Number((price * 0.1).toFixed());
+  }
+
   return (
     <li className="my-trainings__item">
       <div className="thumbnail-training">
         <div className="thumbnail-training__inner">
           <div className="thumbnail-training__image">
             <picture>
-              <source type="image/webp" srcSet={backgroundImage} />
               <img
                 src={backgroundImage}
-                srcSet={backgroundImage}
                 width="330" height="190"
                 alt=""
               />
             </picture>
           </div>
           <p className="thumbnail-training__price">
-            <span className="thumbnail-training__price-value">{price}</span>
-            <span>₽</span>
+            {
+              currentPrice !== 0 ? (
+                <Fragment>
+                  <span className="thumbnail-training__price-value">{currentPrice}</span>
+                  <span>₽</span>
+                </Fragment>
+              ) : 'Бесплатно'
+            }
           </p>
           <h3 className="thumbnail-training__title">{title}</h3>
           <div className="thumbnail-training__info">

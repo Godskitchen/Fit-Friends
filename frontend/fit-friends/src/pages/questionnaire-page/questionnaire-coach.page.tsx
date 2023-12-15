@@ -6,7 +6,7 @@ import SkillButtons from 'src/components/skill-buttons/skill-buttons';
 import RegSpecialisationList from 'src/components/specialisation-list.tsx/reg-specialisation-list';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { createCoachProfileAction } from 'src/store/api-actions';
-import { getUserInfo } from 'src/store/user-process/user-process.selectors';
+import { getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
 import { SkillLevel, Specialisation } from 'src/types/constants';
 import { QuestionnaireCoachInputs } from 'src/types/forms.type';
 import { certificateValidationHandler } from 'src/utils/validators/user/certificate';
@@ -24,7 +24,7 @@ const questionnaireCoachFieldPaths = {
 export default function QuestionnaireCoachPageTest(): JSX.Element {
 
   const dispatch = useAppDispatch();
-  const userInfo = useAppSelector(getUserInfo);
+  const userInfo = useAppSelector(getMyProfileInfo);
   const [isCertificateUploaded, setCertificateUploaded] = useState(false);
 
   const certificateChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {

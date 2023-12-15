@@ -1,5 +1,5 @@
 import { Gender, SkillLevel, Specialisation, TrainingDuration } from 'src/types/constants';
-import { UserRdo } from './auth-user.rdo';
+import { UserRdo } from './user.rdo';
 
 export type TrainingRdo = {
   trainingId: number;

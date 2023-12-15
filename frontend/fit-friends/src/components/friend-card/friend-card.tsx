@@ -1,12 +1,15 @@
-import { useState } from 'react';
+/* eslint-disable no-console */
+import { useState, MouseEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AppRoute } from 'src/app-constants';
 import { useAppDispatch } from 'src/hooks';
 import { createTrainingRequestStatusAction, updateTrainingRequestStatusAction } from 'src/store/api-actions';
 import { Role, Specialisation, SpecialisationHashTagValue } from 'src/types/constants';
 import { TrainingRequest, TrainingRequestStatus } from 'src/types/training-request.type';
-import { FriendInfo } from 'src/types/user.type';
+import { UserInfo } from 'src/types/user.type';
 
 type FriendCardProps = {
-  card: FriendInfo;
+  card: UserInfo;
   myReadyStatus: boolean;
   myRole: Role;
 }
@@ -28,6 +31,7 @@ export default function FriendCard({
 }: FriendCardProps): JSX.Element {
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   let userReadyStatus;
 
@@ -65,7 +69,8 @@ export default function FriendCard({
     })).then(() => {setRequestToMeStatus(TrainingRequestStatus.Declined);});
   };
 
-  const onSendRequestBtnClick = () => {
+  const onSendRequestBtnClick = (evt: MouseEvent<HTMLButtonElement>) => {
+    evt.stopPropagation();
     dispatch(createTrainingRequestStatusAction(userId))
       .then(() => {setMyRequestStatus(TrainingRequestStatus.Pending);});
   };
@@ -73,7 +78,7 @@ export default function FriendCard({
   return (
     <li className="friends-list__item">
       <div className="thumbnail-friend">
-        <div className={`thumbnail-friend__info thumbnail-friend__info--theme-${role === Role.User ? 'light' : 'dark'}`}>
+        <div className={`thumbnail-friend__info thumbnail-friend__info--theme-${role === Role.User ? 'light' : 'dark'}`} onClick={() => navigate(`${AppRoute.UsersCatalog}/${userId}`)}>
           <div className="thumbnail-friend__image-status">
             <div className="thumbnail-friend__image">
               <picture>
@@ -93,7 +98,7 @@ export default function FriendCard({
           <ul className="thumbnail-friend__training-types-list">
             {
               specialisations.map((spec) => (
-                <li key={spec}>
+                <li key={spec} onClick={(evt:MouseEvent<HTMLLIElement>) => evt.stopPropagation()}>
                   <div className="hashtag thumbnail-friend__hashtag">
                     <span>{SpecialisationHashTagValue[spec]}</span>
                   </div>
@@ -102,7 +107,10 @@ export default function FriendCard({
             }
           </ul>
           <div className="thumbnail-friend__activity-bar">
-            <div className={`thumbnail-friend__ready-status thumbnail-friend__ready-status--${userReadyStatus ? 'is-ready' : 'is-not-ready'}`}>
+            <div
+              className={`thumbnail-friend__ready-status thumbnail-friend__ready-status--${userReadyStatus ? 'is-ready' : 'is-not-ready'}`}
+              onClick={(evt:MouseEvent<HTMLDivElement>) => evt.stopPropagation()}
+            >
               <span>{userReadyStatus ? 'Готов к тренировке' : 'Не готов к тренировке'}</span>
             </div>
             {

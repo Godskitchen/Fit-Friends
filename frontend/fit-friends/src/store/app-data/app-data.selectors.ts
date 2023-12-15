@@ -9,3 +9,5 @@ export const getUserList = (state:State) => state[SliceNameSpace.Data].userList;
 export const getUsersDownloadingStatus = (state: State): boolean => state[SliceNameSpace.Data].usersDownloadingStatus;
 export const getTotalUsersCount = (state: State): number => state[SliceNameSpace.Data].totalUsersCount;
 
+export const getCurrentUserInfo = (state: State) => state[SliceNameSpace.Data].currentUserDetails;
+export const getSubscriptionStatus = (state: State) => state[SliceNameSpace.Data].subscriptionStatus;

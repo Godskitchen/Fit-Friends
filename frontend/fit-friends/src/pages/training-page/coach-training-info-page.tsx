@@ -7,7 +7,7 @@ import LoadingScreen from '../../components/loading-components/loading-screen';
 import NotFoundPage from 'src/pages/not-found-page/not-found.page';
 import { getTrainingDetailsAction, updateTrainingAction } from 'src/store/api-actions';
 import Header from '../../components/header/header';
-import { Gender, HeaderNavTab, SpecialisationHashTagValue, TrainingDuration } from 'src/types/constants';
+import { DurationHashTagValue, GenderHashTagValue, HeaderNavTab, SpecialisationHashTagValue } from 'src/types/constants';
 import { Helmet } from 'react-helmet-async';
 import ReviewsSideBar from '../../components/reviews-side-bar/reviews-side-bar';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -18,27 +18,16 @@ import TrainingVideoSection from '../../components/training-video-section/video-
 import { priceStringValidationHandler } from 'src/utils/validators/training/price';
 
 
-const GenderHashTagValue: Record<Gender, string> = {
-  Male: '#для_мужчин',
-  Female: '#для_женщин',
-  NoMatter: '#для_всех'
-};
-
-const DurationHashTagValue: Record<TrainingDuration, string> = {
-  TenToThirtyMinutes: '#10_30минут',
-  ThirtyToFiftyMinutes: '#30_50минут',
-  FiftyToEightyMinutes: '#50_80минут',
-  EightyToOneHundredMinutes: '#80_1100минут',
-};
-
 export default function CoachTrainingInfoPage(): JSX.Element {
   const {trainingId} = useParams();
   const dispatch = useAppDispatch();
+
   const [isEditMode, setEditMode] = useState(false);
   const [currentPrice, setCurrentPrice] = useState<string>('');
   const [currentDiscountPrice, setCurrentDiscountPrice] = useState<string>('');
   const [priceError, setPriceError] = useState<string>('');
   const [isDiscount, setDiscount] = useState<boolean>();
+
   const videoSectionRef = useRef<HTMLDivElement | null>(null);
 
   const {

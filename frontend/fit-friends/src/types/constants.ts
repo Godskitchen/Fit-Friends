@@ -1,3 +1,5 @@
+import { LocationCoords } from './user.type';
+
 export enum Gender {
   Male = 'Male',
   Female = 'Female',
@@ -104,4 +106,31 @@ export const SpecialisationHashTagValue: Record<Specialisation, string> = {
   Boxing: '#бокс',
   Pilates: '#пилатес',
   Stretching: '#стрейчинг'
+};
+
+export const SkillHashTagValue: Record<SkillLevel, string> = {
+  Beginner: '#новичок',
+  Amateur: '#любитель',
+  Pro: '#профессионал',
+};
+
+export const GenderHashTagValue: Record<Gender, string> = {
+  Male: '#для_мужчин',
+  Female: '#для_женщин',
+  NoMatter: '#для_всех'
+};
+
+export const DurationHashTagValue: Record<TrainingDuration, string> = {
+  TenToThirtyMinutes: '#10_30минут',
+  ThirtyToFiftyMinutes: '#30_50минут',
+  FiftyToEightyMinutes: '#50_80минут',
+  EightyToOneHundredMinutes: '#80_100минут',
+};
+
+export const UserCoordsLocation: Record<Location, LocationCoords> = {
+  [Location.Zvezdnaya]: {latitude: 59.833421, longitude: 30.349537},
+  [Location.Pionerskaya]: {latitude: 60.002450, longitude: 30.296702},
+  [Location.Petrogradskaya]: {latitude: 59.966374, longitude: 30.311432},
+  [Location.Udelnaya]: {latitude:60.016681, longitude:30.315617},
+  [Location.Sportivnaya]: { latitude: 59.952161, longitude: 30.291463 }
 };

@@ -12,7 +12,7 @@ import { addFriendsToListAction, addMoreUsersToListAction, getFriendListAction }
 import { getUsersDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import { setFriendsQueryStateAction } from 'src/store/main-process/main-process.reducer';
 import { getFriendsQueryState } from 'src/store/main-process/main-process.selectors';
-import { getFriendList, getTotalFriendsCount, getUserInfo } from 'src/store/user-process/user-process.selectors';
+import { getFriendList, getTotalFriendsCount, getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
 import { HeaderNavTab, Role } from 'src/types/constants';
 
 const CARD_LIMIT_PER_PAGE = 6;
@@ -21,7 +21,7 @@ const INITIAL_PAGE_NUMBER = 1;
 export default function MyFriendsPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
-  const myProfile = useAppSelector(getUserInfo);
+  const myProfile = useAppSelector(getMyProfileInfo);
   let myReadyStatus = false;
   const navigate = useNavigate();
   const queryState = useAppSelector(getFriendsQueryState);

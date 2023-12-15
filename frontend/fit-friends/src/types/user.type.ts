@@ -66,12 +66,10 @@ export type UserInfo = {
   location: Location;
   userProfile?: UserProfileInfo;
   trainerProfile?: TrainerProfileInfo;
-};
-
-export type FriendInfo = UserInfo & {
+  isFriend?: boolean;
   trainingRequestsAsSender: TrainingRequest[];
   trainingRequestsAsRecepient: TrainingRequest[];
-}
+};
 
 export type UserList = {
   userList: UserInfo[];
@@ -79,6 +77,11 @@ export type UserList = {
 }
 
 export type FriendList = {
-  friendList: FriendInfo[];
+  friendList: UserInfo[];
   totalFriendsCount: number;
 }
+
+export type LocationCoords = {
+  latitude: number;
+  longitude: number;
+};

@@ -1,11 +1,10 @@
-import { FriendInfo, FriendList, TrainerProfileInfo, UserInfo, UserList, UserProfileInfo } from 'src/types/user.type';
-import { AuthUserRdo, TrainerProfileRdo, UserListRdo, UserProfileRdo } from './api-rdos/auth-user.rdo';
+import { FriendList, TrainerProfileInfo, UserInfo, UserList, UserProfileInfo } from 'src/types/user.type';
+import { FriendListRdo, TrainerProfileRdo, UserListRdo, UserProfileRdo, UserRdo } from './api-rdos/user.rdo';
 import { TrainingListRdo, TrainingRdo } from './api-rdos/training.rdo';
 import { MyTraining, Training, TrainingList } from 'src/types/training.type';
 import { Role, Location } from 'src/types/constants';
-import { FriendListRdo, FriendRdo } from './api-rdos/friend.rdo';
 
-export const adaptUserToClient = (rdo: Omit<AuthUserRdo, 'accessToken'>): UserInfo => ({
+export const adaptUserToClient = (rdo: UserRdo): UserInfo => ({
   userId: rdo.userId,
   name: rdo.name,
   email: rdo.email,
@@ -19,6 +18,9 @@ export const adaptUserToClient = (rdo: Omit<AuthUserRdo, 'accessToken'>): UserIn
   backgroundImage: rdo.backgroundImage,
   userProfile: rdo.userProfile ? adaptUserProfileToClient(rdo.userProfile) : undefined,
   trainerProfile: rdo.trainerProfile ? adaptTrainerProfileToClient(rdo.trainerProfile) : undefined,
+  isFriend: rdo.isFriend,
+  trainingRequestsAsRecepient: rdo.trainingRequestsAsRecepient,
+  trainingRequestsAsSender: rdo.trainingRequestsAsSender
 });
 
 export const adaptUserProfileToClient = (rdo: UserProfileRdo): UserProfileInfo => ({
@@ -82,25 +84,8 @@ export const adaptUsersListToClient = (rdo: UserListRdo): UserList => ({
   totalUsersCount: rdo.totalUsersCount
 });
 
-export const adaptFriendToClient = (rdo: FriendRdo): FriendInfo => ({
-  userId: rdo.userId,
-  name: rdo.name,
-  email: rdo.email,
-  aboutInfo: rdo.aboutInfo,
-  gender: rdo.gender,
-  location: Location[rdo.location],
-  role: Role[rdo.role],
-  birthday: rdo.birthDate,
-  avatar: rdo.avatarUrl,
-  createdAt: rdo.createdAt,
-  backgroundImage: rdo.backgroundImage,
-  userProfile: rdo.userProfile ? adaptUserProfileToClient(rdo.userProfile) : undefined,
-  trainerProfile: rdo.trainerProfile ? adaptTrainerProfileToClient(rdo.trainerProfile) : undefined,
-  trainingRequestsAsRecepient: rdo.trainingRequestsAsRecepient,
-  trainingRequestsAsSender: rdo.trainingRequestsAsSender
-});
 
 export const adaptFriendListToClient = (rdo: FriendListRdo): FriendList => ({
-  friendList: rdo.friendList.map((friend) => adaptFriendToClient(friend)),
+  friendList: rdo.friendList.map((friend) => adaptUserToClient(friend)),
   totalFriendsCount: rdo.totalFriendsCount
 });

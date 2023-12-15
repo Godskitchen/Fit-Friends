@@ -7,10 +7,10 @@ import { UserInfo } from 'src/types/user.type';
 export const getAuthorizationStatus = (state: State): AuthorizationStatus => state[SliceNameSpace.User].authorizationStatus;
 export const getAuthCheckedStatus = (state: State): boolean => (getAuthorizationStatus(state)) !== AuthorizationStatus.Unknown;
 
-export const getUserInfo = (state: State): UserInfo | null | undefined => state[SliceNameSpace.User].userInfo;
-export const getCoachCertificates = (state: State) => state[SliceNameSpace.User].userInfo?.trainerProfile?.certificates;
-export const getProfileStatus = (state: State): boolean => {
-  const userInfo = getUserInfo(state);
+export const getMyProfileInfo = (state: State): UserInfo | null | undefined => state[SliceNameSpace.User].myProfileInfo;
+export const geMyCertificates = (state: State) => state[SliceNameSpace.User].myProfileInfo?.trainerProfile?.certificates;
+export const getMyProfileStatus = (state: State): boolean => {
+  const userInfo = getMyProfileInfo(state);
 
   return userInfo ? !!(userInfo.trainerProfile || userInfo.userProfile) : false;
 };

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { SliceNameSpace } from 'src/app-constants';
-import { addFriendsToListAction, addMoreTrainingsToListAction, addMoreUsersToListAction, createTrainingAction, getFriendListAction, getTrainingDetailsAction, getUsersListAction, updateTrainingAction } from '../api-actions';
+import { addFriendsToListAction, addMoreTrainingsToListAction, addMoreUsersToListAction, checkUserSubscriptionAction, createTrainingAction, getFriendListAction, getTrainingDetailsAction, getUserDetailsAction, getUsersListAction, updateTrainingAction } from '../api-actions';
 import { AppData } from 'src/types/state.type';
 
 const initialState: AppData = {
@@ -9,7 +9,9 @@ const initialState: AppData = {
   usersDownloadingStatus: false,
   trainingInfo: undefined,
   userList: undefined,
-  totalUsersCount: 0
+  subscriptionStatus: false,
+  totalUsersCount: 0,
+  currentUserDetails: undefined,
 };
 
 export const appData = createSlice({
@@ -100,6 +102,20 @@ export const appData = createSlice({
       })
       .addCase(addFriendsToListAction.rejected, (state) => {
         state.usersDownloadingStatus = false;
+      })
+      .addCase(getUserDetailsAction.fulfilled, (state, { payload }) => {
+        state.usersDownloadingStatus = false;
+        state.currentUserDetails = payload;
+      })
+      .addCase(getUserDetailsAction.pending, (state) => {
+        state.usersDownloadingStatus = true;
+      })
+      .addCase(getUserDetailsAction.rejected, (state) => {
+        state.usersDownloadingStatus = false;
+        state.currentUserDetails = null;
+      })
+      .addCase(checkUserSubscriptionAction.fulfilled, (state, {payload}) => {
+        state.subscriptionStatus = payload;
       });
   }
 });

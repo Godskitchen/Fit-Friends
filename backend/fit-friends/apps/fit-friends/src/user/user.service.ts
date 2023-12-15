@@ -67,8 +67,8 @@ export class UserService {
     });
   }
 
-  public async getDetails(userId: number) {
-    const existUser = await this.userRepository.findById(userId);
+  public async getDetails(userId: number, requestorId?: number) {
+    const existUser = await this.userRepository.findById(userId, requestorId);
     if (!existUser) {
       throw new NotFoundException(UserErrors.USER_NOT_FOUND);
     }

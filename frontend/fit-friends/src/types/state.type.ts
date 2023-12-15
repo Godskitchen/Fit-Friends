@@ -1,5 +1,5 @@
 import { AuthorizationStatus } from 'src/app-constants';
-import { FriendInfo, UserInfo } from './user.type';
+import { UserInfo } from './user.type';
 import { store } from 'src/store';
 import { HttpStatusCode } from 'src/services/server-api';
 import { Message } from './message.type';
@@ -8,9 +8,9 @@ import { FriendsQueryState, MyTrainingsFitersState, UsersCatalogFiltersState } f
 
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
-  userInfo?: UserInfo | null ;
+  myProfileInfo?: UserInfo | null ;
   myTrainingsList?: MyTraining[] | null;
-  friendList?: FriendInfo[] | null;
+  friendList?: UserInfo[] | null;
   totalFriendsCount: number;
   totalMyTrainingsCount: number;
   notifications: Message[];
@@ -30,6 +30,8 @@ export type AppData = {
   trainingInfo?: Training | null;
   userList?: UserInfo[] | null;
   totalUsersCount: number;
+  currentUserDetails?: UserInfo | null;
+  subscriptionStatus?: boolean;
 }
 
 export type MainProcess = {

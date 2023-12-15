@@ -18,7 +18,10 @@ export default function UserList({userCards}: UserListProps): JSX.Element {
             location={card.location}
             role={card.role}
             specialisations={
-                  (card.trainerProfile?.specialisations || card.userProfile?.specialisations) as Specialisation[]
+              (
+                card.trainerProfile?.specialisations
+                ?? card.userProfile?.specialisations
+              ) as Specialisation[]
             }
           />
         ))

@@ -1,9 +1,9 @@
-import { FriendInfo } from 'src/types/user.type';
+import { UserInfo } from 'src/types/user.type';
 import FriendCard from '../friend-card/friend-card';
 import { Role } from 'src/types/constants';
 
 type FriendListProps = {
-  friendCards: FriendInfo[];
+  friendCards: UserInfo[];
   myReadyStatus: boolean;
   myRole: Role;
 }

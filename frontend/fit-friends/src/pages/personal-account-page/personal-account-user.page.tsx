@@ -1,16 +1,17 @@
 import { Fragment } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { AppRoute } from 'src/app-constants';
 import Header from 'src/components/header/header';
 import LoadingBlock from 'src/components/loading-components/loading-block';
 import UserInfoDesk from 'src/components/user-info-desk/user-info-desk';
 import { useAppSelector } from 'src/hooks';
-import { getUserInfo } from 'src/store/user-process/user-process.selectors';
+import { getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
 import { HeaderNavTab } from 'src/types/constants';
 import { formatNumber } from 'src/utils/helpers';
 
 export default function PersonalAccountUserPage() : JSX.Element {
-  const userInfo = useAppSelector(getUserInfo);
+  const userInfo = useAppSelector(getMyProfileInfo);
 
   if (!userInfo || !userInfo.userProfile) {
     return <LoadingBlock />;
@@ -53,7 +54,7 @@ export default function PersonalAccountUserPage() : JSX.Element {
                       </form>
                     </div>
                     <div className="personal-account-user__additional-info">
-                      <Link className="thumbnail-link thumbnail-link--theme-light" to="#">
+                      <Link className="thumbnail-link thumbnail-link--theme-light" to={`${AppRoute.UserAccount}${AppRoute.MyFriends}`}>
                         <div className="thumbnail-link__icon thumbnail-link__icon--theme-light">
                           <svg width="30" height="26" aria-hidden="true">
                             <use xlinkHref="#icon-friends"></use>

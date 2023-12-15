@@ -33,7 +33,6 @@ import {
   createAddFriendMessage,
   createRemoveFriendMessage,
 } from './rdo/constants';
-import { FriendRdo } from './rdo/friend.rdo';
 import { FriendsQuery } from './queries/friends.query';
 import {
   ApiBadRequestResponse,
@@ -73,9 +72,12 @@ export class UserController {
     description: 'Некорректный параметр id пользователя',
   })
   @Get('/details/:userId')
-  public async getUserDetails(@Param('userId', ParseIntPipe) id: number) {
-    const user = await this.userService.getDetails(id);
-    return fillRDO(UserRdo, user, [user.role]);
+  public async getUserDetails(
+    @Param('userId', ParseIntPipe) id: number,
+    @Req() { user }: RequestWithAccessTokenPayload,
+  ) {
+    const userData = await this.userService.getDetails(id, user.sub);
+    return fillRDO(UserRdo, userData, [userData.role]);
   }
 
   @ApiOkResponse({
@@ -199,7 +201,7 @@ export class UserController {
 
   @ApiOkResponse({
     description: `Получен список друзей пользователя вместе с текущими заявками на тренировку, а также их общее количество. По умолчанию возвращается ${MAX_ITEMS_LIMIT} пользователей`,
-    type: [FriendRdo],
+    type: FriendListRdo,
   })
   @ApiBadRequestResponse({
     description: 'Не пройдена валидация полей query',

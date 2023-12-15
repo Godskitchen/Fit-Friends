@@ -3,9 +3,9 @@ import CertificateCard from '../certificate-card/certificate-card';
 import { certificateValidationHandler } from 'src/utils/validators/user/certificate';
 import getPdfThumbnail from 'src/utils/pdf-thumbnailer';
 import { useAppSelector } from 'src/hooks';
-import { getCoachCertificates } from 'src/store/user-process/user-process.selectors';
-import LoadingScreen from '../loading-components/loading-screen';
 import { customAlphabet } from 'nanoid';
+import LoadingBlock from '../loading-components/loading-block';
+import { geMyCertificates } from 'src/store/user-process/user-process.selectors';
 
 const nanoid = customAlphabet('1234567890', 10);
 
@@ -19,7 +19,7 @@ const CARD_GAP = 20;
 const DESK_WIDTH = 1042;
 
 export default function CertificateSlider(): JSX.Element {
-  const certificate = useAppSelector(getCoachCertificates);
+  const certificate = useAppSelector(geMyCertificates);
   const [cards, setCards] = useState<CoachCertificate[]>([]);
   const [uploadError, setUploadError] = useState('');
   const mainFileInputRef = useRef<HTMLInputElement | null>(null);
@@ -82,7 +82,7 @@ export default function CertificateSlider(): JSX.Element {
   };
 
   if (!certificate) {
-    return <LoadingScreen />;
+    return <LoadingBlock />;
   }
 
   return (

@@ -23,6 +23,7 @@ import CoachTrainingInfoPage from '../../pages/training-page/coach-training-info
 import PersonalAccountUserPage from 'src/pages/personal-account-page/personal-account-user.page';
 import UsersCatalogPage from 'src/pages/users-catalog-page/users-catalog-page';
 import MyFriendsPage from 'src/pages/my-friends-page/my-friends-page';
+import UserPage from 'src/pages/user-page/user-page';
 
 export default function App(): JSX.Element {
 
@@ -95,6 +96,10 @@ export default function App(): JSX.Element {
         <Route
           path={AppRoute.UsersCatalog}
           element={<UsersCatalogPage />}
+        />
+        <Route
+          path={`${AppRoute.UsersCatalog}/:userId`}
+          element={<UserPage />}
         />
         <Route
           path={`${AppRoute.UserAccount}${AppRoute.MyFriends}`}

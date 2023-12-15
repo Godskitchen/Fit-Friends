@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { useEffect } from 'react';
 import { getNotificationsAction } from 'src/store/api-actions';
 import { AppRoute } from 'src/app-constants';
-import { getUserInfo } from 'src/store/user-process/user-process.selectors';
+import { getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
 import LoadingBlock from '../loading-components/loading-block';
 
 
@@ -15,7 +15,7 @@ type HeaderProps = {
 export default function Header({activeTab}: HeaderProps) {
 
   const dispatch = useAppDispatch();
-  const myProfile = useAppSelector(getUserInfo);
+  const myProfile = useAppSelector(getMyProfileInfo);
 
   useEffect(() => {
     dispatch(getNotificationsAction());

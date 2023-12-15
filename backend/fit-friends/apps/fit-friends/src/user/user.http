@@ -2,7 +2,7 @@
 @female = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsIm5hbWUiOiJGcmllbmRGZW1hbGUiLCJlbWFpbCI6ImZyaWVuZEZlbWFsZUBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE3MDIxNDQ5OTcsImV4cCI6MTcwMjIzMTM5N30.MNNiwbVpfdrMuxL8DF8Yd7qbfOTdGnIMvDywtDSz_dI
 @male = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsIm5hbWUiOiJGcmllbmRNYWxlIiwiZW1haWwiOiJmcmllbmRNYWxlQG1haWwubG9jYWwiLCJyb2xlIjoiVXNlciIsImlhdCI6MTcwMTI5ODM0MiwiZXhwIjoxNzAxMzg0NzQyfQ.3hK62tIMFLRGquWsl5M5HVJGFU3SViMap6A9RpUxZ8c
 
-@me = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUxLCJuYW1lIjoiZnJvbnRVc2VyIiwiZW1haWwiOiIyODYwMDU4QG1haWwucnUiLCJyb2xlIjoiVXNlciIsImlhdCI6MTcwMjQxMDQ3MywiZXhwIjoxNzAyNDk2ODczfQ.f4C0S64Sop--P8f8lsESyl8wmYhwlUhOpod608vh6Ao
+@me = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUxLCJuYW1lIjoiZnJvbnRVc2VyIiwiZW1haWwiOiIyODYwMDU4QG1haWwucnUiLCJyb2xlIjoiVXNlciIsImlhdCI6MTcwMjQ5Njg4NCwiZXhwIjoxNzAyNTgzMjg0fQ.W8FR1-jY2gabTQe6zpGk4qrwQCBioQzhdcZ6-NyXeOo
 
 @trainer1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE0LCJuYW1lIjoiVHJhaW5lck9uZSIsImVtYWlsIjoidHJhaW5lcjFAbWFpbC5sb2NhbCIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNjk5NzEzNDkwLCJleHAiOjE2OTk3OTk4OTB9.gxmmBdxiYr0gJMV2h1J6rIn0uOwf79wbO4q7Jdjqbmc
 # get user info
@@ -65,7 +65,7 @@ Authorization: {{male}}
 ###
 
 # add friend
-PATCH  http://localhost:4000/api/users/friends/add/18 HTTP/1.1
+PATCH  http://localhost:4000/api/users/friends/add/2 HTTP/1.1
 Authorization: {{me}}
 ###
 
