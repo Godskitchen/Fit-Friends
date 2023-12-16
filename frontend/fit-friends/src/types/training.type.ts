@@ -1,7 +1,7 @@
 import { Gender, SkillLevel, Specialisation, TrainingDuration } from './constants';
 import { UserInfo } from './user.type';
 
-export type MyTraining = {
+export type TrainingCardType = {
   trainingId: number;
   title: string;
   backgroundImage: string;
@@ -16,10 +16,10 @@ export type MyTraining = {
   isSpecialOffer: boolean;
 };
 
-export type Training = MyTraining & {trainer: UserInfo; video: string }
+export type Training = TrainingCardType & {trainer: UserInfo; video: string }
 
 export type TrainingList = {
-  trainingList: MyTraining[];
+  trainingList: TrainingCardType[];
   totalTrainingsCount: number;
 }
 

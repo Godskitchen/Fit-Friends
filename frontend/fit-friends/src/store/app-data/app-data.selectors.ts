@@ -11,3 +11,7 @@ export const getTotalUsersCount = (state: State): number => state[SliceNameSpace
 
 export const getCurrentUserInfo = (state: State) => state[SliceNameSpace.Data].currentUserDetails;
 export const getSubscriptionStatus = (state: State) => state[SliceNameSpace.Data].subscriptionStatus;
+
+
+export const getTrainingList = (state:State) => state[SliceNameSpace.Data].trainingList;
+export const getTotalTrainingsCount = (state: State) => state[SliceNameSpace.Data].totalTrainingsCount;

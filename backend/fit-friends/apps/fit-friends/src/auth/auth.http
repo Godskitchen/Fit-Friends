@@ -44,8 +44,8 @@ POST http://localhost:4000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "friendFemale@mail.local",
-  "password": "123456"
+  "email": "uztxirss85@hotmail.com",
+  "password": "mockpass"
 }
 
 //Trainer "email": "alysha.walker@johns.biz", "password": "mockpass"

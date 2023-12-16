@@ -3,13 +3,13 @@ import { UserInfo } from './user.type';
 import { store } from 'src/store';
 import { HttpStatusCode } from 'src/services/server-api';
 import { Message } from './message.type';
-import { MyTraining, Training } from './training.type';
-import { FriendsQueryState, MyTrainingsFitersState, UsersCatalogFiltersState } from './forms.type';
+import { Training, TrainingCardType } from './training.type';
+import { FriendsQueryState, TrainingsCatalogFiltersState, MyTrainingsFitersState, UsersCatalogFiltersState } from './forms.type';
 
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
   myProfileInfo?: UserInfo | null ;
-  myTrainingsList?: MyTraining[] | null;
+  myTrainingsList?: TrainingCardType[] | null;
   friendList?: UserInfo[] | null;
   totalFriendsCount: number;
   totalMyTrainingsCount: number;
@@ -31,6 +31,8 @@ export type AppData = {
   userList?: UserInfo[] | null;
   totalUsersCount: number;
   currentUserDetails?: UserInfo | null;
+  trainingList?: TrainingCardType[] | null;
+  totalTrainingsCount: number;
   subscriptionStatus?: boolean;
 }
 
@@ -38,6 +40,7 @@ export type MainProcess = {
   myTrainingsFilterState: MyTrainingsFitersState;
   usersCatalogFilterState: UsersCatalogFiltersState;
   friendsQueryState: FriendsQueryState;
+  trainingsCatalogFilterState: TrainingsCatalogFiltersState;
 }
 
 

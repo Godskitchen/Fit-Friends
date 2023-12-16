@@ -28,6 +28,18 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class GeneralTrainingQuery {
   @ApiPropertyOptional({
+    description:
+      'Id тренера, тренировки которого нужно получить. Целое положительное число',
+    minimum: 0,
+    example: 5,
+  })
+  @IsPositive()
+  @IsInt()
+  @Type(() => Number)
+  @IsOptional()
+  public trainerId?: number;
+
+  @ApiPropertyOptional({
     description: 'Количество тренировок, по которым нужно получить информацию.',
     default: MAX_ITEMS_LIMIT,
     maximum: MAX_ITEMS_LIMIT,

@@ -5,13 +5,13 @@ import { ApiRoute, AppRoute } from 'src/app-constants';
 import { saveToken, dropToken } from 'src/services/auth-token';
 import { HttpStatusCode, REQUEST_TIMEOUT, SERVER_URL, shouldDisplayError } from 'src/services/server-api';
 import { Role } from 'src/types/constants';
-import { CreateTrainingInputs, FriendsQueryState, MyTrainingsFitersState, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs, UpdateTrainingInputs, UsersCatalogFiltersState } from 'src/types/forms.type';
+import { CreateTrainingInputs, FriendsQueryState, TrainingsCatalogFiltersState, MyTrainingsFitersState, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs, UpdateTrainingInputs, UsersCatalogFiltersState } from 'src/types/forms.type';
 import { AppDispatch, State } from 'src/types/state.type';
 import { AuthData, FriendList, KnownError, UserInfo, UserList } from 'src/types/user.type';
 import { adaptCoachProfileToServer, adaptNewTrainingToServer, adaptRegisterUserToServer, adaptUpdateProfiletoServer, adaptUpdateTrainingToServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
 import { AuthUserRdo, FriendListRdo, UserListRdo, UserRdo } from 'src/utils/adapters/api-rdos/user.rdo';
 import { redirectAction } from './redirect.action';
-import { adaptFriendListToClient, adaptMyTrainingsListToClient, adaptTrainingToClient, adaptUserToClient, adaptUsersListToClient } from 'src/utils/adapters/adapter-to-client';
+import { adaptFriendListToClient, adaptTrainingsListToClient, adaptTrainingToClient, adaptUserToClient, adaptUsersListToClient } from 'src/utils/adapters/adapter-to-client';
 import { Message } from 'src/types/message.type';
 import { Training, TrainingList } from 'src/types/training.type';
 import { TrainingListRdo, TrainingRdo } from 'src/utils/adapters/api-rdos/training.rdo';
@@ -237,19 +237,19 @@ export const getMyTrainingsAction = createAsyncThunk<TrainingList, MyTrainingsFi
   'user/getMyTrainings',
   async(filtersQuery, {extra: serverApi}) => {
     const {data} = await serverApi.get<TrainingListRdo>(ApiRoute.MyTrainings, {params: filtersQuery});
-    return adaptMyTrainingsListToClient(data);
+    return adaptTrainingsListToClient(data);
   }
 );
 
 
-export const addMoreTrainingsToListAction = createAsyncThunk<TrainingList, MyTrainingsFitersState,
+export const addMyTrainingsToListAction = createAsyncThunk<TrainingList, MyTrainingsFitersState,
 {
   extra: AxiosInstance;
 }>(
   'user/addMyTrainingsToList',
   async(filtersQuery, {extra: serverApi}) => {
     const {data} = await serverApi.get<TrainingListRdo>(ApiRoute.MyTrainings, {params: filtersQuery});
-    return adaptMyTrainingsListToClient(data);
+    return adaptTrainingsListToClient(data);
   }
 );
 
@@ -327,7 +327,6 @@ export const addFriendsToListAction = createAsyncThunk<FriendList, FriendsQueryS
   'user/addFriendsToList',
   async(friendsQuery, {extra: serverApi}) => {
     const {data} = await serverApi.get<FriendListRdo>(ApiRoute.FriendsList, {params: friendsQuery});
-    console.log(data);
     return adaptFriendListToClient(data);
   }
 );
@@ -404,6 +403,26 @@ export const unsubscribeToCoachAction = createAsyncThunk<void, number, {
   'data/unsubscribeToCoach',
   async(trainerId, {extra: serverApi}) => {
     await serverApi.delete(`${ApiRoute.RemoveSubscription}/${trainerId}`);
+  }
+);
+
+export const getTrainingListAction = createAsyncThunk<TrainingList, TrainingsCatalogFiltersState, {
+  extra: AxiosInstance;
+}>(
+  'data/getTrainingList',
+  async(trainingQuery, {extra: serverApi}) => {
+    const {data} = await serverApi.get<TrainingListRdo>(ApiRoute.TrainingList, {params: trainingQuery});
+    return adaptTrainingsListToClient(data);
+  }
+);
+
+export const addTrainingsToListAction = createAsyncThunk<TrainingList, TrainingsCatalogFiltersState, {
+  extra: AxiosInstance;
+}>(
+  'data/addTrainingsToList',
+  async(trainingQuery, {extra: serverApi}) => {
+    const {data} = await serverApi.get<TrainingListRdo>(ApiRoute.TrainingList, {params: trainingQuery});
+    return adaptTrainingsListToClient(data);
   }
 );
 

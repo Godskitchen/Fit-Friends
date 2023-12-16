@@ -7,7 +7,7 @@ import { useAppDispatch } from 'src/hooks';
 import { addUserToFriendsAction, removeUserFromFriendsAction } from 'src/store/api-actions';
 import { Role, SkillHashTagValue, SpecialisationHashTagValue } from 'src/types/constants';
 import { UserInfo, UserProfileInfo } from 'src/types/user.type';
-import UserMapLocation from '../user-map-location/user-map-location';
+import UserMapLocationModal from '../user-map-location-modal/user-map-location-modal';
 
 type InfoBlockProps = {
   user: UserInfo;
@@ -124,7 +124,7 @@ export default function UserInfoBlock({user: {userId, name, aboutInfo, location,
         </section>
       </div>
 
-      <UserMapLocation
+      <UserMapLocationModal
         userName={name}
         userLocation={location}
         isModalOpen={isModalOpen}

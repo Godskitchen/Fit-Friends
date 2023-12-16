@@ -7,9 +7,10 @@ import { addUserToFriendsAction, createTrainingRequestStatusAction, removeUserFr
 import { Role, SkillHashTagValue, SpecialisationHashTagValue } from 'src/types/constants';
 import { TrainerProfileInfo, UserInfo } from 'src/types/user.type';
 import TrainingBlock from '../training-block/training-block';
-import UserMapLocation from '../user-map-location/user-map-location';
+import UserMapLocationModal from '../user-map-location-modal/user-map-location-modal';
 import { TrainingRequest, TrainingRequestStatus } from 'src/types/training-request.type';
 import SubscriptionBlock from '../subscription-block/subscription-block';
+import CoachCertificatesModal from '../coach-certificates-modal/coach-certificates-modal';
 
 type InfoBlockProps = {
   user: UserInfo;
@@ -34,21 +35,39 @@ export default function CoachInfoBlock({
   const [friendStatus, setFriendStatus] = useState(isFriend);
   const [isPendingRequestExists, setPendingRequestExists] = useState<boolean>(myRequestToUser && myRequestToUser.status === TrainingRequestStatus.Pending);
 
-  const [isModalOpen, setModalOpen] = useState(false);
-  const locationBtnRef = useRef<HTMLAnchorElement | null>(null);
-  const closeModalBtnRef = useRef<HTMLButtonElement | null>(null);
+  const [isModalLocationOpen, setModalLocationOpen] = useState(false);
+  const [isModalCertificatesOpen, setModalCerificatesOpen] = useState(false);
 
-  const openModal = () => {
-    setModalOpen(true);
+  const locationBtnRef = useRef<HTMLAnchorElement | null>(null);
+  const certificatesBtnRef = useRef<HTMLButtonElement | null>(null);
+
+  const closeLocationModalBtnRef = useRef<HTMLButtonElement | null>(null);
+  const closeCertificatesModalBtnRef = useRef<HTMLButtonElement | null>(null);
+
+  const openLocationModal = () => {
+    setModalLocationOpen(true);
     document.body.classList.add('scroll-lock');
-    setTimeout(() => {closeModalBtnRef.current?.focus();}, 100);
+    setTimeout(() => {closeLocationModalBtnRef.current?.focus();}, 100);
   };
 
-  const closeModal = () => {
-    setModalOpen(false);
+  const closeLocationModal = () => {
+    setModalLocationOpen(false);
     document.body.classList.remove('scroll-lock');
     setTimeout(() => {locationBtnRef.current?.focus();}, 100);
   };
+
+  const openCertificatesModal = () => {
+    setModalCerificatesOpen(true);
+    document.body.classList.add('scroll-lock');
+    setTimeout(() => {closeCertificatesModalBtnRef.current?.focus();}, 100);
+  };
+
+  const closeCertificatesModal = () => {
+    setModalCerificatesOpen(false);
+    document.body.classList.remove('scroll-lock');
+    setTimeout(() => {certificatesBtnRef.current?.focus();}, 100);
+  };
+
 
   const handleAddFriendBtnClick = () => {
     dispatch(addUserToFriendsAction(userId))
@@ -60,9 +79,13 @@ export default function CoachInfoBlock({
       .then(() => setFriendStatus(false));
   };
 
-  const handleLocationClickBtn = (evt: MouseEvent<HTMLAnchorElement>) => {
+  const handleLocationBtnClick = (evt: MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
-    openModal();
+    openLocationModal();
+  };
+
+  const handleCertificatesBtnClick = () => {
+    openCertificatesModal();
   };
 
   const onSendRequestBtnClick = () => {
@@ -82,7 +105,7 @@ export default function CoachInfoBlock({
                   <h2 className="user-card-coach__title">{name}</h2>
                 </div>
                 <div className="user-card-coach__label">
-                  <Link to='#' onClick={handleLocationClickBtn} ref={locationBtnRef}>
+                  <Link to='#' onClick={handleLocationBtnClick} ref={locationBtnRef}>
                     <svg className="user-card-coach__icon-location" width="12" height="14" aria-hidden="true">
                       <use xlinkHref="#icon-location"></use>
                     </svg>
@@ -106,7 +129,12 @@ export default function CoachInfoBlock({
                 <div className="user-card-coach__text">
                   <p>{aboutInfo}</p>
                 </div>
-                <button className="btn-flat user-card-coach__sertificate" type="button">
+                <button
+                  className="btn-flat user-card-coach__sertificate"
+                  type="button"
+                  onClick={handleCertificatesBtnClick}
+                  ref={certificatesBtnRef}
+                >
                   <svg width="12" height="13" aria-hidden="true">
                     <use xlinkHref="#icon-teacher"></use>
                   </svg>
@@ -161,7 +189,7 @@ export default function CoachInfoBlock({
             {
               myRole === Role.User && (
                 <div className="user-card-coach__training">
-                  <TrainingBlock />
+                  <TrainingBlock trainerId={userId} />
                   <form className="user-card-coach__training-form">
                     {
                       friendStatus && individualTraining &&
@@ -182,12 +210,18 @@ export default function CoachInfoBlock({
         </section>
       </div>
 
-      <UserMapLocation
+      <UserMapLocationModal
         userName={name}
         userLocation={location}
-        isModalOpen={isModalOpen}
-        closeModal={closeModal}
-        closeModalBtnRef={closeModalBtnRef}
+        isModalOpen={isModalLocationOpen}
+        closeModal={closeLocationModal}
+        closeModalBtnRef={closeLocationModalBtnRef}
+      />
+
+      <CoachCertificatesModal
+        isModalOpen={isModalCertificatesOpen}
+        closeModal={closeCertificatesModal}
+        closeModalBtnRef={closeCertificatesModalBtnRef}
       />
     </Fragment>
 

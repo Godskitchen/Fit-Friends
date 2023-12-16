@@ -9,12 +9,13 @@ import {getMyTrainingsFiltersState} from 'src/store/main-process/main-process.se
 import LoadingBlock from 'src/components/loading-components/loading-block';
 import MyTrainingsList from 'src/components/my-trainings-list/my-trainings-list';
 import { getTrainingsDownloadingStatus } from 'src/store/app-data/app-data.selectors';
-import { addMoreTrainingsToListAction } from 'src/store/api-actions';
+import { addMyTrainingsToListAction } from 'src/store/api-actions';
 import { setMyTrainingsFiltersStateAction } from 'src/store/main-process/main-process.reducer';
 
 export default function MyTrainingsPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
+
   const trainings = useAppSelector(getMyTrainings);
   const isLoading = useAppSelector(getTrainingsDownloadingStatus);
   const filterState = useAppSelector(getMyTrainingsFiltersState);
@@ -22,8 +23,12 @@ export default function MyTrainingsPage(): JSX.Element {
 
   const onShowMoreBtnClickHandle = () => {
     const newFilterState = {...filterState, page: filterState.page ? `${+filterState.page + 1}` : filterState.page};
-    dispatch(addMoreTrainingsToListAction(newFilterState))
-      .then(() => {dispatch(setMyTrainingsFiltersStateAction(newFilterState));});
+    dispatch(addMyTrainingsToListAction(newFilterState))
+      .then((result) => {
+        if (addMyTrainingsToListAction.fulfilled.match(result)) {
+          dispatch(setMyTrainingsFiltersStateAction(newFilterState));
+        }
+      });
   };
 
   const onReturnToTopBtnHandle = () => {

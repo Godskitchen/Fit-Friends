@@ -34,7 +34,7 @@ export default function CertificateSlider(): JSX.Element {
     loadThumbnail();
   }, [certificate]);
 
-  const [offSet, setOffset] = useState(0);
+  const [offset, setOffset] = useState(0);
   const minOffset = 0;
   const maxOffset = -(CARD_WIDTH * cards.length + CARD_GAP * (cards.length - 1) - DESK_WIDTH);
 
@@ -115,7 +115,7 @@ export default function CertificateSlider(): JSX.Element {
             className="btn-icon personal-account-coach__control"
             type="button" aria-label="previous"
             onClick={handleLeftArrowClick}
-            disabled={offSet === minOffset || cards.length <= 3}
+            disabled={offset === minOffset || cards.length <= 3}
           >
             <svg width="16" height="14" aria-hidden="true">
               <use xlinkHref="#arrow-left"></use>
@@ -126,7 +126,7 @@ export default function CertificateSlider(): JSX.Element {
             type="button"
             aria-label="next"
             onClick={handleRightArrowClick}
-            disabled={offSet === maxOffset || cards.length <= 3}
+            disabled={offset === maxOffset || cards.length <= 3}
           >
             <svg width="16" height="14" aria-hidden="true">
               <use xlinkHref="#arrow-right"></use>
@@ -135,7 +135,7 @@ export default function CertificateSlider(): JSX.Element {
         </div>
       </div>
       <ul className="personal-account-coach__list">
-        <div style={{transform: `translateX(${offSet}px)`, display: 'flex', transition: 'transform 300ms ease-in-out'}}>
+        <div style={{transform: `translateX(${offset}px)`, display: 'flex', transition: 'transform 300ms ease-in-out'}}>
           {
             cards.map(({id, url}) => (
               <CertificateCard

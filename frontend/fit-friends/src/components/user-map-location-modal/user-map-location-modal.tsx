@@ -16,7 +16,7 @@ type UserMapLocationProps = {
 
 const ZOOM = 16;
 
-export default function UserMapLocation({isModalOpen, closeModal, userName, userLocation, closeModalBtnRef }: UserMapLocationProps): JSX.Element {
+export default function UserMapLocationModal({isModalOpen, closeModal, userName, userLocation, closeModalBtnRef }: UserMapLocationProps): JSX.Element {
   const modalRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<HTMLDivElement | null>(null);
   const map = useMap(mapRef, UserCoordsLocation[userLocation]);
@@ -54,12 +54,13 @@ export default function UserMapLocation({isModalOpen, closeModal, userName, user
 
 
   useEffect(() => {
-    document.addEventListener('keydown', keyDownModalHandler);
-
+    if (isModalOpen) {
+      document.addEventListener('keydown', keyDownModalHandler);
+    }
     return () => {
       document.removeEventListener('keydown', keyDownModalHandler);
     };
-  }, [closeModal, keyDownModalHandler]);
+  }, [closeModal, isModalOpen, keyDownModalHandler]);
 
   return (
     <div ref={modalRef} className={`modal modal--success modal--no-scale modal--fit-content ${isModalOpen ? 'is-active' : ''}`}>

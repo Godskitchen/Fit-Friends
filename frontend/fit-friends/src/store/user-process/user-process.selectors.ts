@@ -1,6 +1,6 @@
 import { AuthorizationStatus, SliceNameSpace } from 'src/app-constants';
 import { State } from 'src/types/state.type';
-import { MyTraining } from 'src/types/training.type';
+import { TrainingCardType } from 'src/types/training.type';
 import { UserInfo } from 'src/types/user.type';
 
 
@@ -18,7 +18,7 @@ export const getMyProfileStatus = (state: State): boolean => {
 export const getFormErrors = (state: State) => state[SliceNameSpace.User].formErrors;
 export const getNotifications = (state: State) => state[SliceNameSpace.User].notifications;
 
-export const getMyTrainings = (state: State): MyTraining[] | null | undefined => state[SliceNameSpace.User].myTrainingsList;
+export const getMyTrainings = (state: State): TrainingCardType[] | null | undefined => state[SliceNameSpace.User].myTrainingsList;
 export const getTotalMyTrainingsCount = (state: State): number => state[SliceNameSpace.User].totalMyTrainingsCount;
 
 export const getFriendList = (state:State) => state[SliceNameSpace.User].friendList;

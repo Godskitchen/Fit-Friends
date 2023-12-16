@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 
@@ -80,12 +81,12 @@ export const handleKeyDown = (
     return;
   }
 
-  const focusableElements = modalRef.current?.querySelectorAll(
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  const focusableElements = modalRef.current?.querySelectorAll<HTMLElement>(
+    'button:not([disabled]), a[href]:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
   );
 
-  const firstElement = focusableElements?.[0] as HTMLElement;
-  const lastElement = focusableElements?.[focusableElements.length - 1] as HTMLElement;
+  const firstElement = focusableElements?.[0];
+  const lastElement = focusableElements?.[focusableElements.length - 1];
 
   if (evt.shiftKey) {
     if (document.activeElement === firstElement) {
@@ -97,6 +98,11 @@ export const handleKeyDown = (
       evt.preventDefault();
       firstElement?.focus();
     }
+  }
+
+  if (document.activeElement === document.body) {
+    evt.preventDefault();
+    firstElement?.focus();
   }
 };
 

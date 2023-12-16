@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { SliceNameSpace } from 'src/app-constants';
-import { addFriendsToListAction, addMoreTrainingsToListAction, addMoreUsersToListAction, checkUserSubscriptionAction, createTrainingAction, getFriendListAction, getTrainingDetailsAction, getUserDetailsAction, getUsersListAction, updateTrainingAction } from '../api-actions';
+import { addFriendsToListAction, addMyTrainingsToListAction, addMoreUsersToListAction, checkUserSubscriptionAction, createTrainingAction, getFriendListAction, getTrainingDetailsAction, getUserDetailsAction, getUsersListAction, updateTrainingAction, getTrainingListAction, addTrainingsToListAction } from '../api-actions';
 import { AppData } from 'src/types/state.type';
 
 const initialState: AppData = {
@@ -9,9 +9,11 @@ const initialState: AppData = {
   usersDownloadingStatus: false,
   trainingInfo: undefined,
   userList: undefined,
-  subscriptionStatus: false,
   totalUsersCount: 0,
   currentUserDetails: undefined,
+  subscriptionStatus: false,
+  trainingList: undefined,
+  totalTrainingsCount: 0,
 };
 
 export const appData = createSlice({
@@ -29,13 +31,13 @@ export const appData = createSlice({
       .addCase(createTrainingAction.rejected, (state) => {
         state.dataUploadingStatus = false;
       })
-      .addCase(addMoreTrainingsToListAction.fulfilled, (state) => {
+      .addCase(addMyTrainingsToListAction.fulfilled, (state) => {
         state.trainingsDownloadingStatus = false;
       })
-      .addCase(addMoreTrainingsToListAction.pending, (state) => {
+      .addCase(addMyTrainingsToListAction.pending, (state) => {
         state.trainingsDownloadingStatus = true;
       })
-      .addCase(addMoreTrainingsToListAction.rejected, (state) => {
+      .addCase(addMyTrainingsToListAction.rejected, (state) => {
         state.trainingsDownloadingStatus = false;
       })
       .addCase(getTrainingDetailsAction.fulfilled, (state, {payload}) => {
@@ -116,6 +118,32 @@ export const appData = createSlice({
       })
       .addCase(checkUserSubscriptionAction.fulfilled, (state, {payload}) => {
         state.subscriptionStatus = payload;
+      })
+      .addCase(getTrainingListAction.pending, (state) => {
+        state.trainingsDownloadingStatus = true;
+      })
+      .addCase(getTrainingListAction.rejected, (state) => {
+        state.trainingsDownloadingStatus = false;
+        state.trainingList = null;
+      })
+      .addCase(getTrainingListAction.fulfilled, (state, {payload}) => {
+        state.trainingsDownloadingStatus = false;
+        state.trainingList = payload.trainingList;
+        state.totalTrainingsCount = payload.totalTrainingsCount;
+      })
+      .addCase(addTrainingsToListAction.pending, (state) => {
+        state.trainingsDownloadingStatus = true;
+      })
+      .addCase(addTrainingsToListAction.rejected, (state) => {
+        state.trainingsDownloadingStatus = false;
+        state.trainingList = null;
+      })
+      .addCase(addTrainingsToListAction.fulfilled, (state, {payload}) => {
+        state.trainingsDownloadingStatus = false;
+        if (state.trainingList) {
+          state.trainingList = [...state.trainingList, ...payload.trainingList];
+        }
+        state.totalTrainingsCount = payload.totalTrainingsCount;
       });
   }
 });

@@ -27,6 +27,7 @@ export enum ApiRoute {
   Notifications = '/messages',
   CreateTraining = '/trainings/create',
   MyTrainings = '/trainings/mylist',
+  TrainingList = '/trainings',
   TrainingDetails = '/trainings/details',
   UpdateTraining = '/trainings/update',
   UsersList = '/users',

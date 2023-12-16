@@ -87,3 +87,9 @@ export type FriendsQueryState = {
   page?: string;
   limit?: string;
 }
+
+export type TrainingsCatalogFiltersState = {
+  page?: string;
+  limit?: string;
+  trainerId?: string;
+}

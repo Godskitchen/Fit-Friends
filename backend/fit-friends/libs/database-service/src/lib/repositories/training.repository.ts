@@ -113,6 +113,7 @@ export class TrainingRepository {
   }
 
   public async findAll({
+    trainerId,
     limit,
     page,
     trainingType,
@@ -122,7 +123,7 @@ export class TrainingRepository {
     rating,
     price,
     caloriesToBurn,
-  }: GeneralTrainingQuery): Promise<Training[]> {
+  }: GeneralTrainingQuery) {
     const priceFilter = price ? { gte: price[0], lte: price[1] } : undefined;
     const caloriesFilter = caloriesToBurn
       ? { gte: caloriesToBurn[0], lte: caloriesToBurn[1] }
@@ -138,9 +139,23 @@ export class TrainingRepository {
 
     const ratingFilter = rating ? { gte: rating, lt: rating + 1 } : undefined;
 
-    return this.prismaConnector.training.findMany({
+    const totalTrainingsCount = await this.prismaConnector.training.count({
       where: {
         AND: [
+          { trainerId: trainerId },
+          { price: priceFilter },
+          { caloriesToBurn: caloriesFilter },
+          { OR: durationFilter },
+          { OR: typeFilter },
+          { rating: ratingFilter },
+        ],
+      },
+    });
+
+    const trainingList = await this.prismaConnector.training.findMany({
+      where: {
+        AND: [
+          { trainerId: trainerId },
           { price: priceFilter },
           { caloriesToBurn: caloriesFilter },
           { OR: durationFilter },
@@ -155,6 +170,8 @@ export class TrainingRepository {
       },
       orderBy: sort ? { [sort]: sortDirection } : { createdAt: sortDirection },
     });
+
+    return { totalTrainingsCount, trainingList };
   }
 
   public async updateRating(trainingId: number, rating: number): Promise<void> {

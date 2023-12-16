@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { UserProcess } from '../../types/state.type';
 import {
   addFriendsToListAction,
-  addMoreTrainingsToListAction,
+  addMyTrainingsToListAction,
   checkAuthAction,
   createCoachProfileAction,
   createUserProfileAction,
@@ -168,7 +168,7 @@ export const userProcess = createSlice({
         state.myTrainingsList = null;
         state.totalMyTrainingsCount = 0;
       })
-      .addCase(addMoreTrainingsToListAction.fulfilled, (state, {payload}) => {
+      .addCase(addMyTrainingsToListAction.fulfilled, (state, {payload}) => {
         if (state.myTrainingsList) {
           state.myTrainingsList = [...state.myTrainingsList, ...payload.trainingList];
           state.totalMyTrainingsCount = payload.totalTrainingsCount;

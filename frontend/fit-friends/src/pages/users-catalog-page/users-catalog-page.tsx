@@ -20,9 +20,17 @@ export default function UsersCatalogPage(): JSX.Element {
   const totalUsersCount = useAppSelector(getTotalUsersCount);
 
   const onShowMoreBtnClickHandle = () => {
-    const newFilterState = {...filterState, page: filterState.page ? `${+filterState.page + 1}` : filterState.page};
+    const newFilterState = {
+      ...filterState,
+      page: filterState.page ? `${+filterState.page + 1}` : filterState.page
+    };
+
     dispatch(addMoreUsersToListAction(newFilterState))
-      .then(() => {dispatch(setUsersCatalogFilterStateAction(newFilterState));});
+      .then((result) => {
+        if (addMoreUsersToListAction.fulfilled.match(result)) {
+          dispatch(setUsersCatalogFilterStateAction(newFilterState));
+        }
+      });
   };
 
   const onReturnToTopBtnHandle = () => {

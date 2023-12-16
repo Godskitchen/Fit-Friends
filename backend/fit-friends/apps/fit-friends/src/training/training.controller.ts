@@ -127,8 +127,8 @@ export class TrainingController {
 
   @Get('/')
   @ApiOkResponse({
-    description: `Получен список тренировок. По умолчанию возвращается ${MAX_ITEMS_LIMIT} тренировок`,
-    type: [TrainingRdo],
+    description: `Получен список тренировок а также их общее количество без учета лимита. По умолчанию возвращается ${MAX_ITEMS_LIMIT} тренировок`,
+    type: TrainingListRdo,
   })
   @ApiBadRequestResponse({
     description: 'Не пройдена валдиация полей query',
@@ -138,7 +138,7 @@ export class TrainingController {
     query: GeneralTrainingQuery,
   ) {
     const trainingList = await this.trainingService.getAll(query);
-    return fillRDO(TrainingRdo, trainingList, [Role.Trainer]);
+    return fillRDO(TrainingListRdo, trainingList, [Role.Trainer]);
   }
 
   @Get('/mylist')
@@ -154,7 +154,7 @@ export class TrainingController {
   })
   @Roles(Role.Trainer)
   @UseGuards(RoleGuard)
-  public async getTrainerTrainingsList(
+  public async getMyTrainingsList(
     @Req() { user }: RequestWithAccessTokenPayload,
     @Query(new ValidationPipe({ transform: true, whitelist: true }))
     query: UserTrainingsQuery,

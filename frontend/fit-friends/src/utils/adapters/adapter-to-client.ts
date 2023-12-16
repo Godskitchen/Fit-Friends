@@ -1,7 +1,7 @@
 import { FriendList, TrainerProfileInfo, UserInfo, UserList, UserProfileInfo } from 'src/types/user.type';
 import { FriendListRdo, TrainerProfileRdo, UserListRdo, UserProfileRdo, UserRdo } from './api-rdos/user.rdo';
 import { TrainingListRdo, TrainingRdo } from './api-rdos/training.rdo';
-import { MyTraining, Training, TrainingList } from 'src/types/training.type';
+import { Training, TrainingCardType, TrainingList } from 'src/types/training.type';
 import { Role, Location } from 'src/types/constants';
 
 export const adaptUserToClient = (rdo: UserRdo): UserInfo => ({
@@ -41,13 +41,13 @@ export const adaptTrainerProfileToClient = (rdo: TrainerProfileRdo): TrainerProf
 });
 
 
-export const adaptMyTrainingsListToClient = (rdo: TrainingListRdo): TrainingList => ({
-  trainingList: rdo.trainingList.map((training) => adaptMyTrainingToClient(training)),
+export const adaptTrainingsListToClient = (rdo: TrainingListRdo): TrainingList => ({
+  trainingList: rdo.trainingList.map((training) => adaptTrainingCardToClient(training)),
   totalTrainingsCount: rdo.totalTrainingsCount,
 });
 
 
-export const adaptMyTrainingToClient = (rdo: TrainingRdo): MyTraining => ({
+export const adaptTrainingCardToClient = (rdo: TrainingRdo): TrainingCardType => ({
   trainingId: rdo.trainingId,
   title: rdo.title,
   backgroundImage: rdo.backgroundImage,

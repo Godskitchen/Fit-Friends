@@ -66,7 +66,11 @@ export default function MyTrainingsFilterDesk(): JSX.Element {
     };
 
     dispatch(getMyTrainingsAction(query))
-      .then(() => {dispatch(setMyTrainingsFiltersStateAction(query));});
+      .then((result) => {
+        if (getMyTrainingsAction.fulfilled.match(result)) {
+          dispatch(setMyTrainingsFiltersStateAction(query));
+        }
+      });
   };
 
   const onBtnBackClickHandle = () => {
@@ -80,7 +84,11 @@ export default function MyTrainingsFilterDesk(): JSX.Element {
     };
 
     dispatch(getMyTrainingsAction(initialQuery))
-      .then(() => {dispatch(setMyTrainingsFiltersStateAction(initialQuery));});
+      .then((result) => {
+        if (getMyTrainingsAction.fulfilled.match(result)) {
+          dispatch(setMyTrainingsFiltersStateAction(initialQuery));
+        }
+      });
   }, [dispatch]);
 
   return (

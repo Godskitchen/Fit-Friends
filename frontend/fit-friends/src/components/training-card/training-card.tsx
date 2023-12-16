@@ -2,10 +2,11 @@ import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from 'src/app-constants';
 import { SpecialisationHashTagValue } from 'src/types/constants';
-import { MyTraining } from 'src/types/training.type';
+import { TrainingCardType } from 'src/types/training.type';
 
 type TrainingCardProp = {
-  card: MyTraining;
+  card: TrainingCardType;
+  className: string;
 }
 
 export default function TrainingCard({card:{
@@ -18,7 +19,7 @@ export default function TrainingCard({card:{
   backgroundImage,
   rating,
   caloriesToBurn
-}}: TrainingCardProp): JSX.Element {
+}, className}: TrainingCardProp): JSX.Element {
 
   let currentPrice = price;
   if (isSpecialOffer) {
@@ -26,7 +27,7 @@ export default function TrainingCard({card:{
   }
 
   return (
-    <li className="my-trainings__item">
+    <li className={className}>
       <div className="thumbnail-training">
         <div className="thumbnail-training__inner">
           <div className="thumbnail-training__image">
