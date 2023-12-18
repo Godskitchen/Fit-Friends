@@ -12,6 +12,7 @@ export enum AppRoute {
   CreateTraining = '/create_training',
   MyTrainings = '/my_trainings',
   UsersCatalog = '/users_catalog',
+  TrainingsCatalog = '/trainings_catalog',
   MyFriends = '/my_friends'
 }
 
@@ -36,7 +37,10 @@ export enum ApiRoute {
   UpdateTrainingRequest = '/training-requests/update',
   CheckSubscription = '/subscriptions/check',
   AddSubscription = '/subscriptions/add',
-  RemoveSubscription = 'subscriptions/remove'
+  RemoveSubscription = '/subscriptions/remove',
+  CreateOrder = '/orders/create',
+  MyListBalance = '/balance/mylist',
+  UpdateBalance = '/balance/update'
 }
 
 export enum SliceNameSpace {

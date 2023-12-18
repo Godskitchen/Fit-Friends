@@ -8,7 +8,7 @@ import Header from 'src/components/header/header';
 import LoadingBlock from 'src/components/loading-components/loading-block';
 import LoadingScreen from 'src/components/loading-components/loading-screen';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
-import { addFriendsToListAction, addMoreUsersToListAction, getFriendListAction } from 'src/store/api-actions';
+import { addFriendsToListAction, addUsersToListAction, getFriendListAction } from 'src/store/api-actions';
 import { getUsersDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import { setFriendsQueryStateAction } from 'src/store/main-process/main-process.reducer';
 import { getFriendsQueryState } from 'src/store/main-process/main-process.selectors';

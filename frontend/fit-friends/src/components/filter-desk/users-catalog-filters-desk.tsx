@@ -1,4 +1,4 @@
-import { Location, SpecialisationFieldValue } from 'src/types/constants';
+import { Location, SpecialisationFieldValue, UserSortFieldBtnValue } from 'src/types/constants';
 import UsersCatalogCheckBoxFilter from '../checkbox-filter/users-catalog-checkbox-filter';
 import SkillButtons from '../radio-buttons/skill-buttons';
 import { FormEvent, useEffect, useRef, useState } from 'react';
@@ -61,7 +61,11 @@ export default function UsersCatalogFiltersDesk(): JSX.Element {
     };
 
     dispatch(getUsersListAction(query))
-      .then(() => {dispatch(setUsersCatalogFilterStateAction(query));});
+      .then((result) => {
+        if (getUsersListAction.fulfilled.match(result)) {
+          dispatch(setUsersCatalogFilterStateAction(query));
+        }
+      });
   };
 
   const onBtnBackClickHandle = () => {
@@ -123,6 +127,8 @@ export default function UsersCatalogFiltersDesk(): JSX.Element {
             formRef={formRef}
             currentSortValue={sortState}
             setterSortValue={setSortState}
+            className='user-catalog'
+            filterValues={UserSortFieldBtnValue}
           />
         </form>
       </div>

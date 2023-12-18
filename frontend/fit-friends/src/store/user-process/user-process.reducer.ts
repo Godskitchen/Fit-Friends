@@ -10,9 +10,11 @@ import {
   getFriendListAction,
   getMyTrainingsAction,
   getNotificationsAction,
+  getTrainingAmountAction,
   loginAction,
   registerAction,
-  updateProfileAction
+  updateProfileAction,
+  updateTrainingAmountAction
 } from '../api-actions';
 import { AuthorizationStatus, SliceNameSpace } from 'src/app-constants';
 import { HttpStatusCode } from 'src/services/server-api';
@@ -25,6 +27,7 @@ const initialState: UserProcess = {
   totalMyTrainingsCount: 0,
   friendList: undefined,
   totalFriendsCount: 0,
+  remainingTrainingAmount: 0,
   formErrors: {
     [HttpStatusCode.CONFLICT]: '',
     [HttpStatusCode.SERVER_INTERNAL]: '',
@@ -187,6 +190,15 @@ export const userProcess = createSlice({
           state.friendList = [...state.friendList, ...payload.friendList];
           state.totalFriendsCount = payload.totalFriendsCount;
         }
+      })
+      .addCase(getTrainingAmountAction.fulfilled, (state, {payload}) => {
+        state.remainingTrainingAmount = payload;
+      })
+      .addCase(getTrainingAmountAction.rejected, (state) => {
+        state.remainingTrainingAmount = 0;
+      })
+      .addCase(updateTrainingAmountAction.fulfilled, (state, {payload}) => {
+        state.remainingTrainingAmount = payload;
       });
   },
 });

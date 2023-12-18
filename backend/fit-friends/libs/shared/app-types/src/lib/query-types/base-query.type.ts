@@ -2,6 +2,7 @@ export type BaseQuery = {
   limit: number;
   page?: number;
   sortDirection?: SortDirection;
+  active?: boolean;
 };
 
 export const SortDirection = {

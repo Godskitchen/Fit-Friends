@@ -5,9 +5,9 @@ import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { getDataUploadingStatus, getTrainingInfo, getTrainingsDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import LoadingScreen from '../../components/loading-components/loading-screen';
 import NotFoundPage from 'src/pages/not-found-page/not-found.page';
-import { getTrainingDetailsAction, updateTrainingAction } from 'src/store/api-actions';
+import { getTrainingAmountAction, getTrainingDetailsAction, updateTrainingAction } from 'src/store/api-actions';
 import Header from '../../components/header/header';
-import { DurationHashTagValue, GenderHashTagValue, HeaderNavTab, SpecialisationHashTagValue } from 'src/types/constants';
+import { DurationHashTagValue, GenderHashTagValue, HeaderNavTab, Role, SpecialisationHashTagValue } from 'src/types/constants';
 import { Helmet } from 'react-helmet-async';
 import ReviewsSideBar from '../../components/reviews-side-bar/reviews-side-bar';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -16,9 +16,11 @@ import { titleValidationHandler } from 'src/utils/validators/training/title';
 import { descriptionValidationHandler } from 'src/utils/validators/training/description';
 import TrainingVideoSection from '../../components/training-video-section/video-section';
 import { priceStringValidationHandler } from 'src/utils/validators/training/price';
+import { getMyProfileInfo, getTrainingAmount } from 'src/store/user-process/user-process.selectors';
+import PurchaseModal from 'src/components/purchase-modal/purchase-modal';
 
 
-export default function CoachTrainingInfoPage(): JSX.Element {
+export default function TrainingPage(): JSX.Element {
   const {trainingId} = useParams();
   const dispatch = useAppDispatch();
 
@@ -28,7 +30,23 @@ export default function CoachTrainingInfoPage(): JSX.Element {
   const [priceError, setPriceError] = useState<string>('');
   const [isDiscount, setDiscount] = useState<boolean>();
 
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+
   const videoSectionRef = useRef<HTMLDivElement | null>(null);
+  const closeModalBtnRef = useRef<HTMLButtonElement | null>(null);
+  const purchaseBtnRef = useRef<HTMLButtonElement | null>(null);
+
+  const openModal = () => {
+    setModalOpen(true);
+    document.body.classList.add('scroll-lock');
+    setTimeout(() => {closeModalBtnRef.current?.focus();}, 100);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    document.body.classList.remove('scroll-lock');
+    setTimeout(() => {purchaseBtnRef.current?.focus();}, 100);
+  };
 
   const {
     register,
@@ -53,20 +71,23 @@ export default function CoachTrainingInfoPage(): JSX.Element {
   const training = useAppSelector(getTrainingInfo);
   const isTrainingLoading = useAppSelector(getTrainingsDownloadingStatus);
   const isDataUploading = useAppSelector(getDataUploadingStatus);
+  const myProfile = useAppSelector(getMyProfileInfo);
+  const trainingAmount = useAppSelector(getTrainingAmount);
 
   useEffect(() => {
     if (training) {
       const price = training.price;
-      const discountPrice = Number((training.price * 0.1).toFixed());
+      const discountPrice = Number((training.price - (training.price * 0.1)).toFixed());
       setCurrentPrice(`${price} ₽`);
       setCurrentDiscountPrice(`${discountPrice} ₽`);
       setDiscount(training.isSpecialOffer);
+      dispatch(getTrainingAmountAction(training.trainingId));
     }
 
-  }, [training]);
+  }, [dispatch, training]);
 
 
-  if (training === undefined || isTrainingLoading) {
+  if (training === undefined || isTrainingLoading || !myProfile) {
     return <LoadingScreen />;
   }
 
@@ -83,16 +104,13 @@ export default function CoachTrainingInfoPage(): JSX.Element {
   };
 
   const onSubmitHandler: SubmitHandler<UpdateTrainingInputs> = (formData) => {
-    console.log(formData);
     const formPrice = +currentPrice.split(' ')[0];
     const sendData: Partial<UpdateTrainingInputs> = {
       title: formData.title !== training.title ? formData.title : undefined,
       description: formData.description !== training.description ? formData.description : undefined,
-      isSpecialOffer: formData.isSpecialOffer,
+      isSpecialOffer: formData.isSpecialOffer !== training.isSpecialOffer ? formData.isSpecialOffer : undefined,
       price: formPrice !== training.price ? formPrice : undefined,
     };
-
-    console.log(sendData);
 
     let isTrainingUpdated = false;
 
@@ -123,7 +141,7 @@ export default function CoachTrainingInfoPage(): JSX.Element {
 
   const onDiscountBtnCLickHandle = () => {
     const [priceVal] = currentPrice.split(' ');
-    const newDiscountPrice = `${Number((+priceVal * 0.1).toFixed())} ₽`;
+    const newDiscountPrice = `${Number((+priceVal - (+priceVal * 0.1)).toFixed())} ₽`;
     setCurrentDiscountPrice(newDiscountPrice);
     setDiscount(!isDiscount);
     setValue('isSpecialOffer', !isDiscount);
@@ -157,38 +175,35 @@ export default function CoachTrainingInfoPage(): JSX.Element {
                           <span className="training-info__name">{name}</span>
                         </div>
                       </div>
-                      {
-                        isEditMode
-                          ? (
-                            <button
-                              className="btn-flat btn-flat--light btn-flat--underlined training-info__edit training-info__edit--save"
-                              type="button"
-                              onClick={() => {
-                                setEditMode(false);
-                                onSubmitHandler(getValues());
-                                videoSectionRef.current?.classList.remove('training-video--load');
-                              }}
-                              disabled={!isEditMode || !isValid || isSubmitting || priceError !== '' || isDataUploading}
-                            >
-                              <svg width="12" height="12" aria-hidden="true">
-                                <use xlinkHref="#icon-edit"></use>
-                              </svg>
-                              <span>Сохранить</span>
-                            </button>
-                          )
-                          : (
-                            <button
-                              className="btn-flat btn-flat--light training-info__edit training-info__edit--edit"
-                              type="button"
-                              onClick={() => {setEditMode(true);}}
-                            >
-                              <svg width="12" height="12" aria-hidden="true">
-                                <use xlinkHref="#icon-edit"></use>
-                              </svg>
-                              <span>Редактировать</span>
-                            </button>
-                          )
-                      }
+                      {myProfile.role === Role.Trainer && isEditMode && (
+                        <button
+                          className="btn-flat btn-flat--light btn-flat--underlined training-info__edit training-info__edit--save"
+                          type="button"
+                          onClick={() => {
+                            setEditMode(false);
+                            onSubmitHandler(getValues());
+                            videoSectionRef.current?.classList.remove('training-video--load');
+                          }}
+                          disabled={!isEditMode || !isValid || isSubmitting || priceError !== '' || isDataUploading}
+                        >
+                          <svg width="12" height="12" aria-hidden="true">
+                            <use xlinkHref="#icon-edit"></use>
+                          </svg>
+                          <span>Сохранить</span>
+                        </button>
+                      )}
+                      {myProfile.role === Role.Trainer && !isEditMode && (
+                        <button
+                          className="btn-flat btn-flat--light training-info__edit training-info__edit--edit"
+                          type="button"
+                          onClick={() => {setEditMode(true);}}
+                        >
+                          <svg width="12" height="12" aria-hidden="true">
+                            <use xlinkHref="#icon-edit"></use>
+                          </svg>
+                          <span>Редактировать</span>
+                        </button>
+                      )}
                     </div>
                     <div className="training-info__main-content">
                       <form>
@@ -286,6 +301,18 @@ export default function CoachTrainingInfoPage(): JSX.Element {
                               </svg>
                               <span>{`${!isDiscount ? 'Сделать' : 'Отменить'} скидку 10%`}</span>
                             </button>
+                            {
+                              myProfile.role === Role.User &&
+                                <button
+                                  className="btn training-info__buy"
+                                  type="button"
+                                  ref={purchaseBtnRef}
+                                  onClick={() => openModal()}
+                                  disabled={trainingAmount > 0}
+                                >
+                                  Купить
+                                </button>
+                            }
                           </div>
                         </div>
                       </form>
@@ -298,6 +325,8 @@ export default function CoachTrainingInfoPage(): JSX.Element {
                       poster={training.backgroundImage}
                       videoSectionRef={videoSectionRef}
                       trainingId={training.trainingId}
+                      trainingAmount={trainingAmount}
+                      myRole={myProfile.role}
                     />
                   </div>
                 </div>
@@ -306,6 +335,12 @@ export default function CoachTrainingInfoPage(): JSX.Element {
           </section>
         </main>
       </div>
+      <PurchaseModal
+        training={training}
+        closeModal={closeModal}
+        isModalOpen={isModalOpen}
+        closeModalBtnRef={closeModalBtnRef}
+      />
     </Fragment>
   );
 }

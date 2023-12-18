@@ -7,11 +7,24 @@ import { BalanceQuery } from './queries/balance.query';
 export class BalanceService {
   constructor(private readonly balanceRepository: BalanceRepository) {}
 
-  public async update(dto: UpdateBalanceDto) {
-    return this.balanceRepository.update({ ...dto });
+  public async update(userId: number, dto: UpdateBalanceDto) {
+    return this.balanceRepository.update({ ...dto, userId });
   }
 
   public async getUserBalance(userId: number, query: BalanceQuery) {
     return this.balanceRepository.findAllByUserId(userId, query);
+  }
+
+  public async getTrainingRemainingAmount(userId: number, trainingId: number) {
+    const existTrainingBalance = await this.balanceRepository.findExist(
+      userId,
+      trainingId,
+    );
+
+    if (!existTrainingBalance) {
+      return -1;
+    }
+
+    return existTrainingBalance.remainingAmount;
   }
 }

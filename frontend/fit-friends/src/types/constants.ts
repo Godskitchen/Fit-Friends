@@ -91,6 +91,23 @@ export enum SkillFieldValue {
   Pro = 'Профессионал'
 }
 
+export const UserSortFieldBtnValue: Record<string, string> = {
+  Trainer: 'Тренеры',
+  User: 'Пользователи'
+};
+
+export const PriceSortFieldBtnValue: Record<string, string> = {
+  Cheap: 'Дешевле',
+  Expensive: 'Дороже',
+  Free: 'Бесплатные'
+};
+
+export enum PaymentMethodValue {
+  Visa = 'visa',
+  Mir = 'mir',
+  UMoney = 'iomoney'
+}
+
 export const SkillFieldToValueConvert: Record<SkillFieldValue, SkillLevel> = {
   [SkillFieldValue.Beginner]: SkillLevel.Beginner,
   [SkillFieldValue.Amateur]: SkillLevel.Amateur,

@@ -40,7 +40,12 @@ export default function UserCard({userId, name, avatar, location, specialisation
             ))
           }
         </ul>
-        <Link className="btn btn--medium thumbnail-user__button" to={`${AppRoute.UsersCatalog}/${userId}`}>Подробнее</Link>
+        <Link
+          className="btn btn--medium thumbnail-user__button"
+          to={`${AppRoute.UsersCatalog}/${userId}`}
+        >
+            Подробнее
+        </Link>
       </div>
     </li>
   );

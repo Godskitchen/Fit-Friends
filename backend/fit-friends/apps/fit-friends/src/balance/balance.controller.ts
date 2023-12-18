@@ -8,6 +8,8 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  ParseIntPipe,
   Patch,
   Query,
   Req,
@@ -25,6 +27,7 @@ import {
   ApiBearerAuth,
   ApiForbiddenResponse,
   ApiOkResponse,
+  ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -52,6 +55,7 @@ export class BalanceController {
   @UseGuards(ModifyBalanceGuard)
   @Roles(Role.User)
   public async updateBalance(
+    @Req() { user }: RequestWithAccessTokenPayload,
     @Body(
       new ValidationPipe({
         whitelist: true,
@@ -60,7 +64,7 @@ export class BalanceController {
     )
     dto: UpdateBalanceDto,
   ) {
-    const balance = await this.balanceService.update(dto);
+    const balance = await this.balanceService.update(user.sub, dto);
     return fillRDO(BalanceRdo, balance);
   }
 
@@ -76,7 +80,7 @@ export class BalanceController {
   })
   @Get('/mylist')
   @Roles(Role.User)
-  public async getUserBalance(
+  public async getUserTotalBalance(
     @Req() { user }: RequestWithAccessTokenPayload,
     @Query(
       new ValidationPipe({
@@ -91,5 +95,32 @@ export class BalanceController {
       query,
     );
     return fillRDO(BalanceRdo, totalBalance);
+  }
+
+  @ApiOkResponse({
+    description: `Возвращено количество оставшихся использований тренировок. 
+      Если тренировка не приобреталась, то возвращается 0`,
+    type: Boolean,
+  })
+  @ApiBadRequestResponse({
+    description: 'Некорректный параметр trainingId.',
+  })
+  @ApiForbiddenResponse({
+    description: 'Маршрут доступен только обычному пользователю',
+  })
+  @ApiParam({
+    name: 'trainingId',
+    description: 'id тренировки - целое положительное число',
+  })
+  @Get('/mylist/:trainingId')
+  @Roles(Role.User)
+  public async getTrainingBalanceRemainingAmount(
+    @Req() { user }: RequestWithAccessTokenPayload,
+    @Param('trainingId', ParseIntPipe) id: number,
+  ) {
+    const remainingAmount =
+      await this.balanceService.getTrainingRemainingAmount(user.sub, id);
+
+    return remainingAmount;
   }
 }

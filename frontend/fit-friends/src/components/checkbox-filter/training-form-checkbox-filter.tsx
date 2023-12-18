@@ -8,6 +8,7 @@ type CheckboxFilterProps = {
   checkBoxBtnValues: Record<string, string>;
   setterCheckboxValues: React.Dispatch<React.SetStateAction<Record<string, boolean>>>;
   currentCheckBoxesGroupState: Record<string, boolean>;
+  className: string;
 }
 
 export default function TrainingFormCheckBoxFilter(
@@ -18,7 +19,8 @@ export default function TrainingFormCheckBoxFilter(
     formRef,
     setterCheckboxValues,
     currentCheckBoxesGroupState,
-    checkBoxBtnValues
+    checkBoxBtnValues,
+    className
   }: CheckboxFilterProps
 ): JSX.Element {
 
@@ -45,12 +47,12 @@ export default function TrainingFormCheckBoxFilter(
   }, [timeoutRef]);
 
   return (
-    <div className={`my-training-form__block my-training-form__block--${filterName}`}>
-      <h4 className="my-training-form__block-title">{title}</h4>
-      <ul className="my-training-form__check-list">
+    <div className={`${className}-form__block ${className}-form__block--${filterName}`}>
+      <h4 className={`${className}-form__block-title`}>{title}</h4>
+      <ul className={`${className}-form__check-list`}>
         {
           Object.entries(checkBoxBtnValues).map(([key, value]) => (
-            <li className="my-training-form__check-list-item" key={key}>
+            <li className={`${className}-form__check-list-item`} key={key}>
               <div className="custom-toggle custom-toggle--checkbox">
                 <label>
                   <input

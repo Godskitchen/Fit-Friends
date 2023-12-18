@@ -23,3 +23,4 @@ export const getTotalMyTrainingsCount = (state: State): number => state[SliceNam
 
 export const getFriendList = (state:State) => state[SliceNameSpace.User].friendList;
 export const getTotalFriendsCount = (state:State) => state[SliceNameSpace.User].totalFriendsCount;
+export const getTrainingAmount = (state:State) => state[SliceNameSpace.User].remainingTrainingAmount;

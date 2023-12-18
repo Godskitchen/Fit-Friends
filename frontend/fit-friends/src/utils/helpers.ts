@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 
@@ -60,7 +59,7 @@ export const formatVideoDurationTime = (rawTime: number): string => {
 
 export const formatNumber = (number: number): string => {
   const reversedNumber = `${number}`.split('').reverse().join('');
-  const formattedNumber = reversedNumber.replace(/(\d{3})/g, '$1 ').trim();
+  const formattedNumber = reversedNumber.replace(/(\d{3})/g, '$1\u00A0').trim();
   return formattedNumber.split('').reverse().join('');
 };
 

@@ -35,11 +35,17 @@ export class BalanceRepository {
   }
 
   public async update({
-    balanceId,
+    userId,
+    trainingId,
     remainingAmount,
   }: UpdateBalanceData): Promise<UserBalance> {
     return this.prismaConnector.userBalance.update({
-      where: { balanceId },
+      where: {
+        userId_trainingId: {
+          userId,
+          trainingId,
+        },
+      },
       data: { remainingAmount },
       include: { training: true },
     });
@@ -47,10 +53,13 @@ export class BalanceRepository {
 
   public async findAllByUserId(
     userId: number,
-    { limit, page, sortDirection }: BaseQuery,
+    { limit, page, sortDirection, active }: BaseQuery,
   ): Promise<UserBalance[]> {
     return this.prismaConnector.userBalance.findMany({
-      where: { userId },
+      where: {
+        userId,
+        remainingAmount: active === true ? { gt: 0 } : undefined,
+      },
       include: { training: true },
       take: limit,
       skip: page ? limit * (page - 1) : undefined,

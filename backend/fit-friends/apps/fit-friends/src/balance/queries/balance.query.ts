@@ -1,5 +1,11 @@
 import { Transform, Type } from 'class-transformer';
-import { IsEnum, IsInt, IsOptional, IsPositive } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsInt,
+  IsOptional,
+  IsPositive,
+} from 'class-validator';
 import {
   DEFAULT_SORT_DIRECTION,
   MAX_ITEMS_LIMIT,
@@ -45,4 +51,14 @@ export class BalanceQuery {
   @IsEnum(SortDirection)
   @IsOptional()
   public sortDirection: SortDirection = DEFAULT_SORT_DIRECTION;
+
+  @ApiPropertyOptional({
+    description:
+      'Фильтрация балансам тренировок, которые ещё не израсходованы пользователем. Булево значение',
+    example: true,
+  })
+  @IsBoolean()
+  @Type(() => Boolean)
+  @IsOptional()
+  public active?: boolean;
 }

@@ -137,7 +137,9 @@ export class TrainingRepository {
       ? trainingType.map((value) => ({ trainingType: value }))
       : [];
 
-    const ratingFilter = rating ? { gte: rating, lt: rating + 1 } : undefined;
+    const ratingFilter = rating
+      ? { gte: rating[0], lte: rating[1] }
+      : undefined;
 
     const totalTrainingsCount = await this.prismaConnector.training.count({
       where: {

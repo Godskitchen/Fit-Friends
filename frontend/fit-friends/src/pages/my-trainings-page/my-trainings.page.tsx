@@ -2,12 +2,12 @@ import { HeaderNavTab } from 'src/types/constants';
 import Header from '../../components/header/header';
 import { Helmet } from 'react-helmet-async';
 import { Fragment } from 'react';
-import MyTrainingsFilterDesk from '../../components/my-trainings-filter-desk/my-trainings-filter-desk';
+import MyTrainingsFilterDesk from '../../components/filter-desk/my-trainings-filter-desk';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { getMyTrainings, getTotalMyTrainingsCount} from 'src/store/user-process/user-process.selectors';
 import {getMyTrainingsFiltersState} from 'src/store/main-process/main-process.selectors';
 import LoadingBlock from 'src/components/loading-components/loading-block';
-import MyTrainingsList from 'src/components/my-trainings-list/my-trainings-list';
+import TrainingsList from 'src/components/trainings-list/trainings-list';
 import { getTrainingsDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import { addMyTrainingsToListAction } from 'src/store/api-actions';
 import { setMyTrainingsFiltersStateAction } from 'src/store/main-process/main-process.reducer';
@@ -56,7 +56,11 @@ export default function MyTrainingsPage(): JSX.Element {
                     <LoadingBlock /> :
                     <div className="inner-page__content">
                       <div className="my-trainings">
-                        <MyTrainingsList trainingCards={trainings} />
+                        <TrainingsList
+                          trainingCards={trainings}
+                          listClassName='my-trainings__list'
+                          itemClassName='my-trainings__item'
+                        />
                         {isLoading && <LoadingBlock />}
                         <div className="show-more my-trainings__show-more">
                           <button

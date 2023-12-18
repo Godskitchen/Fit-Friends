@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import './video-player.css';
 import { ChangeEvent, Fragment, useRef, useState } from 'react';
 import VideoProgressBar from '../video-progress-bar/video-progress-bar';
@@ -7,17 +8,20 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import BlockUI from '../block-UI/block-UI';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { getDataUploadingStatus } from 'src/store/app-data/app-data.selectors';
-import { updateTrainingAction } from 'src/store/api-actions';
+import { updateTrainingAction, updateTrainingAmountAction } from 'src/store/api-actions';
 import LoadingBlock from '../loading-components/loading-block';
+import { Role } from 'src/types/constants';
 
 type TrainingVideoProps = {
   videoLink: string;
   poster: string;
   videoSectionRef: React.MutableRefObject<HTMLDivElement | null>;
   trainingId: number;
+  trainingAmount: number;
+  myRole: Role;
 }
 
-export default function TrainingVideoSection({videoLink, poster, videoSectionRef, trainingId}: TrainingVideoProps): JSX.Element {
+export default function TrainingVideoSection({videoLink, poster, videoSectionRef, trainingId, trainingAmount, myRole}: TrainingVideoProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -27,6 +31,8 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isLoadedError, setLoadedError] = useState(false);
+  const [canVideoPlay, setCanVideoPlay] = useState(myRole === Role.Trainer);
 
   const [isVideoUploaded, setVideoUploaded] = useState(false);
   const [isVideoUploading, setVideoUploading] = useState(false);
@@ -49,6 +55,18 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
     }
   );
 
+  const resetPlayer = () => {
+    playBtnRef.current?.classList.remove('visually-hidden');
+    videoSectionRef.current?.classList.remove('training-video--stop');
+    if (myRole === Role.User) {
+      setCanVideoPlay(false);
+    }
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.pause();
+    }
+  };
+
   const handlePlayBtnClick = () => {
     if (videoRef.current?.paused) {
       videoRef.current?.play();
@@ -64,26 +82,31 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
   };
 
   const handleFullScrBtnClick = () => {
-    videoRef.current?.requestFullscreen();
+    if ((canVideoPlay && myRole === Role.User) || Role.Trainer) {
+      videoRef.current?.requestFullscreen();
+    }
   };
 
   const handleVideoTimeUpdate = () => {
-    if (videoRef.current !== null) {
-      setCurrentTime(Number(videoRef.current.currentTime.toFixed(0)));
-    }
+    setCurrentTime(Number(videoRef.current?.currentTime.toFixed(0)));
+  };
+
+  const handleVideoError = () => {
+    setLoadedError(true);
+    playBtnRef.current?.classList.add('visually-hidden');
   };
 
   const handleLoadMetaData = () => {
-    if (videoRef.current !== null) {
-      setDuration(Number(videoRef.current.duration.toFixed(0)));
-    }
+    playBtnRef.current?.classList.remove('visually-hidden');
+    setLoadedError(false);
+    setDuration(Number(videoRef.current?.duration.toFixed(0)));
   };
 
   const handleVideoEnded = () => {
     if (document.fullscreenElement) {
       document.exitFullscreen();
     }
-    playBtnRef.current?.classList.remove('visually-hidden');
+    resetPlayer();
   };
 
   const handleDeleteBtnClick = () => {
@@ -113,7 +136,28 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
 
   const onSubmitHandler: SubmitHandler<{video: FileList}> = (formData) => {
     dispatch(updateTrainingAction(Object.assign(formData, {trainingId})))
-      .then(() => {videoSectionRef.current?.classList.remove('training-video--load');});
+      .then((result) => {
+        if (updateTrainingAction.fulfilled.match(result)) {
+          videoSectionRef.current?.classList.remove('training-video--load');
+        }
+      });
+  };
+
+  const handleBeginTrainingBtnClick = () => {
+    dispatch(updateTrainingAmountAction({
+      trainingId,
+      remainingAmount: trainingAmount - 1,
+    }))
+      .then((result) => {
+        if (updateTrainingAmountAction.fulfilled.match(result)) {
+          videoSectionRef.current?.classList.add('training-video--stop');
+          setCanVideoPlay(true);
+        }
+      });
+  };
+
+  const handleEndTrainingBtnClick = () => {
+    resetPlayer();
   };
 
   const durationValue = formatVideoDurationTime(duration);
@@ -122,22 +166,30 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
   return (
     <Fragment>
       <div className="training-video__video">
-        <video className="training-video__player"
-          ref={videoRef}
-          src={videoLink}
-          poster={poster}
-          preload='metadata'
-          onTimeUpdate={handleVideoTimeUpdate}
-          onLoadedMetadata={handleLoadMetaData}
-          onEnded={handleVideoEnded}
-          onClick={handleVideoPlayerClick}
-        />
-
+        {
+          isLoadedError
+            ? <p>Видео тренировки на данный момент недоступно</p>
+            : (
+              <video className="training-video__player"
+                ref={videoRef}
+                src={videoLink}
+                poster={poster}
+                preload='metadata'
+                onTimeUpdate={handleVideoTimeUpdate}
+                onLoadedMetadata={handleLoadMetaData}
+                onError={handleVideoError}
+                onEnded={handleVideoEnded}
+                onClick={handleVideoPlayerClick}
+                muted
+              />
+            )
+        }
         <button
           ref={playBtnRef}
           className="training-video__play-button btn-reset"
           style={{ top: 0, bottom: 0, right: 0, left: 0, margin: 'auto' }}
           onClick={handlePlayBtnClick}
+          disabled={isLoadedError || !canVideoPlay}
         >
           <svg width="18" height="30" aria-hidden="true">
             <use xlinkHref="#icon-arrow"></use>
@@ -187,27 +239,49 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
         </form>
       </div>
       <div className="training-video__buttons-wrapper">
-        <button className="btn training-video__button training-video__button--start" type="button" disabled>Приступить</button>
-        <div className="training-video__edit-buttons">
-          <button
-            className="btn"
-            type="button"
-            disabled={
-              !formState.isValid
+        {myRole === Role.User && (
+          <Fragment>
+            <button
+              className="btn training-video__button training-video__button--start"
+              type="button"
+              disabled={ trainingAmount <= 0 || isLoadedError}
+              onClick={handleBeginTrainingBtnClick}
+            >
+              Приступить
+            </button>
+            <button
+              className="btn training-video__button training-video__button--stop"
+              type="button"
+              onClick={handleEndTrainingBtnClick}
+            >
+              Закончить
+            </button>
+          </Fragment>
+        )}
+        {myRole === Role.Trainer && (
+          <div className="training-video__edit-buttons">
+            <button
+              className="btn"
+              type="button"
+              disabled={
+                !formState.isValid
               || formState.isSubmitting
               || isVideoUploading
               || !isVideoUploaded
-            }
-            onClick={() => {formRef.current?.requestSubmit();}}
-          >Сохранить
-          </button>
-          <button
-            className="btn btn--outlined"
-            type="button"
-            onClick={handleDeleteBtnClick}
-          >Удалить
-          </button>
-        </div>
+              }
+              onClick={() => {formRef.current?.requestSubmit();}}
+            >
+              Сохранить
+            </button>
+            <button
+              className="btn btn--outlined"
+              type="button"
+              onClick={handleDeleteBtnClick}
+            >
+              Удалить
+            </button>
+          </div>
+        )}
       </div>
     </Fragment>
   );

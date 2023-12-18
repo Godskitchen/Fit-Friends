@@ -1,10 +1,12 @@
-import { LocationToServer, RoleToServer } from 'src/utils/adapters/adaprters-constants';
+import { LocationToServer, PaymentTypeToServer, RoleToServer } from 'src/utils/adapters/adaprters-constants';
 import { NewUserDto, NewProfileDto } from 'src/utils/adapters/api-dtos/new-user.dto';
 import {RegisterInfo, TrainerProfileInfo, UpdateProfileInfo, UserProfileInfo } from 'src/types/user.type';
 import { UpdateUserDto } from './api-dtos/update-user.dto';
 import { Role } from 'src/types/constants';
 import { NewTrainingDto, UpdateTrainingDto } from './api-dtos/new-training.dto';
 import { NewTrainingInfo, UpdateTrainingInfo } from 'src/types/training.type';
+import { CreatePurchaseInputs } from 'src/types/forms.type';
+import { NewOrderDto } from './api-dtos/new-order.dto';
 
 
 export const adaptRegisterUserToServer = (newUser: RegisterInfo): NewUserDto => ({
@@ -77,4 +79,10 @@ export const adaptUpdateTrainingToServer = (updateTraining: UpdateTrainingInfo):
   isSpecialOffer: updateTraining.isSpecialOffer,
   price: updateTraining.price,
   video: updateTraining.trainingVideo
+});
+
+export const adaptOrderToServer = (newOrder: CreatePurchaseInputs): NewOrderDto => ({
+  trainingId: newOrder.trainingId,
+  trainingCount: newOrder.trainingCount,
+  paymentType: PaymentTypeToServer[newOrder.paymentType],
 });

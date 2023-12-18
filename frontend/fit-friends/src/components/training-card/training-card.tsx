@@ -15,16 +15,10 @@ export default function TrainingCard({card:{
   specialisation,
   description,
   price,
-  isSpecialOffer,
   backgroundImage,
   rating,
   caloriesToBurn
 }, className}: TrainingCardProp): JSX.Element {
-
-  let currentPrice = price;
-  if (isSpecialOffer) {
-    currentPrice = Number((price * 0.1).toFixed());
-  }
 
   return (
     <li className={className}>
@@ -41,9 +35,9 @@ export default function TrainingCard({card:{
           </div>
           <p className="thumbnail-training__price">
             {
-              currentPrice !== 0 ? (
+              price !== 0 ? (
                 <Fragment>
-                  <span className="thumbnail-training__price-value">{currentPrice}</span>
+                  <span className="thumbnail-training__price-value">{price}</span>
                   <span>₽</span>
                 </Fragment>
               ) : 'Бесплатно'
@@ -76,7 +70,7 @@ export default function TrainingCard({card:{
             </p>
           </div>
           <div className="thumbnail-training__button-wrapper">
-            <Link className="btn btn--small thumbnail-training__button-catalog" to={`${AppRoute.CoachAccount}${AppRoute.MyTrainings}/${trainingId}`}>Подробнее</Link>
+            <Link className="btn btn--small thumbnail-training__button-catalog" to={`${AppRoute.TrainingsCatalog}/${trainingId}`}>Подробнее</Link>
             <Link className="btn btn--small btn--outlined thumbnail-training__button-catalog" to="#">Отзывы</Link>
           </div>
         </div>

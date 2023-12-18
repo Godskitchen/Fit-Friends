@@ -11,6 +11,7 @@ type RangeFilterProps = {
   minPossibleValue: number;
   filterName: string;
   title: string;
+  className: string;
 }
 
 export default function RangeFilter(
@@ -24,7 +25,8 @@ export default function RangeFilter(
     maxPossibleValue,
     minPossibleValue,
     filterName,
-    title
+    title,
+    className
   }: RangeFilterProps
 ): JSX.Element {
 
@@ -63,8 +65,8 @@ export default function RangeFilter(
   }, [timeoutRef]);
 
   return (
-    <div className={`my-training-form__block my-training-form__block--${filterName}`}>
-      <h4 className="my-training-form__block-title">{title}</h4>
+    <div className={`${className}-form__block ${className}-form__block--${filterName}`}>
+      <h4 className={`${className}-form__block-title`}>{title}</h4>
       <div className={`filter-${filterName}`}>
         <div className="filter-range">
           <div className="slider">

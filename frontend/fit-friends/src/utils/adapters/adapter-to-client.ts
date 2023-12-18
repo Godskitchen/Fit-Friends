@@ -3,6 +3,7 @@ import { FriendListRdo, TrainerProfileRdo, UserListRdo, UserProfileRdo, UserRdo 
 import { TrainingListRdo, TrainingRdo } from './api-rdos/training.rdo';
 import { Training, TrainingCardType, TrainingList } from 'src/types/training.type';
 import { Role, Location } from 'src/types/constants';
+import { BalanceRdo } from './api-rdos/balance.rdo';
 
 export const adaptUserToClient = (rdo: UserRdo): UserInfo => ({
   userId: rdo.userId,
@@ -89,3 +90,5 @@ export const adaptFriendListToClient = (rdo: FriendListRdo): FriendList => ({
   friendList: rdo.friendList.map((friend) => adaptUserToClient(friend)),
   totalFriendsCount: rdo.totalFriendsCount
 });
+
+export const adaptTrainingAmountToClient = (rdo: BalanceRdo): number => rdo.remainingAmount;

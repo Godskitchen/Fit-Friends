@@ -1,20 +1,20 @@
-import { IsInt, IsUUID, Min } from 'class-validator';
+import { IsInt, IsPositive, Min } from 'class-validator';
 import {
-  BALANCE_ID_VALIDATION_MESSAGE,
   MIN_REMAINING_AMOUNT,
+  TRAINING_ID_VALIDATION_MESSAGE,
   UPDATE_REMAINING_AMOUNT_VALIDATION_MESSAGE,
-  UUID_VERSION,
 } from './constants';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateBalanceDto {
   @ApiProperty({
-    description: 'id баланса. UUID-строка',
-    type: 'uuid',
-    example: '3432ddkk-3k343kk-k34324k-343kk',
+    description: 'id тренировки. Целое положительное число',
+    minimum: 0,
+    example: 10,
   })
-  @IsUUID(UUID_VERSION, { message: BALANCE_ID_VALIDATION_MESSAGE })
-  balanceId: string;
+  @IsPositive({ message: TRAINING_ID_VALIDATION_MESSAGE })
+  @IsInt({ message: TRAINING_ID_VALIDATION_MESSAGE })
+  trainingId: number;
 
   @ApiProperty({
     description: `Оставшееся число тренировок. Минимальное значение ${MIN_REMAINING_AMOUNT}`,

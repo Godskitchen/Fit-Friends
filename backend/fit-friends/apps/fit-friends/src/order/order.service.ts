@@ -28,7 +28,9 @@ export class OrderService {
       throw new BadRequestException(TrainingErrors.TRAINING_NOT_FOUND);
     }
 
-    const price = training.price;
+    const price = training.isSpecialOffer
+      ? Number((training.price - training.price * 0.1).toFixed())
+      : training.price;
     const sum = price * trainingCount;
 
     const order = await this.orderRepository.create(

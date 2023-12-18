@@ -1,4 +1,4 @@
-import { Location } from 'src/types/constants';
+import { Location, PaymentMethodValue } from 'src/types/constants';
 
 export enum RoleToServer {
   Sportsman = 'User',
@@ -25,4 +25,10 @@ export const LocationToClient: Record<string, Location> = {
   Udelnaya: Location.Udelnaya,
   Zvezdnaya: Location.Zvezdnaya,
   Sportivnaya: Location.Sportivnaya
+} as const;
+
+export const PaymentTypeToServer: Record<PaymentMethodValue, string> = {
+  [PaymentMethodValue.Visa]: 'Visa',
+  [PaymentMethodValue.Mir]: 'Mir',
+  [PaymentMethodValue.UMoney]: 'UMoney'
 } as const;

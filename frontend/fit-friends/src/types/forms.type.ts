@@ -1,4 +1,4 @@
-import { Gender, Role, SkillLevel, Specialisation, TrainingDuration, Location } from './constants';
+import { Gender, Role, SkillLevel, Specialisation, TrainingDuration, Location, PaymentMethodValue } from './constants';
 
 export type RegisterInputs = {
   name: string;
@@ -65,6 +65,12 @@ export type UpdateTrainingInputs = {
   video?: FileList;
 }
 
+export type CreatePurchaseInputs = {
+  trainingId: number;
+  trainingCount: number;
+  paymentType: PaymentMethodValue;
+}
+
 export type MyTrainingsFitersState = {
   price?: string;
   caloriesToBurn?: string;
@@ -91,5 +97,11 @@ export type FriendsQueryState = {
 export type TrainingsCatalogFiltersState = {
   page?: string;
   limit?: string;
+  price?: string;
+  caloriesToBurn?: string;
   trainerId?: string;
+  trainingType?: string;
+  rating?: string;
+  sort?: string;
+  sortDirection?: string;
 }

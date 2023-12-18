@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {FormEvent, useEffect, useRef, useState} from 'react';
 import './range-slider.css';
 import InputRangeFilter from '../range-filters/input-range-filter';
@@ -116,6 +115,7 @@ export default function MyTrainingsFilterDesk(): JSX.Element {
           minPossibleValue={PRICE.MIN}
           title='Цена, ₽'
           filterName='price'
+          className='my-training'
         />
         <InputRangeFilter
           timeoutRef={timeoutRef}
@@ -132,6 +132,7 @@ export default function MyTrainingsFilterDesk(): JSX.Element {
           minPossibleValue={CALORIES_TO_BURN.MIN}
           title='Калории'
           filterName='calories'
+          className='my-training'
         />
         <RangeFilter
           timeoutRef={timeoutRef}
@@ -144,6 +145,7 @@ export default function MyTrainingsFilterDesk(): JSX.Element {
           setterMinRangeValue={setMinRating}
           title='Рейтинг'
           filterName='raiting'
+          className='my-training'
         />
         <TrainingFormCheckBoxFilter
           title='Длительность'
@@ -153,6 +155,7 @@ export default function MyTrainingsFilterDesk(): JSX.Element {
           setterCheckboxValues={setDurationsState}
           currentCheckBoxesGroupState={durationsState}
           checkBoxBtnValues={DurationFieldValue}
+          className='my-training'
         />
       </form>
     </div>

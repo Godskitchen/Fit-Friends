@@ -4,6 +4,7 @@ export type CreateBalanceData = {
 };
 
 export type UpdateBalanceData = {
-  balanceId: string;
+  userId: number;
+  trainingId: number;
   remainingAmount: number;
 };

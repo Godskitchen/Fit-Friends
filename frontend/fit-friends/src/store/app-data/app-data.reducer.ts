@@ -1,6 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { SliceNameSpace } from 'src/app-constants';
-import { addFriendsToListAction, addMyTrainingsToListAction, addMoreUsersToListAction, checkUserSubscriptionAction, createTrainingAction, getFriendListAction, getTrainingDetailsAction, getUserDetailsAction, getUsersListAction, updateTrainingAction, getTrainingListAction, addTrainingsToListAction } from '../api-actions';
+import {
+  addFriendsToListAction,
+  addMyTrainingsToListAction,
+  addUsersToListAction,
+  checkUserSubscriptionAction,
+  createTrainingAction, getFriendListAction,
+  getTrainingDetailsAction,
+  getUserDetailsAction,
+  getUsersListAction,
+  updateTrainingAction,
+  getTrainingListAction,
+  addTrainingsToListAction,
+  createOrderAction,
+} from '../api-actions';
 import { AppData } from 'src/types/state.type';
 
 const initialState: AppData = {
@@ -74,17 +87,17 @@ export const appData = createSlice({
         state.usersDownloadingStatus = false;
         state.userList = null;
       })
-      .addCase(addMoreUsersToListAction.fulfilled, (state, {payload}) => {
+      .addCase(addUsersToListAction.fulfilled, (state, {payload}) => {
         state.usersDownloadingStatus = false;
         if (state.userList) {
           state.userList = [...state.userList, ...payload.userList];
           state.totalUsersCount = payload.totalUsersCount;
         }
       })
-      .addCase(addMoreUsersToListAction.pending, (state) => {
+      .addCase(addUsersToListAction.pending, (state) => {
         state.usersDownloadingStatus = true;
       })
-      .addCase(addMoreUsersToListAction.rejected, (state) => {
+      .addCase(addUsersToListAction.rejected, (state) => {
         state.usersDownloadingStatus = false;
       })
       .addCase(getFriendListAction.fulfilled, (state) => {
@@ -144,6 +157,16 @@ export const appData = createSlice({
           state.trainingList = [...state.trainingList, ...payload.trainingList];
         }
         state.totalTrainingsCount = payload.totalTrainingsCount;
+      })
+      .addCase(createOrderAction.fulfilled, (state) => {
+        state.dataUploadingStatus = false;
+      })
+      .addCase(createOrderAction.pending, (state) => {
+        state.dataUploadingStatus = true;
+      })
+      .addCase(createOrderAction.rejected, (state) => {
+        state.dataUploadingStatus = false;
       });
   }
 });
+

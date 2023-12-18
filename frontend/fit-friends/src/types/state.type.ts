@@ -13,6 +13,7 @@ export type UserProcess = {
   friendList?: UserInfo[] | null;
   totalFriendsCount: number;
   totalMyTrainingsCount: number;
+  remainingTrainingAmount: number;
   notifications: Message[];
   formErrors: {
     [key: number]: string | Record<string, string>;

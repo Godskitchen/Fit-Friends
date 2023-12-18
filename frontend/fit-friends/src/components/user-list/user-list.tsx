@@ -6,12 +6,14 @@ type UserListProps = {
   userCards: UserInfo[];
 }
 export default function UserList({userCards}: UserListProps): JSX.Element {
+
+  let cardId = 0;
   return (
     <ul className="users-catalog__list">
       {
         userCards.map((card) => (
           <UserCard
-            key={card.userId}
+            key={cardId++}
             userId={card.userId}
             name={card.name}
             avatar={card.avatar}

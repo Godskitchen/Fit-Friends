@@ -3,9 +3,9 @@ import { Helmet } from 'react-helmet-async';
 import Header from 'src/components/header/header';
 import LoadingBlock from 'src/components/loading-components/loading-block';
 import UserList from 'src/components/user-list/user-list';
-import UsersCatalogFiltersDesk from 'src/components/users-catalog-filters-desk/users-catalog-filters-desk';
+import UsersCatalogFiltersDesk from 'src/components/filter-desk/users-catalog-filters-desk';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
-import { addMoreUsersToListAction } from 'src/store/api-actions';
+import { addUsersToListAction } from 'src/store/api-actions';
 import { getTotalUsersCount, getUserList, getUsersDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import { setUsersCatalogFilterStateAction } from 'src/store/main-process/main-process.reducer';
 import { getUsersCatalogFilterState } from 'src/store/main-process/main-process.selectors';
@@ -25,9 +25,9 @@ export default function UsersCatalogPage(): JSX.Element {
       page: filterState.page ? `${+filterState.page + 1}` : filterState.page
     };
 
-    dispatch(addMoreUsersToListAction(newFilterState))
+    dispatch(addUsersToListAction(newFilterState))
       .then((result) => {
-        if (addMoreUsersToListAction.fulfilled.match(result)) {
+        if (addUsersToListAction.fulfilled.match(result)) {
           dispatch(setUsersCatalogFilterStateAction(newFilterState));
         }
       });

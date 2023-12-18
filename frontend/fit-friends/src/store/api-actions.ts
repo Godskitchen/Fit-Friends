@@ -5,17 +5,19 @@ import { ApiRoute, AppRoute } from 'src/app-constants';
 import { saveToken, dropToken } from 'src/services/auth-token';
 import { HttpStatusCode, REQUEST_TIMEOUT, SERVER_URL, shouldDisplayError } from 'src/services/server-api';
 import { Role } from 'src/types/constants';
-import { CreateTrainingInputs, FriendsQueryState, TrainingsCatalogFiltersState, MyTrainingsFitersState, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs, UpdateTrainingInputs, UsersCatalogFiltersState } from 'src/types/forms.type';
+import { CreateTrainingInputs, FriendsQueryState, TrainingsCatalogFiltersState, MyTrainingsFitersState, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs, UpdateTrainingInputs, UsersCatalogFiltersState, CreatePurchaseInputs } from 'src/types/forms.type';
 import { AppDispatch, State } from 'src/types/state.type';
 import { AuthData, FriendList, KnownError, UserInfo, UserList } from 'src/types/user.type';
-import { adaptCoachProfileToServer, adaptNewTrainingToServer, adaptRegisterUserToServer, adaptUpdateProfiletoServer, adaptUpdateTrainingToServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
+import { adaptCoachProfileToServer, adaptNewTrainingToServer, adaptOrderToServer, adaptRegisterUserToServer, adaptUpdateProfiletoServer, adaptUpdateTrainingToServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
 import { AuthUserRdo, FriendListRdo, UserListRdo, UserRdo } from 'src/utils/adapters/api-rdos/user.rdo';
 import { redirectAction } from './redirect.action';
-import { adaptFriendListToClient, adaptTrainingsListToClient, adaptTrainingToClient, adaptUserToClient, adaptUsersListToClient } from 'src/utils/adapters/adapter-to-client';
+import { adaptFriendListToClient, adaptTrainingsListToClient, adaptTrainingToClient, adaptUserToClient, adaptUsersListToClient, adaptTrainingAmountToClient } from 'src/utils/adapters/adapter-to-client';
 import { Message } from 'src/types/message.type';
 import { Training, TrainingList } from 'src/types/training.type';
 import { TrainingListRdo, TrainingRdo } from 'src/utils/adapters/api-rdos/training.rdo';
 import { TrainingRequest } from 'src/types/training-request.type';
+import { Balance } from 'src/types/balance.type';
+import { BalanceRdo } from 'src/utils/adapters/api-rdos/balance.rdo';
 
 export const registerAction = createAsyncThunk<
   UserInfo,
@@ -301,7 +303,7 @@ export const getUsersListAction = createAsyncThunk<UserList, UsersCatalogFilters
   }
 );
 
-export const addMoreUsersToListAction = createAsyncThunk<UserList, UsersCatalogFiltersState, {
+export const addUsersToListAction = createAsyncThunk<UserList, UsersCatalogFiltersState, {
   extra: AxiosInstance;
 }>(
   'data/addUsersToList',
@@ -423,6 +425,35 @@ export const addTrainingsToListAction = createAsyncThunk<TrainingList, Trainings
   async(trainingQuery, {extra: serverApi}) => {
     const {data} = await serverApi.get<TrainingListRdo>(ApiRoute.TrainingList, {params: trainingQuery});
     return adaptTrainingsListToClient(data);
+  }
+);
+
+export const createOrderAction = createAsyncThunk<void, CreatePurchaseInputs, {
+  extra: AxiosInstance;
+}>(
+  'user/createOrder',
+  async(orderData, {extra: serverApi}) => {
+    await serverApi.post(ApiRoute.CreateOrder, adaptOrderToServer(orderData));
+  }
+);
+
+export const getTrainingAmountAction = createAsyncThunk<number, number, {
+  extra: AxiosInstance;
+}>(
+  'user/getTrainingAmount',
+  async(trainingId, {extra: serverApi}) => {
+    const {data: trainingAmount} = await serverApi.get<number>(`${ApiRoute.MyListBalance}/${trainingId}`);
+    return trainingAmount;
+  }
+);
+
+export const updateTrainingAmountAction = createAsyncThunk<number, Balance, {
+  extra: AxiosInstance;
+}>(
+  'user/updateTrainingAmount',
+  async(updateData, {extra: serverApi}) => {
+    const {data: updatedBalance} = await serverApi.patch<BalanceRdo>(`${ApiRoute.UpdateBalance}`, updateData);
+    return adaptTrainingAmountToClient(updatedBalance);
   }
 );
 
