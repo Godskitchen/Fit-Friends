@@ -1,4 +1,4 @@
-import { ChangeEvent, MutableRefObject, useState } from 'react';
+import { ChangeEvent, MutableRefObject, useEffect, useState } from 'react';
 
 type CheckBoxFilterProps = {
   checkBoxList: Record<string, string>;
@@ -35,6 +35,12 @@ export default function UsersCatalogCheckBoxFilter(
       formRef.current?.requestSubmit();
     }, 1000);
   };
+
+  useEffect(() => () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  }, [timeoutRef]);
 
   const [isShowedAll, setShowAll] = useState(Object.entries(checkBoxList).length <= 5);
 

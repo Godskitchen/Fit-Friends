@@ -3,6 +3,7 @@ import { UserProcess } from '../../types/state.type';
 import {
   addFriendsToListAction,
   addMyTrainingsToListAction,
+  addPurchasesToListAction,
   checkAuthAction,
   createCoachProfileAction,
   createUserProfileAction,
@@ -10,6 +11,7 @@ import {
   getFriendListAction,
   getMyTrainingsAction,
   getNotificationsAction,
+  getPurchasesListAction,
   getTrainingAmountAction,
   loginAction,
   registerAction,
@@ -199,7 +201,25 @@ export const userProcess = createSlice({
       })
       .addCase(updateTrainingAmountAction.fulfilled, (state, {payload}) => {
         state.remainingTrainingAmount = payload;
+      })
+      .addCase(getPurchasesListAction.fulfilled, (state, {payload}) => {
+        state.myTrainingsList = payload.trainingList;
+        state.totalMyTrainingsCount = payload.totalTrainingsCount;
+      })
+      .addCase(getPurchasesListAction.rejected, (state) => {
+        state.remainingTrainingAmount = 0;
+        state.myTrainingsList = null;
+      })
+      .addCase(addPurchasesToListAction.fulfilled, (state, {payload}) => {
+        if (state.myTrainingsList) {
+          state.myTrainingsList = [...state.myTrainingsList, ...payload.trainingList];
+        }
+        state.totalMyTrainingsCount = payload.totalTrainingsCount;
+      })
+      .addCase(addPurchasesToListAction.rejected, (state) => {
+        state.remainingTrainingAmount = 0;
       });
+
   },
 });
 

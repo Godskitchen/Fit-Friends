@@ -183,7 +183,7 @@ model Subscriber {
 enum Gender {
   Male
   Female
-  No_Matter
+  NoMatter
 }
 
 enum Role {

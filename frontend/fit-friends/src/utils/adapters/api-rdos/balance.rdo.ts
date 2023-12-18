@@ -5,3 +5,8 @@ export type BalanceRdo = {
   training: TrainingRdo;
   remainingAmount: number;
 }
+
+export type BalanceListRdo = {
+  balanceList: BalanceRdo[];
+  totalTrainingsCount: number;
+}

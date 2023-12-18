@@ -17,7 +17,7 @@ type TrainingBlockProps = {
 const INITIAL_CARDS_LIMIT = 50;
 const INITIAL_PAGE_NUMBER = 1;
 
-export default function TrainingBlock({trainerId}: TrainingBlockProps): JSX.Element {
+export default function TrainingsBlock({trainerId}: TrainingBlockProps): JSX.Element {
   const dispatch = useAppDispatch();
   const initialQuery = useMemo(() => ({
     limit: `${INITIAL_CARDS_LIMIT}`,

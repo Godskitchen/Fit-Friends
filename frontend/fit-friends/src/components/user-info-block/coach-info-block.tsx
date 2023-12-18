@@ -1,12 +1,10 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRef, useState, MouseEvent, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from 'src/hooks';
 import { addUserToFriendsAction, createTrainingRequestStatusAction, removeUserFromFriendsAction } from 'src/store/api-actions';
 import { Role, SkillHashTagValue, SpecialisationHashTagValue } from 'src/types/constants';
 import { TrainerProfileInfo, UserInfo } from 'src/types/user.type';
-import TrainingBlock from '../training-block/training-block';
+import TrainingsBlock from '../trainings-block/trainings-block';
 import UserMapLocationModal from '../user-map-location-modal/user-map-location-modal';
 import { TrainingRequest, TrainingRequestStatus } from 'src/types/training-request.type';
 import SubscriptionBlock from '../subscription-block/subscription-block';
@@ -189,7 +187,7 @@ export default function CoachInfoBlock({
             {
               myRole === Role.User && (
                 <div className="user-card-coach__training">
-                  <TrainingBlock trainerId={userId} />
+                  <TrainingsBlock trainerId={userId} />
                   <form className="user-card-coach__training-form">
                     {
                       friendStatus && individualTraining &&

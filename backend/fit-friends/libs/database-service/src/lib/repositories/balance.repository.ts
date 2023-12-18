@@ -54,8 +54,15 @@ export class BalanceRepository {
   public async findAllByUserId(
     userId: number,
     { limit, page, sortDirection, active }: BaseQuery,
-  ): Promise<UserBalance[]> {
-    return this.prismaConnector.userBalance.findMany({
+  ) {
+    const totalTrainingsCount = await this.prismaConnector.userBalance.count({
+      where: {
+        userId,
+        remainingAmount: active === true ? { gt: 0 } : undefined,
+      },
+    });
+
+    const balanceList = await this.prismaConnector.userBalance.findMany({
       where: {
         userId,
         remainingAmount: active === true ? { gt: 0 } : undefined,
@@ -65,6 +72,8 @@ export class BalanceRepository {
       skip: page ? limit * (page - 1) : undefined,
       orderBy: { createdAt: sortDirection },
     });
+
+    return { balanceList, totalTrainingsCount };
   }
 
   public async findExist(

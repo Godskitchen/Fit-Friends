@@ -13,7 +13,8 @@ export enum AppRoute {
   MyTrainings = '/my_trainings',
   UsersCatalog = '/users_catalog',
   TrainingsCatalog = '/trainings_catalog',
-  MyFriends = '/my_friends'
+  MyFriends = '/my_friends',
+  MyBalance = '/my_purchases'
 }
 
 export enum ApiRoute {

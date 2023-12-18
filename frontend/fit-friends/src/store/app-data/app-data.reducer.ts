@@ -13,6 +13,8 @@ import {
   getTrainingListAction,
   addTrainingsToListAction,
   createOrderAction,
+  getPurchasesListAction,
+  addPurchasesToListAction,
 } from '../api-actions';
 import { AppData } from 'src/types/state.type';
 
@@ -166,6 +168,24 @@ export const appData = createSlice({
       })
       .addCase(createOrderAction.rejected, (state) => {
         state.dataUploadingStatus = false;
+      })
+      .addCase(getPurchasesListAction.fulfilled, (state) => {
+        state.trainingsDownloadingStatus = false;
+      })
+      .addCase(getPurchasesListAction.rejected, (state) => {
+        state.trainingsDownloadingStatus = false;
+      })
+      .addCase(getPurchasesListAction.pending, (state) => {
+        state.trainingsDownloadingStatus = true;
+      })
+      .addCase(addPurchasesToListAction.fulfilled, (state) => {
+        state.trainingsDownloadingStatus = false;
+      })
+      .addCase(addPurchasesToListAction.rejected, (state) => {
+        state.trainingsDownloadingStatus = false;
+      })
+      .addCase(addPurchasesToListAction.pending, (state) => {
+        state.trainingsDownloadingStatus = true;
       });
   }
 });

@@ -94,6 +94,13 @@ export type FriendsQueryState = {
   limit?: string;
 }
 
+export type BalanceQueryState = {
+  userId: number;
+  page?: string;
+  limit?: string;
+  active?: boolean;
+}
+
 export type TrainingsCatalogFiltersState = {
   page?: string;
   limit?: string;

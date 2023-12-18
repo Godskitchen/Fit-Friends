@@ -31,6 +31,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { BalanceListRdo } from './rdo/balance-list.rdo';
 
 @UseGuards(JwtAccessGuard, RoleGuard)
 @ApiTags('balance')
@@ -47,10 +48,9 @@ export class BalanceController {
     description: 'Получена информация об измененном балансе пользователя',
     type: BalanceRdo,
   })
-  @ApiBadRequestResponse({ description: 'Не пройдена валидация полей DTO' })
-  @ApiForbiddenResponse({
+  @ApiBadRequestResponse({
     description:
-      'Маршрут доступен только обычному пользователю. Запрещено изменять баланс другого пользователя',
+      'Не пройдена валидация полей DTO. Баланс пользователя с таким trainingId не найден',
   })
   @UseGuards(ModifyBalanceGuard)
   @Roles(Role.User)
@@ -69,8 +69,9 @@ export class BalanceController {
   }
 
   @ApiOkResponse({
-    description: 'Получен список балансов пользователя',
-    type: [BalanceRdo],
+    description:
+      'Получен список балансов пользователя, а также их общее количество',
+    type: BalanceListRdo,
   })
   @ApiBadRequestResponse({
     description: 'Не пройдена валидация полей query',
@@ -94,7 +95,7 @@ export class BalanceController {
       user.sub,
       query,
     );
-    return fillRDO(BalanceRdo, totalBalance);
+    return fillRDO(BalanceListRdo, totalBalance);
   }
 
   @ApiOkResponse({
