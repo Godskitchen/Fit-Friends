@@ -29,6 +29,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { OrderListRdo } from './rdo/order-list.rdo';
 
 @ApiTags('orders')
 @ApiBearerAuth()
@@ -63,8 +64,8 @@ export class OrderController {
   }
 
   @ApiOkResponse({
-    description: `Получен список заказов, приобретенных у данного тренера. По умолчанию возвращается ${MAX_ITEMS_LIMIT} заказов`,
-    type: [OrderRdo],
+    description: `Получен список тренировок, приобретенных у данного тренера, а также общая цена и их количество. По умолчанию возвращается ${MAX_ITEMS_LIMIT} заказов`,
+    type: OrderListRdo,
   })
   @ApiForbiddenResponse({
     description: 'Данный маршрут доступен только тренерам',
@@ -80,6 +81,6 @@ export class OrderController {
     query: OrderQuery,
   ) {
     const orderList = this.orderService.getByUserId(user.sub, query);
-    return fillRDO(OrderRdo, orderList);
+    return fillRDO(OrderListRdo, orderList);
   }
 }

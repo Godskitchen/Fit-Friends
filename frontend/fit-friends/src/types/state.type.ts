@@ -5,6 +5,7 @@ import { HttpStatusCode } from 'src/services/server-api';
 import { Message } from './message.type';
 import { Training, TrainingCardType } from './training.type';
 import { FriendsQueryState, TrainingsCatalogFiltersState, MyTrainingsFitersState, UsersCatalogFiltersState } from './forms.type';
+import { OrderCardType } from './order.type';
 
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
@@ -15,6 +16,8 @@ export type UserProcess = {
   totalMyTrainingsCount: number;
   remainingTrainingAmount: number;
   notifications: Message[];
+  orderList?: OrderCardType[] | null;
+  totalOrdersCount: number;
   formErrors: {
     [key: number]: string | Record<string, string>;
     [HttpStatusCode.CONFLICT]: string;

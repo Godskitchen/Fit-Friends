@@ -3,6 +3,7 @@ import { UserProcess } from '../../types/state.type';
 import {
   addFriendsToListAction,
   addMyTrainingsToListAction,
+  addOrdersToListAction,
   addPurchasesToListAction,
   checkAuthAction,
   createCoachProfileAction,
@@ -11,6 +12,7 @@ import {
   getFriendListAction,
   getMyTrainingsAction,
   getNotificationsAction,
+  getOrderListAction,
   getPurchasesListAction,
   getTrainingAmountAction,
   loginAction,
@@ -30,6 +32,8 @@ const initialState: UserProcess = {
   friendList: undefined,
   totalFriendsCount: 0,
   remainingTrainingAmount: 0,
+  orderList: undefined,
+  totalOrdersCount: 0,
   formErrors: {
     [HttpStatusCode.CONFLICT]: '',
     [HttpStatusCode.SERVER_INTERNAL]: '',
@@ -218,6 +222,23 @@ export const userProcess = createSlice({
       })
       .addCase(addPurchasesToListAction.rejected, (state) => {
         state.remainingTrainingAmount = 0;
+      })
+      .addCase(getOrderListAction.fulfilled, (state, {payload}) => {
+        state.orderList = payload.orderList;
+        state.totalOrdersCount = payload.totalOrdersCount;
+      })
+      .addCase(getOrderListAction.rejected, (state) => {
+        state.orderList = null;
+        state.totalOrdersCount = 0;
+      })
+      .addCase(addOrdersToListAction.fulfilled, (state, {payload}) => {
+        if (state.orderList) {
+          state.orderList = [...state.orderList, ...payload.orderList];
+        }
+        state.totalOrdersCount = payload.totalOrdersCount;
+      })
+      .addCase(addOrdersToListAction.rejected, (state) => {
+        state.totalOrdersCount = 0;
       });
 
   },

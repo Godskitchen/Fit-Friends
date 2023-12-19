@@ -114,7 +114,7 @@ export default function FriendCard({
               <span>{userReadyStatus ? 'Готов к тренировке' : 'Не готов к тренировке'}</span>
             </div>
             {
-              role === Role.User &&
+              role === Role.User && myRole === Role.User &&
               <button
                 className="thumbnail-friend__invite-button"
                 type="button"

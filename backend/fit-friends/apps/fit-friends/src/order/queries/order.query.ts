@@ -57,5 +57,5 @@ export class OrderQuery {
   })
   @IsEnum(SortDirection)
   @IsOptional()
-  public direction: SortDirection = DEFAULT_SORT_DIRECTION;
+  public sortDirection: SortDirection = DEFAULT_SORT_DIRECTION;
 }

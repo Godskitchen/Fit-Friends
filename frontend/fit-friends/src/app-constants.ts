@@ -14,7 +14,8 @@ export enum AppRoute {
   UsersCatalog = '/users_catalog',
   TrainingsCatalog = '/trainings_catalog',
   MyFriends = '/my_friends',
-  MyBalance = '/my_purchases'
+  MyBalance = '/my_purchases',
+  MyOrders = '/my_orders'
 }
 
 export enum ApiRoute {
@@ -40,6 +41,7 @@ export enum ApiRoute {
   AddSubscription = '/subscriptions/add',
   RemoveSubscription = '/subscriptions/remove',
   CreateOrder = '/orders/create',
+  CoachOrdersList = '/orders/mylist',
   MyListBalance = '/balance/mylist',
   UpdateBalance = '/balance/update'
 }

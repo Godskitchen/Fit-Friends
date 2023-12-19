@@ -5,19 +5,21 @@ import { ApiRoute, AppRoute } from 'src/app-constants';
 import { saveToken, dropToken } from 'src/services/auth-token';
 import { HttpStatusCode, REQUEST_TIMEOUT, SERVER_URL, shouldDisplayError } from 'src/services/server-api';
 import { Role } from 'src/types/constants';
-import { CreateTrainingInputs, FriendsQueryState, TrainingsCatalogFiltersState, MyTrainingsFitersState, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs, UpdateTrainingInputs, UsersCatalogFiltersState, CreatePurchaseInputs, BalanceQueryState } from 'src/types/forms.type';
+import { CreateTrainingInputs, FriendsQueryState, TrainingsCatalogFiltersState, MyTrainingsFitersState, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs, UpdateTrainingInputs, UsersCatalogFiltersState, CreatePurchaseInputs, BalanceQueryState, OrderQueryState } from 'src/types/forms.type';
 import { AppDispatch, State } from 'src/types/state.type';
 import { AuthData, FriendList, KnownError, UserInfo, UserList } from 'src/types/user.type';
 import { adaptCoachProfileToServer, adaptNewTrainingToServer, adaptOrderToServer, adaptRegisterUserToServer, adaptUpdateProfiletoServer, adaptUpdateTrainingToServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
 import { AuthUserRdo, FriendListRdo, UserListRdo, UserRdo } from 'src/utils/adapters/api-rdos/user.rdo';
 import { redirectAction } from './redirect.action';
-import { adaptFriendListToClient, adaptTrainingsListToClient, adaptTrainingToClient, adaptUserToClient, adaptUsersListToClient, adaptTrainingAmountToClient, adaptBalanceListToClient } from 'src/utils/adapters/adapter-to-client';
+import { adaptFriendListToClient, adaptTrainingsListToClient, adaptTrainingToClient, adaptUserToClient, adaptUsersListToClient, adaptTrainingAmountToClient, adaptBalanceListToClient, adaptOrderListToClient } from 'src/utils/adapters/adapter-to-client';
 import { Message } from 'src/types/message.type';
 import { Training, TrainingList } from 'src/types/training.type';
 import { TrainingListRdo, TrainingRdo } from 'src/utils/adapters/api-rdos/training.rdo';
 import { TrainingRequest } from 'src/types/training-request.type';
 import { Balance } from 'src/types/balance.type';
 import { BalanceListRdo, BalanceRdo } from 'src/utils/adapters/api-rdos/balance.rdo';
+import { OrderListRdo } from 'src/utils/adapters/api-rdos/order.rdo';
+import { OrderList } from 'src/types/order.type';
 
 export const registerAction = createAsyncThunk<
   UserInfo,
@@ -474,6 +476,26 @@ export const addPurchasesToListAction = createAsyncThunk<TrainingList, BalanceQu
   async(query, {extra: serverApi}) => {
     const {data} = await serverApi.get<BalanceListRdo>(`${ApiRoute.MyListBalance}`, {params: query});
     return adaptBalanceListToClient(data);
+  }
+);
+
+export const getOrderListAction = createAsyncThunk<OrderList, OrderQueryState, {
+  extra: AxiosInstance;
+}>(
+  'user/getOrderList',
+  async(query, {extra: serverApi}) => {
+    const {data} = await serverApi.get<OrderListRdo>(`${ApiRoute.CoachOrdersList}`, {params: query});
+    return adaptOrderListToClient(data);
+  }
+);
+
+export const addOrdersToListAction = createAsyncThunk<OrderList, OrderQueryState, {
+  extra: AxiosInstance;
+}>(
+  'user/addOrdersToList',
+  async(query, {extra: serverApi}) => {
+    const {data} = await serverApi.get<OrderListRdo>(`${ApiRoute.CoachOrdersList}`, {params: query});
+    return adaptOrderListToClient(data);
   }
 );
 

@@ -1,21 +1,25 @@
-@userToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwLCJuYW1lIjoi0JLQu9Cw0LTQuNGB0LvQsNCyIiwiZW1haWwiOiJhbHlzaGEud2Fsa2VyQGpvaG5zLmJpeiIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNjk5MzA4OTMzLCJleHAiOjE2OTkzOTUzMzN9.G-8XHoq84NPRe3ECAw5zKN8rkTOP9xP-l_dUYMjzTQY
-@trainerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoiTmFtZdCi0YDQtdC90LXRgNCwIiwiZW1haWwiOiJ0ZXN0NUBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTgyNjAwMzUsImV4cCI6MTY5ODM0NjQzNX0.0XXSQNeOrLd1dI7n_BSzgMrmdP9qH_yDVxHYg0pPzoY
+@trainerToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgsIm5hbWUiOiLQldC70LjRgdC10LkiLCJlbWFpbCI6Im5xemFzcHVjNzBAeWFob28uY29tIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE3MDI5MzcxMDMsImV4cCI6MTcwMzAyMzUwM30.mqTwldSlfe-668-P63S6h3zVNsU0-FBaMJgo-wNW4lw
+
+
+@user1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsIm5hbWUiOiLQmtGB0LXQvdC40Y8iLCJlbWFpbCI6ImFodWw0NEBraXJsaW4uY29tIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE3MDI5MzcyNDgsImV4cCI6MTcwMzAyMzY0OH0.TRkRrccCZdMg9YJEjaNeRTYaJKNkG25Qvk2JmGEI8wg
+@user2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjQsIm5hbWUiOiLQldC70LjRgdC10LkiLCJlbWFpbCI6InpnZWN6a2Z4ODNAbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImlhdCI6MTcwMjkzNzI5MCwiZXhwIjoxNzAzMDIzNjkwfQ.VZunkzITYlZ5tOdU_RIcmr72aVYwLgQKoMHVmjKqFAY
+@user3 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEzLCJuYW1lIjoi0JDQu9C10LrRgdCw0L3QtNGA0LAiLCJlbWFpbCI6ImR5cHRtanN3NTBAYW9sLmNvbSIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzAyOTM3MzUyLCJleHAiOjE3MDMwMjM3NTJ9.tP_y7DrlCzjqyocgbkQCSXwDEdn1LlNfypgCqyC5ECs
 #  create order (for users)
 POST http://localhost:4000/api/orders/create HTTP/1.1
 Content-Type: application/json
-Authorization: {{userToken}}
+Authorization: {{user3}}
 
 {
-  "trainingId": 1,
-  "trainingCount": 4,
-  "paymentType": "Visa"
+  "trainingId": 78,
+  "trainingCount": 1,
+  "paymentType": "Mir"
 }
 
 ###
 
 # get orders (for trainers)
 
-GET http://localhost:4000/api/orders/mylist?sort=trainingCount&direction=asc
+GET http://localhost:4000/api/orders/mylist?limit=4&page=1
 Authorization:{{trainerToken}}
 
 

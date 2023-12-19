@@ -25,6 +25,7 @@ import MyFriendsPage from 'src/pages/my-friends-page/my-friends-page';
 import UserPage from 'src/pages/user-page/user-page';
 import TrainingsCatalogPage from 'src/pages/trainings-catalog-page/trainings-catalog-page';
 import MyPurchasesPage from 'src/pages/my-purchases-page/my-purchases-page';
+import MyOrdersPage from 'src/pages/my-orders-page/my-orders.page';
 
 export default function App(): JSX.Element {
 
@@ -46,15 +47,6 @@ export default function App(): JSX.Element {
   if (!isAuthChecked) {
     return <LoadingScreen />;
   }
-
-  //   <Route
-  //   path={AppRoute.Add}
-  //   element={
-  //     <PrivateRoute restrictedFor={AuthorizationStatus.NoAuth} redirectTo={AppRoute.Login}>
-  //       <AddOffer />
-  //     </PrivateRoute>
-  //   }
-  // />
 
   return (
     <HelmetProvider>
@@ -214,6 +206,10 @@ export default function App(): JSX.Element {
         <Route
           path={`${AppRoute.CoachAccount}${AppRoute.MyFriends}`}
           element={<MyFriendsPage />}
+        />
+        <Route
+          path={`${AppRoute.CoachAccount}${AppRoute.MyOrders}`}
+          element={<MyOrdersPage />}
         />
         <Route
           path={AppRoute.Forbidden}

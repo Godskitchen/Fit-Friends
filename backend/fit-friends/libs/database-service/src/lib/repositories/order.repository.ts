@@ -3,8 +3,8 @@ import {
   DEFAULT_SORT_DIRECTION,
   Order,
   OrderQuery,
-  SortDirection,
   OrderSortType,
+  Training,
 } from '@libs/shared/app-types';
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../prisma/database.service';
@@ -32,24 +32,53 @@ export class OrderRepository {
     });
   }
 
-  public async findByTrainerId(
+  public async findAndGroupByTrainerId(
     trainerId: number,
     { limit, page, sort, sortDirection }: OrderQuery,
   ) {
-    return this.prismaConnector.order.findMany({
+    const totalOrdersCount = await this.prismaConnector.order
+      .groupBy({
+        where: { training: { trainerId } },
+        by: ['trainingId'],
+        _sum: {
+          sum: true,
+          trainingCount: true,
+        },
+      })
+      .then((allGroups) => allGroups.length);
+
+    const groups = await this.prismaConnector.order.groupBy({
       where: { training: { trainerId } },
-      orderBy: sort
-        ? {
-            [OrderSortType[sort]]: sortDirection
-              ? SortDirection[sortDirection]
-              : DEFAULT_SORT_DIRECTION,
-          }
-        : { createdAt: DEFAULT_SORT_DIRECTION },
+      by: ['trainingId'],
+      _sum: {
+        sum: true,
+        trainingCount: true,
+      },
+      orderBy:
+        sort && sortDirection
+          ? { _sum: { [OrderSortType[sort]]: sortDirection } }
+          : { _sum: { trainingCount: DEFAULT_SORT_DIRECTION } },
       take: limit,
       skip: page ? limit * (page - 1) : undefined,
-      include: {
-        training: true,
-      },
     });
+
+    const orderList = await Promise.all(
+      groups.map(async (entry) => {
+        const training = await this.prismaConnector.order
+          .findFirst({
+            where: { trainingId: entry.trainingId },
+            select: { training: true },
+          })
+          .then((result) => result?.training as Omit<Training, 'trainer'>);
+
+        return {
+          training,
+          sum: entry._sum.sum as number,
+          trainingCount: entry._sum.trainingCount as number,
+        };
+      }),
+    );
+
+    return { orderList, totalOrdersCount };
   }
 }

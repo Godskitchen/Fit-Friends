@@ -1,5 +1,5 @@
 @me = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsIm5hbWUiOiJmcm9udFXQvtC70L7Qu9C-0LvQvtC70LsiLCJlbWFpbCI6IkRpZU15R29kQGdtYWlsLmNvbSIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNzAxODA2NDkzLCJleHAiOjE3MDE4OTI4OTN9.DhAJWAO01rcXl2Jp1qJSgI56Z4UpMds4qALyc2ZAAo8
-@trainer1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE1LCJuYW1lIjoi0JXQu9C40YHQtdC5IiwiZW1haWwiOiJra3ViQGxpbmRncmVuLm5ldCIsInJvbGUiOiJUcmFpbmVyIiwiaWF0IjoxNzAyODUyNTkwLCJleHAiOjE3MDI5Mzg5OTB9.tTi3igOKWQyXi-JtV8xeeKdZHn5GwYQA5UHTFuiuk_M
+@trainer1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgsIm5hbWUiOiLQldC70LjRgdC10LkiLCJlbWFpbCI6Im5xemFzcHVjNzBAeWFob28uY29tIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE3MDI5MzcxMDMsImV4cCI6MTcwMzAyMzUwM30.mqTwldSlfe-668-P63S6h3zVNsU0-FBaMJgo-wNW4lw
 @trainer2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsIm5hbWUiOiJUcmFpbmVyVHdvIiwiZW1haWwiOiJ0cmFpbmVyMkBtYWlsLmxvY2FsIiwicm9sZSI6IlRyYWluZXIiLCJpYXQiOjE2OTg4NzQ3MDgsImV4cCI6MTY5ODk2MTEwOH0.RfaZiVXCZBQ_H3g-AmTuKqlbPXFUhscpeoj-7vvPYS8
 
 @trainer3 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsIm5hbWUiOiJUcmFpbmVyVGhyZWUiLCJlbWFpbCI6InRyYWluZXIzQG1haWwubG9jYWwiLCJyb2xlIjoiVHJhaW5lciIsImlhdCI6MTY5ODg3NDc0NCwiZXhwIjoxNjk4OTYxMTQ0fQ.O5Wqg4SI6O5VcAD5sgD8K4hp8NNRwSzC-HJIDRsi4bU
@@ -9,7 +9,7 @@ Authorization: {{trainer1}}
 Content-Type: application/json
 
 {
-  "title": "training30",
+  "title": "forBuy11",
   "fitnessLevel": "Pro",
   "trainingDuration": "FiftyToEightyMinutes",
   "trainingType": "Stretching",

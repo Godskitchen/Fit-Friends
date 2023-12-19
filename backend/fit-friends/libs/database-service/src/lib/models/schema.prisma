@@ -20,7 +20,7 @@ model User {
   location                    Location
   backgroundImage             String            @map("background_image")
   createdAt                   DateTime          @default(now()) @map("created_at")
-  userProfile                 UserProfile?
+  userProfile                 UserProfile?     
   trainerProfile              TrainerProfile?
   trainings                   Training[]
   orders                      Order[]
@@ -111,11 +111,11 @@ model Order {
 
 model UserBalance {
   balanceId       String   @id @default(uuid()) @map("balance_id")
-  userId          Int
+  userId          Int      @map("user_id")
   user            User     @relation(fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
-  trainingId      Int
+  trainingId      Int      @map("training_id")
   training        Training @relation(fields: [trainingId], references: [trainingId])
-  remainingAmount Int
+  remainingAmount Int      @map("remaining_amount")
   createdAt       DateTime @default(now()) @map("created_at")
 
   @@unique([userId, trainingId])

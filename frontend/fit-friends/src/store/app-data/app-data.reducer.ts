@@ -15,6 +15,8 @@ import {
   createOrderAction,
   getPurchasesListAction,
   addPurchasesToListAction,
+  getOrderListAction,
+  addOrdersToListAction,
 } from '../api-actions';
 import { AppData } from 'src/types/state.type';
 
@@ -185,6 +187,24 @@ export const appData = createSlice({
         state.trainingsDownloadingStatus = false;
       })
       .addCase(addPurchasesToListAction.pending, (state) => {
+        state.trainingsDownloadingStatus = true;
+      })
+      .addCase(getOrderListAction.fulfilled, (state) => {
+        state.trainingsDownloadingStatus = false;
+      })
+      .addCase(getOrderListAction.rejected, (state) => {
+        state.trainingsDownloadingStatus = false;
+      })
+      .addCase(getOrderListAction.pending, (state) => {
+        state.trainingsDownloadingStatus = true;
+      })
+      .addCase(addOrdersToListAction.fulfilled, (state) => {
+        state.trainingsDownloadingStatus = false;
+      })
+      .addCase(addOrdersToListAction.rejected, (state) => {
+        state.trainingsDownloadingStatus = false;
+      })
+      .addCase(addOrdersToListAction.pending, (state) => {
         state.trainingsDownloadingStatus = true;
       });
   }

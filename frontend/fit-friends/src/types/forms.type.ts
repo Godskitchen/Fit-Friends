@@ -101,6 +101,13 @@ export type BalanceQueryState = {
   active?: boolean;
 }
 
+export type OrderQueryState = {
+  page?: string;
+  limit?: string;
+  sort?: 'sum' | 'trainingCount';
+  sortDirection?: 'asc' | 'desc';
+}
+
 export type TrainingsCatalogFiltersState = {
   page?: string;
   limit?: string;

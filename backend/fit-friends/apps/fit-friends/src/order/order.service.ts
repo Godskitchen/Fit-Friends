@@ -56,6 +56,6 @@ export class OrderService {
   }
 
   public async getByUserId(trainerId: number, query: OrderQuery) {
-    return this.orderRepository.findByTrainerId(trainerId, query);
+    return this.orderRepository.findAndGroupByTrainerId(trainerId, query);
   }
 }
