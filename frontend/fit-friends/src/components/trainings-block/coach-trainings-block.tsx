@@ -1,10 +1,10 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { addTrainingsToListAction, getTrainingListAction } from 'src/store/api-actions';
-import { TrainingsCatalogFiltersState } from 'src/types/forms.type';
 import { getTotalTrainingsCount, getTrainingList } from 'src/store/app-data/app-data.selectors';
 import LoadingBlock from '../loading-components/loading-block';
 import TrainingCard from '../training-card/training-card';
+import { TrainingsCatalogFiltersState } from 'src/types/queries-filters.type';
 
 const CARD_WIDTH = 334;
 const CARD_GAP = 20;
@@ -17,7 +17,7 @@ type TrainingBlockProps = {
 const INITIAL_CARDS_LIMIT = 50;
 const INITIAL_PAGE_NUMBER = 1;
 
-export default function TrainingsBlock({trainerId}: TrainingBlockProps): JSX.Element {
+export default function CoachTrainingsBlock({trainerId}: TrainingBlockProps): JSX.Element {
   const dispatch = useAppDispatch();
   const initialQuery = useMemo(() => ({
     limit: `${INITIAL_CARDS_LIMIT}`,

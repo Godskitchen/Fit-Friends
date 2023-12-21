@@ -39,6 +39,7 @@ export default function InputRangeFilter(
 ): JSX.Element {
 
   const rangeBarRef = useRef<HTMLDivElement | null>(null);
+  const rangeMinInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleMinPriceRangeChange = ({target}: ChangeEvent<HTMLInputElement>) => {
     const newValue = Math.min(Number(target.value), currMaxValue);
@@ -115,6 +116,14 @@ export default function InputRangeFilter(
   };
 
   const handleMouseUpPrice = () => {
+    if (rangeMinInputRef.current) {
+      if (currMinValue === maxPossibleValue) {
+        rangeMinInputRef.current.style.zIndex = '2';
+      } else {
+        rangeMinInputRef.current.style.zIndex = '';
+      }
+    }
+
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -163,6 +172,7 @@ export default function InputRangeFilter(
         </div>
         <div className="range-input">
           <input
+            ref={rangeMinInputRef}
             type="range" className="range-min"
             min={minPossibleValue} max={maxPossibleValue}
             value={currMinValue} step="1"

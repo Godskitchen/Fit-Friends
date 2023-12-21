@@ -7,6 +7,7 @@ import {
   TRAINING_ID_VALIDATION_MESSAGE,
 } from './constants';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class NewReplyDto {
   @ApiProperty({
@@ -15,6 +16,7 @@ export class NewReplyDto {
   })
   @IsPositive({ message: TRAINING_ID_VALIDATION_MESSAGE })
   @IsInt({ message: TRAINING_ID_VALIDATION_MESSAGE })
+  @Type(() => Number)
   trainingId: number;
 
   @ApiProperty({
@@ -26,6 +28,7 @@ export class NewReplyDto {
   @Max(RATING_VALUE.MAX, { message: RATING_VALIDATION_MESSAGE })
   @Min(RATING_VALUE.MIN, { message: RATING_VALIDATION_MESSAGE })
   @IsInt({ message: RATING_VALIDATION_MESSAGE })
+  @Type(() => Number)
   rating: number;
 
   @ApiProperty({

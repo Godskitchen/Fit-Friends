@@ -24,7 +24,7 @@ export class ReplyService {
       dto.trainingId,
     )) as number;
 
-    await this.trainingRepository.updateRating(dto.trainingId, newRating);
+    await this.trainingRepository.updateTrainingRating(dto.trainingId, newRating);
     return reply;
   }
 

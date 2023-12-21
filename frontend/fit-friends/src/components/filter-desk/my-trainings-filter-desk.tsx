@@ -7,11 +7,11 @@ import TrainingFormCheckBoxFilter from '../checkbox-filter/training-form-checkbo
 import { queryParamCheckBoxBuilder, queryParamsRangeBuilder } from 'src/utils/helpers';
 import { useAppDispatch } from 'src/hooks';
 import { getMyTrainingsAction } from 'src/store/api-actions';
-import { MyTrainingsFitersState } from 'src/types/forms.type';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from 'src/app-constants';
 import { DurationFieldValue } from 'src/types/constants';
 import { setMyTrainingsFiltersStateAction } from 'src/store/main-process/main-process.reducer';
+import { MyTrainingsFitersState } from 'src/types/queries-filters.type';
 
 const defaultDurationsState: Record<string, boolean> = {
   TenToThirtyMinutes: false,

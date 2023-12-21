@@ -9,10 +9,12 @@ export type GeneralTrainingQuery = BaseQuery & {
   trainingDuration?: TrainingDuration[];
   trainingType?: TrainingType[];
   sort?: TrainingSortType;
+  discount?: boolean;
 };
 
 export const TrainingSortType = {
   price: 'price',
+  rating: 'rating',
 } as const;
 
 export type TrainingSortType =

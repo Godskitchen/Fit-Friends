@@ -5,21 +5,24 @@ import { ApiRoute, AppRoute } from 'src/app-constants';
 import { saveToken, dropToken } from 'src/services/auth-token';
 import { HttpStatusCode, REQUEST_TIMEOUT, SERVER_URL, shouldDisplayError } from 'src/services/server-api';
 import { Role } from 'src/types/constants';
-import { CreateTrainingInputs, FriendsQueryState, TrainingsCatalogFiltersState, MyTrainingsFitersState, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs, UpdateTrainingInputs, UsersCatalogFiltersState, CreatePurchaseInputs, BalanceQueryState, OrderQueryState } from 'src/types/forms.type';
+import { CreateTrainingInputs, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs, UpdateTrainingInputs, CreatePurchaseInputs, CreateReplyInputs } from 'src/types/forms.type';
 import { AppDispatch, State } from 'src/types/state.type';
 import { AuthData, FriendList, KnownError, UserInfo, UserList } from 'src/types/user.type';
 import { adaptCoachProfileToServer, adaptNewTrainingToServer, adaptOrderToServer, adaptRegisterUserToServer, adaptUpdateProfiletoServer, adaptUpdateTrainingToServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
 import { AuthUserRdo, FriendListRdo, UserListRdo, UserRdo } from 'src/utils/adapters/api-rdos/user.rdo';
 import { redirectAction } from './redirect.action';
-import { adaptFriendListToClient, adaptTrainingsListToClient, adaptTrainingToClient, adaptUserToClient, adaptUsersListToClient, adaptTrainingAmountToClient, adaptBalanceListToClient, adaptOrderListToClient } from 'src/utils/adapters/adapter-to-client';
+import { adaptFriendListToClient, adaptTrainingsListToClient, adaptTrainingToClient, adaptUserToClient, adaptUsersListToClient, adaptTrainingAmountToClient, adaptBalanceListToClient, adaptOrderListToClient, adaptReplyListToClient, adaptReplyToClient, adaptTrainingCardToClient } from 'src/utils/adapters/adapter-to-client';
 import { Message } from 'src/types/message.type';
-import { Training, TrainingList } from 'src/types/training.type';
+import { Training, TrainingCardType, TrainingList } from 'src/types/training.type';
 import { TrainingListRdo, TrainingRdo } from 'src/utils/adapters/api-rdos/training.rdo';
 import { TrainingRequest } from 'src/types/training-request.type';
 import { Balance } from 'src/types/balance.type';
 import { BalanceListRdo, BalanceRdo } from 'src/utils/adapters/api-rdos/balance.rdo';
 import { OrderListRdo } from 'src/utils/adapters/api-rdos/order.rdo';
 import { OrderList } from 'src/types/order.type';
+import { Reply, ReplyList } from 'src/types/reply.type';
+import { ReplyListRdo, ReplyRdo } from 'src/utils/adapters/api-rdos/reply.rdo';
+import { MyTrainingsFitersState, UsersCatalogFiltersState, FriendsQueryState, TrainingsCatalogFiltersState, BalanceQueryState, OrderQueryState, ReplyQueryState, SpecialTrainingsQueryState } from 'src/types/queries-filters.type';
 
 export const registerAction = createAsyncThunk<
   UserInfo,
@@ -55,7 +58,7 @@ export const registerAction = createAsyncThunk<
       if (error.response && shouldDisplayError(error.response)) {
         return rejectWithValue(error.response.data);
       }
-      throw error;
+      return Promise.reject(err);
     }
   }
 );
@@ -66,11 +69,10 @@ export const createUserProfileAction = createAsyncThunk<
   {
     dispatch: AppDispatch;
     extra: AxiosInstance;
-    rejectValue: KnownError;
   }
 >(
   'user/createUserProfile',
-  async (userProfileData, { dispatch, extra: serverApi, rejectWithValue }) => {
+  async (userProfileData, { dispatch, extra: serverApi }) => {
     try {
       const userId = userProfileData.userId;
       const {data: userData} = await serverApi.post<UserRdo>(`${ApiRoute.UserDetails}/${userId}/create`, adaptUserProfileToServer({...userProfileData, readyForWorkout: false}));
@@ -78,11 +80,7 @@ export const createUserProfileAction = createAsyncThunk<
       dispatch(redirectAction(AppRoute.Main));
       return adaptedData;
     } catch (err) {
-      const error = err as AxiosError<KnownError>;
-      if (error.response && shouldDisplayError(error.response)) {
-        return rejectWithValue(error.response.data);
-      }
-      throw error;
+      return Promise.reject(err);
     }
   }
 );
@@ -94,11 +92,10 @@ export const createCoachProfileAction = createAsyncThunk<
   {
     dispatch: AppDispatch;
     extra: AxiosInstance;
-    rejectValue: KnownError;
   }
 >(
   'user/createCoachProfile',
-  async (coachProfileData, { dispatch, extra: serverApi, rejectWithValue }) => {
+  async (coachProfileData, { dispatch, extra: serverApi }) => {
     try {
       const userId = coachProfileData.userId;
       const certificateFile = coachProfileData.certificates[0];
@@ -118,14 +115,9 @@ export const createCoachProfileAction = createAsyncThunk<
 
       const adaptedData = adaptUserToClient(userData);
       dispatch(redirectAction(AppRoute.Main));
-      console.log('userData', userData);
       return adaptedData;
     } catch (err) {
-      const error = err as AxiosError<KnownError>;
-      if (error.response && shouldDisplayError(error.response)) {
-        return rejectWithValue(error.response.data);
-      }
-      throw error;
+      return Promise.reject(err);
     }
   }
 );
@@ -134,17 +126,26 @@ export const createCoachProfileAction = createAsyncThunk<
 export const loginAction = createAsyncThunk<UserInfo, AuthData,
   {
     dispatch: AppDispatch;
+    rejectValue: KnownError;
   }>(
     'user/login',
-    async (authData, { dispatch }) => {
-      const { data } = await axios.post<AuthUserRdo>(ApiRoute.Login, authData, {withCredentials: true, baseURL: SERVER_URL, timeout: REQUEST_TIMEOUT});
-      const { accessToken, ...userData } = data;
+    async (authData, { dispatch, rejectWithValue }) => {
+      try {
+        const { data } = await axios.post<AuthUserRdo>(ApiRoute.Login, authData, {withCredentials: true, baseURL: SERVER_URL, timeout: REQUEST_TIMEOUT});
+        const { accessToken, ...userData } = data;
 
-      saveToken(accessToken);
-      dispatch(redirectAction(AppRoute.Main));
+        saveToken(accessToken);
+        dispatch(redirectAction(AppRoute.Main));
 
-      const adaptedData = adaptUserToClient(userData);
-      return adaptedData;
+        const adaptedData = adaptUserToClient(userData);
+        return adaptedData;
+      } catch (err) {
+        const error = err as AxiosError<KnownError>;
+        if (error.response && shouldDisplayError(error.response)) {
+          return rejectWithValue(error.response.data);
+        }
+        return Promise.reject(err);
+      }
     },
   );
 
@@ -168,7 +169,9 @@ export const checkAuthAction = createAsyncThunk<UserInfo, undefined, {extra: Axi
   },
 );
 
-export const updateProfileAction = createAsyncThunk<UserInfo, Partial<ProfileInfoInputs> & {userId: number; role: Role}, {extra: AxiosInstance}>(
+export const updateProfileAction = createAsyncThunk<UserInfo, Partial<ProfileInfoInputs> & {userId: number; role: Role},
+  {extra: AxiosInstance}
+>(
   'user/updateProfile',
   async(updateData, {extra: serverApi}) => {
     const userId = updateData.userId;
@@ -496,6 +499,79 @@ export const addOrdersToListAction = createAsyncThunk<OrderList, OrderQueryState
   async(query, {extra: serverApi}) => {
     const {data} = await serverApi.get<OrderListRdo>(`${ApiRoute.CoachOrdersList}`, {params: query});
     return adaptOrderListToClient(data);
+  }
+);
+
+export const getReplyListAction = createAsyncThunk<ReplyList, ReplyQueryState & {trainingId: number}, {
+  extra: AxiosInstance;
+}>(
+  'user/getReplyList',
+  async(query, {extra: serverApi}) => {
+    const {trainingId, ...restQuery} = query;
+    const {data} = await serverApi.get<ReplyListRdo>(`${ApiRoute.ReplyTrainingList}/${trainingId}`, {params: restQuery});
+    return adaptReplyListToClient(data);
+  }
+);
+
+export const addRepliesToListAction = createAsyncThunk<ReplyList, ReplyQueryState & {trainingId: number}, {
+  extra: AxiosInstance;
+}>(
+  'user/addRepliesToList',
+  async(query, {extra: serverApi}) => {
+    const {trainingId, ...restQuery} = query;
+    const {data} = await serverApi.get<ReplyListRdo>(`${ApiRoute.ReplyTrainingList}/${trainingId}`, {params: restQuery});
+    return adaptReplyListToClient(data);
+  }
+);
+
+export const createReplyAction = createAsyncThunk<Reply, CreateReplyInputs, {
+  extra: AxiosInstance;
+  rejectValue: KnownError;
+}>(
+  'user/createReply',
+  async(newReply, {extra: serverApi, rejectWithValue}) => {
+    try {
+      const {data} = await serverApi.post<ReplyRdo>(`${ApiRoute.CreateReply}`, newReply);
+      return adaptReplyToClient(data);
+    } catch (err) {
+      const error = err as AxiosError<KnownError>;
+      if (error.response && shouldDisplayError(error.response)) {
+        return rejectWithValue(error.response.data);
+      }
+      return Promise.reject(err);
+    }
+  }
+);
+
+export const getSpecialTrainingListAction = createAsyncThunk<TrainingCardType[], SpecialTrainingsQueryState, {
+  extra: AxiosInstance;
+}>(
+  'user/getSpecialTrainingList',
+  async(query, {extra: serverApi}) => {
+    const {data} = await serverApi.get<TrainingRdo[]>(ApiRoute.SpecialTrainings, {params:query});
+    const adaptedData = data.map((training) => adaptTrainingCardToClient(training));
+    return adaptedData;
+  }
+);
+
+export const getSpecialOffersListAction = createAsyncThunk<TrainingList, TrainingsCatalogFiltersState, {
+  extra: AxiosInstance;
+}>(
+  'data/getSpecialOffersList',
+  async(query, {extra: serverApi}) => {
+    const {data} = await serverApi.get<TrainingListRdo>(ApiRoute.TrainingList, {params:query});
+    const adaptedData = adaptTrainingsListToClient(data);
+    return adaptedData;
+  }
+);
+
+export const getReadyUsersListAction = createAsyncThunk<UserList, UsersCatalogFiltersState, {
+  extra: AxiosInstance;
+}>(
+  'data/getReadyUsersList',
+  async(filtersQuery, {extra: serverApi}) => {
+    const {data} = await serverApi.get<UserListRdo>(ApiRoute.UsersList, {params: filtersQuery});
+    return adaptUsersListToClient(data);
   }
 );
 

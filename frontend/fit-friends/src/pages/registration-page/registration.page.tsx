@@ -16,6 +16,8 @@ import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { getFormErrors } from 'src/store/user-process/user-process.selectors';
 import { HttpStatusCode } from 'src/services/server-api';
 import { clearFormErrorsAction } from 'src/store/user-process/user-process.reducer';
+import { getDataUploadingStatus } from 'src/store/app-data/app-data.selectors';
+import BlockUI from 'src/components/block-UI/block-UI';
 
 
 const BIRTH_DAY_FORMAT = 'YYYY-MM-DD';
@@ -24,6 +26,7 @@ export default function RegistrationPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const formErrors = useAppSelector(getFormErrors);
   const conflictError = formErrors[HttpStatusCode.CONFLICT];
+  const isDataUploading = useAppSelector(getDataUploadingStatus);
 
   const [isAvatarUploaded, setAvatarUploaded] = useState(false);
   const [picture, setPicture] = useState('');
@@ -112,6 +115,7 @@ export default function RegistrationPage(): JSX.Element {
           <div className="popup-form popup-form--sign-up">
             <div className="popup-form__wrapper">
               <div className="popup-form__content">
+                {isDataUploading && <BlockUI />}
                 <div className="popup-form__title-wrapper">
                   <h1 className="popup-form__title">Регистрация</h1>
                 </div>

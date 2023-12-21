@@ -1,4 +1,5 @@
-@user1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEyLCJuYW1lIjoiVXNlck9uZSIsImVtYWlsIjoidXNlcjRAbWFpbC5sb2NhbCIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNjk5NzI2NTE3LCJleHAiOjE2OTk4MTI5MTd9.ptI2MpnLthsHi7bDE_bz61BkC-ZnzQ152sRZjlpwAxE
+@user1 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjQ4LCJuYW1lIjoi0JzQuNGF0LDQuNC7IiwiZW1haWwiOiJkdGhwbmNoZzk4QHlhaG9vLmNvbSIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzAzMDIyNTQzLCJleHAiOjE3MDMxMDg5NDN9.wW_NOE6vJvcfHVc3ejH5wyk1WxxiVGjwlrPuwmys7TY
+
 @user2 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsIm5hbWUiOiJVc2VyVHdvIiwiZW1haWwiOiJ1c2VyMkBtYWlsLmxvY2FsIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE2OTg2OTM3MjEsImV4cCI6MTY5ODc4MDEyMX0.QmISBWF2Jo-2xurspDnw69vs_UIXEKfyj_d6928Cxkk
 
 @user3 = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsIm5hbWUiOiJVc2VyVGhyZWUiLCJlbWFpbCI6InVzZXIzQG1haWwubG9jYWwiLCJyb2xlIjoiVXNlciIsImlhdCI6MTY5ODY5Mzc0MCwiZXhwIjoxNjk4NzgwMTQwfQ._QH28zDovULIAa_3VMubXGrnJLJZ7IIdAnY2jXSER6o
@@ -10,7 +11,7 @@ Authorization: {{user1}}
 Content-Type: application/json
 
 {
-  "trainingId": 1,
+  "trainingId": 50,
   "text": "супер информативный отзыв по тренировки, который должен иметь длину от 100 до 1024 символов и оставляться к только к существующей тренировке",
   "rating": 3
 }

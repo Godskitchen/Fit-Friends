@@ -4,7 +4,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import TrainingGenderButtons from 'src/components/radio-buttons/training-gender-buttons';
 import Header from 'src/components/header/header';
 import DropDownList from 'src/components/dropdown-list/dropdown-list';
-import { Gender, HeaderNavTab, SkillLevel, Specialisation, TrainingDuration } from 'src/types/constants';
+import { DurationFieldToValueConvert,
+  DurationFieldValue,
+  Gender,
+  HeaderNavTab,
+  SkillFieldToValueConvert,
+  SkillFieldValue,
+  SpecialisationFieldToValueConvert,
+  SpecialisationFieldValue } from 'src/types/constants';
 import { CreateTrainingInputs } from 'src/types/forms.type';
 import { caloriesToBurnValidationHandler } from 'src/utils/validators/training/calories';
 import { descriptionValidationHandler } from 'src/utils/validators/training/description';
@@ -17,54 +24,6 @@ import { createTrainingAction } from 'src/store/api-actions';
 import { getDataUploadingStatus } from 'src/store/app-data/app-data.selectors';
 
 
-const SpecialisationValue = {
-  Yoga: 'Йога',
-  Running: 'Бег',
-  Power: 'Силовые',
-  Aerobics: 'Аэробика',
-  Crossfit: 'Кроссфит',
-  Boxing: 'Бокс',
-  Pilates: 'Пилатес',
-  Stretching: 'Стрейчинг'
-};
-
-const SpecialisationConvert = {
-  'Йога': 'Yoga',
-  'Бег': 'Running',
-  'Силовые': 'Power',
-  'Аэробика': 'Aerobics',
-  'Кроссфит': 'Crossfit',
-  'Бокс': 'Boxing',
-  'Пилатес': 'Pilates',
-  'Стрейчинг': 'Stretching'
-};
-
-const DurationValue = {
-  TenToThirtyMinutes: '10-30 мин',
-  ThirtyToFiftyMinutes: '30-50 мин',
-  FiftyToEightyMinutes: '50-80 мин',
-  EightyToOneHundredMinutes: '80-100 мин'
-};
-
-const DurationConvert = {
-  '10-30 мин': 'TenToThirtyMinutes',
-  '30-50 мин': 'ThirtyToFiftyMinutes',
-  '50-80 мин': 'FiftyToEightyMinutes',
-  '80-100 мин': 'EightyToOneHundredMinutes'
-};
-
-const SkillLevelValue = {
-  Beginner: 'Новичок',
-  Amateur: 'Любитель',
-  Pro: 'Профессионал'
-};
-
-const SkillLevelConvert = {
-  'Новичок': 'Beginner',
-  'Любитель': 'Amateur',
-  'Профессионал': 'Pro'
-};
-
 export default function CreateTrainingPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
@@ -75,7 +34,7 @@ export default function CreateTrainingPage(): JSX.Element {
   const [isVideoUploaded, setVideoUploaded] = useState(false);
   const [isVideoUploading, setVideoUploading] = useState(false);
 
-  const isUIBlocking = useAppSelector(getDataUploadingStatus);
+  const isDataUploading = useAppSelector(getDataUploadingStatus);
 
   const trainingVideoChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
     setVideoUploading(true);
@@ -138,20 +97,20 @@ export default function CreateTrainingPage(): JSX.Element {
   const onOpenSkillLevelListBtnFocusHandler = () => clearErrors('skillLevel');
 
   const onClickSpecialisationItemHandler = (evt: MouseEvent<HTMLUListElement>) => {
-    const specialisation = (evt.target as HTMLLIElement).textContent as keyof typeof SpecialisationConvert;
-    setValue('specialisation', SpecialisationConvert[specialisation] as Specialisation, {shouldValidate: true});
+    const specialisation = (evt.target as HTMLLIElement).textContent as keyof typeof SpecialisationFieldToValueConvert;
+    setValue('specialisation', SpecialisationFieldToValueConvert[specialisation], {shouldValidate: true});
     specialisationBlockRef.current?.classList.remove('is-open');
   };
 
   const onClickDurationItemHandler = (evt: MouseEvent<HTMLUListElement>) => {
-    const duration = (evt.target as HTMLLIElement).textContent as keyof typeof DurationConvert;
-    setValue('trainingDuration', DurationConvert[duration] as TrainingDuration, {shouldValidate: true});
+    const duration = (evt.target as HTMLLIElement).textContent as keyof typeof DurationFieldToValueConvert;
+    setValue('trainingDuration', DurationFieldToValueConvert[duration] , {shouldValidate: true});
     durationBlockRef.current?.classList.remove('is-open');
   };
 
   const onClickSkillLevelItemHandler = (evt: MouseEvent<HTMLUListElement>) => {
-    const skillLevel = (evt.target as HTMLLIElement).textContent as keyof typeof SkillLevelConvert;
-    setValue('skillLevel', SkillLevelConvert[skillLevel] as SkillLevel, {shouldValidate: true});
+    const skillLevel = (evt.target as HTMLLIElement).textContent as keyof typeof SkillFieldToValueConvert;
+    setValue('skillLevel', SkillFieldToValueConvert[skillLevel] , {shouldValidate: true});
     skillLevelBlockRef.current?.classList.remove('is-open');
   };
 
@@ -203,7 +162,7 @@ export default function CreateTrainingPage(): JSX.Element {
                               ref={specialisationBlockRef}
                             >
                               <span className="custom-select__label">Выберите тип тренировки</span>
-                              {getValues('specialisation') && <div className="custom-select__placeholder" style={{bottom: '0px', top: '42px'}}>{SpecialisationValue[getValues('specialisation')]}</div>}
+                              {getValues('specialisation') && <div className="custom-select__placeholder" style={{bottom: '0px', top: '42px'}}>{SpecialisationFieldValue[getValues('specialisation')]}</div>}
                               <input className="visually-hidden specialisation" {...register('specialisation', {required: 'Поле обязательно для заполнения'})} />
                               <button
                                 className="custom-select__button"
@@ -220,7 +179,7 @@ export default function CreateTrainingPage(): JSX.Element {
                                 </span>
                               </button>
                               <span className="custom-select__error" style={{bottom: '0px', top: '85px'}}>{errors.specialisation?.message}</span>
-                              {DropDownList({items: Object.values(SpecialisationValue), clickItemHandler: onClickSpecialisationItemHandler})}
+                              {DropDownList({items: Object.values(SpecialisationFieldValue), clickItemHandler: onClickSpecialisationItemHandler})}
                             </div>
                             <div className={`custom-input custom-input--with-text-right ${errors.caloriesToBurn ? 'custom-input--error' : ''}`}>
                               <label>
@@ -244,7 +203,7 @@ export default function CreateTrainingPage(): JSX.Element {
                               ref={durationBlockRef}
                             >
                               <span className="custom-select__label">Сколько времени потратим</span>
-                              {getValues('trainingDuration') && <div className="custom-select__placeholder" style={{bottom: '0px', top: '42px'}}>{DurationValue[getValues('trainingDuration')]}</div>}
+                              {getValues('trainingDuration') && <div className="custom-select__placeholder" style={{bottom: '0px', top: '42px'}}>{DurationFieldValue[getValues('trainingDuration')]}</div>}
                               <input className="visually-hidden training-duration" {...register('trainingDuration', {required: 'Поле обязательно для заполнения'})} />
                               <button
                                 className="custom-select__button"
@@ -261,7 +220,7 @@ export default function CreateTrainingPage(): JSX.Element {
                                 </span>
                               </button>
                               <span className="custom-select__error" style={{bottom: '0px', top: '85px'}}>{errors.trainingDuration?.message}</span>
-                              {DropDownList({items: Object.values(DurationValue), clickItemHandler: onClickDurationItemHandler})}
+                              {DropDownList({items: Object.values(DurationFieldValue), clickItemHandler: onClickDurationItemHandler})}
                             </div>
                             <div className={`custom-input custom-input--with-text-right ${errors.price ? 'custom-input--error' : ''}`}>
                               <label>
@@ -285,7 +244,7 @@ export default function CreateTrainingPage(): JSX.Element {
                               ref={skillLevelBlockRef}
                             >
                               <span className="custom-select__label">Выберите уровень тренировки</span>
-                              {getValues('skillLevel') && <div className="custom-select__placeholder" style={{bottom: '0px', top: '42px'}}>{SkillLevelValue[getValues('skillLevel')]}</div>}
+                              {getValues('skillLevel') && <div className="custom-select__placeholder" style={{bottom: '0px', top: '42px'}}>{SkillFieldValue[getValues('skillLevel')]}</div>}
                               <input className="visually-hidden training-duration" {...register('skillLevel', {required: 'Поле обязательно для заполнения'})} />
                               <button
                                 className="custom-select__button"
@@ -302,7 +261,7 @@ export default function CreateTrainingPage(): JSX.Element {
                                 </span>
                               </button>
                               <span className="custom-select__error" style={{bottom: '0px', top: '85px'}}>{errors.skillLevel?.message}</span>
-                              {DropDownList({items: Object.values(SkillLevelValue), clickItemHandler: onClickSkillLevelItemHandler})}
+                              {DropDownList({items: Object.values(SkillFieldValue), clickItemHandler: onClickSkillLevelItemHandler})}
                             </div>
                             <TrainingGenderButtons register={register} />
                           </div>
@@ -372,7 +331,7 @@ export default function CreateTrainingPage(): JSX.Element {
           </div>
         </main>
 
-        {isUIBlocking ? <BlockUI /> : ''}
+        {isDataUploading ? <BlockUI /> : ''}
       </div>
     </Fragment>
   );

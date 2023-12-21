@@ -4,8 +4,9 @@ import { store } from 'src/store';
 import { HttpStatusCode } from 'src/services/server-api';
 import { Message } from './message.type';
 import { Training, TrainingCardType } from './training.type';
-import { FriendsQueryState, TrainingsCatalogFiltersState, MyTrainingsFitersState, UsersCatalogFiltersState } from './forms.type';
 import { OrderCardType } from './order.type';
+import { Reply } from './reply.type';
+import { MyTrainingsFitersState, UsersCatalogFiltersState, FriendsQueryState, TrainingsCatalogFiltersState } from './queries-filters.type';
 
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
@@ -18,11 +19,10 @@ export type UserProcess = {
   notifications: Message[];
   orderList?: OrderCardType[] | null;
   totalOrdersCount: number;
+  specialTrainingList?: TrainingCardType[] | null;
   formErrors: {
     [key: number]: string | Record<string, string>;
     [HttpStatusCode.CONFLICT]: string;
-    [HttpStatusCode.SERVER_INTERNAL]: string;
-    [HttpStatusCode.BAD_REQUEST]: Record<string, string>;
     [HttpStatusCode.UNAUTHORIZED]: string;
   };
 };
@@ -31,6 +31,7 @@ export type AppData = {
   dataUploadingStatus: boolean;
   trainingsDownloadingStatus: boolean;
   usersDownloadingStatus: boolean;
+  repliesDownloadingStatus: boolean;
   trainingInfo?: Training | null;
   userList?: UserInfo[] | null;
   totalUsersCount: number;
@@ -38,6 +39,10 @@ export type AppData = {
   trainingList?: TrainingCardType[] | null;
   totalTrainingsCount: number;
   subscriptionStatus?: boolean;
+  replyList?: Reply[] | null;
+  totalRepliesCount: number;
+  readyUsersList?: UserInfo[] | null;
+  specialOffersList?: TrainingCardType[] | null;
 }
 
 export type MainProcess = {

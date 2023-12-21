@@ -45,8 +45,12 @@ export class ReplyRepository {
   public async findAllByTrainingId(
     trainingId: number,
     { limit, page, sortDirection }: BaseQuery,
-  ): Promise<Reply[]> {
-    return this.prismaConnector.reply.findMany({
+  ) {
+    const totalRepliesCount = await this.prismaConnector.reply.count({
+      where: { trainingId },
+    });
+
+    const replyList = await this.prismaConnector.reply.findMany({
       where: { trainingId },
       include: {
         author: { include: { userProfile: true } },
@@ -55,6 +59,8 @@ export class ReplyRepository {
       skip: page ? limit * (page - 1) : undefined,
       orderBy: { createdAt: sortDirection },
     });
+
+    return { replyList, totalRepliesCount };
   }
 
   public async findExist(

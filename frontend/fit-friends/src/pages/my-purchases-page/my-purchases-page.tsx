@@ -10,7 +10,7 @@ import { addPurchasesToListAction, getPurchasesListAction } from 'src/store/api-
 import { getTrainingsDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import { getMyProfileInfo, getMyTrainings, getTotalMyTrainingsCount } from 'src/store/user-process/user-process.selectors';
 import { HeaderNavTab } from 'src/types/constants';
-import { BalanceQueryState } from 'src/types/forms.type';
+import { BalanceQueryState } from 'src/types/queries-filters.type';
 
 const CARD_LIMIT_PER_PAGE = 6;
 const INITIAL_PAGE_NUMBER = 1;

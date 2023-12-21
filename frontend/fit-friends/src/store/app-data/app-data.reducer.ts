@@ -17,6 +17,14 @@ import {
   addPurchasesToListAction,
   getOrderListAction,
   addOrdersToListAction,
+  getReplyListAction,
+  addRepliesToListAction,
+  createReplyAction,
+  registerAction,
+  loginAction,
+  getSpecialTrainingListAction,
+  getReadyUsersListAction,
+  getSpecialOffersListAction,
 } from '../api-actions';
 import { AppData } from 'src/types/state.type';
 
@@ -24,13 +32,18 @@ const initialState: AppData = {
   dataUploadingStatus: false,
   trainingsDownloadingStatus: false,
   usersDownloadingStatus: false,
+  repliesDownloadingStatus: false,
   trainingInfo: undefined,
   userList: undefined,
   totalUsersCount: 0,
   currentUserDetails: undefined,
   subscriptionStatus: false,
   trainingList: undefined,
+  readyUsersList: undefined,
+  specialOffersList: undefined,
   totalTrainingsCount: 0,
+  replyList: undefined,
+  totalRepliesCount: 0
 };
 
 export const appData = createSlice({
@@ -39,6 +52,24 @@ export const appData = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
+      .addCase(registerAction.fulfilled, (state) => {
+        state.dataUploadingStatus = false;
+      })
+      .addCase(registerAction.pending, (state) => {
+        state.dataUploadingStatus = true;
+      })
+      .addCase(registerAction.rejected, (state) => {
+        state.dataUploadingStatus = false;
+      })
+      .addCase(loginAction.fulfilled, (state) => {
+        state.dataUploadingStatus = false;
+      })
+      .addCase(loginAction.pending, (state) => {
+        state.dataUploadingStatus = true;
+      })
+      .addCase(loginAction.rejected, (state) => {
+        state.dataUploadingStatus = false;
+      })
       .addCase(createTrainingAction.fulfilled, (state) => {
         state.dataUploadingStatus = false;
       })
@@ -205,6 +236,76 @@ export const appData = createSlice({
         state.trainingsDownloadingStatus = false;
       })
       .addCase(addOrdersToListAction.pending, (state) => {
+        state.trainingsDownloadingStatus = true;
+      })
+      .addCase(getReplyListAction.fulfilled, (state, {payload}) => {
+        state.repliesDownloadingStatus = false;
+        state.replyList = payload.replyList;
+        state.totalRepliesCount = payload.totalRepliesCount;
+      })
+      .addCase(getReplyListAction.rejected, (state) => {
+        state.repliesDownloadingStatus = false;
+        state.replyList = null;
+        state.totalRepliesCount = 0;
+      })
+      .addCase(getReplyListAction.pending, (state) => {
+        state.repliesDownloadingStatus = true;
+      })
+      .addCase(addRepliesToListAction.fulfilled, (state, {payload}) => {
+        state.repliesDownloadingStatus = false;
+        if (state.replyList) {
+          state.replyList = [...state.replyList, ...payload.replyList];
+          state.totalRepliesCount = payload.totalRepliesCount;
+        }
+      })
+      .addCase(addRepliesToListAction.rejected, (state) => {
+        state.repliesDownloadingStatus = false;
+      })
+      .addCase(addRepliesToListAction.pending, (state) => {
+        state.repliesDownloadingStatus = true;
+      })
+      .addCase(createReplyAction.pending, (state) => {
+        state.dataUploadingStatus = true;
+      })
+      .addCase(createReplyAction.rejected, (state) => {
+        state.dataUploadingStatus = false;
+      })
+      .addCase(createReplyAction.fulfilled, (state, {payload}) => {
+        state.dataUploadingStatus = false;
+        if (state.replyList) {
+          state.replyList = [payload, ...state.replyList];
+          state.totalRepliesCount = state.totalRepliesCount + 1;
+        }
+      })
+      .addCase(getSpecialTrainingListAction.fulfilled, (state,) => {
+        state.trainingsDownloadingStatus = false;
+      })
+      .addCase(getSpecialTrainingListAction.rejected, (state) => {
+        state.trainingsDownloadingStatus = false;
+      })
+      .addCase(getSpecialTrainingListAction.pending, (state) => {
+        state.trainingsDownloadingStatus = true;
+      })
+      .addCase(getReadyUsersListAction.fulfilled, (state, {payload}) => {
+        state.trainingsDownloadingStatus = false;
+        state.readyUsersList = payload.userList;
+      })
+      .addCase(getReadyUsersListAction.rejected, (state) => {
+        state.trainingsDownloadingStatus = false;
+        state.readyUsersList = null;
+      })
+      .addCase(getReadyUsersListAction.pending, (state) => {
+        state.trainingsDownloadingStatus = true;
+      })
+      .addCase(getSpecialOffersListAction.fulfilled, (state, {payload}) => {
+        state.trainingsDownloadingStatus = false;
+        state.specialOffersList = payload.trainingList;
+      })
+      .addCase(getSpecialOffersListAction.rejected, (state) => {
+        state.trainingsDownloadingStatus = false;
+        state.specialOffersList = null;
+      })
+      .addCase(getSpecialOffersListAction.pending, (state) => {
         state.trainingsDownloadingStatus = true;
       });
   }

@@ -6,7 +6,9 @@ import {
   UserTrainingQuery,
   UpdateTrainingData,
   GeneralTrainingQuery,
+  SpecialTrainingQuery,
 } from '@libs/shared/app-types';
+import { calculateTrainingWeight } from '@libs/shared/helpers';
 
 @Injectable()
 export class TrainingRepository {
@@ -123,6 +125,7 @@ export class TrainingRepository {
     rating,
     price,
     caloriesToBurn,
+    discount,
   }: GeneralTrainingQuery) {
     const priceFilter = price ? { gte: price[0], lte: price[1] } : undefined;
     const caloriesFilter = caloriesToBurn
@@ -150,6 +153,7 @@ export class TrainingRepository {
           { OR: durationFilter },
           { OR: typeFilter },
           { rating: ratingFilter },
+          { isSpecialOffer: discount },
         ],
       },
     });
@@ -163,6 +167,7 @@ export class TrainingRepository {
           { OR: durationFilter },
           { OR: typeFilter },
           { rating: ratingFilter },
+          { isSpecialOffer: discount },
         ],
       },
       take: limit,
@@ -176,10 +181,46 @@ export class TrainingRepository {
     return { totalTrainingsCount, trainingList };
   }
 
-  public async updateRating(trainingId: number, rating: number): Promise<void> {
+  public async updateTrainingRating(
+    trainingId: number,
+    rating: number,
+  ): Promise<void> {
     await this.prismaConnector.training.update({
       where: { trainingId },
       data: { rating: parseFloat(rating.toFixed(1)) },
     });
+  }
+
+  public async findSpecialTrainings({
+    fitnessLevel,
+    trainingDuration,
+    trainingType,
+    limit,
+  }: SpecialTrainingQuery) {
+    const trainings = await this.prismaConnector.training.findMany({
+      where: {
+        OR: [
+          { fitnessLevel },
+          { trainingDuration },
+          { trainingType: { in: trainingType } },
+        ],
+      },
+    });
+
+    trainings.sort(
+      (trainingOne, trainingTwo) =>
+        calculateTrainingWeight(trainingTwo, {
+          fitnessLevel,
+          trainingDuration,
+          trainingType,
+        }) -
+        calculateTrainingWeight(trainingOne, {
+          fitnessLevel,
+          trainingDuration,
+          trainingType,
+        }),
+    );
+
+    return trainings.length > limit ? trainings.slice(0, limit) : trainings;
   }
 }

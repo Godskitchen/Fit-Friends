@@ -153,7 +153,16 @@ export class UserRepository {
   }
 
   public async find(
-    { limit, page, location, fitnessLevel, trainingType, sort }: UserQuery,
+    {
+      limit,
+      page,
+      location,
+      fitnessLevel,
+      trainingType,
+      sort,
+      role,
+      isReady,
+    }: UserQuery,
     userId: number,
   ) {
     const locationFilter = location
@@ -172,6 +181,7 @@ export class UserRepository {
       where: {
         AND: [
           { userId: { not: userId } },
+          { role },
           { OR: locationFilter },
           {
             OR: [
@@ -180,6 +190,7 @@ export class UserRepository {
                   AND: [
                     { OR: fitnessLevelFilter },
                     { trainingType: trainingTypeFilter },
+                    { readyForWorkout: isReady },
                   ],
                 },
               },
@@ -188,6 +199,7 @@ export class UserRepository {
                   AND: [
                     { OR: fitnessLevelFilter },
                     { trainingType: trainingTypeFilter },
+                    { readyForWorkout: isReady },
                   ],
                 },
               },
@@ -201,6 +213,7 @@ export class UserRepository {
       where: {
         AND: [
           { userId: { not: userId } },
+          { role },
           { OR: locationFilter },
           {
             OR: [
@@ -209,6 +222,7 @@ export class UserRepository {
                   AND: [
                     { OR: fitnessLevelFilter },
                     { trainingType: trainingTypeFilter },
+                    { readyForWorkout: isReady },
                   ],
                 },
               },
@@ -217,6 +231,7 @@ export class UserRepository {
                   AND: [
                     { OR: fitnessLevelFilter },
                     { trainingType: trainingTypeFilter },
+                    { readyForWorkout: isReady },
                   ],
                 },
               },

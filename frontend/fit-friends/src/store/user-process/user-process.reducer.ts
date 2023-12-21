@@ -7,6 +7,7 @@ import {
   addPurchasesToListAction,
   checkAuthAction,
   createCoachProfileAction,
+  createReplyAction,
   createUserProfileAction,
   deleteNotificationAction,
   getFriendListAction,
@@ -14,6 +15,7 @@ import {
   getNotificationsAction,
   getOrderListAction,
   getPurchasesListAction,
+  getSpecialTrainingListAction,
   getTrainingAmountAction,
   loginAction,
   registerAction,
@@ -34,10 +36,9 @@ const initialState: UserProcess = {
   remainingTrainingAmount: 0,
   orderList: undefined,
   totalOrdersCount: 0,
+  specialTrainingList: undefined,
   formErrors: {
     [HttpStatusCode.CONFLICT]: '',
-    [HttpStatusCode.SERVER_INTERNAL]: '',
-    [HttpStatusCode.BAD_REQUEST]: {},
     [HttpStatusCode.UNAUTHORIZED]: ''
   },
 };
@@ -49,8 +50,6 @@ export const userProcess = createSlice({
     clearFormErrorsAction: (state) => {
       state.formErrors = {
         [HttpStatusCode.CONFLICT]: '',
-        [HttpStatusCode.SERVER_INTERNAL]: '',
-        [HttpStatusCode.BAD_REQUEST]: {},
         [HttpStatusCode.UNAUTHORIZED]: ''
       };
     },
@@ -60,26 +59,11 @@ export const userProcess = createSlice({
       .addCase(registerAction.fulfilled, (state, {payload}) => {
         state.myProfileInfo = payload;
         state.authorizationStatus = AuthorizationStatus.Auth;
-        state.formErrors = {
-          [HttpStatusCode.CONFLICT]: '',
-          [HttpStatusCode.SERVER_INTERNAL]: '',
-          [HttpStatusCode.BAD_REQUEST]: {},
-          [HttpStatusCode.UNAUTHORIZED]: ''
-        };
       })
       .addCase(registerAction.rejected, (state, {payload}) => {
         state.myProfileInfo = null;
         if (payload && payload.statusCode) {
-          if (payload.statusCode === HttpStatusCode.BAD_REQUEST) {
-            if (Array.isArray(payload.message)) {
-              (payload.message).forEach((msg) => {
-                const [property, ...description] = msg.split(':');
-                state.formErrors[HttpStatusCode.BAD_REQUEST][property.trim()] = description.join(':').trim();
-              });
-            } else {
-              state.formErrors[HttpStatusCode.BAD_REQUEST]['avatar'] = payload.message;
-            }
-          } else {
+          if (payload.statusCode === HttpStatusCode.CONFLICT) {
             state.formErrors[payload.statusCode] = Array.isArray(payload.message) ? payload.message.join('') : payload.message;
           }
         }
@@ -88,19 +72,18 @@ export const userProcess = createSlice({
         state.authorizationStatus = AuthorizationStatus.Auth;
         state.myProfileInfo = payload;
       })
-      .addCase(loginAction.rejected, (state) => {
+      .addCase(loginAction.rejected, (state, {payload}) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
         state.myProfileInfo = null;
+        if (payload && payload.statusCode) {
+          if (payload.statusCode === HttpStatusCode.UNAUTHORIZED) {
+            state.formErrors[payload.statusCode] = Array.isArray(payload.message) ? payload.message.join('') : payload.message;
+          }
+        }
       })
       .addCase(checkAuthAction.fulfilled, (state, {payload}) => {
         state.authorizationStatus = AuthorizationStatus.Auth;
         state.myProfileInfo = payload;
-        state.formErrors = {
-          [HttpStatusCode.CONFLICT]: '',
-          [HttpStatusCode.SERVER_INTERNAL]: '',
-          [HttpStatusCode.BAD_REQUEST]: {},
-          [HttpStatusCode.UNAUTHORIZED]: ''
-        };
       })
       .addCase(checkAuthAction.rejected, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
@@ -108,60 +91,12 @@ export const userProcess = createSlice({
       })
       .addCase(createUserProfileAction.fulfilled, (state, {payload}) => {
         state.myProfileInfo = payload;
-        state.formErrors = {
-          [HttpStatusCode.CONFLICT]: '',
-          [HttpStatusCode.SERVER_INTERNAL]: '',
-          [HttpStatusCode.BAD_REQUEST]: {},
-          [HttpStatusCode.UNAUTHORIZED]: ''
-        };
-      })
-      .addCase(createUserProfileAction.rejected, (state, {payload}) => {
-        if (payload && payload.statusCode) {
-          if (payload.statusCode === HttpStatusCode.BAD_REQUEST) {
-            if (Array.isArray(payload.message)) {
-              (payload.message).forEach((msg) => {
-                const [property, ...description] = msg.split(':');
-                state.formErrors[HttpStatusCode.BAD_REQUEST][property.trim()] = description.join(':').trim();
-              });
-            }
-          } else {
-            state.formErrors[payload.statusCode] = Array.isArray(payload.message) ? payload.message.join('') : payload.message;
-          }
-        }
       })
       .addCase(createCoachProfileAction.fulfilled, (state, {payload}) => {
         state.myProfileInfo = payload;
-        state.formErrors = {
-          [HttpStatusCode.CONFLICT]: '',
-          [HttpStatusCode.SERVER_INTERNAL]: '',
-          [HttpStatusCode.BAD_REQUEST]: {},
-          [HttpStatusCode.UNAUTHORIZED]: ''
-        };
-      })
-      .addCase(createCoachProfileAction.rejected, (state, {payload}) => {
-        if (payload && payload.statusCode) {
-          if (payload.statusCode === HttpStatusCode.BAD_REQUEST) {
-            if (Array.isArray(payload.message)) {
-              (payload.message).forEach((msg) => {
-                const [property, ...description] = msg.split(':');
-                state.formErrors[HttpStatusCode.BAD_REQUEST][property.trim()] = description.join(':').trim();
-              });
-            } else {
-              state.formErrors[HttpStatusCode.BAD_REQUEST]['certificates'] = payload.message;
-            }
-          } else {
-            state.formErrors[payload.statusCode] = Array.isArray(payload.message) ? payload.message.join('') : payload.message;
-          }
-        }
       })
       .addCase(updateProfileAction.fulfilled, (state, {payload}) => {
         state.myProfileInfo = payload;
-        state.formErrors = {
-          [HttpStatusCode.CONFLICT]: '',
-          [HttpStatusCode.SERVER_INTERNAL]: '',
-          [HttpStatusCode.BAD_REQUEST]: {},
-          [HttpStatusCode.UNAUTHORIZED]: ''
-        };
       })
       .addCase(getNotificationsAction.fulfilled, (state, {payload}) => {
         state.notifications = payload;
@@ -201,7 +136,7 @@ export const userProcess = createSlice({
         state.remainingTrainingAmount = payload;
       })
       .addCase(getTrainingAmountAction.rejected, (state) => {
-        state.remainingTrainingAmount = 0;
+        state.remainingTrainingAmount = -1;
       })
       .addCase(updateTrainingAmountAction.fulfilled, (state, {payload}) => {
         state.remainingTrainingAmount = payload;
@@ -211,7 +146,7 @@ export const userProcess = createSlice({
         state.totalMyTrainingsCount = payload.totalTrainingsCount;
       })
       .addCase(getPurchasesListAction.rejected, (state) => {
-        state.remainingTrainingAmount = 0;
+        state.totalMyTrainingsCount = 0;
         state.myTrainingsList = null;
       })
       .addCase(addPurchasesToListAction.fulfilled, (state, {payload}) => {
@@ -239,6 +174,17 @@ export const userProcess = createSlice({
       })
       .addCase(addOrdersToListAction.rejected, (state) => {
         state.totalOrdersCount = 0;
+      })
+      .addCase(createReplyAction.rejected, (state, {payload}) => {
+        if (payload && payload.statusCode) {
+          state.formErrors[payload.statusCode] = Array.isArray(payload.message) ? payload.message.join('') : payload.message;
+        }
+      })
+      .addCase(getSpecialTrainingListAction.fulfilled, (state, {payload}) => {
+        state.specialTrainingList = payload;
+      })
+      .addCase(getSpecialTrainingListAction.rejected, (state) => {
+        state.specialTrainingList = null;
       });
 
   },

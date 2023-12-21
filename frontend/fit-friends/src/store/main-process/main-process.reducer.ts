@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { SliceNameSpace } from 'src/app-constants';
-import { FriendsQueryState, MyTrainingsFitersState, TrainingsCatalogFiltersState, UsersCatalogFiltersState } from 'src/types/forms.type';
+import { FriendsQueryState, MyTrainingsFitersState, TrainingsCatalogFiltersState, UsersCatalogFiltersState } from 'src/types/queries-filters.type';
 import { MainProcess } from 'src/types/state.type';
 
 const initialState: MainProcess = {

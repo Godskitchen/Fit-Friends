@@ -1,5 +1,11 @@
 import { Transform, Type } from 'class-transformer';
-import { IsPositive, IsInt, IsOptional, IsEnum } from 'class-validator';
+import {
+  IsPositive,
+  IsInt,
+  IsOptional,
+  IsEnum,
+  IsBoolean,
+} from 'class-validator';
 import {
   FitnessLevel,
   Location,
@@ -83,4 +89,26 @@ export class UserQuery {
   @IsEnum(Role)
   @IsOptional()
   public sort?: Role;
+
+  @ApiPropertyOptional({
+    description:
+      'Фильтр по флагу готовности пользователя к тренировке. Булево значение',
+    type: Boolean,
+    example: true,
+  })
+  @IsBoolean()
+  @Type(() => Boolean)
+  @IsOptional()
+  public isReady?: boolean;
+
+  @ApiPropertyOptional({
+    description: `Фильтр по роли пользователя. Доступные варианты: ${Object.values(
+      Role,
+    )}.`,
+    type: String,
+    enum: Role,
+  })
+  @IsEnum(Role)
+  @IsOptional()
+  public role?: Role;
 }

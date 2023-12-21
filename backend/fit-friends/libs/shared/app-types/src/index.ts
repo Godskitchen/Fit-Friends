@@ -27,6 +27,7 @@ export * from './lib/query-types/user-training-query.type';
 export * from './lib/query-types/general-training-query.type';
 export * from './lib/query-types/user-query.type';
 export * from './lib/query-types/order-query.type';
+export * from './lib/query-types/special-training-query.type';
 
 export * from './lib/background-image.type';
 

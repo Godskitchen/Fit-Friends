@@ -43,12 +43,12 @@ export enum TrainingDuration {
   EightyToOneHundredMinutes = 'EightyToOneHundredMinutes'
 }
 
-export const DurationFieldValue = {
-  TenToThirtyMinutes: '10-30 мин',
-  ThirtyToFiftyMinutes: '30-50 мин',
-  FiftyToEightyMinutes: '50-80 мин',
-  EightyToOneHundredMinutes: '80-100 мин'
-};
+export enum DurationFieldValue {
+  TenToThirtyMinutes = '10-30 мин',
+  ThirtyToFiftyMinutes = '30-50 мин',
+  FiftyToEightyMinutes = '50-80 мин',
+  EightyToOneHundredMinutes = '80-100 мин'
+}
 
 export enum HeaderNavTab {
   Home = 'Home',
@@ -74,16 +74,16 @@ export const TrainingGenderFieldValue = {
   NoMatter: 'Всем'
 };
 
-export const SpecialisationFieldValue = {
-  Yoga: 'Йога',
-  Running: 'Бег',
-  Power: 'Силовые',
-  Aerobics: 'Аэробика',
-  Crossfit: 'Кроссфит',
-  Boxing: 'Бокс',
-  Pilates: 'Пилатес',
-  Stretching: 'Стрейчинг'
-};
+export enum SpecialisationFieldValue {
+  Yoga = 'Йога',
+  Running = 'Бег',
+  Power = 'Силовые',
+  Aerobics = 'Аэробика',
+  Crossfit = 'Кроссфит',
+  Boxing = 'Бокс',
+  Pilates = 'Пилатес',
+  Stretching = 'Стрейчинг'
+}
 
 export enum SkillFieldValue {
   Beginner = 'Новичок',
@@ -109,9 +109,27 @@ export enum PaymentMethodValue {
 }
 
 export const SkillFieldToValueConvert: Record<SkillFieldValue, SkillLevel> = {
-  [SkillFieldValue.Beginner]: SkillLevel.Beginner,
-  [SkillFieldValue.Amateur]: SkillLevel.Amateur,
-  [SkillFieldValue.Pro]: SkillLevel.Pro,
+  'Новичок': SkillLevel.Beginner,
+  'Любитель': SkillLevel.Amateur,
+  'Профессионал': SkillLevel.Pro,
+};
+
+export const DurationFieldToValueConvert: Record<DurationFieldValue, TrainingDuration> = {
+  '10-30 мин': TrainingDuration.TenToThirtyMinutes,
+  '30-50 мин': TrainingDuration.ThirtyToFiftyMinutes,
+  '50-80 мин': TrainingDuration.FiftyToEightyMinutes,
+  '80-100 мин': TrainingDuration.EightyToOneHundredMinutes
+};
+
+export const SpecialisationFieldToValueConvert: Record<SpecialisationFieldValue, Specialisation> = {
+  'Йога': Specialisation.Yoga,
+  'Бег': Specialisation.Running,
+  'Силовые': Specialisation.Power,
+  'Аэробика': Specialisation.Aerobics,
+  'Кроссфит': Specialisation.Crossfit,
+  'Бокс': Specialisation.Boxing,
+  'Пилатес': Specialisation.Pilates,
+  'Стрейчинг': Specialisation.Stretching
 };
 
 export const SpecialisationHashTagValue: Record<Specialisation, string> = {

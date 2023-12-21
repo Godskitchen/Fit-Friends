@@ -11,7 +11,7 @@ import { addOrdersToListAction, getOrderListAction } from 'src/store/api-actions
 import { getTrainingsDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import { getOrderList, getTotalOrdersCount } from 'src/store/user-process/user-process.selectors';
 import { HeaderNavTab } from 'src/types/constants';
-import { OrderQueryState } from 'src/types/forms.type';
+import { OrderQueryState } from 'src/types/queries-filters.type';
 
 const INITIAL_PAGE_NUMBER = 1;
 const CARD_LIMIT_PER_PAGE = 4;

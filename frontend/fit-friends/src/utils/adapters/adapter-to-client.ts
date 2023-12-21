@@ -6,6 +6,8 @@ import { Role, Location } from 'src/types/constants';
 import { BalanceListRdo, BalanceRdo } from './api-rdos/balance.rdo';
 import { OrderListRdo, OrderTrainingRdo } from './api-rdos/order.rdo';
 import { OrderCardType, OrderList } from 'src/types/order.type';
+import { ReplyListRdo, ReplyRdo } from './api-rdos/reply.rdo';
+import { Reply, ReplyList } from 'src/types/reply.type';
 
 export const adaptUserToClient = (rdo: UserRdo): UserInfo => ({
   userId: rdo.userId,
@@ -109,4 +111,16 @@ export const adaptOrderToClient = (rdo: OrderTrainingRdo): OrderCardType => ({
   training: adaptTrainingCardToClient(rdo.training),
   sum: rdo.sum,
   trainingCount: rdo.trainingCount,
+});
+
+export const adaptReplyToClient = (rdo: ReplyRdo): Reply => ({
+  replyId: rdo.replyId,
+  text: rdo.text,
+  rating: rdo.rating,
+  author: adaptUserToClient(rdo.author)
+});
+
+export const adaptReplyListToClient = (rdo: ReplyListRdo): ReplyList => ({
+  replyList: rdo.replyList.map((reply) => adaptReplyToClient(reply)),
+  totalRepliesCount: rdo.totalRepliesCount,
 });

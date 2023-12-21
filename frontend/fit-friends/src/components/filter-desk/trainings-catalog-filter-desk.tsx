@@ -12,9 +12,9 @@ import TrainingFormCheckBoxFilter from '../checkbox-filter/training-form-checkbo
 import { PriceSortFieldBtnValue, SpecialisationFieldValue } from 'src/types/constants';
 import SortFilter from '../sort-filter/sort-filter';
 import { queryParamCheckBoxBuilder, queryParamsRangeBuilder } from 'src/utils/helpers';
-import { TrainingsCatalogFiltersState } from 'src/types/forms.type';
 import { getTrainingListAction } from 'src/store/api-actions';
 import { setTrainingCatalogFilterStateAction } from 'src/store/main-process/main-process.reducer';
+import { TrainingsCatalogFiltersState } from 'src/types/queries-filters.type';
 
 const defaultSpecialisationState: Record<string, boolean> = {
   Yoga: false,

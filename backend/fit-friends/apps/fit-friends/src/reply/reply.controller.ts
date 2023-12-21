@@ -37,6 +37,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { ReplyListRdo } from './rdo/reply-list.rdo';
 
 @Controller('replies')
 @ApiTags('replies')
@@ -77,8 +78,8 @@ export class ReplyController {
   }
 
   @ApiOkResponse({
-    description: `Получен список отзывов к тренировке. По умолчанию возвращается ${MAX_ITEMS_LIMIT} отзывов`,
-    type: [ReplyRdo],
+    description: `Получен список отзывов к тренировке а также их общее количество. По умолчанию возвращается ${MAX_ITEMS_LIMIT} отзывов`,
+    type: ReplyListRdo,
   })
   @ApiParam({
     name: 'trainingId',
@@ -97,6 +98,6 @@ export class ReplyController {
       trainingId,
       query,
     );
-    return fillRDO(ReplyRdo, replies, [Role.User]);
+    return fillRDO(ReplyListRdo, replies, [Role.User]);
   }
 }

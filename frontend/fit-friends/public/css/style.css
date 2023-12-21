@@ -3765,7 +3765,8 @@ input:active + .custom-textarea__text {
 
 .reviews-side-bar__list::before {
   content: "";
-  position: absolute;
+  position: sticky;
+  display: block;
   top: 0;
   left: 0;
   width: calc(100% + 42px);
@@ -3778,7 +3779,8 @@ input:active + .custom-textarea__text {
 
 .reviews-side-bar__list::after {
   content: "";
-  position: absolute;
+  position: sticky;
+  display: block;
   bottom: 0;
   left: 0;
   width: calc(100% + 42px);

@@ -16,6 +16,7 @@ import {
   ArrayMinSize,
   ArrayMaxSize,
   IsEnum,
+  IsBoolean,
 } from 'class-validator';
 import {
   RANGE_ARRAYS_SIZE,
@@ -167,7 +168,7 @@ export class GeneralTrainingQuery {
   public trainingType?: TrainingType[];
 
   @ApiPropertyOptional({
-    description: `Сортировка по цене тренировки. Доступные варианты ${Object.values(
+    description: `Доступная сортировка по цене или рейтингу тренировки. Доступные варианты ${Object.values(
       TrainingSortType,
     ).join(
       ',',
@@ -189,4 +190,15 @@ export class GeneralTrainingQuery {
   @IsEnum(SortDirection)
   @IsOptional()
   public sortDirection: SortDirection = DEFAULT_SORT_DIRECTION;
+
+  @ApiPropertyOptional({
+    description:
+      'Фильтр по наличию спецпредложения у тренировки. Булево значение',
+    type: Boolean,
+    example: true,
+  })
+  @IsBoolean()
+  @Type(() => Boolean)
+  @IsOptional()
+  public discount?: boolean;
 }

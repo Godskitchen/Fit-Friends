@@ -11,6 +11,7 @@ import { UserTrainingsQuery } from './queries/user-training.query';
 import { StaticService } from '@app/static';
 import { BackgroundImageType } from '@libs/shared/app-types';
 import { GeneralTrainingQuery } from './queries/general-training.query';
+import { SpecialTrainingQuery } from './queries/special-training.query';
 
 @Injectable()
 export class TrainingService {
@@ -68,5 +69,9 @@ export class TrainingService {
 
   public async getAll(query: GeneralTrainingQuery) {
     return this.trainingRepository.findAll(query);
+  }
+
+  public async getSpecialTrainings(query: SpecialTrainingQuery) {
+    return this.trainingRepository.findSpecialTrainings(query);
   }
 }

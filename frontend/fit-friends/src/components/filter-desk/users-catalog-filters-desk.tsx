@@ -8,8 +8,8 @@ import { getUsersListAction } from 'src/store/api-actions';
 import { setUsersCatalogFilterStateAction } from 'src/store/main-process/main-process.reducer';
 import { AppRoute } from 'src/app-constants';
 import SortFilter from '../sort-filter/sort-filter';
-import { UsersCatalogFiltersState } from 'src/types/forms.type';
 import { queryParamCheckBoxBuilder } from 'src/utils/helpers';
+import { UsersCatalogFiltersState } from 'src/types/queries-filters.type';
 
 const defaultLocationsState: Record<string, boolean> = {
   Pionerskaya: false,

@@ -1,4 +1,8 @@
-import { DbConfig } from '@libs/shared/app-types';
+import {
+  DbConfig,
+  SpecialTrainingQuery,
+  Training,
+} from '@libs/shared/app-types';
 import { genSalt, hash } from 'bcrypt';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 
@@ -51,4 +55,24 @@ export function parseTokenTime(time: string): TimeAndUnit {
 export async function hashPassword(password: string): Promise<string> {
   const salt = await genSalt(SALT_ROUNDS);
   return hash(password, salt);
+}
+
+export function calculateTrainingWeight(
+  training: Omit<Training, 'trainer'>,
+  sortParams: Omit<SpecialTrainingQuery, 'limit'>,
+): number {
+  let trainingWeight = 0;
+
+  if (training.fitnessLevel === sortParams.fitnessLevel) {
+    trainingWeight += 1;
+  }
+
+  if (training.trainingDuration === sortParams.trainingDuration) {
+    trainingWeight += 1;
+  }
+
+  if (sortParams.trainingType.includes(training.trainingType)) {
+    trainingWeight += 2;
+  }
+  return trainingWeight;
 }

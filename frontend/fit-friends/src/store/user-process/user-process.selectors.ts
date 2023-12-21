@@ -27,3 +27,5 @@ export const getTrainingAmount = (state:State) => state[SliceNameSpace.User].rem
 
 export const getOrderList = (state:State) => state[SliceNameSpace.User].orderList;
 export const getTotalOrdersCount = (state: State) => state[SliceNameSpace.User].totalOrdersCount;
+
+export const getSpecialTrainingsList = (state: State) => state[SliceNameSpace.User].specialTrainingList;

@@ -94,10 +94,12 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
   const handleVideoError = () => {
     setLoadedError(true);
     playBtnRef.current?.classList.add('visually-hidden');
+    controlsBlockRef.current?.classList.add('visually-hidden');
   };
 
   const handleLoadMetaData = () => {
     playBtnRef.current?.classList.remove('visually-hidden');
+    controlsBlockRef.current?.classList.remove('visually-hidden');
     setLoadedError(false);
     setDuration(Number(videoRef.current?.duration.toFixed(0)));
   };

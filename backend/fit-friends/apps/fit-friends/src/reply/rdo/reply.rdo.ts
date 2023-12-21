@@ -18,6 +18,13 @@ export class ReplyRdo {
   @Expose()
   createdAt: Date;
 
+  @ApiProperty({
+    description: 'Оценка пользователя',
+    example: 4,
+  })
+  @Expose()
+  rating: number;
+
   @ApiProperty({ description: 'Автор отзыва', type: UserRdo })
   @Expose()
   @Type(() => UserRdo)

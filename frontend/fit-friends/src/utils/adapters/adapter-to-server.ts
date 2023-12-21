@@ -5,8 +5,9 @@ import { UpdateUserDto } from './api-dtos/update-user.dto';
 import { Role } from 'src/types/constants';
 import { NewTrainingDto, UpdateTrainingDto } from './api-dtos/new-training.dto';
 import { NewTrainingInfo, UpdateTrainingInfo } from 'src/types/training.type';
-import { CreatePurchaseInputs } from 'src/types/forms.type';
+import { CreatePurchaseInputs, CreateReplyInputs } from 'src/types/forms.type';
 import { NewOrderDto } from './api-dtos/new-order.dto';
+import { NewReplyDto } from './api-dtos/new-reply.dto';
 
 
 export const adaptRegisterUserToServer = (newUser: RegisterInfo): NewUserDto => ({
@@ -85,4 +86,10 @@ export const adaptOrderToServer = (newOrder: CreatePurchaseInputs): NewOrderDto 
   trainingId: newOrder.trainingId,
   trainingCount: newOrder.trainingCount,
   paymentType: PaymentTypeToServer[newOrder.paymentType],
+});
+
+export const adaptNewReplyToClient = (newReply: CreateReplyInputs): NewReplyDto => ({
+  trainingId: newReply.trainingId,
+  text: newReply.text,
+  rating: newReply.rating
 });

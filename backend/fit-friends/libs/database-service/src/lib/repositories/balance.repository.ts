@@ -53,7 +53,7 @@ export class BalanceRepository {
 
   public async findAllByUserId(
     userId: number,
-    { limit, page, sortDirection, active }: BaseQuery,
+    { limit, page, sortDirection, active }: BaseQuery & { active?: boolean },
   ) {
     const totalTrainingsCount = await this.prismaConnector.userBalance.count({
       where: {

@@ -31,6 +31,7 @@ export enum ApiRoute {
   CreateTraining = '/trainings/create',
   MyTrainings = '/trainings/mylist',
   TrainingList = '/trainings',
+  SpecialTrainings = '/trainings/specials',
   TrainingDetails = '/trainings/details',
   UpdateTraining = '/trainings/update',
   UsersList = '/users',
@@ -43,7 +44,9 @@ export enum ApiRoute {
   CreateOrder = '/orders/create',
   CoachOrdersList = '/orders/mylist',
   MyListBalance = '/balance/mylist',
-  UpdateBalance = '/balance/update'
+  UpdateBalance = '/balance/update',
+  ReplyTrainingList = '/replies/list',
+  CreateReply = '/replies/create'
 }
 
 export enum SliceNameSpace {

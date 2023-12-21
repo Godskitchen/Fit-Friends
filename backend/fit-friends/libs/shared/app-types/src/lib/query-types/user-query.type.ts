@@ -7,4 +7,6 @@ export type UserQuery = {
   fitnessLevel?: FitnessLevel[];
   trainingType?: TrainingType[];
   sort?: Role;
+  role?: Role;
+  isReady?: boolean;
 };

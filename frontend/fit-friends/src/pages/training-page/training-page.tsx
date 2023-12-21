@@ -81,10 +81,12 @@ export default function TrainingPage(): JSX.Element {
       setCurrentPrice(`${price} ₽`);
       setCurrentDiscountPrice(`${discountPrice} ₽`);
       setDiscount(training.isSpecialOffer);
-      dispatch(getTrainingAmountAction(training.trainingId));
+      if (myProfile && myProfile.role === Role.User) {
+        dispatch(getTrainingAmountAction(training.trainingId));
+      }
     }
 
-  }, [dispatch, training]);
+  }, [dispatch, myProfile, training]);
 
 
   if (training === undefined || isTrainingLoading || !myProfile) {
@@ -159,7 +161,11 @@ export default function TrainingPage(): JSX.Element {
             <div className="container">
               <div className="inner-page__wrapper">
                 <h1 className="visually-hidden">Карточка тренировки</h1>
-                <ReviewsSideBar />
+                <ReviewsSideBar
+                  trainingId={training.trainingId}
+                  myRole={myProfile.role}
+                  trainingAmount={trainingAmount}
+                />
                 <div className={`training-card ${isEditMode ? 'training-card--edit' : ''}`}>
                   <div className="training-info">
                     <h2 className="visually-hidden">Информация о тренировке</h2>

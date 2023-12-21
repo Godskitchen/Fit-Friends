@@ -41,6 +41,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { TrainingListRdo } from './rdo/training-list.rdo';
+import { SpecialTrainingQuery } from './queries/special-training.query';
 
 @UseGuards(JwtAccessGuard)
 @ApiTags('trainings')
@@ -164,5 +165,26 @@ export class TrainingController {
       query,
     );
     return fillRDO(TrainingListRdo, trainingList, [Role.Trainer]);
+  }
+
+  @Get('/specials')
+  @ApiOkResponse({
+    description: `Получена подборка тренировок в зависимости от предпочтений пользователя. По умолчанию возвращается ${MAX_ITEMS_LIMIT} тренировок`,
+    type: [TrainingRdo],
+  })
+  @ApiBadRequestResponse({
+    description: 'Не пройдена валдиация полей query',
+  })
+  @ApiForbiddenResponse({
+    description: 'Маршрут доступен только "тренерам"',
+  })
+  @Roles(Role.User)
+  @UseGuards(RoleGuard)
+  public async getSpecialTrainingsList(
+    @Query(new ValidationPipe({ transform: true, whitelist: true }))
+    query: SpecialTrainingQuery,
+  ) {
+    const trainingList = await this.trainingService.getSpecialTrainings(query);
+    return fillRDO(TrainingRdo, trainingList);
   }
 }
