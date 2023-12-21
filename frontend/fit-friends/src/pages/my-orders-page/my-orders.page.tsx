@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Fragment, LegacyRef, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { AppRoute } from 'src/app-constants';
 import Header from 'src/components/header/header';
 import LoadingBlock from 'src/components/loading-components/loading-block';
@@ -9,8 +8,8 @@ import OrderList from 'src/components/order-list/order-list';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { addOrdersToListAction, getOrderListAction } from 'src/store/api-actions';
 import { getTrainingsDownloadingStatus } from 'src/store/app-data/app-data.selectors';
-import { getOrderList, getTotalOrdersCount } from 'src/store/user-process/user-process.selectors';
-import { HeaderNavTab } from 'src/types/constants';
+import { getMyProfileInfo, getOrderList, getTotalOrdersCount } from 'src/store/user-process/user-process.selectors';
+import { HeaderNavTab, Role } from 'src/types/constants';
 import { OrderQueryState } from 'src/types/queries-filters.type';
 
 const INITIAL_PAGE_NUMBER = 1;
@@ -54,6 +53,20 @@ export default function MyOrdersPage(): JSX.Element {
   const onReturnToTopBtnHandle = () => {
     window.scrollTo({top: 0, behavior: 'smooth'});
   };
+
+  const myProfile = useAppSelector(getMyProfileInfo);
+
+  useEffect(() => {
+    if (myProfile) {
+      if (myProfile.role === Role.Trainer && !myProfile.trainerProfile) {
+        navigate(AppRoute.QuestionnaireCoach, {replace: true});
+      } else if (myProfile.role === Role.User && !myProfile.userProfile) {
+        navigate(AppRoute.QuestionnaireUser, {replace: true});
+      } else if (myProfile.role === Role.User) {
+        navigate(AppRoute.Forbidden, {replace: true});
+      }
+    }
+  }, [myProfile, navigate]);
 
   useEffect(() => {
     const initialQuery = {

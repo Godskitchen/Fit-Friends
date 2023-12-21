@@ -1,6 +1,8 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { AppRoute } from 'src/app-constants';
 import LoadingScreen from 'src/components/loading-components/loading-screen';
 import SkillButtons from 'src/components/skill-buttons/skill-buttons';
 import RegSpecialisationList from 'src/components/specialisation-list.tsx/reg-specialisation-list';
@@ -24,8 +26,20 @@ const questionnaireUserFieldPaths = {
 
 export default function QuestionnaireUserPage (): JSX.Element {
 
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const userInfo = useAppSelector(getMyProfileInfo);
+
+  const myProfile = useAppSelector(getMyProfileInfo);
+
+  useEffect(() => {
+    if (myProfile) {
+      if (myProfile.userProfile) {
+        navigate(AppRoute.Main, {replace: true});
+      } else if (myProfile.trainerProfile) {
+        navigate(AppRoute.Forbidden, {replace: true});
+      }
+    }
+  }, [myProfile, navigate]);
 
   const {
     register,
@@ -50,17 +64,17 @@ export default function QuestionnaireUserPage (): JSX.Element {
 
   const selectedSpecs = useWatch<QuestionnaireUserInputs, 'specialisations'>({control, name: 'specialisations'});
 
-  if (userInfo === undefined) {
+  if (myProfile === undefined) {
     return <LoadingScreen/>;
   }
 
-  if (userInfo === null) {
+  if (myProfile === null) {
     return <p>Error</p>;
   }
 
   const onInputFocusHandler = (inputName: keyof QuestionnaireUserInputs) => clearErrors(inputName);
   const onSubmitHandler: SubmitHandler<QuestionnaireUserInputs> = (formData) => {
-    dispatch(createUserProfileAction(Object.assign(formData, {userId: userInfo.userId})));
+    dispatch(createUserProfileAction(Object.assign(formData, {userId: myProfile.userId})));
   };
 
   return (

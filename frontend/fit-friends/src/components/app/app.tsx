@@ -11,7 +11,7 @@ import RegistrationPage from 'src/pages/registration-page/registration.page';
 import WelcomePage from 'src/pages/welcome-page/welcome.page';
 import LoadingScreen from '../loading-components/loading-screen';
 import { checkAuthAction } from 'src/store/api-actions';
-import { getAuthCheckedStatus, getAuthorizationStatus } from 'src/store/user-process/user-process.selectors';
+import { getAuthCheckedStatus, getAuthorizationStatus, getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
 import PrivateRoute from '../private-route/private-route';
 import NotFoundPage from 'src/pages/not-found-page/not-found.page';
 import ForbiddenPage from 'src/pages/forbidden-page/forbidden-page';
@@ -26,6 +26,8 @@ import UserPage from 'src/pages/user-page/user-page';
 import TrainingsCatalogPage from 'src/pages/trainings-catalog-page/trainings-catalog-page';
 import MyPurchasesPage from 'src/pages/my-purchases-page/my-purchases-page';
 import MyOrdersPage from 'src/pages/my-orders-page/my-orders.page';
+import { getNetworkError } from 'src/store/app-data/app-data.selectors';
+import ErrorScreen from '../error-components/error-screen';
 
 export default function App(): JSX.Element {
 
@@ -43,9 +45,15 @@ export default function App(): JSX.Element {
 
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isAuthChecked = useAppSelector(getAuthCheckedStatus);
+  const myProfile = useAppSelector(getMyProfileInfo);
+  const isNetworkError = useAppSelector(getNetworkError);
 
-  if (!isAuthChecked) {
+  if (!isAuthChecked || myProfile === undefined) {
     return <LoadingScreen />;
+  }
+
+  if (isNetworkError) {
+    return <ErrorScreen />;
   }
 
   return (
@@ -189,27 +197,75 @@ export default function App(): JSX.Element {
         />
         <Route
           path={`${AppRoute.UsersCatalog}/:userId`}
-          element={<UserPage />}
+          element={
+            <PrivateRoute
+              restrictedStatus={AuthorizationStatus.NoAuth}
+              currentStatus={authorizationStatus}
+              redirectTo={AppRoute.Login}
+            >
+              <UserPage />
+            </PrivateRoute>
+          }
         />
         <Route
           path={AppRoute.TrainingsCatalog}
-          element={<TrainingsCatalogPage />}
+          element={
+            <PrivateRoute
+              restrictedStatus={AuthorizationStatus.NoAuth}
+              currentStatus={authorizationStatus}
+              redirectTo={AppRoute.Login}
+            >
+              <TrainingsCatalogPage />
+            </PrivateRoute>
+          }
         />
         <Route
           path={`${AppRoute.UserAccount}${AppRoute.MyFriends}`}
-          element={<MyFriendsPage />}
+          element={
+            <PrivateRoute
+              restrictedStatus={AuthorizationStatus.NoAuth}
+              currentStatus={authorizationStatus}
+              redirectTo={AppRoute.Login}
+            >
+              <MyFriendsPage />
+            </PrivateRoute>
+          }
         />
         <Route
           path={`${AppRoute.UserAccount}${AppRoute.MyBalance}`}
-          element={<MyPurchasesPage />}
+          element={
+            <PrivateRoute
+              restrictedStatus={AuthorizationStatus.NoAuth}
+              currentStatus={authorizationStatus}
+              redirectTo={AppRoute.Login}
+            >
+              <MyPurchasesPage />
+            </PrivateRoute>
+          }
         />
         <Route
           path={`${AppRoute.CoachAccount}${AppRoute.MyFriends}`}
-          element={<MyFriendsPage />}
+          element={
+            <PrivateRoute
+              restrictedStatus={AuthorizationStatus.NoAuth}
+              currentStatus={authorizationStatus}
+              redirectTo={AppRoute.Login}
+            >
+              <MyFriendsPage />
+            </PrivateRoute>
+          }
         />
         <Route
           path={`${AppRoute.CoachAccount}${AppRoute.MyOrders}`}
-          element={<MyOrdersPage />}
+          element={
+            <PrivateRoute
+              restrictedStatus={AuthorizationStatus.NoAuth}
+              currentStatus={authorizationStatus}
+              redirectTo={AppRoute.Login}
+            >
+              <MyOrdersPage />
+            </PrivateRoute>
+          }
         />
         <Route
           path={AppRoute.Forbidden}

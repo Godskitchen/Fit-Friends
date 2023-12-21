@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useState, MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from 'src/app-constants';

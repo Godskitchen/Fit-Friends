@@ -43,6 +43,7 @@ export type AppData = {
   totalRepliesCount: number;
   readyUsersList?: UserInfo[] | null;
   specialOffersList?: TrainingCardType[] | null;
+  loadingError: string;
 }
 
 export type MainProcess = {

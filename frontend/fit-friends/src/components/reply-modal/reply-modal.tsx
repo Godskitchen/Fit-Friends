@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
 import { MutableRefObject, useCallback, useEffect, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
-import { createReplyAction, getReplyListAction } from 'src/store/api-actions';
+import { createReplyAction } from 'src/store/api-actions';
 import { getDataUploadingStatus } from 'src/store/app-data/app-data.selectors';
 import { CreateReplyInputs } from 'src/types/forms.type';
 import { handleKeyDown } from 'src/utils/helpers';

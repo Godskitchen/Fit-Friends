@@ -1,4 +1,4 @@
-import { Fragment, useRef, MouseEvent, useState, ChangeEvent } from 'react';
+import { Fragment, useRef, MouseEvent, useState, ChangeEvent, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import TrainingGenderButtons from 'src/components/radio-buttons/training-gender-buttons';
@@ -8,6 +8,7 @@ import { DurationFieldToValueConvert,
   DurationFieldValue,
   Gender,
   HeaderNavTab,
+  Role,
   SkillFieldToValueConvert,
   SkillFieldValue,
   SpecialisationFieldToValueConvert,
@@ -22,9 +23,29 @@ import BlockUI from 'src/components/block-UI/block-UI';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { createTrainingAction } from 'src/store/api-actions';
 import { getDataUploadingStatus } from 'src/store/app-data/app-data.selectors';
+import { useNavigate } from 'react-router-dom';
+import { getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
+import LoadingScreen from 'src/components/loading-components/loading-screen';
+import { AppRoute } from 'src/app-constants';
 
 
 export default function CreateTrainingPage(): JSX.Element {
+
+  const myProfile = useAppSelector(getMyProfileInfo);
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    if (myProfile) {
+      if (myProfile.role === Role.Trainer && !myProfile.trainerProfile) {
+        navigate(AppRoute.QuestionnaireCoach, {replace: true});
+      } else if (myProfile.role === Role.User && !myProfile.userProfile) {
+        navigate(AppRoute.QuestionnaireUser, {replace: true});
+      } else if (myProfile.role === Role.User) {
+        navigate(AppRoute.Forbidden, {replace: true});
+      }
+    }
+  }, [myProfile, navigate]);
 
   const dispatch = useAppDispatch();
   const specialisationBlockRef = useRef<HTMLDivElement>(null);
@@ -121,6 +142,14 @@ export default function CreateTrainingPage(): JSX.Element {
   const onInputFocusHandler = (inputName: keyof CreateTrainingInputs) => {
     clearErrors(inputName);
   };
+
+  if (myProfile === null) {
+    return <p>error</p>;
+  }
+
+  if (myProfile === undefined || myProfile.userProfile === undefined) {
+    return <LoadingScreen />;
+  }
 
   return (
     <Fragment>

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import './info-block.css';
 
 import { Fragment, useRef, useState, MouseEvent } from 'react';

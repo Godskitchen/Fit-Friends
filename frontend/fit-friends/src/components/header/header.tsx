@@ -8,10 +8,12 @@ import { AppRoute } from 'src/app-constants';
 import { getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
 import LoadingBlock from '../loading-components/loading-block';
 
+const DISPATCH_INTERVAL = 30000;
 
 type HeaderProps = {
   activeTab: HeaderNavTab;
 }
+
 export default function Header({activeTab}: HeaderProps) {
 
   const dispatch = useAppDispatch();
@@ -19,7 +21,7 @@ export default function Header({activeTab}: HeaderProps) {
 
   useEffect(() => {
     dispatch(getNotificationsAction());
-    const intervalId = setInterval(() => {dispatch(getNotificationsAction());}, 30000);
+    const intervalId = setInterval(() => {dispatch(getNotificationsAction());}, DISPATCH_INTERVAL);
     return () => clearInterval(intervalId);
   }, [dispatch]);
 
@@ -30,22 +32,28 @@ export default function Header({activeTab}: HeaderProps) {
   return (
     <header className="header">
       <div className="container">
-        <a className="header__logo" href="index.html" aria-label="Переход на главную">
+        <Link className="header__logo" to={AppRoute.Main} aria-label="Переход на главную">
           <svg width="187" height="70" aria-hidden="true">
             <use xlinkHref="#logo"></use>
           </svg>
-        </a>
+        </Link>
         <nav className="main-nav">
           <ul className="main-nav__list">
             <li className="main-nav__item">
-              <Link className={`main-nav__link ${activeTab === HeaderNavTab.Home ? 'is-active' : ''}`} to={myProfile.role === Role.User ? AppRoute.Main : AppRoute.CoachAccount} aria-label="На главную">
+              <Link className={`main-nav__link ${activeTab === HeaderNavTab.Home ? 'is-active' : ''}`}
+                to={myProfile.role === Role.User ? AppRoute.Main : AppRoute.CoachAccount}
+                aria-label="На главную"
+              >
                 <svg width="18" height="18" aria-hidden="true">
                   <use xlinkHref="#icon-home"></use>
                 </svg>
               </Link>
             </li>
             <li className="main-nav__item">
-              <Link className={`main-nav__link ${activeTab === HeaderNavTab.Profile ? 'is-active' : ''}`} to={myProfile.role === Role.User ? AppRoute.UserAccount : AppRoute.CoachAccount} aria-label="Личный кабинет">
+              <Link className={`main-nav__link ${activeTab === HeaderNavTab.Profile ? 'is-active' : ''}`}
+                to={myProfile.role === Role.User ? AppRoute.UserAccount : AppRoute.CoachAccount}
+                aria-label="Личный кабинет"
+              >
                 <svg width="16" height="18" aria-hidden="true">
                   <use xlinkHref="#icon-user"></use>
                 </svg>

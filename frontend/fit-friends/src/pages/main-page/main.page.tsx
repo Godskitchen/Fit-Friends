@@ -1,5 +1,7 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
+import { AppRoute } from 'src/app-constants';
 import Header from 'src/components/header/header';
 import LoadingScreen from 'src/components/loading-components/loading-screen';
 import LookForCompanyBlock from 'src/components/look-for-company-block/look-for-company-block';
@@ -8,19 +10,36 @@ import PopularTrainingsBlock from 'src/components/trainings-block/popular-traini
 import SpecialTrainingsBlock from 'src/components/trainings-block/special-trainings-block';
 import { useAppSelector } from 'src/hooks';
 import { getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
-import { HeaderNavTab } from 'src/types/constants';
+import { HeaderNavTab, Role } from 'src/types/constants';
 
-export default function MainPage(): JSX.Element {
+export default function MainPage(): JSX.Element | null {
 
   const myProfile = useAppSelector(getMyProfileInfo);
+  const navigate = useNavigate();
 
-  if (myProfile === undefined || !myProfile?.userProfile) {
-    return <LoadingScreen />;
-  }
+  useEffect(() => {
+    if (myProfile) {
+      if (myProfile.role === Role.Trainer && !myProfile.trainerProfile) {
+        navigate(AppRoute.QuestionnaireCoach, {replace: true});
+      } else if (myProfile.role === Role.User && !myProfile.userProfile) {
+        navigate(AppRoute.QuestionnaireUser, {replace: true});
+
+      } else if (myProfile.role === Role.Trainer) {
+        navigate(AppRoute.CoachAccount, {replace: true});
+
+      }
+    }
+  }, [myProfile, navigate]);
+
 
   if (myProfile === null) {
     return <p>error</p>;
   }
+
+  if (myProfile === undefined || myProfile.userProfile === undefined) {
+    return <LoadingScreen />;
+  }
+
   return (
     <Fragment>
       <Helmet>

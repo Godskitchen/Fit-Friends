@@ -1,7 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { useAppDispatch, useAppSelector } from 'src/hooks';
-import { getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
-import LoadingScreen from '../loading-components/loading-screen';
+import { useAppDispatch } from 'src/hooks';
 import { useState, MouseEvent, useRef, ChangeEvent} from 'react';
 import { Specialisation, Location, Role, GenderFieldValue, GenderFieldToValueConvert, SkillFieldToValueConvert, SkillFieldValue } from 'src/types/constants';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
@@ -13,11 +11,15 @@ import { nameValidationHandler } from 'src/utils/validators/user/name';
 import { aboutInfoValidationHandler } from 'src/utils/validators/user/about-info';
 import { updateProfileAction } from 'src/store/api-actions';
 import { compareArrays } from 'src/utils/helpers';
+import { UserInfo } from 'src/types/user.type';
+import LoadingBlock from '../loading-components/loading-block';
 
+type UserInfoDeskProps = {
+  myProfile: UserInfo;
+}
 
-export default function UserInfoDesk(): JSX.Element {
+export default function UserInfoDesk({myProfile}: UserInfoDeskProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const userInfo = useAppSelector(getMyProfileInfo);
   const [isEditMode, setEditMode] = useState(false);
 
   const locationBlockRef = useRef<HTMLDivElement | null>(null);
@@ -27,26 +29,26 @@ export default function UserInfoDesk(): JSX.Element {
 
   let defaultFormValues = {};
 
-  if (userInfo && userInfo.trainerProfile) {
+  if (myProfile && myProfile.trainerProfile) {
     defaultFormValues = {
-      name: userInfo.name,
-      aboutInfo: userInfo.aboutInfo,
-      individualTraining: userInfo.trainerProfile.individualTraining,
-      specialisations: userInfo.trainerProfile.specialisations,
-      location: userInfo.location,
-      gender: userInfo.gender,
-      skillLevel: userInfo.trainerProfile.skillLevel,
+      name: myProfile.name,
+      aboutInfo: myProfile.aboutInfo,
+      individualTraining: myProfile.trainerProfile.individualTraining,
+      specialisations: myProfile.trainerProfile.specialisations,
+      location: myProfile.location,
+      gender: myProfile.gender,
+      skillLevel: myProfile.trainerProfile.skillLevel,
       shouldDeleteAvatar: false,
     };
-  } else if (userInfo && userInfo.userProfile) {
+  } else if (myProfile && myProfile.userProfile) {
     defaultFormValues = {
-      name: userInfo.name,
-      aboutInfo: userInfo.aboutInfo,
-      individualTraining: userInfo.userProfile.readyForWorkout,
-      specialisations: userInfo.userProfile.specialisations,
-      location: userInfo.location,
-      gender: userInfo.gender,
-      skillLevel: userInfo.userProfile.skillLevel,
+      name: myProfile.name,
+      aboutInfo: myProfile.aboutInfo,
+      individualTraining: myProfile.userProfile.readyForWorkout,
+      specialisations: myProfile.userProfile.specialisations,
+      location: myProfile.location,
+      gender: myProfile.gender,
+      skillLevel: myProfile.userProfile.skillLevel,
       shouldDeleteAvatar: false,
     };
   }
@@ -69,7 +71,7 @@ export default function UserInfoDesk(): JSX.Element {
   );
 
   const [isAvatarUploaded, setAvatarUploaded] = useState(true);
-  const [picture, setPicture] = useState(userInfo?.avatar);
+  const [picture, setPicture] = useState(myProfile?.avatar);
 
   const onClickLocationItemHandler = (evt: MouseEvent<HTMLUListElement>) => {
     const locationWithPrefix = (evt.target as HTMLLIElement).textContent as string;
@@ -122,25 +124,20 @@ export default function UserInfoDesk(): JSX.Element {
     disabled: !isEditMode,
   });
 
-  if (!userInfo
-    || (userInfo.role === Role.Trainer && !userInfo.trainerProfile)
-    || (userInfo.role === Role.User && !userInfo.userProfile)) {
-    return <LoadingScreen />;
-  }
-
-  if (userInfo === null) {
-    return <p>Error</p>;
+  if ((myProfile.role === Role.Trainer && !myProfile.trainerProfile)
+    || (myProfile.role === Role.User && !myProfile.userProfile)) {
+    return <LoadingBlock />;
   }
 
   const onSubmitHandler: SubmitHandler<ProfileInfoInputs> = (formData) => {
     const sendData: Partial<ProfileInfoInputs> = {
-      name: formData.name !== userInfo.name ? formData.name : undefined,
-      aboutInfo: formData.aboutInfo !== userInfo.aboutInfo ? formData.aboutInfo : undefined,
-      individualTraining: formData.individualTraining !== userInfo.trainerProfile?.individualTraining ? formData.individualTraining : undefined,
-      location: formData.location !== userInfo.location ? formData.location : undefined,
-      gender: formData.gender !== userInfo.gender ? formData.gender : undefined,
-      skillLevel: formData.skillLevel !== userInfo.trainerProfile?.skillLevel ? formData.skillLevel : undefined,
-      specialisations: !compareArrays(formData.specialisations, userInfo.trainerProfile?.specialisations) ? formData.specialisations : undefined,
+      name: formData.name !== myProfile.name ? formData.name : undefined,
+      aboutInfo: formData.aboutInfo !== myProfile.aboutInfo ? formData.aboutInfo : undefined,
+      individualTraining: formData.individualTraining !== myProfile.trainerProfile?.individualTraining ? formData.individualTraining : undefined,
+      location: formData.location !== myProfile.location ? formData.location : undefined,
+      gender: formData.gender !== myProfile.gender ? formData.gender : undefined,
+      skillLevel: formData.skillLevel !== myProfile.trainerProfile?.skillLevel ? formData.skillLevel : undefined,
+      specialisations: !compareArrays(formData.specialisations, myProfile.trainerProfile?.specialisations) ? formData.specialisations : undefined,
       avatar: formData.shouldDeleteAvatar ? null : formData.avatar?.length !== 0 ? formData.avatar : undefined,
     };
 
@@ -155,7 +152,7 @@ export default function UserInfoDesk(): JSX.Element {
 
     if (isProfileUpdated) {
       dispatch(updateProfileAction(Object.assign(
-        sendData, {userId: userInfo.userId, role: userInfo.role}
+        sendData, {userId: myProfile.userId, role: myProfile.role}
       )));
     }
   };
@@ -312,7 +309,7 @@ export default function UserInfoDesk(): JSX.Element {
                   <use xlinkHref="#arrow-check"></use>
                 </svg>
               </span>
-              <span className="custom-toggle__label">{userInfo.role === Role.Trainer ? 'Готов тренировать' : 'Готов к тренировке'}</span>
+              <span className="custom-toggle__label">{myProfile.role === Role.Trainer ? 'Готов тренировать' : 'Готов к тренировке'}</span>
             </label>
           </div>
         </div>

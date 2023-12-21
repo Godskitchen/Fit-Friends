@@ -1,6 +1,5 @@
-/* eslint-disable no-console */
 import { Fragment, useEffect, useState, FocusEvent, ChangeEvent, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { getDataUploadingStatus, getTrainingInfo, getTrainingsDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import LoadingScreen from '../../components/loading-components/loading-screen';
@@ -18,11 +17,13 @@ import TrainingVideoSection from '../../components/training-video-section/video-
 import { priceStringValidationHandler } from 'src/utils/validators/training/price';
 import { getMyProfileInfo, getTrainingAmount } from 'src/store/user-process/user-process.selectors';
 import PurchaseModal from 'src/components/purchase-modal/purchase-modal';
+import { AppRoute } from 'src/app-constants';
 
 
 export default function TrainingPage(): JSX.Element {
   const {trainingId} = useParams();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [isEditMode, setEditMode] = useState(false);
   const [currentPrice, setCurrentPrice] = useState<string>('');
@@ -73,6 +74,18 @@ export default function TrainingPage(): JSX.Element {
   const isDataUploading = useAppSelector(getDataUploadingStatus);
   const myProfile = useAppSelector(getMyProfileInfo);
   const trainingAmount = useAppSelector(getTrainingAmount);
+
+  useEffect(() => {
+    if (myProfile && training) {
+      if (myProfile.role === Role.Trainer && !myProfile.trainerProfile) {
+        navigate(AppRoute.QuestionnaireCoach, {replace: true});
+      } else if (myProfile.role === Role.User && !myProfile.userProfile) {
+        navigate(AppRoute.QuestionnaireUser, {replace: true});
+      } else if (myProfile.role === Role.Trainer && myProfile.userId !== training.trainer.userId) {
+        navigate(AppRoute.Forbidden, {replace: true});
+      }
+    }
+  }, [myProfile, navigate, training]);
 
   useEffect(() => {
     if (training) {

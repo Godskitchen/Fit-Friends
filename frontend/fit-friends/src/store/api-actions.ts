@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import { ApiRoute, AppRoute } from 'src/app-constants';

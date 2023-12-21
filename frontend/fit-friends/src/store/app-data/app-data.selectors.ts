@@ -1,4 +1,5 @@
 import { SliceNameSpace } from 'src/app-constants';
+import { LoadError } from 'src/types/constants';
 import { State } from 'src/types/state.type';
 
 export const getDataUploadingStatus = (state: State): boolean => state[SliceNameSpace.Data].dataUploadingStatus;
@@ -21,3 +22,6 @@ export const getRepliesDownLoadingStatus = (state: State) => state[SliceNameSpac
 
 export const getReadyUsersList = (state: State) => state[SliceNameSpace.Data].readyUsersList;
 export const getSpecialOffersList = (state: State) => state[SliceNameSpace.Data].specialOffersList;
+
+export const getNetworkError = (state: State): boolean => state[SliceNameSpace.Data].loadingError === LoadError.NetworkError;
+

@@ -41,6 +41,10 @@ export default function ReviewsSideBar({trainingId, myRole, trainingAmount}: Rev
     setTimeout(() => {replyBtnRef.current?.focus();}, 100);
   };
 
+  const onBtnBackClickHandle = () => {
+    navigate(`${myRole === Role.Trainer ? `${AppRoute.CoachAccount}${AppRoute.MyTrainings}` : `${AppRoute.TrainingsCatalog}`}`);
+  };
+
   const replyBtnRef = useRef<HTMLButtonElement | null>(null);
   const closeModalBtnRef = useRef<HTMLButtonElement | null>(null);
 
@@ -125,7 +129,7 @@ export default function ReviewsSideBar({trainingId, myRole, trainingAmount}: Rev
         <button
           className="btn-flat btn-flat--underlined reviews-side-bar__back"
           type="button"
-          onClick={() => {navigate(`${AppRoute.CoachAccount}${AppRoute.MyTrainings}`);}}
+          onClick={onBtnBackClickHandle}
         >
           <svg width="14" height="10" aria-hidden="true">
             <use xlinkHref="#arrow-left"></use>

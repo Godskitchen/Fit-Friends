@@ -1,21 +1,25 @@
-import { HeaderNavTab } from 'src/types/constants';
+import { HeaderNavTab, Role } from 'src/types/constants';
 import Header from '../../components/header/header';
 import { Helmet } from 'react-helmet-async';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import MyTrainingsFilterDesk from '../../components/filter-desk/my-trainings-filter-desk';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
-import { getMyTrainings, getTotalMyTrainingsCount} from 'src/store/user-process/user-process.selectors';
+import { getMyProfileInfo, getMyTrainings, getTotalMyTrainingsCount} from 'src/store/user-process/user-process.selectors';
 import {getMyTrainingsFiltersState} from 'src/store/main-process/main-process.selectors';
 import LoadingBlock from 'src/components/loading-components/loading-block';
 import TrainingsList from 'src/components/trainings-list/trainings-list';
 import { getTrainingsDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import { addMyTrainingsToListAction } from 'src/store/api-actions';
 import { setMyTrainingsFiltersStateAction } from 'src/store/main-process/main-process.reducer';
+import { useNavigate } from 'react-router-dom';
+import { AppRoute } from 'src/app-constants';
 
 export default function MyTrainingsPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
+  const myProfile = useAppSelector(getMyProfileInfo);
   const trainings = useAppSelector(getMyTrainings);
   const isLoading = useAppSelector(getTrainingsDownloadingStatus);
   const filterState = useAppSelector(getMyTrainingsFiltersState);
@@ -34,6 +38,18 @@ export default function MyTrainingsPage(): JSX.Element {
   const onReturnToTopBtnHandle = () => {
     window.scrollTo({top: 0, behavior: 'smooth'});
   };
+
+  useEffect(() => {
+    if (myProfile) {
+      if (myProfile.role === Role.Trainer && !myProfile.trainerProfile) {
+        navigate(AppRoute.QuestionnaireCoach, {replace: true});
+      } else if (myProfile.role === Role.User && !myProfile.userProfile) {
+        navigate(AppRoute.QuestionnaireUser, {replace: true});
+      } else if (myProfile.role === Role.User) {
+        navigate(AppRoute.Forbidden, {replace: true});
+      }
+    }
+  }, [myProfile, navigate]);
 
   return (
     <Fragment>

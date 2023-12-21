@@ -169,3 +169,8 @@ export const UserCoordsLocation: Record<Location, LocationCoords> = {
   [Location.Udelnaya]: {latitude:60.016681, longitude:30.315617},
   [Location.Sportivnaya]: { latitude: 59.952161, longitude: 30.291463 }
 };
+
+export enum LoadError {
+  NetworkError = 'ERR_NETWORK',
+  BadRequest = 'ERR_BAD_REQUEST'
+}

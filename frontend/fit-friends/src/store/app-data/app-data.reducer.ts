@@ -25,8 +25,10 @@ import {
   getSpecialTrainingListAction,
   getReadyUsersListAction,
   getSpecialOffersListAction,
+  checkAuthAction,
 } from '../api-actions';
 import { AppData } from 'src/types/state.type';
+import { LoadError } from 'src/types/constants';
 
 const initialState: AppData = {
   dataUploadingStatus: false,
@@ -43,7 +45,8 @@ const initialState: AppData = {
   specialOffersList: undefined,
   totalTrainingsCount: 0,
   replyList: undefined,
-  totalRepliesCount: 0
+  totalRepliesCount: 0,
+  loadingError: ''
 };
 
 export const appData = createSlice({
@@ -54,12 +57,16 @@ export const appData = createSlice({
     builder
       .addCase(registerAction.fulfilled, (state) => {
         state.dataUploadingStatus = false;
+        state.loadingError = '';
       })
       .addCase(registerAction.pending, (state) => {
         state.dataUploadingStatus = true;
       })
-      .addCase(registerAction.rejected, (state) => {
+      .addCase(registerAction.rejected, (state, action) => {
         state.dataUploadingStatus = false;
+        state.loadingError = (action.error.code === LoadError.NetworkError)
+          ? LoadError.NetworkError
+          : '';
       })
       .addCase(loginAction.fulfilled, (state) => {
         state.dataUploadingStatus = false;
@@ -69,6 +76,14 @@ export const appData = createSlice({
       })
       .addCase(loginAction.rejected, (state) => {
         state.dataUploadingStatus = false;
+      })
+      .addCase(checkAuthAction.fulfilled, (state) => {
+        state.loadingError = '';
+      })
+      .addCase(checkAuthAction.rejected, (state, action) => {
+        state.loadingError = (action.error.code === LoadError.NetworkError)
+          ? LoadError.NetworkError
+          : '';
       })
       .addCase(createTrainingAction.fulfilled, (state) => {
         state.dataUploadingStatus = false;

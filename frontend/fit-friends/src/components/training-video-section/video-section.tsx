@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import './video-player.css';
 import { ChangeEvent, Fragment, useRef, useState } from 'react';
 import VideoProgressBar from '../video-progress-bar/video-progress-bar';

@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from 'src/components/header/header';
 import LoadingBlock from 'src/components/loading-components/loading-block';
@@ -9,7 +9,10 @@ import { addTrainingsToListAction } from 'src/store/api-actions';
 import { getTotalTrainingsCount, getTrainingList, getTrainingsDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import { setTrainingCatalogFilterStateAction } from 'src/store/main-process/main-process.reducer';
 import { getTrainingsCatalogFilterState } from 'src/store/main-process/main-process.selectors';
-import { HeaderNavTab } from 'src/types/constants';
+import { HeaderNavTab, Role } from 'src/types/constants';
+import { getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
+import { useNavigate } from 'react-router-dom';
+import { AppRoute } from 'src/app-constants';
 
 export default function TrainingCatalogPage(): JSX.Element {
 
@@ -18,6 +21,21 @@ export default function TrainingCatalogPage(): JSX.Element {
   const isLoading = useAppSelector(getTrainingsDownloadingStatus);
   const filterState = useAppSelector(getTrainingsCatalogFilterState);
   const totalTrainingsCount = useAppSelector(getTotalTrainingsCount);
+  const myProfile = useAppSelector(getMyProfileInfo);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (myProfile) {
+      if (myProfile.role === Role.Trainer && !myProfile.trainerProfile) {
+        navigate(AppRoute.QuestionnaireCoach, {replace: true});
+      } else if (myProfile.role === Role.User && !myProfile.userProfile) {
+        navigate(AppRoute.QuestionnaireUser, {replace: true});
+      } else if (myProfile.role === Role.Trainer) {
+        navigate(AppRoute.CoachAccount, {replace: true});
+      }
+    }
+  }, [myProfile, navigate]);
 
   const onShowMoreBtnClickHandle = () => {
     const newFilterState = {
@@ -37,6 +55,10 @@ export default function TrainingCatalogPage(): JSX.Element {
   const onReturnToTopBtnHandle = () => {
     window.scrollTo({top: 0, behavior: 'smooth'});
   };
+
+  if (trainings === null) {
+    return <p>error</p>;
+  }
 
   return (
     <Fragment>

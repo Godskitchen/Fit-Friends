@@ -62,7 +62,6 @@ export const createAPI = (): AxiosInstance => {
         try {
           const { data } = await axios.get<RefreshResponse>(ApiRoute.RefreshTokens, {baseURL: SERVER_URL, timeout: REQUEST_TIMEOUT, withCredentials: true,});
           saveToken(data.accessToken);
-          console.log('получен новый access token');
           return api(originalRequest);
         } catch (refreshError) {
           return Promise.reject(refreshError);

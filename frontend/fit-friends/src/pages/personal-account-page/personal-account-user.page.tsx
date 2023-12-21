@@ -1,24 +1,42 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute } from 'src/app-constants';
 import Header from 'src/components/header/header';
 import LoadingBlock from 'src/components/loading-components/loading-block';
 import UserInfoDesk from 'src/components/user-info-desk/user-info-desk';
 import { useAppSelector } from 'src/hooks';
 import { getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
-import { HeaderNavTab } from 'src/types/constants';
+import { HeaderNavTab, Role } from 'src/types/constants';
 import { formatNumber } from 'src/utils/helpers';
 
 export default function PersonalAccountUserPage() : JSX.Element {
-  const userInfo = useAppSelector(getMyProfileInfo);
+  const navigate = useNavigate();
+  const myProfile = useAppSelector(getMyProfileInfo);
 
-  if (!userInfo || !userInfo.userProfile) {
+  useEffect(() => {
+    if (myProfile) {
+      if (myProfile.role === Role.Trainer && !myProfile.trainerProfile) {
+        navigate(AppRoute.QuestionnaireCoach, {replace: true});
+      } else if (myProfile.role === Role.User && !myProfile.userProfile) {
+        navigate(AppRoute.QuestionnaireUser, {replace: true});
+      } else if (myProfile.role === Role.Trainer) {
+        navigate(AppRoute.Forbidden, {replace: true});
+      }
+    }
+  }, [myProfile, navigate]);
+
+  if (myProfile === null) {
+    return <p>Error</p>;
+  }
+
+  if (myProfile === undefined || !myProfile.userProfile) {
     return <LoadingBlock />;
   }
 
-  const formatedCaloriesForDay = formatNumber(userInfo.userProfile.caloriesToBurn);
-  const formatedCaloriesForWeek = formatNumber(userInfo.userProfile.caloriesToBurn * 7);
+
+  const formatedCaloriesForDay = formatNumber(myProfile.userProfile.caloriesToBurn);
+  const formatedCaloriesForWeek = formatNumber(myProfile.userProfile.caloriesToBurn * 7);
 
   return (
     <Fragment>
@@ -32,7 +50,7 @@ export default function PersonalAccountUserPage() : JSX.Element {
             <div className="container">
               <div className="inner-page__wrapper">
                 <h1 className="visually-hidden">Личный кабинет</h1>
-                <UserInfoDesk />
+                <UserInfoDesk myProfile={myProfile} />
                 <div className="inner-page__content">
                   <div className="personal-account-user">
                     <div className="personal-account-user__schedule">

@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Header from 'src/components/header/header';
 import LoadingBlock from 'src/components/loading-components/loading-block';
@@ -9,7 +9,10 @@ import { addUsersToListAction } from 'src/store/api-actions';
 import { getTotalUsersCount, getUserList, getUsersDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import { setUsersCatalogFilterStateAction } from 'src/store/main-process/main-process.reducer';
 import { getUsersCatalogFilterState } from 'src/store/main-process/main-process.selectors';
-import { HeaderNavTab } from 'src/types/constants';
+import { HeaderNavTab, Role } from 'src/types/constants';
+import { getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
+import { AppRoute } from 'src/app-constants';
+import { useNavigate } from 'react-router-dom';
 
 export default function UsersCatalogPage(): JSX.Element {
 
@@ -18,6 +21,21 @@ export default function UsersCatalogPage(): JSX.Element {
   const isLoading = useAppSelector(getUsersDownloadingStatus);
   const filterState = useAppSelector(getUsersCatalogFilterState);
   const totalUsersCount = useAppSelector(getTotalUsersCount);
+
+  const myProfile = useAppSelector(getMyProfileInfo);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (myProfile) {
+      if (myProfile.role === Role.Trainer && !myProfile.trainerProfile) {
+        navigate(AppRoute.QuestionnaireCoach, {replace: true});
+      } else if (myProfile.role === Role.User && !myProfile.userProfile) {
+        navigate(AppRoute.QuestionnaireUser, {replace: true});
+      } else if (myProfile.role === Role.Trainer) {
+        navigate(AppRoute.Forbidden, {replace: true});
+      }
+    }
+  }, [myProfile, navigate]);
 
   const onShowMoreBtnClickHandle = () => {
     const newFilterState = {

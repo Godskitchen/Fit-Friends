@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Fragment, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +7,7 @@ import Header from 'src/components/header/header';
 import LoadingBlock from 'src/components/loading-components/loading-block';
 import LoadingScreen from 'src/components/loading-components/loading-screen';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
-import { addFriendsToListAction, addUsersToListAction, getFriendListAction } from 'src/store/api-actions';
+import { addFriendsToListAction, getFriendListAction } from 'src/store/api-actions';
 import { getUsersDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import { setFriendsQueryStateAction } from 'src/store/main-process/main-process.reducer';
 import { getFriendsQueryState } from 'src/store/main-process/main-process.selectors';
@@ -26,6 +25,23 @@ export default function MyFriendsPage(): JSX.Element {
   const navigate = useNavigate();
   const queryState = useAppSelector(getFriendsQueryState);
 
+
+  useEffect(() => {
+    if (myProfile) {
+      if (myProfile.role === Role.Trainer && !myProfile.trainerProfile) {
+        navigate(AppRoute.QuestionnaireCoach, {replace: true});
+      } else if (myProfile.role === Role.User && !myProfile.userProfile) {
+        navigate(AppRoute.QuestionnaireUser, {replace: true});
+      }
+
+      if (window.location.href.includes('account_coach') && myProfile.role === Role.User) {
+        navigate(`${AppRoute.UserAccount}${AppRoute.MyFriends}`, {replace: true});
+      } else if (window.location.href.includes('account_user') && myProfile.role === Role.Trainer) {
+        navigate(`${AppRoute.CoachAccount}${AppRoute.MyFriends}`, {replace: true});
+      }
+    }
+  }, [myProfile, navigate]);
+
   useEffect(() => {
     const initialQuery = {
       limit: `${CARD_LIMIT_PER_PAGE}`,
@@ -35,6 +51,7 @@ export default function MyFriendsPage(): JSX.Element {
     dispatch(getFriendListAction(initialQuery))
       .then(() => {dispatch(setFriendsQueryStateAction(initialQuery));});
   }, [dispatch]);
+
 
   const friends = useAppSelector(getFriendList);
   const isLoading = useAppSelector(getUsersDownloadingStatus);

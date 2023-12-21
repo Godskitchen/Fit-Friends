@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { addPurchasesToListAction, getPurchasesListAction } from 'src/store/api-actions';
 import { getTrainingsDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import { getMyProfileInfo, getMyTrainings, getTotalMyTrainingsCount } from 'src/store/user-process/user-process.selectors';
-import { HeaderNavTab } from 'src/types/constants';
+import { HeaderNavTab, Role } from 'src/types/constants';
 import { BalanceQueryState } from 'src/types/queries-filters.type';
 
 const CARD_LIMIT_PER_PAGE = 6;
@@ -29,6 +29,18 @@ export default function MyPurchasesPage(): JSX.Element {
   const isLoading = useAppSelector(getTrainingsDownloadingStatus);
 
   const [queryState, setQueryState] = useState<BalanceQueryState>();
+
+  useEffect(() => {
+    if (myProfile) {
+      if (myProfile.role === Role.Trainer && !myProfile.trainerProfile) {
+        navigate(AppRoute.QuestionnaireCoach, {replace: true});
+      } else if (myProfile.role === Role.User && !myProfile.userProfile) {
+        navigate(AppRoute.QuestionnaireUser, {replace: true});
+      } else if (myProfile.role === Role.Trainer) {
+        navigate(AppRoute.Forbidden, {replace: true});
+      }
+    }
+  }, [myProfile, navigate]);
 
   useEffect(() => {
     if (myProfile) {

@@ -1,6 +1,8 @@
-import { ChangeEvent, Fragment, useState } from 'react';
+import { ChangeEvent, Fragment, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { AppRoute } from 'src/app-constants';
 import LoadingScreen from 'src/components/loading-components/loading-screen';
 import SkillButtons from 'src/components/skill-buttons/skill-buttons';
 import RegSpecialisationList from 'src/components/specialisation-list.tsx/reg-specialisation-list';
@@ -23,9 +25,20 @@ const questionnaireCoachFieldPaths = {
 
 export default function QuestionnaireCoachPageTest(): JSX.Element {
 
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const userInfo = useAppSelector(getMyProfileInfo);
+  const myProfile = useAppSelector(getMyProfileInfo);
   const [isCertificateUploaded, setCertificateUploaded] = useState(false);
+
+  useEffect(() => {
+    if (myProfile) {
+      if (myProfile.trainerProfile) {
+        navigate(AppRoute.Main, {replace: true});
+      } else if (myProfile.userProfile) {
+        navigate(AppRoute.Forbidden, {replace: true});
+      }
+    }
+  }, [myProfile, navigate]);
 
   const certificateChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
     certificateValidationHandler(evt.target.files)
@@ -68,18 +81,17 @@ export default function QuestionnaireCoachPageTest(): JSX.Element {
 
   const selectedSpecs = useWatch<QuestionnaireCoachInputs, 'specialisations'>({control, name: 'specialisations'});
 
-  if (userInfo === undefined) {
+  if (myProfile === undefined) {
     return <LoadingScreen/>;
   }
 
-  if (userInfo === null) {
+  if (myProfile === null) {
     return <p>Error</p>;
   }
 
-
   const onInputFocusHandler = (inputName: keyof QuestionnaireCoachInputs) => clearErrors(inputName);
   const onSubmitHandler: SubmitHandler<QuestionnaireCoachInputs> = (formData) => {
-    dispatch(createCoachProfileAction(Object.assign(formData, {userId: userInfo.userId})));
+    dispatch(createCoachProfileAction(Object.assign(formData, {userId: myProfile.userId})));
   };
 
   return (

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { Fragment, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm, SubmitHandler } from 'react-hook-form';
