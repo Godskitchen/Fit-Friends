@@ -2,7 +2,7 @@ import { Fragment, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { getUserDetailsAction } from 'src/store/api-actions';
-import { getCurrentUserInfo, getUsersDownloadingStatus } from 'src/store/app-data/app-data.selectors';
+import { getCurrentUserInfo, getNetworkError, getUsersDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import NotFoundPage from '../not-found-page/not-found.page';
 import LoadingScreen from 'src/components/loading-components/loading-screen';
 import { HeaderNavTab, Role } from 'src/types/constants';
@@ -12,6 +12,7 @@ import CoachInfoBlock from 'src/components/user-info-block/coach-info-block';
 import UserInfoBlock from 'src/components/user-info-block/user-info-block';
 import { getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
 import { AppRoute } from 'src/app-constants';
+import ErrorScreen from 'src/components/error-components/error-screen';
 
 export default function UserPage(): JSX.Element {
   const {userId} = useParams();
@@ -19,6 +20,7 @@ export default function UserPage(): JSX.Element {
   const navigate = useNavigate();
 
   const isUserLoading = useAppSelector(getUsersDownloadingStatus);
+  const isNetworkError = useAppSelector(getNetworkError);
 
   useEffect(() => {
     if (userId) {
@@ -44,6 +46,9 @@ export default function UserPage(): JSX.Element {
   }
 
   if (user === null || !userId ) {
+    if (isNetworkError) {
+      return <ErrorScreen />;
+    }
     return <NotFoundPage />;
   }
 

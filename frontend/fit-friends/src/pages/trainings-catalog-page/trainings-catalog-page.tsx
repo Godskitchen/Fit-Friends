@@ -13,6 +13,7 @@ import { HeaderNavTab, Role } from 'src/types/constants';
 import { getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from 'src/app-constants';
+import ErrorScreen from 'src/components/error-components/error-screen';
 
 export default function TrainingCatalogPage(): JSX.Element {
 
@@ -57,7 +58,7 @@ export default function TrainingCatalogPage(): JSX.Element {
   };
 
   if (trainings === null) {
-    return <p>error</p>;
+    return <ErrorScreen />;
   }
 
   return (

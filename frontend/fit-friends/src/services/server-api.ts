@@ -1,7 +1,7 @@
-/* eslint-disable no-console */
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { getToken, saveToken } from './auth-token';
 import { ApiRoute } from 'src/app-constants';
+import { toast } from 'react-toastify';
 
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
@@ -55,7 +55,9 @@ export const createAPI = (): AxiosInstance => {
   api.interceptors.response.use(
     (response) => response,
     async (error: AxiosError) => {
-      console.log('from interceptor',error);
+      if (error.response?.status === HttpStatusCode.SERVER_INTERNAL) {
+        toast.error('Сервис временно недоступен');
+      }
       const originalRequest: CustomAxiosRequestConfig = error.config;
       if (error.response?.status === HttpStatusCode.UNAUTHORIZED && !originalRequest._retry) {
         originalRequest._retry = true;

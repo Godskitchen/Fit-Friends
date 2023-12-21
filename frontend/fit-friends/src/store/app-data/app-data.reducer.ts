@@ -57,16 +57,12 @@ export const appData = createSlice({
     builder
       .addCase(registerAction.fulfilled, (state) => {
         state.dataUploadingStatus = false;
-        state.loadingError = '';
       })
       .addCase(registerAction.pending, (state) => {
         state.dataUploadingStatus = true;
       })
-      .addCase(registerAction.rejected, (state, action) => {
+      .addCase(registerAction.rejected, (state) => {
         state.dataUploadingStatus = false;
-        state.loadingError = (action.error.code === LoadError.NetworkError)
-          ? LoadError.NetworkError
-          : '';
       })
       .addCase(loginAction.fulfilled, (state) => {
         state.dataUploadingStatus = false;
@@ -106,13 +102,17 @@ export const appData = createSlice({
       .addCase(getTrainingDetailsAction.fulfilled, (state, {payload}) => {
         state.trainingsDownloadingStatus = false;
         state.trainingInfo = payload;
+        state.loadingError = '';
       })
       .addCase(getTrainingDetailsAction.pending, (state) => {
         state.trainingsDownloadingStatus = true;
       })
-      .addCase(getTrainingDetailsAction.rejected, (state) => {
+      .addCase(getTrainingDetailsAction.rejected, (state, action) => {
         state.trainingsDownloadingStatus = false;
         state.trainingInfo = null;
+        state.loadingError = (action.error.code === LoadError.NetworkError)
+          ? LoadError.NetworkError
+          : '';
       })
       .addCase(updateTrainingAction.fulfilled, (state, {payload}) => {
         state.dataUploadingStatus = false;
@@ -171,13 +171,17 @@ export const appData = createSlice({
       .addCase(getUserDetailsAction.fulfilled, (state, { payload }) => {
         state.usersDownloadingStatus = false;
         state.currentUserDetails = payload;
+        state.loadingError = '';
       })
       .addCase(getUserDetailsAction.pending, (state) => {
         state.usersDownloadingStatus = true;
       })
-      .addCase(getUserDetailsAction.rejected, (state) => {
+      .addCase(getUserDetailsAction.rejected, (state, action) => {
         state.usersDownloadingStatus = false;
         state.currentUserDetails = null;
+        state.loadingError = (action.error.code === LoadError.NetworkError)
+          ? LoadError.NetworkError
+          : '';
       })
       .addCase(checkUserSubscriptionAction.fulfilled, (state, {payload}) => {
         state.subscriptionStatus = payload;

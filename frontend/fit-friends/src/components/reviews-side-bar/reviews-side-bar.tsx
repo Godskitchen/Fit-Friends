@@ -10,6 +10,7 @@ import LoadingBlock from '../loading-components/loading-block';
 import ReplyCard from '../reply-card/reply-card';
 import ReplyModal from '../reply-modal/reply-modal';
 import { ReplyQueryState } from 'src/types/queries-filters.type';
+import ErrorScreen from '../error-components/error-screen';
 
 const SCROLL_STEP = 200;
 const SCROLL_POSITION_THRESHOLD = 300;
@@ -118,7 +119,7 @@ export default function ReviewsSideBar({trainingId, myRole, trainingAmount}: Rev
   }
 
   if (replyList === null) {
-    return <p>Error</p>;
+    return <ErrorScreen />;
   }
 
   let idCounter = 1;

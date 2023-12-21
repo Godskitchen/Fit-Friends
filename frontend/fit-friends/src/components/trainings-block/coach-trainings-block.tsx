@@ -5,6 +5,7 @@ import { getTotalTrainingsCount, getTrainingList } from 'src/store/app-data/app-
 import LoadingBlock from '../loading-components/loading-block';
 import TrainingCard from '../training-card/training-card';
 import { TrainingsCatalogFiltersState } from 'src/types/queries-filters.type';
+import ErrorScreen from '../error-components/error-screen';
 
 const CARD_WIDTH = 334;
 const CARD_GAP = 20;
@@ -46,7 +47,7 @@ export default function CoachTrainingsBlock({trainerId}: TrainingBlockProps): JS
   const [currentMaxOffset, setCurrentMaxOffset] = useState(0);
 
   if (trainingList === null) {
-    return <p>Error</p>;
+    return <ErrorScreen />;
   }
 
   if (!trainingList) {

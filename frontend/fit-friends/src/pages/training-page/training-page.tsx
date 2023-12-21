@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState, FocusEvent, ChangeEvent, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
-import { getDataUploadingStatus, getTrainingInfo, getTrainingsDownloadingStatus } from 'src/store/app-data/app-data.selectors';
+import { getDataUploadingStatus, getNetworkError, getTrainingInfo, getTrainingsDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import LoadingScreen from '../../components/loading-components/loading-screen';
 import NotFoundPage from 'src/pages/not-found-page/not-found.page';
 import { getTrainingAmountAction, getTrainingDetailsAction, updateTrainingAction } from 'src/store/api-actions';
@@ -18,6 +18,7 @@ import { priceStringValidationHandler } from 'src/utils/validators/training/pric
 import { getMyProfileInfo, getTrainingAmount } from 'src/store/user-process/user-process.selectors';
 import PurchaseModal from 'src/components/purchase-modal/purchase-modal';
 import { AppRoute } from 'src/app-constants';
+import ErrorScreen from 'src/components/error-components/error-screen';
 
 
 export default function TrainingPage(): JSX.Element {
@@ -75,6 +76,8 @@ export default function TrainingPage(): JSX.Element {
   const myProfile = useAppSelector(getMyProfileInfo);
   const trainingAmount = useAppSelector(getTrainingAmount);
 
+  const isNetworkError = useAppSelector(getNetworkError);
+
   useEffect(() => {
     if (myProfile && training) {
       if (myProfile.role === Role.Trainer && !myProfile.trainerProfile) {
@@ -107,6 +110,9 @@ export default function TrainingPage(): JSX.Element {
   }
 
   if (training === null || !trainingId) {
+    if (isNetworkError) {
+      return <ErrorScreen />;
+    }
     return <NotFoundPage />;
   }
 

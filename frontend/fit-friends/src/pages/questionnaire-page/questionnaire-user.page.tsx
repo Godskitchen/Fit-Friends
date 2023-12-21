@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from 'src/app-constants';
+import ErrorScreen from 'src/components/error-components/error-screen';
 import LoadingScreen from 'src/components/loading-components/loading-screen';
 import SkillButtons from 'src/components/skill-buttons/skill-buttons';
 import RegSpecialisationList from 'src/components/specialisation-list.tsx/reg-specialisation-list';
@@ -69,7 +70,7 @@ export default function QuestionnaireUserPage (): JSX.Element {
   }
 
   if (myProfile === null) {
-    return <p>Error</p>;
+    return <ErrorScreen />;
   }
 
   const onInputFocusHandler = (inputName: keyof QuestionnaireUserInputs) => clearErrors(inputName);

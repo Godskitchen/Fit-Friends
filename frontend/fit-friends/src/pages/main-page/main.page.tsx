@@ -2,6 +2,7 @@ import { Fragment, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from 'src/app-constants';
+import ErrorScreen from 'src/components/error-components/error-screen';
 import Header from 'src/components/header/header';
 import LoadingScreen from 'src/components/loading-components/loading-screen';
 import LookForCompanyBlock from 'src/components/look-for-company-block/look-for-company-block';
@@ -33,7 +34,7 @@ export default function MainPage(): JSX.Element | null {
 
 
   if (myProfile === null) {
-    return <p>error</p>;
+    return <ErrorScreen />;
   }
 
   if (myProfile === undefined || myProfile.userProfile === undefined) {

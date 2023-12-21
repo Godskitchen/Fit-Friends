@@ -27,6 +27,7 @@ import { useNavigate } from 'react-router-dom';
 import { getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
 import LoadingScreen from 'src/components/loading-components/loading-screen';
 import { AppRoute } from 'src/app-constants';
+import ErrorScreen from 'src/components/error-components/error-screen';
 
 
 export default function CreateTrainingPage(): JSX.Element {
@@ -144,7 +145,7 @@ export default function CreateTrainingPage(): JSX.Element {
   };
 
   if (myProfile === null) {
-    return <p>error</p>;
+    return <ErrorScreen />;
   }
 
   if (myProfile === undefined || myProfile.userProfile === undefined) {

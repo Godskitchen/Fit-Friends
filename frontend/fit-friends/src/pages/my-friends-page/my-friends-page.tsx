@@ -2,6 +2,7 @@ import { Fragment, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from 'src/app-constants';
+import ErrorScreen from 'src/components/error-components/error-screen';
 import FriendList from 'src/components/friend-list/friend-list';
 import Header from 'src/components/header/header';
 import LoadingBlock from 'src/components/loading-components/loading-block';
@@ -68,7 +69,7 @@ export default function MyFriendsPage(): JSX.Element {
   };
 
   if (myProfile === null || friends === null) {
-    return <p>Error</p>;
+    return <ErrorScreen />;
   }
 
   if (!myProfile) {
