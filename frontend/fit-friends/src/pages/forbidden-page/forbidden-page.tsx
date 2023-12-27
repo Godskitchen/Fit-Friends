@@ -1,19 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from 'src/app-constants';
-import Header from 'src/components/header/header';
-import { HeaderNavTab } from 'src/types/constants';
 
 export default function ForbiddenPage(): JSX.Element {
 
   const navigate = useNavigate();
   return (
     <div className="wrapper">
-      <Header activeTab={HeaderNavTab.Home} />
       <main>
         <div
           className="container"
           style={{
-            minHeight: '800px',
+            minHeight: '100vh',
             display: 'flex',
             alignItems: 'center',
             flexDirection:'column',

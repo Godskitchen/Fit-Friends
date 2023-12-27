@@ -12,7 +12,7 @@ import CoachInfoBlock from 'src/components/user-info-block/coach-info-block';
 import UserInfoBlock from 'src/components/user-info-block/user-info-block';
 import { getMyProfileInfo } from 'src/store/user-process/user-process.selectors';
 import { AppRoute } from 'src/app-constants';
-import ErrorScreen from 'src/components/error-components/error-screen';
+import ErrorScreen from 'src/components/error-screen/error-screen';
 
 export default function UserPage(): JSX.Element {
   const {userId} = useParams();

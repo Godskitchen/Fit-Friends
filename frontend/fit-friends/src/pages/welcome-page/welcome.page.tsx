@@ -18,7 +18,7 @@ export default function WelcomePage(): JSX.Element {
       <div className="wrapper">
         <main>
           <div className="intro">
-            <div className="intro__background">
+            <div className="intro__background" data-testid="intro-background">
               <picture>
                 <source type="image/webp"
                   srcSet="img/content/sitemap//background.webp, img/content/sitemap/background@2x.webp 2x"
@@ -55,7 +55,7 @@ export default function WelcomePage(): JSX.Element {
                   Регистрация
                 </button>
                 <p className="intro__text">
-                Есть аккаунт? <Link className="intro__link" to={AppRoute.Login}>Вход</Link>
+                Есть аккаунт? <Link className="intro__link" data-testid="login-btn" to={AppRoute.Login}>Вход</Link>
                 </p>
               </div>
             </div>

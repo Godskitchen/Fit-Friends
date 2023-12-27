@@ -2,7 +2,7 @@ import { Fragment, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute } from 'src/app-constants';
-import ErrorScreen from 'src/components/error-components/error-screen';
+import ErrorScreen from 'src/components/error-screen/error-screen';
 import Header from 'src/components/header/header';
 import LoadingBlock from 'src/components/loading-components/loading-block';
 import UserInfoDesk from 'src/components/user-info-desk/user-info-desk';

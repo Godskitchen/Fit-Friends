@@ -74,24 +74,24 @@ export default function LoginPage(): JSX.Element {
                         <label>
                           <span className="custom-input__label">E-mail</span>
                           <span className="custom-input__wrapper">
-                            <input type="text"
+                            <input type="text" data-testid="email-input"
                               {...register('email', {required: 'Поле обязательно для заполнения', validate: emailValidationHandler })}
                               onFocus={() => onInputFocusHandler('email')}
                             />
                           </span>
-                          {errors.email && <span className="custom-input__error">{errors.email.message}</span>}
+                          {errors.email && <span className="custom-input__error" data-testid="error-email">{errors.email.message}</span>}
                         </label>
                       </div>
                       <div className={`custom-input sign-in__input ${errors.password ? 'custom-input--error' : ''}`}>
                         <label>
                           <span className="custom-input__label">Пароль</span>
                           <span className="custom-input__wrapper">
-                            <input type="password"
+                            <input type="password" data-testid="password-input"
                               {...register('password', {required: 'Поле обязательно для заполнения', validate: passwordValidationHandler })}
                               onFocus={() => onInputFocusHandler('password')}
                             />
                           </span>
-                          {errors.password && <span className="custom-input__error">{errors.password.message}</span>}
+                          {errors.password && <span className="custom-input__error" data-testid='error-password'>{errors.password.message}</span>}
                         </label>
                       </div>
                       <button disabled={!formState.isValid} className="btn sign-in__button" type="submit">Продолжить</button>

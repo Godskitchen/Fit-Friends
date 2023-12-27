@@ -10,7 +10,15 @@ type DropDownListProps = {
 export default function DropDownList({items, clickItemHandler, valuePrefix}: DropDownListProps): JSX.Element {
   return (
     <ul className="custom-select__list" onClick={clickItemHandler} role="listbox">
-      {items.map((item) => (<li key={item} className='custom-select__item'>{`${valuePrefix ? valuePrefix : ''}${item}`}</li>))}
+      {items.map((item) => (
+        <li
+          key={item}
+          className='custom-select__item'
+          data-testid={item}
+        >
+          {`${valuePrefix ? valuePrefix : ''}${item}`}
+        </li>
+      ))}
     </ul>
   );
 }

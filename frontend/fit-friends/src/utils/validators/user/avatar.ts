@@ -9,11 +9,13 @@ export const avatarValidationHandler = async (
   }
 
   const file = avatar[0];
+
   if (file.size > MAX_FILE_AVATAR_SIZE ) {
     return INCORRECT_SIZE_MESSAGE;
   }
 
-  const isValidImage: boolean = await new Promise((resolve) => {
+
+  const isValidImage = await new Promise<boolean>((resolve) => {
     const reader = new FileReader();
     reader.onload = () => {
       const result = fileTypeChecker.validateFileType(reader.result as ArrayBuffer, ImageFormats);

@@ -18,7 +18,7 @@ import { priceStringValidationHandler } from 'src/utils/validators/training/pric
 import { getMyProfileInfo, getTrainingAmount } from 'src/store/user-process/user-process.selectors';
 import PurchaseModal from 'src/components/purchase-modal/purchase-modal';
 import { AppRoute } from 'src/app-constants';
-import ErrorScreen from 'src/components/error-components/error-screen';
+import ErrorScreen from 'src/components/error-screen/error-screen';
 
 
 export default function TrainingPage(): JSX.Element {

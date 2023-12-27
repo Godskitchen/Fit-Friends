@@ -27,7 +27,7 @@ import TrainingsCatalogPage from 'src/pages/trainings-catalog-page/trainings-cat
 import MyPurchasesPage from 'src/pages/my-purchases-page/my-purchases-page';
 import MyOrdersPage from 'src/pages/my-orders-page/my-orders.page';
 import { getNetworkError } from 'src/store/app-data/app-data.selectors';
-import ErrorScreen from '../error-components/error-screen';
+import ErrorScreen from '../error-screen/error-screen';
 
 export default function App(): JSX.Element {
 

@@ -5,7 +5,7 @@ import { getTotalTrainingsCount, getTrainingList } from 'src/store/app-data/app-
 import LoadingBlock from '../loading-components/loading-block';
 import TrainingCard from '../training-card/training-card';
 import { TrainingsCatalogFiltersState } from 'src/types/queries-filters.type';
-import ErrorScreen from '../error-components/error-screen';
+import ErrorScreen from '../error-screen/error-screen';
 
 const CARD_WIDTH = 334;
 const CARD_GAP = 20;

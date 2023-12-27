@@ -5,7 +5,7 @@ import { saveToken, dropToken } from 'src/services/auth-token';
 import { HttpStatusCode, REQUEST_TIMEOUT, SERVER_URL, shouldDisplayError } from 'src/services/server-api';
 import { Role } from 'src/types/constants';
 import { CreateTrainingInputs, ProfileInfoInputs, QuestionnaireCoachInputs, QuestionnaireUserInputs, RegisterInputs, UpdateTrainingInputs, CreatePurchaseInputs, CreateReplyInputs } from 'src/types/forms.type';
-import { AppDispatch, State } from 'src/types/state.type';
+import { AppDispatch } from 'src/types/state.type';
 import { AuthData, FriendList, KnownError, UserInfo, UserList } from 'src/types/user.type';
 import { adaptCoachProfileToServer, adaptNewTrainingToServer, adaptOrderToServer, adaptRegisterUserToServer, adaptUpdateProfiletoServer, adaptUpdateTrainingToServer, adaptUserProfileToServer } from 'src/utils/adapters/adapter-to-server';
 import { AuthUserRdo, FriendListRdo, UserListRdo, UserRdo } from 'src/utils/adapters/api-rdos/user.rdo';
@@ -28,7 +28,6 @@ export const registerAction = createAsyncThunk<
   RegisterInputs,
   {
     dispatch: AppDispatch;
-    state: State;
     extra: AxiosInstance;
     rejectValue: KnownError;
   }
