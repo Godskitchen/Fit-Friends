@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { render, screen, fireEvent, waitFor, cleanup, getByLabelText } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
 import { HttpStatusCode, createAPI } from 'src/services/server-api';
 import MockAdapter from 'axios-mock-adapter';
 import thunk, { ThunkDispatch } from 'redux-thunk';
@@ -11,7 +10,7 @@ import { ApiRoute, AuthorizationStatus, SliceNameSpace } from 'src/app-constants
 import { Provider } from 'react-redux';
 import HistoryRouter from 'src/components/history-router/history-router';
 import { HelmetProvider } from 'react-helmet-async';
-import { loginAction, registerAction } from 'src/store/api-actions';
+import { registerAction } from 'src/store/api-actions';
 import { redirectAction } from 'src/store/redirect.action';
 import RegistrationPage from './registration.page';
 import { MOCK_AVATAR } from 'src/mock-constants';
@@ -130,7 +129,7 @@ describe('Page: RegistrationPage', () => {
     });
   });
 
-  it('should render avatar thumbnail if choose image has passed validation', async () => {
+  it('should render avatar thumbnail if choosed image has passed validation', async () => {
 
     render(
       <Provider store={store}>

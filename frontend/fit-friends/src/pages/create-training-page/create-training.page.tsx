@@ -148,7 +148,7 @@ export default function CreateTrainingPage(): JSX.Element {
     return <ErrorScreen />;
   }
 
-  if (myProfile === undefined || myProfile.userProfile === undefined) {
+  if (myProfile === undefined || myProfile.trainerProfile === undefined) {
     return <LoadingScreen />;
   }
 
@@ -175,12 +175,12 @@ export default function CreateTrainingPage(): JSX.Element {
                           <div className={`custom-input create-training__input ${errors.title ? 'custom-input--error' : ''}`}>
                             <label>
                               <span className="custom-input__wrapper">
-                                <input type="text"
+                                <input type="text" data-testid="title-input"
                                   {...register('title', {required: 'Поле обязательно для заполнения', validate: titleValidationHandler})}
                                   onFocus={() => onInputFocusHandler('title')}
                                 />
                               </span>
-                              <span className="custom-input__error">{errors.title?.message}</span>
+                              <span className="custom-input__error" data-testid="error-title">{errors.title?.message}</span>
                             </label>
                           </div>
                         </div>
@@ -196,6 +196,7 @@ export default function CreateTrainingPage(): JSX.Element {
                               <input className="visually-hidden specialisation" {...register('specialisation', {required: 'Поле обязательно для заполнения'})} />
                               <button
                                 className="custom-select__button"
+                                data-testid="spec-btn"
                                 type="button" aria-label="Выберите одну из опций"
                                 onClick={onOpenSpecialisationListBtnClickHandler}
                                 onBlur={onOpenSpecialisationListBtnBlurHandler}
@@ -208,7 +209,7 @@ export default function CreateTrainingPage(): JSX.Element {
                                   </svg>
                                 </span>
                               </button>
-                              <span className="custom-select__error" style={{bottom: '0px', top: '85px'}}>{errors.specialisation?.message}</span>
+                              <span className="custom-select__error" data-testid="error-spec" style={{bottom: '0px', top: '85px'}}>{errors.specialisation?.message}</span>
                               {DropDownList({items: Object.values(SpecialisationFieldValue), clickItemHandler: onClickSpecialisationItemHandler})}
                             </div>
                             <div className={`custom-input custom-input--with-text-right ${errors.caloriesToBurn ? 'custom-input--error' : ''}`}>
@@ -217,6 +218,7 @@ export default function CreateTrainingPage(): JSX.Element {
                                 <span className="custom-input__wrapper">
                                   <input
                                     type="number"
+                                    data-testid="calories-input"
                                     {...register('caloriesToBurn', {
                                       required: 'Поле обязательно для заполнения',
                                       validate: caloriesToBurnValidationHandler,
@@ -225,7 +227,7 @@ export default function CreateTrainingPage(): JSX.Element {
                                   />
                                   <span className="custom-input__text">ккал</span>
                                 </span>
-                                <span className="custom-input__error">{errors.caloriesToBurn?.message}</span>
+                                <span className="custom-input__error" data-testid="error-calories">{errors.caloriesToBurn?.message}</span>
                               </label>
                             </div>
                             <div
@@ -237,6 +239,7 @@ export default function CreateTrainingPage(): JSX.Element {
                               <input className="visually-hidden training-duration" {...register('trainingDuration', {required: 'Поле обязательно для заполнения'})} />
                               <button
                                 className="custom-select__button"
+                                data-testid="duration-btn"
                                 type="button" aria-label="Выберите одну из опций"
                                 onClick={onOpenDurationListBtnClickHandler}
                                 onBlur={onOpenDurationListBtnBlurHandler}
@@ -249,7 +252,7 @@ export default function CreateTrainingPage(): JSX.Element {
                                   </svg>
                                 </span>
                               </button>
-                              <span className="custom-select__error" style={{bottom: '0px', top: '85px'}}>{errors.trainingDuration?.message}</span>
+                              <span className="custom-select__error" data-testid="error-duration" style={{bottom: '0px', top: '85px'}}>{errors.trainingDuration?.message}</span>
                               {DropDownList({items: Object.values(DurationFieldValue), clickItemHandler: onClickDurationItemHandler})}
                             </div>
                             <div className={`custom-input custom-input--with-text-right ${errors.price ? 'custom-input--error' : ''}`}>
@@ -266,7 +269,7 @@ export default function CreateTrainingPage(): JSX.Element {
                                   />
                                   <span className="custom-input__text">₽</span>
                                 </span>
-                                <span className="custom-input__error">{errors.price?.message}</span>
+                                <span className="custom-input__error" data-testid="error-price">{errors.price?.message}</span>
                               </label>
                             </div>
                             <div
@@ -279,6 +282,7 @@ export default function CreateTrainingPage(): JSX.Element {
                               <button
                                 className="custom-select__button"
                                 type="button" aria-label="Выберите одну из опций"
+                                data-testid="skill-btn"
                                 onClick={onOpenSkillLevelListBtnClickHandler}
                                 onBlur={onOpenSkillLevelListBtnBlurHandler}
                                 onFocus={onOpenSkillLevelListBtnFocusHandler}
@@ -290,7 +294,7 @@ export default function CreateTrainingPage(): JSX.Element {
                                   </svg>
                                 </span>
                               </button>
-                              <span className="custom-select__error" style={{bottom: '0px', top: '85px'}}>{errors.skillLevel?.message}</span>
+                              <span className="custom-select__error" data-testid="error-skill" style={{bottom: '0px', top: '85px'}}>{errors.skillLevel?.message}</span>
                               {DropDownList({items: Object.values(SkillFieldValue), clickItemHandler: onClickSkillLevelItemHandler})}
                             </div>
                             <TrainingGenderButtons register={register} />
@@ -301,6 +305,7 @@ export default function CreateTrainingPage(): JSX.Element {
                           <div className={`custom-textarea create-training__textarea ${errors.description ? 'custom-textarea--error' : ''}`}>
                             <label>
                               <textarea
+                                data-testid='description-input'
                                 style={errors.description ? {border: '1px solid #e4001b', backgroundColor: 'transparent'} : {}}
                                 placeholder=" "
                                 {...register('description', {
@@ -310,7 +315,7 @@ export default function CreateTrainingPage(): JSX.Element {
                                 onFocus={() => onInputFocusHandler('description')}
                               >
                               </textarea>
-                              <span className='custom-textarea__error'>{errors.description?.message}</span>
+                              <span className='custom-textarea__error' data-testid='error-description'>{errors.description?.message}</span>
                             </label>
                           </div>
                         </div>
