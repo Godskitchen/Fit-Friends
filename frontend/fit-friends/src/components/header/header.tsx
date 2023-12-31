@@ -43,6 +43,7 @@ export default function Header({activeTab}: HeaderProps) {
               <Link className={`main-nav__link ${activeTab === HeaderNavTab.Home ? 'is-active' : ''}`}
                 to={myProfile.role === Role.User ? AppRoute.Main : AppRoute.CoachAccount}
                 aria-label="На главную"
+                data-testid="main"
               >
                 <svg width="18" height="18" aria-hidden="true">
                   <use xlinkHref="#icon-home"></use>
@@ -53,6 +54,7 @@ export default function Header({activeTab}: HeaderProps) {
               <Link className={`main-nav__link ${activeTab === HeaderNavTab.Profile ? 'is-active' : ''}`}
                 to={myProfile.role === Role.User ? AppRoute.UserAccount : AppRoute.CoachAccount}
                 aria-label="Личный кабинет"
+                data-testid="profile"
               >
                 <svg width="16" height="18" aria-hidden="true">
                   <use xlinkHref="#icon-user"></use>
@@ -64,6 +66,7 @@ export default function Header({activeTab}: HeaderProps) {
                 className={`main-nav__link ${activeTab === HeaderNavTab.Friends ? 'is-active' : ''}`}
                 to={myProfile.role === Role.User ? `${AppRoute.UserAccount}${AppRoute.MyFriends}` : `${AppRoute.CoachAccount}${AppRoute.MyFriends}`}
                 aria-label="Друзья"
+                data-testid="friends"
               >
                 <svg width="22" height="16" aria-hidden="true">
                   <use xlinkHref="#icon-friends"></use>

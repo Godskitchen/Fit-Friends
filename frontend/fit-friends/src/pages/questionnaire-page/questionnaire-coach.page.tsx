@@ -155,7 +155,8 @@ export default function QuestionnaireCoachPageTest(): JSX.Element {
                               <input
                                 type="file"
                                 tabIndex={-1}
-                                accept=".pdf"
+                                data-testid="upload-input"
+                                accept="application/pdf"
                                 {...register('certificates',
                                   {
                                     required: true,
@@ -173,6 +174,7 @@ export default function QuestionnaireCoachPageTest(): JSX.Element {
                             <label>
                               <textarea
                                 style={errors.description ? {border: '1px solid #e4001b', backgroundColor: 'transparent'} : {}}
+                                data-testid='description'
                                 placeholder=" "
                                 {...register('description', {
                                   required: 'Поле обязательно для заполнения',

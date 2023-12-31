@@ -33,6 +33,7 @@ export default function RegSpecialisationList<T extends FieldValues>({types, reg
             className="visually-hidden"
             type="checkbox"
             value={type}
+            data-testid="specialisations"
             {...register(fieldPaths.specialisations,
               {
                 validate: () => specialisationValidationHandler(selectedSpecs),

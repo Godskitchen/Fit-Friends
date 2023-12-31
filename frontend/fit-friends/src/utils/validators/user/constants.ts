@@ -65,19 +65,8 @@ export const BIRTH_DATE_VALIDATION_MESSAGE = 'Дата рождения долж
 export const CALORIES_TO_BURN_VALIDATION_MESSAGE = `Калории должно быть целым числом от ${CALORIES_TO_BURN.MIN} до ${CALORIES_TO_BURN.MAX}`;
 export const DAILY_CALORIES_INTAKE_VALIDATION_MESSAGE = `Калории должно быть целым числом от ${DAILY_CALORIES_INTAKE.MIN} до ${DAILY_CALORIES_INTAKE.MAX}`;
 export const ACHIEVEMENTS_VALIDATION_MESSAGE = `Описание тренерских заслуг должно иметь длину от ${ACHIEVEMENTS.MIN} до ${ACHIEVEMENTS.MAX} символов`;
-// export const FITNESS_LEVEL_VALIDATION_MESSAGE = `$property: Уровень подготовки может принимать только следующие значения: ${Object.values(
-//   FitnessLevel,
-// ).join(', ')}`;
 
 export const TRAINING_TYPE_COUNT_VALIDATION_MESSAGE = `Укажите от ${TRAINING_TYPE_COUNT.MIN} до ${TRAINING_TYPE_COUNT.MAX} видов тренировок`;
-// export const TRAINING_TYPE_VALIDATION_MESSAGE = `$property: Тип тренировки может принимать только следующие значения: ${Object.values(
-//   TrainingType,
-// ).join(', ')}`;
-
-// export const TRAINING_DURATION_VALIDATION_MESSAGE = `$property: Длительность тренировки может принимать только следующие значения: ${Object.values(
-//   TrainingDuration,
-// ).join(', ')}`;
 
 export const CERTIFICATES_FORMAT_MESSAGE = 'Некорректный формат файла';
-// export const AVATAR_REQUIRED_MESSAGE = 'Добавьте Ваш аватар';
-// export const CERTIFICATE_REQUIRED_MESSAGE = 'Прикрепите Ваш сертификат';
+

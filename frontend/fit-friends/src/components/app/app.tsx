@@ -232,7 +232,7 @@ export default function App(): JSX.Element {
           }
         />
         <Route
-          path={`${AppRoute.UserAccount}${AppRoute.MyBalance}`}
+          path={`${AppRoute.UserAccount}${AppRoute.MyPurchases}`}
           element={
             <PrivateRoute
               restrictedStatus={AuthorizationStatus.NoAuth}

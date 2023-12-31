@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Fragment, useRef, MouseEvent, useState, ChangeEvent, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -333,7 +334,8 @@ export default function CreateTrainingPage(): JSX.Element {
                               <input
                                 type="file"
                                 tabIndex={-1}
-                                accept=".mov, .mp4"
+                                data-testid="upload-input"
+                                accept=".mp4, .mov"
                                 {...register('trainingVideo',
                                   {
                                     required: true,
@@ -343,7 +345,7 @@ export default function CreateTrainingPage(): JSX.Element {
                               />
                             </label>
                           </div>
-                          {errors?.trainingVideo?.message && <span style={{color: '#e4001b'}}>{errors.trainingVideo.message}</span>}
+                          {errors?.trainingVideo?.message && <span style={{color: '#e4001b'}} data-testid="upload-error">{errors.trainingVideo.message}</span>}
                         </div>
                       </div>
                       <button

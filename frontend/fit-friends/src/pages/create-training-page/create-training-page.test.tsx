@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Action, ThunkDispatch } from '@reduxjs/toolkit';
@@ -13,8 +12,10 @@ import { Provider } from 'react-redux';
 import HistoryRouter from 'src/components/history-router/history-router';
 import { HelmetProvider } from 'react-helmet-async';
 import CreateTrainingPage from './create-training.page';
-import { MockTrainer } from 'src/mock-constants';
+import { MOCK_VIDEO, MockTrainer, MockTrainerProfile } from 'src/mock-constants';
 import userEvent from '@testing-library/user-event';
+import { createTrainingAction, getNotificationsAction } from 'src/store/api-actions';
+import { redirectAction } from 'src/store/redirect.action';
 
 
 const api = createAPI();
@@ -40,7 +41,7 @@ describe('Page: CreateTrainingPage', () => {
       },
       [SliceNameSpace.User]: {
         authorizationStatus: AuthorizationStatus.Auth,
-        myProfileInfo: MockTrainer,
+        myProfileInfo: {...MockTrainer, trainerProfile: MockTrainerProfile},
         notifications: []
       }
     };
@@ -146,6 +147,8 @@ describe('Page: CreateTrainingPage', () => {
   it('should dispatch createTrainingAction with redirectAction when user clicked to submit button', async () => {
 
     mockAPI
+      .onGet(ApiRoute.Notifications)
+      .reply(200, [])
       .onPost(ApiRoute.UploadTrainingVideo)
       .reply(201, 'ok')
       .onPost(ApiRoute.CreateTraining)
@@ -164,39 +167,61 @@ describe('Page: CreateTrainingPage', () => {
     );
 
 
-    const nameField = await screen.findByLabelText(/Имя/i);
-    const emailField = await screen.findByLabelText(/E-mail/i);
-    const passField = await screen.findByLabelText(/Пароль/i);
-    const dateField = await screen.findByLabelText(/Дата рождения/i);
-    const locationBtn = await screen.findByTestId('location-btn');
+    const titleField = screen.getByTestId('title-input');
+    const caloriesField = screen.getByTestId('calories-input');
+    const descriptionField = screen.getByTestId('description-input');
 
-    fireEvent.change(nameField, {target: {value: 'mockname'}});
-    fireEvent.change(emailField, {target: {value: 'email@test.ru'}});
-    fireEvent.change(passField, {target: {value: 'pass123'}});
-    fireEvent.change(dateField, {target: {value: '2023-10-31'}});
+    const priceField = screen.getByLabelText(/Стоимость тренировки/i);
 
-    fireEvent.click(locationBtn);
+    const durationBtn = screen.getByTestId('duration-btn');
+    const specBtn = screen.getByTestId('spec-btn');
+    const skillFieldBtn = screen.getByTestId('skill-btn');
 
-    expect(await screen.findByTestId('Удельная')).toBeInTheDocument();
+    const uploadField = await screen.findByTestId('upload-input');
 
-    fireEvent.click(screen.getByTestId('Удельная'));
+    fireEvent.change(titleField, {target: {value: 'mocktitle'}});
+    fireEvent.change(caloriesField, {target: {value: 1500}});
+    fireEvent.change(descriptionField, {target: {value: 'описание тренировки'}});
+    fireEvent.change(priceField, {target: {value: 300}});
 
-    // await waitFor(() => {
-    //   expect(signUpBtn).toBeEnabled();
-    // });
+    fireEvent.click(durationBtn);
+    expect(await screen.findByTestId('30-50 мин')).toBeVisible();
+    fireEvent.click(screen.getByTestId('30-50 мин'));
 
-    // await user.click(signUpBtn);
+    fireEvent.click(specBtn);
+    expect(await screen.findByTestId('Йога')).toBeVisible();
+    fireEvent.click(screen.getByTestId('Йога'));
+
+    fireEvent.click(skillFieldBtn);
+    expect(await screen.findByTestId('Новичок')).toBeVisible();
+    fireEvent.click(screen.getByTestId('Новичок'));
+
+    const blob = new Blob([new Uint8Array(MOCK_VIDEO)], { type: 'video/mp4' });
+    const mockVideo = new File([blob], 'mock.mp4', {type: 'video/mp4'});
+
+    await user.upload(uploadField, mockVideo);
+
+    await waitFor(() => {
+      expect((uploadField as HTMLInputElement).files?.length).toBe(1);
+    });
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Опубликовать' })).toBeEnabled();
+    });
+
+    await user.click(screen.getByRole('button', { name: 'Опубликовать' }));
 
 
-    // await waitFor(() => {
-    //   const actions = store.getActions().map(({ type }) => type);
+    await waitFor(() => {
+      const actions = store.getActions().map(({ type }) => type);
 
-    //   expect(actions).toEqual([
-    //     registerAction.pending.type,
-    //     redirectAction.type,
-    //     registerAction.fulfilled.type
-    //   ]);
-    // });
-
+      expect(actions).toEqual([
+        getNotificationsAction.pending.type,
+        getNotificationsAction.fulfilled.type,
+        createTrainingAction.pending.type,
+        redirectAction.type,
+        createTrainingAction.fulfilled.type
+      ]);
+    });
   });
 });

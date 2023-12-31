@@ -14,7 +14,7 @@ export enum AppRoute {
   UsersCatalog = '/users_catalog',
   TrainingsCatalog = '/trainings_catalog',
   MyFriends = '/my_friends',
-  MyBalance = '/my_purchases',
+  MyPurchases = '/my_purchases',
   MyOrders = '/my_orders'
 }
 

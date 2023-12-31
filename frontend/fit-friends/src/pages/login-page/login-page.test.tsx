@@ -148,11 +148,11 @@ describe('Page: LoginPage', () => {
     fireEvent.blur(passField);
 
     await waitFor(() => {
-      expect(screen.getByTestId('error-validation-email')).toBeInTheDocument();
+      expect(screen.getByTestId('error-email')).toBeInTheDocument();
     });
 
     await waitFor(() => {
-      expect(screen.getByTestId('error-validation-password')).toBeInTheDocument();
+      expect(screen.getByTestId('error-password')).toBeInTheDocument();
     });
 
 

@@ -137,6 +137,7 @@ export default function QuestionnaireUserPage (): JSX.Element {
                                 <span className="custom-input__wrapper">
                                   <input
                                     type="number"
+                                    data-testid="calories-to-burn"
                                     {...register('caloriesToBurn', {
                                       required: 'Поле обязательно для заполнения',
                                       validate: caloriesToBurnValidationHandler,
@@ -156,6 +157,7 @@ export default function QuestionnaireUserPage (): JSX.Element {
                                 <span className="custom-input__wrapper">
                                   <input
                                     type="number"
+                                    data-testid="calories-intake"
                                     {...register('dailyCaloriesIntake', {
                                       required: 'Поле обязательно для заполнения',
                                       validate: caloriesIntakeValidationHandler,

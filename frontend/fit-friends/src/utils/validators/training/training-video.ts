@@ -9,7 +9,7 @@ export const trainingVideoValidationHandler = async (
   }
   const file = video[0];
 
-  const isValidVideo: boolean = await new Promise((resolve) => {
+  const isValidVideo = await new Promise<boolean>((resolve) => {
     const reader = new FileReader();
     reader.onload = () => {
       const result = fileTypeChecker.validateFileType(reader.result as ArrayBuffer, VideoFormats);
@@ -17,6 +17,7 @@ export const trainingVideoValidationHandler = async (
     };
     reader.readAsArrayBuffer(file);
   });
+
   if (!isValidVideo) {
     return VIDEO_FILE_VALIDATION_MESSAGE;
   }
