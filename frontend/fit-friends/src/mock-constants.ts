@@ -1,4 +1,6 @@
 import { Gender, Location, Role, SkillLevel, Specialisation, TrainingDuration } from './types/constants';
+import { OrderCardType } from './types/order.type';
+import { TrainingCardType } from './types/training.type';
 import { TrainerProfileInfo, UserInfo, UserProfileInfo } from './types/user.type';
 
 export const MockUser: UserInfo = {
@@ -48,6 +50,83 @@ export const MockTrainerProfile: TrainerProfileInfo = {
   certificates: 'certificate.pdf',
   description: '',
   individualTraining: true,
+};
+
+
+export const createUserMocks = (count: number) => {
+  const mockUserList: UserInfo[] = [];
+  for (let i = 1; i <= count; i++) {
+    const newUser: UserInfo = {
+      userId: i + 1,
+      name: 'mock',
+      email: `mockmail${i + 1}@mail.local`,
+      gender: Gender.Female,
+      aboutInfo: 'mockinfo',
+      role: Role.User,
+      birthday: new Date().toISOString(),
+      avatar: 'path/to/avatar',
+      backgroundImage: 'path/to/backimage',
+      createdAt: new Date().toISOString(),
+      location: Location.Petrogradskaya,
+      trainingRequestsAsSender: [],
+      trainingRequestsAsRecepient: [],
+      userProfile: {...MockUserProfile}
+    };
+    mockUserList.push(newUser);
+  }
+
+  return mockUserList;
+};
+
+
+export const createOrderMocks = (count: number) => {
+  const mockOrderList: OrderCardType[] = [];
+  for (let i = 1; i <= count; i++) {
+    const newOrder: OrderCardType = {
+      training: {
+        trainingId: i,
+        title: `training${i}`,
+        backgroundImage: '/path/to/image',
+        skillLevel: SkillLevel.Amateur,
+        trainingDuration: TrainingDuration.FiftyToEightyMinutes,
+        specialisation: Specialisation.Yoga,
+        price: 100,
+        caloriesToBurn: 1500,
+        description: 'training description',
+        gender: Gender.Male,
+        rating: 0,
+        isSpecialOffer: false
+      },
+      sum: i * 100,
+      trainingCount: i
+    };
+    mockOrderList.push(newOrder);
+  }
+
+  return mockOrderList;
+};
+
+export const createTrainingMocks = (count: number) => {
+  const mockTrainingList: TrainingCardType[] = [];
+  for (let i = 1; i <= count; i++) {
+    const newTraining: TrainingCardType = {
+      trainingId: i,
+      title: `training${i}`,
+      backgroundImage: '/path/to/image',
+      skillLevel: SkillLevel.Amateur,
+      trainingDuration: TrainingDuration.FiftyToEightyMinutes,
+      specialisation: Specialisation.Yoga,
+      price: 100,
+      caloriesToBurn: 1500,
+      description: 'training description',
+      gender: Gender.Male,
+      rating: 0,
+      isSpecialOffer: false
+    };
+    mockTrainingList.push(newTraining);
+  }
+
+  return mockTrainingList;
 };
 
 

@@ -1,9 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import PersonalAccountUserPage from './personal-account-user.page';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Action } from '@reduxjs/toolkit';
-import MockAdapter from 'axios-mock-adapter';
 import { createBrowserHistory } from 'history';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
@@ -172,10 +169,10 @@ describe('Page: PersonalCoachAccountPage', () => {
     );
 
     expect(screen.getByText(/Личный кабинет/i)).toBeInTheDocument();
-    expect(screen.queryByText(/My trainigns page/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/My trainings page/i)).not.toBeInTheDocument();
 
-    const myTrainignsBtn = screen.getByText(/Мои тренировки/i);
-    fireEvent.click(myTrainignsBtn);
+    const myTrainingsBtn = screen.getByText(/Мои тренировки/i);
+    fireEvent.click(myTrainingsBtn);
     expect(screen.getByText(/My trainings page/i)).toBeInTheDocument();
   });
 
@@ -203,10 +200,10 @@ describe('Page: PersonalCoachAccountPage', () => {
     );
 
     expect(screen.getByText(/Личный кабинет/i)).toBeInTheDocument();
-    expect(screen.queryByText(/My trainigns page/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Create training page/i)).not.toBeInTheDocument();
 
-    const myTrainignsBtn = screen.getByText(/Мои тренировки/i);
-    fireEvent.click(myTrainignsBtn);
-    expect(screen.getByText(/My trainings page/i)).toBeInTheDocument();
+    const createTrainingBtn = screen.getByText(/Создать тренировку/i);
+    fireEvent.click(createTrainingBtn);
+    expect(screen.getByText(/Create training page/i)).toBeInTheDocument();
   });
 });

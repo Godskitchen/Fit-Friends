@@ -75,7 +75,7 @@ export default function FriendCard({
   };
 
   return (
-    <li className="friends-list__item">
+    <li className="friends-list__item" data-testid="friend-card">
       <div className="thumbnail-friend">
         <div className={`thumbnail-friend__info thumbnail-friend__info--theme-${role === Role.User ? 'light' : 'dark'}`} onClick={() => navigate(`${AppRoute.UsersCatalog}/${userId}`)}>
           <div className="thumbnail-friend__image-status">

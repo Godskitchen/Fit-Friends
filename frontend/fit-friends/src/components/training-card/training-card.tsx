@@ -21,7 +21,7 @@ export default function TrainingCard({card:{
 }, className}: TrainingCardProp): JSX.Element {
 
   return (
-    <li className={className}>
+    <li className={className} data-testid="training-card">
       <div className="thumbnail-training">
         <div className="thumbnail-training__inner">
           <div className="thumbnail-training__image">

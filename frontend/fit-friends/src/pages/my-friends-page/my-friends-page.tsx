@@ -50,7 +50,11 @@ export default function MyFriendsPage(): JSX.Element {
     };
 
     dispatch(getFriendListAction(initialQuery))
-      .then(() => {dispatch(setFriendsQueryStateAction(initialQuery));});
+      .then((result) => {
+        if (getFriendListAction.fulfilled.match(result)) {
+          dispatch(setFriendsQueryStateAction(initialQuery));
+        }
+      });
   }, [dispatch]);
 
 
@@ -61,7 +65,11 @@ export default function MyFriendsPage(): JSX.Element {
   const onShowMoreBtnClickHandle = () => {
     const newQueryState = {...queryState, page: queryState.page ? `${+queryState.page + 1}` : queryState.page};
     dispatch(addFriendsToListAction(newQueryState))
-      .then(() => {dispatch(setFriendsQueryStateAction(newQueryState));});
+      .then((result) => {
+        if (addFriendsToListAction.fulfilled.match(result)) {
+          dispatch(setFriendsQueryStateAction(newQueryState));
+        }
+      });
   };
 
   const onReturnToTopBtnHandle = () => {
@@ -118,13 +126,16 @@ export default function MyFriendsPage(): JSX.Element {
                         disabled={isLoading}
                         style={totalFriendsCount - friends.length <= 0 ? {display: 'none'} : {}}
                         onClick={onShowMoreBtnClickHandle}
+                        data-testid="show-more-btn"
                       >
-                      Показать еще
+                        Показать еще
                       </button>
                       <button
-                        className={`btn show-more__button ${friends.length > 6 && (totalFriendsCount - friends.length <= 0) ? '' : 'show-more__button--to-top'}`}
+                        className="btn show-more__button show-more__button--to-top"
                         type="button"
+                        style={{display: (friends.length > 6 && (totalFriendsCount - friends.length <= 0)) ? 'block' : 'none'}}
                         onClick={onReturnToTopBtnHandle}
+                        data-testid="return-top-btn"
                       >
                         Вернуться в начало
                       </button>

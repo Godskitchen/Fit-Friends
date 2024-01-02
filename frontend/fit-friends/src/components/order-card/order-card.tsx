@@ -22,7 +22,7 @@ export default function OrderCard ({training: {
   description,
 }, sum, trainingCount}: OrderCardProp): JSX.Element {
   return (
-    <li className="my-orders__item">
+    <li className="my-orders__item" data-testid="order-card">
       <div className="thumbnail-training">
         <div className="thumbnail-training__inner">
           <div className="thumbnail-training__image">

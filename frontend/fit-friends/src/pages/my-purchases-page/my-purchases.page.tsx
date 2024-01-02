@@ -162,13 +162,16 @@ export default function MyPurchasesPage(): JSX.Element {
                           type="button"
                           onClick={onShowMoreBtnClickHandle}
                           disabled={isLoading}
+                          data-testid="show-more-btn"
                           style={totalTrainingsCount - trainings.length <= 0 ? {display: 'none'} : {}}
                         >
                           Показать еще
                         </button>
                         <button
-                          className={`btn show-more__button ${trainings.length > 6 && (totalTrainingsCount - trainings.length <= 0) ? '' : 'show-more__button--to-top'}`}
+                          className="btn show-more__button show-more__button--to-top"
+                          style={{display: (trainings.length > 6 && (totalTrainingsCount - trainings.length <= 0)) ? 'block' : 'none'}}
                           type="button"
+                          data-testid="return-top-btn"
                           onClick={onReturnToTopBtnHandle}
                         >
                             Вернуться в начало

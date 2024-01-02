@@ -24,7 +24,7 @@ import UsersCatalogPage from 'src/pages/users-catalog-page/users-catalog-page';
 import MyFriendsPage from 'src/pages/my-friends-page/my-friends-page';
 import UserPage from 'src/pages/user-page/user-page';
 import TrainingsCatalogPage from 'src/pages/trainings-catalog-page/trainings-catalog-page';
-import MyPurchasesPage from 'src/pages/my-purchases-page/my-purchases-page';
+import MyPurchasesPage from 'src/pages/my-purchases-page/my-purchases.page';
 import MyOrdersPage from 'src/pages/my-orders-page/my-orders.page';
 import { getNetworkError } from 'src/store/app-data/app-data.selectors';
 import ErrorScreen from '../error-screen/error-screen';

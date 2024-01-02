@@ -40,7 +40,6 @@ export default function MyOrdersPage(): JSX.Element {
         ...queryState,
         page: queryState.page ? `${+queryState.page + 1}` : queryState.page
       };
-
       dispatch(addOrdersToListAction(newQueryState))
         .then((result) => {
           if (addOrdersToListAction.fulfilled.match(result)) {
@@ -201,14 +200,17 @@ export default function MyOrdersPage(): JSX.Element {
                           className="btn show-more__button show-more__button--more"
                           type="button"
                           disabled={isLoading}
+                          data-testid="show-more-btn"
                           style={totalOrdersCount - orders.length <= 0 ? {display: 'none'} : {}}
                           onClick={onShowMoreBtnClickHandle}
                         >
                         Показать еще
                         </button>
                         <button
-                          className={`btn show-more__button ${orders.length > 6 && (totalOrdersCount - orders.length <= 0) ? '' : 'show-more__button--to-top'}`}
+                          className="btn show-more__button show-more__button--to-top"
+                          style={{display: (orders.length > 8 && (totalOrdersCount - orders.length <= 0)) ? 'block' : 'none'}}
                           type="button"
+                          data-testid="return-top-btn"
                           onClick={onReturnToTopBtnHandle}
                         >
                         Вернуться в начало
