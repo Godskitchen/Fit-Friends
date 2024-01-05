@@ -95,9 +95,14 @@ export default function TrainingCatalogPage(): JSX.Element {
                               Показать еще
                         </button>
                         <button
-                          className={`btn show-more__button ${trainings.length > 6 && (totalTrainingsCount - trainings.length <= 0) ? '' : 'show-more__button--to-top'}`}
+                          className="btn show-more__button show-more__button--to-top"
                           type="button"
                           onClick={onReturnToTopBtnHandle}
+                          style={{
+                            display: (trainings.length > 6 && (totalTrainingsCount - trainings.length <= 0))
+                              ? 'block'
+                              : 'none'
+                          }}
                         >
                               Вернуться в начало
                         </button>

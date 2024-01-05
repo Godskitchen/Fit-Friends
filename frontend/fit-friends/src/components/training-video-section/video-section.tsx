@@ -118,11 +118,11 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
     }
   };
 
-  const trainingVideoChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
+  const trainingVideoChangeHandler = ({target}: ChangeEvent<HTMLInputElement>) => {
     setVideoUploading(true);
-    trainingVideoValidationHandler(evt.target.files)
+    trainingVideoValidationHandler(target.files)
       .then((res) => {
-        if (res === true && evt.target.files) {
+        if (res === true && target.files) {
           setVideoUploaded(true);
           trigger('video');
         } else {
@@ -174,6 +174,7 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
               <video className="training-video__player"
                 ref={videoRef}
                 src={videoLink}
+                data-testid="video-player"
                 poster={poster}
                 preload='metadata'
                 onTimeUpdate={handleVideoTimeUpdate}

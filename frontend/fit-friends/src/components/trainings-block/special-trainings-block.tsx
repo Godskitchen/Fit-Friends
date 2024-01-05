@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { getSpecialTrainingListAction } from 'src/store/api-actions';
 import { getSpecialTrainingsList } from 'src/store/user-process/user-process.selectors';

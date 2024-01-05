@@ -22,7 +22,7 @@ import ErrorScreen from 'src/components/error-screen/error-screen';
 
 
 export default function TrainingPage(): JSX.Element {
-  const {trainingId} = useParams();
+  const { trainingId } = useParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -330,6 +330,7 @@ export default function TrainingPage(): JSX.Element {
                               myProfile.role === Role.User &&
                                 <button
                                   className="btn training-info__buy"
+                                  data-testid="buy-btn"
                                   type="button"
                                   ref={purchaseBtnRef}
                                   onClick={() => openModal()}

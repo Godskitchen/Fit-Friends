@@ -13,7 +13,7 @@ type UserCardProps = {
 
 export default function UserCard({userId, name, avatar, location, specialisations, role}: UserCardProps): JSX.Element {
   return (
-    <li className="users-catalog__item">
+    <li className="users-catalog__item" data-testid="user-card">
       <div className={`thumbnail-user thumbnail-user--role-${role === Role.User ? 'user' : 'coach'}`}>
         <div className="thumbnail-user__image">
           <picture>

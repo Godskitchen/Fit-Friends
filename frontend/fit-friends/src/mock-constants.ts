@@ -1,6 +1,6 @@
 import { Gender, Location, Role, SkillLevel, Specialisation, TrainingDuration } from './types/constants';
 import { OrderCardType } from './types/order.type';
-import { TrainingCardType } from './types/training.type';
+import { Training, TrainingCardType } from './types/training.type';
 import { TrainerProfileInfo, UserInfo, UserProfileInfo } from './types/user.type';
 
 export const MockUser: UserInfo = {
@@ -60,12 +60,12 @@ export const createUserMocks = (count: number) => {
       userId: i + 1,
       name: 'mock',
       email: `mockmail${i + 1}@mail.local`,
-      gender: Gender.Female,
+      gender: Gender.NoMatter,
       aboutInfo: 'mockinfo',
       role: Role.User,
       birthday: new Date().toISOString(),
-      avatar: 'path/to/avatar',
-      backgroundImage: 'path/to/backimage',
+      avatar: 'http://localhost:4000/static/users/avatar/avatar.png',
+      backgroundImage: 'http://localhost:4000/static/users/backs/user-1.png',
       createdAt: new Date().toISOString(),
       location: Location.Petrogradskaya,
       trainingRequestsAsSender: [],
@@ -86,7 +86,7 @@ export const createOrderMocks = (count: number) => {
       training: {
         trainingId: i,
         title: `training${i}`,
-        backgroundImage: '/path/to/image',
+        backgroundImage: 'http://localhost:4000/static/trainings/backs/training5.jpg',
         skillLevel: SkillLevel.Amateur,
         trainingDuration: TrainingDuration.FiftyToEightyMinutes,
         specialisation: Specialisation.Yoga,
@@ -112,7 +112,7 @@ export const createTrainingMocks = (count: number) => {
     const newTraining: TrainingCardType = {
       trainingId: i,
       title: `training${i}`,
-      backgroundImage: '/path/to/image',
+      backgroundImage: 'http://localhost:4000/static/trainings/backs/training5.jpg',
       skillLevel: SkillLevel.Amateur,
       trainingDuration: TrainingDuration.FiftyToEightyMinutes,
       specialisation: Specialisation.Yoga,
@@ -127,6 +127,37 @@ export const createTrainingMocks = (count: number) => {
   }
 
   return mockTrainingList;
+};
+
+export const MockTraining: Training = {
+  trainingId: 100,
+  title: 'MockTraining',
+  backgroundImage: 'http://localhost:4000/static/trainings/backs/training5.jpg',
+  skillLevel: SkillLevel.Amateur,
+  trainingDuration: TrainingDuration.FiftyToEightyMinutes,
+  specialisation: Specialisation.Aerobics,
+  price: 100,
+  caloriesToBurn: 1200,
+  description: 'Training mock description',
+  gender: Gender.NoMatter,
+  rating: 4,
+  isSpecialOffer: false,
+  video: 'http://localhost:4000/static/trainings/video/video.mov',
+  trainer: {
+    userId: 9,
+    name: 'mockTrainer',
+    email: 'mockmail@local.com',
+    gender: Gender.Male,
+    role: Role.Trainer,
+    avatar: 'http://localhost:4000/static/users/avatar/avatar.png',
+    aboutInfo: 'info about mock user',
+    location: Location.Sportivnaya,
+    backgroundImage: 'http://localhost:4000/static/trainings/backs/training5.jpg',
+    trainingRequestsAsRecepient: [],
+    trainingRequestsAsSender: [],
+    birthday: new Date().toISOString(),
+    createdAt: new Date().toISOString()
+  }
 };
 
 

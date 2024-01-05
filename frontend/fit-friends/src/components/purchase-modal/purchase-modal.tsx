@@ -72,7 +72,11 @@ export default function PurchaseModal({isModalOpen, closeModal, training, closeM
   const orderSum = formatNumber(currentPrice * itemsCount);
 
   return (
-    <div ref={modalRef} className={`modal modal--success modal--no-scale modal--fit-content ${isModalOpen ? 'is-active' : ''}`}>
+    <div
+      ref={modalRef}
+      className={`modal modal--success modal--no-scale modal--fit-content ${isModalOpen ? 'is-active' : ''}`}
+      data-testid="purchase-modal"
+    >
       <div className="modal__wrapper">
         <div className="popup-form popup-form--buy">
           <section className="popup" style={{background: 'none'}}>

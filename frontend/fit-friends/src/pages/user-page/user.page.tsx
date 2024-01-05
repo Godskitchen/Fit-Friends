@@ -53,7 +53,10 @@ export default function UserPage(): JSX.Element {
   }
 
   const onBtnBackClickHandle = () => {
-    navigate(`${myProfile.role === Role.User ? `${AppRoute.UsersCatalog}` : `${AppRoute.CoachAccount}${AppRoute.MyFriends}`}`);
+    navigate(`${myProfile.role === Role.User
+      ? `${AppRoute.UsersCatalog}`
+      : `${AppRoute.CoachAccount}${AppRoute.MyFriends}`}`
+    );
   };
 
   return (

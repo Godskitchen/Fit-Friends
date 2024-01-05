@@ -83,14 +83,15 @@ export default function UsersCatalogPage(): JSX.Element {
                             disabled={isLoading}
                             style={totalUsersCount - users.length <= 0 ? {display: 'none'} : {}}
                           >
-                          Показать еще
+                            Показать еще
                           </button>
                           <button
-                            className={`btn show-more__button ${users.length > 6 && (totalUsersCount - users.length <= 0) ? '' : 'show-more__button--to-top'}`}
+                            className="btn show-more__button show-more__button--to-top"
                             type="button"
                             onClick={onReturnToTopBtnHandle}
+                            style={{display: (users.length > 6 && (totalUsersCount - users.length <= 0)) ? 'block' : 'none'}}
                           >
-                        Вернуться в начало
+                            Вернуться в начало
                           </button>
                         </div>
                       </div>

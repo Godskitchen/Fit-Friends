@@ -6,14 +6,14 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
 import { SliceNameSpace, AuthorizationStatus, ApiRoute } from 'src/app-constants';
 import HistoryRouter from 'src/components/history-router/history-router';
-import { MockTrainer, MockTrainerProfile, MockUser, MockUserProfile, createTrainingMocks } from 'src/mock-constants';
+import { MockTrainer, MockTrainerProfile, createTrainingMocks } from 'src/mock-constants';
 import { createAPI } from 'src/services/server-api';
 import { State } from 'src/types/state.type';
 import thunk, {ThunkDispatch} from 'redux-thunk';
 import MockAdapter from 'axios-mock-adapter';
-import MyPurchasesPage from './my-purchases.page';
-import { addPurchasesToListAction } from 'src/store/api-actions';
+import { addMyTrainingsToListAction } from 'src/store/api-actions';
 import userEvent from '@testing-library/user-event';
+import MyTrainingsPage from './my-trainings.page';
 
 const api = createAPI();
 const mockAPI = new MockAdapter(api);
@@ -27,7 +27,7 @@ const mockStore = configureMockStore<
 
 const history = createBrowserHistory();
 
-describe('Page: MyPurchasesPage', () => {
+describe('Page: MyTrainingsPage', () => {
   let store: ReturnType<typeof mockStore>;
   let initialState;
 
@@ -39,9 +39,12 @@ describe('Page: MyPurchasesPage', () => {
       },
       [SliceNameSpace.User]: {
         authorizationStatus: AuthorizationStatus.Auth,
-        myProfileInfo: {...MockUser, userProfile: MockUserProfile },
+        myProfileInfo: {...MockTrainer, trainerProfile: MockTrainerProfile },
         notifications: [],
       },
+      [SliceNameSpace.Main]: {
+        myTrainingsFilterState: {}
+      }
     };
 
     store = mockStore(initialState);
@@ -50,21 +53,21 @@ describe('Page: MyPurchasesPage', () => {
       <Provider store={store}>
         <HistoryRouter history={history}>
           <HelmetProvider>
-            <MyPurchasesPage />
+            <MyTrainingsPage />
           </HelmetProvider>
         </HistoryRouter>
       </Provider>
     );
 
     // header
-    expect(screen.getByTestId('profile')).toHaveClass('is-active');
-    expect(screen.getByTestId('main')).not.toHaveClass('is-active');
+    expect(screen.getByTestId('profile')).not.toHaveClass('is-active');
+    expect(screen.getByTestId('main')).toHaveClass('is-active');
     expect(screen.getByTestId('friends')).not.toHaveClass('is-active');
 
-    expect(screen.getByText(/Мои покупки/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Мои тренировки/i)[0]).toBeInTheDocument();
   });
 
-  it('should render purchases list if its no empty and all purchases has been received from server. Also shouldn\'t render any button under list', () => {
+  it('should render trainings list if its no empty and all trainings has been received from server. Also shouldn\'t render any button under list', () => {
 
     initialState = {
       [SliceNameSpace.Data]: {
@@ -72,11 +75,14 @@ describe('Page: MyPurchasesPage', () => {
       },
       [SliceNameSpace.User]: {
         authorizationStatus: AuthorizationStatus.Auth,
-        myProfileInfo: {...MockUser, userProfile: MockUserProfile },
+        myProfileInfo: {...MockTrainer, trainerProfile: MockTrainerProfile },
         notifications: [],
         totalMyTrainingsCount: 6,
         myTrainingsList: createTrainingMocks(6)
       },
+      [SliceNameSpace.Main]: {
+        myTrainingsFilterState: {}
+      }
     };
 
     store = mockStore(initialState);
@@ -85,24 +91,24 @@ describe('Page: MyPurchasesPage', () => {
       <Provider store={store}>
         <HistoryRouter history={history}>
           <HelmetProvider>
-            <MyPurchasesPage />
+            <MyTrainingsPage />
           </HelmetProvider>
         </HistoryRouter>
       </Provider>
     );
 
-    expect(screen.getByText(/Мои покупки/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Мои тренировки/i)[0]).toBeInTheDocument();
     expect(screen.getAllByTestId('training-card').length).toBe(6);
-    expect(screen.getByTestId('show-more-btn')).not.toBeVisible();
-    expect(screen.getByTestId('return-top-btn')).not.toBeVisible();
+    expect(screen.getByText('Показать еще')).not.toBeVisible();
+    expect(screen.getByText('Вернуться в начало')).not.toBeVisible();
 
   });
 
-  it('should render show_more button if some trainings remained on server. It should dispatch addPurchasesToListAction if user clicks on "show_more button"', async () => {
+  it('should render show_more button if some trainings remained on server. It should dispatch addTrainingdToListAction if user clicks on "show_more button"', async () => {
 
     mockAPI
-      .onGet(ApiRoute.MyListBalance)
-      .reply(200, {balanceList: [], totalTrainingsCount: 0});
+      .onGet(ApiRoute.MyTrainings)
+      .reply(200, {trainingList: [], totalTrainingsCount: 0});
 
     const user = userEvent.setup();
 
@@ -116,8 +122,11 @@ describe('Page: MyPurchasesPage', () => {
         myProfileInfo: {...MockTrainer, trainerProfile: MockTrainerProfile },
         notifications: [],
         totalMyTrainingsCount: 10,
-        myTrainingsList: createTrainingMocks(4)
+        myTrainingsList: createTrainingMocks(6)
       },
+      [SliceNameSpace.Main]: {
+        myTrainingsFilterState: {}
+      }
     };
 
     store = mockStore(initialState);
@@ -126,26 +135,26 @@ describe('Page: MyPurchasesPage', () => {
       <Provider store={store}>
         <HistoryRouter history={history}>
           <HelmetProvider>
-            <MyPurchasesPage />
+            <MyTrainingsPage />
           </HelmetProvider>
         </HistoryRouter>
       </Provider>
     );
 
-    expect(screen.getByText(/Мои покупки/i)).toBeInTheDocument();
-    expect(screen.getAllByTestId('training-card').length).toBe(4);
-    expect(await screen.findByTestId('show-more-btn')).toBeVisible();
-    expect(screen.getByTestId('return-top-btn')).not.toBeVisible();
+    expect(screen.getAllByText(/Мои тренировки/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByTestId('training-card').length).toBe(6);
+    expect(await screen.findByText('Показать еще')).toBeVisible();
+    expect(await screen.findByText('Вернуться в начало')).not.toBeVisible();
 
-    await user.click(await screen.findByTestId('show-more-btn'));
+    await user.click(await screen.findByText('Показать еще'));
 
     await waitFor(() => {
       const actions = store.getActions().map(({ type }) => type);
-      expect(actions.includes(addPurchasesToListAction.pending.type)).toBeTruthy();
+      expect(actions.includes(addMyTrainingsToListAction.pending.type)).toBeTruthy();
     });
   });
 
-  it('should render "return-to-top" button if all training cards has been rendered and purchase list length more than 6 .', () => {
+  it('should render "return-to-top" button if all training cards has been rendered and purchase list length more than 6 .', async () => {
 
     initialState = {
       [SliceNameSpace.Data]: {
@@ -158,6 +167,9 @@ describe('Page: MyPurchasesPage', () => {
         totalMyTrainingsCount: 10,
         myTrainingsList: createTrainingMocks(10)
       },
+      [SliceNameSpace.Main]: {
+        myTrainingsFilterState: {}
+      }
     };
 
     store = mockStore(initialState);
@@ -166,15 +178,15 @@ describe('Page: MyPurchasesPage', () => {
       <Provider store={store}>
         <HistoryRouter history={history}>
           <HelmetProvider>
-            <MyPurchasesPage />
+            <MyTrainingsPage />
           </HelmetProvider>
         </HistoryRouter>
       </Provider>
     );
 
-    expect(screen.getByText(/Мои покупки/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Мои тренировки/i)[0]).toBeInTheDocument();
     expect(screen.getAllByTestId('training-card').length).toBe(10);
-    expect(screen.getByTestId('show-more-btn')).not.toBeVisible();
-    expect(screen.getByTestId('return-top-btn')).toBeVisible();
+    expect(await screen.findByText('Показать еще')).not.toBeVisible();
+    expect(await screen.findByText('Вернуться в начало')).toBeVisible();
   });
 });
