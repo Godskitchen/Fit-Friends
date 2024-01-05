@@ -117,13 +117,17 @@ export const appData = createSlice({
       .addCase(updateTrainingAction.fulfilled, (state, {payload}) => {
         state.dataUploadingStatus = false;
         state.trainingInfo = payload;
+        state.loadingError = '';
       })
       .addCase(updateTrainingAction.pending, (state) => {
         state.dataUploadingStatus = true;
       })
-      .addCase(updateTrainingAction.rejected, (state) => {
+      .addCase(updateTrainingAction.rejected, (state, action) => {
         state.dataUploadingStatus = false;
         state.trainingInfo = null;
+        state.loadingError = (action.error.code === LoadError.NetworkError)
+          ? LoadError.NetworkError
+          : '';
       })
       .addCase(getUsersListAction.fulfilled, (state, {payload}) => {
         state.usersDownloadingStatus = false;
@@ -142,13 +146,17 @@ export const appData = createSlice({
         if (state.userList) {
           state.userList = [...state.userList, ...payload.userList];
           state.totalUsersCount = payload.totalUsersCount;
+          state.loadingError = '';
         }
       })
       .addCase(addUsersToListAction.pending, (state) => {
         state.usersDownloadingStatus = true;
       })
-      .addCase(addUsersToListAction.rejected, (state) => {
+      .addCase(addUsersToListAction.rejected, (state, action) => {
         state.usersDownloadingStatus = false;
+        state.loadingError = (action.error.code === LoadError.NetworkError)
+          ? LoadError.NetworkError
+          : '';
       })
       .addCase(getFriendListAction.fulfilled, (state) => {
         state.usersDownloadingStatus = false;
@@ -201,12 +209,15 @@ export const appData = createSlice({
       .addCase(addTrainingsToListAction.pending, (state) => {
         state.trainingsDownloadingStatus = true;
       })
-      .addCase(addTrainingsToListAction.rejected, (state) => {
+      .addCase(addTrainingsToListAction.rejected, (state, action) => {
         state.trainingsDownloadingStatus = false;
-        state.trainingList = null;
+        state.loadingError = (action.error.code === LoadError.NetworkError)
+          ? LoadError.NetworkError
+          : '';
       })
       .addCase(addTrainingsToListAction.fulfilled, (state, {payload}) => {
         state.trainingsDownloadingStatus = false;
+        state.loadingError = '';
         if (state.trainingList) {
           state.trainingList = [...state.trainingList, ...payload.trainingList];
         }
@@ -265,20 +276,23 @@ export const appData = createSlice({
       .addCase(getReplyListAction.rejected, (state) => {
         state.repliesDownloadingStatus = false;
         state.replyList = null;
-        state.totalRepliesCount = 0;
       })
       .addCase(getReplyListAction.pending, (state) => {
         state.repliesDownloadingStatus = true;
       })
       .addCase(addRepliesToListAction.fulfilled, (state, {payload}) => {
         state.repliesDownloadingStatus = false;
+        state.loadingError = '';
         if (state.replyList) {
           state.replyList = [...state.replyList, ...payload.replyList];
           state.totalRepliesCount = payload.totalRepliesCount;
         }
       })
-      .addCase(addRepliesToListAction.rejected, (state) => {
+      .addCase(addRepliesToListAction.rejected, (state, action) => {
         state.repliesDownloadingStatus = false;
+        state.loadingError = (action.error.code === LoadError.NetworkError)
+          ? LoadError.NetworkError
+          : '';
       })
       .addCase(addRepliesToListAction.pending, (state) => {
         state.repliesDownloadingStatus = true;
@@ -306,15 +320,15 @@ export const appData = createSlice({
         state.trainingsDownloadingStatus = true;
       })
       .addCase(getReadyUsersListAction.fulfilled, (state, {payload}) => {
-        state.trainingsDownloadingStatus = false;
+        state.usersDownloadingStatus = false;
         state.readyUsersList = payload.userList;
       })
       .addCase(getReadyUsersListAction.rejected, (state) => {
-        state.trainingsDownloadingStatus = false;
+        state.usersDownloadingStatus = false;
         state.readyUsersList = null;
       })
       .addCase(getReadyUsersListAction.pending, (state) => {
-        state.trainingsDownloadingStatus = true;
+        state.usersDownloadingStatus = true;
       })
       .addCase(getSpecialOffersListAction.fulfilled, (state, {payload}) => {
         state.trainingsDownloadingStatus = false;

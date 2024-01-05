@@ -1,5 +1,6 @@
 import { Gender, Location, Role, SkillLevel, Specialisation, TrainingDuration } from './types/constants';
 import { OrderCardType } from './types/order.type';
+import { Reply } from './types/reply.type';
 import { Training, TrainingCardType } from './types/training.type';
 import { TrainerProfileInfo, UserInfo, UserProfileInfo } from './types/user.type';
 
@@ -127,6 +128,21 @@ export const createTrainingMocks = (count: number) => {
   }
 
   return mockTrainingList;
+};
+
+export const createReplyMocks = (count: number) => {
+  const mockReplyList: Reply[] = [];
+  for (let i = 1; i <= count; i++) {
+    const newReply: Reply = {
+      replyId: i,
+      text: 'mock reply text',
+      rating: 3,
+      author: {...MockUser, userProfile: MockUserProfile}
+    };
+    mockReplyList.push(newReply);
+  }
+
+  return mockReplyList;
 };
 
 export const MockTraining: Training = {
