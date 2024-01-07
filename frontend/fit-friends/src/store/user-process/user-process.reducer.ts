@@ -64,7 +64,9 @@ export const userProcess = createSlice({
         state.myProfileInfo = null;
         if (payload && payload.statusCode) {
           if (payload.statusCode === HttpStatusCode.CONFLICT) {
-            state.formErrors[payload.statusCode] = Array.isArray(payload.message) ? payload.message.join('') : payload.message;
+            state.formErrors[payload.statusCode] = Array.isArray(payload.message)
+              ? payload.message.join('')
+              : payload.message;
           }
         }
       })
@@ -77,7 +79,9 @@ export const userProcess = createSlice({
         state.myProfileInfo = null;
         if (payload && payload.statusCode) {
           if (payload.statusCode === HttpStatusCode.UNAUTHORIZED) {
-            state.formErrors[payload.statusCode] = Array.isArray(payload.message) ? payload.message.join('') : payload.message;
+            state.formErrors[payload.statusCode] = Array.isArray(payload.message)
+              ? payload.message.join('')
+              : payload.message;
           }
         }
       })
@@ -110,7 +114,6 @@ export const userProcess = createSlice({
       })
       .addCase(getMyTrainingsAction.rejected, (state) => {
         state.myTrainingsList = null;
-        state.totalMyTrainingsCount = 0;
       })
       .addCase(addMyTrainingsToListAction.fulfilled, (state, {payload}) => {
         if (state.myTrainingsList) {
@@ -124,7 +127,6 @@ export const userProcess = createSlice({
       })
       .addCase(getFriendListAction.rejected, (state) => {
         state.friendList = null;
-        state.totalFriendsCount = 0;
       })
       .addCase(addFriendsToListAction.fulfilled, (state, {payload}) => {
         if (state.friendList) {
@@ -146,7 +148,6 @@ export const userProcess = createSlice({
         state.totalMyTrainingsCount = payload.totalTrainingsCount;
       })
       .addCase(getPurchasesListAction.rejected, (state) => {
-        state.totalMyTrainingsCount = 0;
         state.myTrainingsList = null;
       })
       .addCase(addPurchasesToListAction.fulfilled, (state, {payload}) => {
@@ -155,16 +156,12 @@ export const userProcess = createSlice({
         }
         state.totalMyTrainingsCount = payload.totalTrainingsCount;
       })
-      .addCase(addPurchasesToListAction.rejected, (state) => {
-        state.remainingTrainingAmount = 0;
-      })
       .addCase(getOrderListAction.fulfilled, (state, {payload}) => {
         state.orderList = payload.orderList;
         state.totalOrdersCount = payload.totalOrdersCount;
       })
       .addCase(getOrderListAction.rejected, (state) => {
         state.orderList = null;
-        state.totalOrdersCount = 0;
       })
       .addCase(addOrdersToListAction.fulfilled, (state, {payload}) => {
         if (state.orderList) {
@@ -172,12 +169,11 @@ export const userProcess = createSlice({
         }
         state.totalOrdersCount = payload.totalOrdersCount;
       })
-      .addCase(addOrdersToListAction.rejected, (state) => {
-        state.totalOrdersCount = 0;
-      })
       .addCase(createReplyAction.rejected, (state, {payload}) => {
         if (payload && payload.statusCode) {
-          state.formErrors[payload.statusCode] = Array.isArray(payload.message) ? payload.message.join('') : payload.message;
+          state.formErrors[payload.statusCode] = Array.isArray(payload.message)
+            ? payload.message.join('')
+            : payload.message;
         }
       })
       .addCase(getSpecialTrainingListAction.fulfilled, (state, {payload}) => {
@@ -186,7 +182,6 @@ export const userProcess = createSlice({
       .addCase(getSpecialTrainingListAction.rejected, (state) => {
         state.specialTrainingList = null;
       });
-
   },
 });
 

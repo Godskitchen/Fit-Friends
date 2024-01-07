@@ -1,4 +1,5 @@
 import { Gender, Location, Role, SkillLevel, Specialisation, TrainingDuration } from './types/constants';
+import { Message } from './types/message.type';
 import { OrderCardType } from './types/order.type';
 import { Reply } from './types/reply.type';
 import { Training, TrainingCardType } from './types/training.type';
@@ -6,15 +7,15 @@ import { TrainerProfileInfo, UserInfo, UserProfileInfo } from './types/user.type
 
 export const MockUser: UserInfo = {
   userId: 1,
-  name: '',
-  email: '',
+  name: 'mockUser',
+  email: 'mock_user@test.local',
   gender: Gender.Male,
-  aboutInfo: '',
+  aboutInfo: 'mock about info',
   role: Role.User,
-  birthday: '',
-  avatar: '',
-  backgroundImage: '',
-  createdAt: '',
+  birthday: new Date().toISOString(),
+  avatar: 'http://localhost:4000/static/users/avatar/avatar.png',
+  backgroundImage: 'http://localhost:4000/static/users/backs/user-2.png',
+  createdAt: new Date().toISOString(),
   location: Location.Petrogradskaya,
   trainingRequestsAsSender: [],
   trainingRequestsAsRecepient: []
@@ -22,15 +23,15 @@ export const MockUser: UserInfo = {
 
 export const MockTrainer: UserInfo = {
   userId: 1,
-  name: '',
-  email: '',
+  name: 'mockTrainer',
+  email: 'mock_trainer@test.local',
   gender: Gender.Male,
-  aboutInfo: '',
+  aboutInfo: 'mock about info',
   role: Role.Trainer,
-  birthday: '',
-  avatar: '',
-  backgroundImage: '',
-  createdAt: '',
+  birthday: new Date().toISOString(),
+  avatar: 'http://localhost:4000/static/users/avatar/avatar.png',
+  backgroundImage: 'http://localhost:4000/static/users/backs/user-1.png',
+  createdAt: new Date().toISOString(),
   location: Location.Petrogradskaya,
   trainingRequestsAsSender: [],
   trainingRequestsAsRecepient: [],
@@ -143,6 +144,20 @@ export const createReplyMocks = (count: number) => {
   }
 
   return mockReplyList;
+};
+
+export const createNotificiationMocks = (count: number) => {
+  const notificationList: Message[] = [];
+  for (let i = 1; i <= count; i++) {
+    const newNotification: Message = {
+      id: `mockid-${i}`,
+      text: 'mock text',
+      createdAt: new Date().toISOString()
+    };
+    notificationList.push(newNotification);
+  }
+
+  return notificationList;
 };
 
 export const MockTraining: Training = {
