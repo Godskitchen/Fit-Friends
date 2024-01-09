@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "nest build",
+    "buildImage": "nest build && cp package.json dist/apps/fit-friends && docker build --file ./Dockerfile --tag fitfriends-backend:latest .",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",

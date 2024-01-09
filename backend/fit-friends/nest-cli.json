@@ -9,6 +9,10 @@
       {
         "include": "mail/assets/**/*",
         "outDir": "dist/apps/fit-friends"
+      }, 
+      {
+        "include": "../../../libs/database-service/src/lib/models/**/*",
+        "outDir": "dist/apps/fit-friends"
       }
     ],
     "watchAssets": true,
