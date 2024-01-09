@@ -69,7 +69,7 @@ export default function CertificateCard({image, clickDeleteBtnHandler, cardChang
             ref={fileInputRef}
             className="visually-hidden"
             type="file"
-            accept=".pdf"
+            accept="application/pdf"
             onChange={fileInputChangeHandler}
           />
           <div className="certificate-card__controls">
@@ -91,6 +91,7 @@ export default function CertificateCard({image, clickDeleteBtnHandler, cardChang
               className="btn-icon certificate-card__control"
               type="button"
               aria-label="next"
+              data-testid="delete-card-btn"
               onClick={() => clickDeleteBtnHandler(cardId)}
             >
               <svg width="14" height="16" aria-hidden="true">

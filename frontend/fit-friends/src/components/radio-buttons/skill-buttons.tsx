@@ -42,6 +42,7 @@ export default function SkillButtons({setterSkillValue, currentSkillValue, timeo
                   name='skillLevel'
                   checked={skill === currentSkillValue}
                   onChange={handleButtonChange}
+                  data-testid={skill}
                 />
                 <span className="custom-toggle-radio__icon"></span>
                 <span className="custom-toggle-radio__label">{SkillFieldValue[skill]}</span>

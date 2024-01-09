@@ -8,17 +8,22 @@ type SpecialTrainingCardProps = {
 }
 export default function SpecialTrainingCard({backgroundImage, title, trainingId}: SpecialTrainingCardProps): JSX.Element {
   return (
-    <li className="special-for-you__item">
+    <li className="special-for-you__item" data-testid="training-card">
       <div className="thumbnail-preview" style={{boxShadow: 'none'}}>
         <div className="thumbnail-preview__image">
           <picture>
-            <img src={backgroundImage} width="452" height="191" alt="" />
+            <img src={backgroundImage} width="452" height="191" alt="training"/>
           </picture>
         </div>
         <div className="thumbnail-preview__inner">
           <h3 className="thumbnail-preview__title">{title}</h3>
           <div className="thumbnail-preview__button-wrapper">
-            <Link className="btn btn--small thumbnail-preview__button" to={`${AppRoute.TrainingsCatalog}/${trainingId}`}>Подробнее</Link>
+            <Link
+              className="btn btn--small thumbnail-preview__button"
+              to={`${AppRoute.TrainingsCatalog}/${trainingId}`}
+            >
+              Подробнее
+            </Link>
           </div>
         </div>
       </div>

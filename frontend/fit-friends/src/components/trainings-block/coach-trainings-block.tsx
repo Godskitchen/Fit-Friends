@@ -121,11 +121,13 @@ export default function CoachTrainingsBlock({trainerId}: TrainingBlockProps): JS
         </div>
       </div>
       <ul className="user-card-coach__training-list" style={{overflow: 'hidden'}}>
-        <div style={{
-          transform: `translateX(${offset}px)`,
-          display: 'flex',
-          transition: 'transform 600ms ease-in-out'
-        }}
+        <div
+          style={{
+            transform: `translateX(${offset}px)`,
+            display: 'flex',
+            transition: 'transform 600ms ease-in-out'
+          }}
+          data-testid="slider"
         >
           {trainingList.map((card) => (
             <TrainingCard

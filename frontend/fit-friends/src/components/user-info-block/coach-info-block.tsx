@@ -100,10 +100,10 @@ export default function CoachInfoBlock({
             <div className="user-card-coach__card">
               <div className="user-card-coach__content">
                 <div className="user-card-coach__head">
-                  <h2 className="user-card-coach__title">{name}</h2>
+                  <h2 className="user-card-coach__title" data-testid="name">{name}</h2>
                 </div>
                 <div className="user-card-coach__label">
-                  <Link to='#' onClick={handleLocationBtnClick} ref={locationBtnRef}>
+                  <Link to='#' onClick={handleLocationBtnClick} ref={locationBtnRef} data-testid="location-btn">
                     <svg className="user-card-coach__icon-location" width="12" height="14" aria-hidden="true">
                       <use xlinkHref="#icon-location"></use>
                     </svg>

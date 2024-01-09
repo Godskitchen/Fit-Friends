@@ -58,30 +58,46 @@ export default function FriendCard({
     dispatch(updateTrainingRequestStatusAction({
       id: requestToMeFromUser.id,
       status: TrainingRequestStatus.Accepted
-    })).then(() => {setRequestToMeStatus(TrainingRequestStatus.Accepted);});
+    })).then((result) => {
+      if (updateTrainingRequestStatusAction.fulfilled.match(result)) {
+        setRequestToMeStatus(TrainingRequestStatus.Accepted);
+      }
+    });
   };
 
   const onDeclineBtnClick = () => {
     dispatch(updateTrainingRequestStatusAction({
       id: requestToMeFromUser.id,
       status: TrainingRequestStatus.Declined
-    })).then(() => {setRequestToMeStatus(TrainingRequestStatus.Declined);});
+    })).then((result) => {
+      if (updateTrainingRequestStatusAction.fulfilled.match(result)) {
+        setRequestToMeStatus(TrainingRequestStatus.Declined);
+      }
+    });
   };
 
   const onSendRequestBtnClick = (evt: MouseEvent<HTMLButtonElement>) => {
     evt.stopPropagation();
     dispatch(createTrainingRequestStatusAction(userId))
-      .then(() => {setMyRequestStatus(TrainingRequestStatus.Pending);});
+      .then((result) => {
+        if (createTrainingRequestStatusAction.fulfilled.match(result)) {
+          setMyRequestStatus(TrainingRequestStatus.Pending);
+        }
+      });
   };
 
   return (
-    <li className="friends-list__item" data-testid="friend-card">
+    <li
+      className="friends-list__item"
+      data-testid="friend-card"
+      onClick={() => navigate(`${AppRoute.UsersCatalog}/${userId}`)}
+    >
       <div className="thumbnail-friend">
-        <div className={`thumbnail-friend__info thumbnail-friend__info--theme-${role === Role.User ? 'light' : 'dark'}`} onClick={() => navigate(`${AppRoute.UsersCatalog}/${userId}`)}>
+        <div className={`thumbnail-friend__info thumbnail-friend__info--theme-${role === Role.User ? 'light' : 'dark'}`}>
           <div className="thumbnail-friend__image-status">
             <div className="thumbnail-friend__image">
               <picture>
-                <img src={avatar} width="78" height="78" alt="" />
+                <img src={avatar} width="78" height="78" alt="user avatar" />
               </picture>
             </div>
           </div>
@@ -94,7 +110,7 @@ export default function FriendCard({
               <address className="thumbnail-friend__location-address">{location}</address>
             </div>
           </div>
-          <ul className="thumbnail-friend__training-types-list">
+          <ul className="thumbnail-friend__training-types-list" data-testid="specialisations">
             {
               specialisations.map((spec) => (
                 <li key={spec} onClick={(evt:MouseEvent<HTMLLIElement>) => evt.stopPropagation()}>
@@ -140,13 +156,14 @@ export default function FriendCard({
                 type="button"
                 onClick={onAcceptBtnClick}
               >
-                  Принять
+                Принять
               </button>
               <button
                 className="btn btn--medium btn--outlined btn--dark-bg thumbnail-friend__button"
                 type="button"
                 onClick={onDeclineBtnClick}
-              >Отклонить
+              >
+                Отклонить
               </button>
             </div>
           </div>

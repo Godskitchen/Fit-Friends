@@ -63,7 +63,11 @@ export default function UserMapLocationModal({isModalOpen, closeModal, userName,
   }, [closeModal, isModalOpen, keyDownModalHandler]);
 
   return (
-    <div ref={modalRef} className={`modal modal--success modal--no-scale modal--fit-content ${isModalOpen ? 'is-active' : ''}`}>
+    <div
+      ref={modalRef}
+      className={`modal modal--success modal--no-scale modal--fit-content ${isModalOpen ? 'is-active' : ''}`}
+      data-testid="location-modal"
+    >
       <div className="modal__wrapper">
         <div className="popup-form popup-form--map">
           <section className="popup" style={{background: 'none'}}>
@@ -89,7 +93,13 @@ export default function UserMapLocationModal({isModalOpen, closeModal, userName,
                 </button>
               </div>
               <div className="popup__content-map">
-                <div className="popup__map" ref={mapRef} style={{width: '1160px', height: '623px'}}></div>
+                <div
+                  className="popup__map"
+                  ref={mapRef}
+                  style={{width: '1160px', height: '623px'}}
+                  data-testid="map"
+                >
+                </div>
               </div>
             </div>
           </section>

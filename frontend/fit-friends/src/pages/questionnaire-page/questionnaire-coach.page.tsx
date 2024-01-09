@@ -119,18 +119,15 @@ export default function QuestionnaireCoachPageTest(): JSX.Element {
                       <h1 className="visually-hidden">Опросник</h1>
                       <div className="questionnaire-coach__wrapper">
                         <div className="questionnaire-coach__block">
-                          <span className="questionnaire-coach__legend">Ваша специализация (тип) тренировок</span>
-                          <div className="specialization-checkbox questionnaire-coach__specializations">
-                            {
-                              RegSpecialisationList({
-                                types: Object.values(Specialisation),
-                                trigger,
-                                register,
-                                fieldPaths: questionnaireCoachFieldPaths,
-                                selectedSpecs,
-                              })
-                            }
-                          </div>
+                          {
+                            RegSpecialisationList({
+                              types: Object.values(Specialisation),
+                              trigger,
+                              register,
+                              fieldPaths: questionnaireCoachFieldPaths,
+                              selectedSpecs,
+                            })
+                          }
                           {errors.specialisations && <span style={{color: '#e4001b'}}>{errors.specialisations.message}</span>}
                         </div>
                         <div className="questionnaire-coach__block">

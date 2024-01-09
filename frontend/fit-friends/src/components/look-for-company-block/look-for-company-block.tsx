@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppRoute } from 'src/app-constants';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { getReadyUsersListAction } from 'src/store/api-actions';
-import { getReadyUsersList, getTrainingsDownloadingStatus } from 'src/store/app-data/app-data.selectors';
+import { getReadyUsersList, getUsersDownloadingStatus } from 'src/store/app-data/app-data.selectors';
 import { UsersCatalogFiltersState } from 'src/types/queries-filters.type';
 import LoadingBlock from '../loading-components/loading-block';
 import UserSmallCard from '../user-card/user-small-card';
@@ -28,7 +28,7 @@ export default function LookForCompanyBlock(): JSX.Element {
   const [offset, setOffset] = useState(0);
   const minOffset = 0;
   const [maxOffset, setMaxOffset] = useState(0);
-  const isLoading = useAppSelector(getTrainingsDownloadingStatus);
+  const isLoading = useAppSelector(getUsersDownloadingStatus);
 
   useEffect(() => {
     dispatch(getReadyUsersListAction(initialQuery));
@@ -40,7 +40,6 @@ export default function LookForCompanyBlock(): JSX.Element {
     if (userList) {
       setMaxOffset(-(CARD_WIDTH * userList.length + CARD_GAP * (userList.length - 1) - DESK_WIDTH));
     }
-
   }, [userList]);
 
   if (!userList || isLoading) {
@@ -104,11 +103,13 @@ export default function LookForCompanyBlock(): JSX.Element {
             </div>
           </div>
           <ul className="look-for-company__list" style={{overflow: 'hidden'}}>
-            <div style={{
-              transform: `translateX(${offset}px)`,
-              display: 'flex',
-              transition: 'transform 600ms ease-in-out'
-            }}
+            <div
+              style={{
+                transform: `translateX(${offset}px)`,
+                display: 'flex',
+                transition: 'transform 600ms ease-in-out'
+              }}
+              data-testid="slider"
             >
               {userList.map((card) => (<UserSmallCard key={idCounter++} card={card}/>))}
             </div>

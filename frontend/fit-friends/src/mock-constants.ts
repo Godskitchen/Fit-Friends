@@ -10,7 +10,7 @@ export const MockUser: UserInfo = {
   name: 'mockUser',
   email: 'mock_user@test.local',
   gender: Gender.Male,
-  aboutInfo: 'mock about info',
+  aboutInfo: 'mock abooooooooout info',
   role: Role.User,
   birthday: new Date().toISOString(),
   avatar: 'http://localhost:4000/static/users/avatar/avatar.png',
@@ -49,8 +49,8 @@ export const MockUserProfile: UserProfileInfo = {
 export const MockTrainerProfile: TrainerProfileInfo = {
   skillLevel: SkillLevel.Beginner,
   specialisations: [Specialisation.Boxing],
-  certificates: 'certificate.pdf',
-  description: '',
+  certificates: 'http://localhost:4000/static/certificates/5.pdf',
+  description: 'mock trainer description',
   individualTraining: true,
 };
 
@@ -78,6 +78,31 @@ export const createUserMocks = (count: number) => {
   }
 
   return mockUserList;
+};
+
+export const createTrainerMocks = (count: number) => {
+  const mockTrainerList: UserInfo[] = [];
+  for (let i = 1; i <= count; i++) {
+    const newTrainer: UserInfo = {
+      userId: i + 1,
+      name: 'mock',
+      email: `mockmail${i + 1}@mail.local`,
+      gender: Gender.NoMatter,
+      aboutInfo: 'mockinfo',
+      role: Role.Trainer,
+      birthday: new Date().toISOString(),
+      avatar: 'http://localhost:4000/static/users/avatar/avatar.png',
+      backgroundImage: 'http://localhost:4000/static/users/backs/user-1.png',
+      createdAt: new Date().toISOString(),
+      location: Location.Petrogradskaya,
+      trainingRequestsAsSender: [],
+      trainingRequestsAsRecepient: [],
+      trainerProfile: {...MockTrainerProfile}
+    };
+    mockTrainerList.push(newTrainer);
+  }
+
+  return mockTrainerList;
 };
 
 

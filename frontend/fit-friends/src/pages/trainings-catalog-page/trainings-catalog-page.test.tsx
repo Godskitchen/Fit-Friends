@@ -63,8 +63,8 @@ describe('Page: TrainingsCatalogPage', () => {
     expect(screen.getByTestId('main')).toHaveClass('is-active');
     expect(screen.getByTestId('friends')).not.toHaveClass('is-active');
 
-    expect(screen.getByText(/Каталог тренировок/i)).toBeInTheDocument();
-    expect(screen.getByText(/Мои тренировки Фильтр/i)).toBeInTheDocument();
+    expect(screen.getByText('Каталог тренировок')).toBeInTheDocument();
+    expect(screen.getByText('Каталог тренировок Фильтр')).toBeInTheDocument();
     expect(screen.getByText(/Фильтры/i)).toBeInTheDocument();
   });
 
@@ -98,7 +98,7 @@ describe('Page: TrainingsCatalogPage', () => {
       </Provider>
     );
 
-    expect(screen.getByText(/Каталог тренировок/i)).toBeInTheDocument();
+    expect(screen.getByText('Каталог тренировок')).toBeInTheDocument();
     expect(screen.getAllByTestId('training-card').length).toBe(6);
     expect(screen.getByText(/Показать еще/i)).not.toBeVisible();
     expect(screen.getByText(/Вернуться в начало/i)).not.toBeVisible();
@@ -134,7 +134,7 @@ describe('Page: TrainingsCatalogPage', () => {
       </Provider>
     );
 
-    expect(screen.getByText(/Каталог тренировок/i)).toBeInTheDocument();
+    expect(screen.getByText('Каталог тренировок')).toBeInTheDocument();
     expect(screen.getAllByTestId('training-card').length).toBe(6);
     expect(screen.getByText(/Показать еще/i)).toBeVisible();
     expect(screen.getByText(/Вернуться в начало/i)).not.toBeVisible();
@@ -177,7 +177,7 @@ describe('Page: TrainingsCatalogPage', () => {
       </Provider>
     );
 
-    expect(screen.getByText(/Каталог тренировок/i)).toBeInTheDocument();
+    expect(screen.getByText('Каталог тренировок')).toBeInTheDocument();
     expect(screen.getAllByTestId('training-card').length).toBe(10);
     expect(screen.getByText(/Показать еще/i)).not.toBeVisible();
     expect(screen.getByText(/Вернуться в начало/i)).toBeVisible();

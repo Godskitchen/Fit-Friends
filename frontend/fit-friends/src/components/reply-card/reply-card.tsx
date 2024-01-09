@@ -6,7 +6,7 @@ type ReplyCardProps = {
 
 export default function ReplyCard({card: {text, rating, author}}: ReplyCardProps): JSX.Element {
   return (
-    <li className="reviews-side-bar__item">
+    <li className="reviews-side-bar__item" data-testid="reply-card">
       <div className="review">
         <div className="review__user-info">
           <div className="review__user-photo">

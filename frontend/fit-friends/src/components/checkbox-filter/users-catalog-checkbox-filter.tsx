@@ -1,7 +1,7 @@
 import { ChangeEvent, MutableRefObject, useEffect, useState } from 'react';
 
-type CheckBoxFilterProps = {
-  checkBoxList: Record<string, string>;
+type CheckboxFilterProps = {
+  checkBoxBtnValues: Record<string, string>;
   filterName: string;
   title: string;
   timeoutRef: MutableRefObject<NodeJS.Timeout | null>;
@@ -12,14 +12,14 @@ type CheckBoxFilterProps = {
 
 export default function UsersCatalogCheckBoxFilter(
   {
-    checkBoxList,
+    checkBoxBtnValues,
     title,
     filterName,
     timeoutRef,
     formRef,
     setterCheckboxValues,
     currentCheckBoxesGroupState
-  }: CheckBoxFilterProps): JSX.Element {
+  }: CheckboxFilterProps): JSX.Element {
 
   const handleCheckboxChange = ({target}: ChangeEvent<HTMLInputElement>) => {
     setterCheckboxValues({
@@ -42,15 +42,19 @@ export default function UsersCatalogCheckBoxFilter(
     }
   }, [timeoutRef]);
 
-  const [isShowedAll, setShowAll] = useState(Object.entries(checkBoxList).length <= 5);
+  const [isShowedAll, setShowAll] = useState(Object.entries(checkBoxBtnValues).length <= 5);
 
   return (
     <div className={`user-catalog-form__block user-catalog-form__block--${filterName}`}>
       <h4 className="user-catalog-form__block-title">{title}</h4>
       <ul className="user-catalog-form__check-list">
         {
-          Object.entries(checkBoxList).map(([key, value], index) => (
-            <li className={`user-catalog-form__check-list-item ${index > 4 && !isShowedAll ? 'visually-hidden' : ''}`} key={key}>
+          Object.entries(checkBoxBtnValues).map(([key, value], index) => (
+            <li
+              className={`user-catalog-form__check-list-item ${index > 4 && !isShowedAll ? 'visually-hidden' : ''}`}
+              key={key}
+              data-testid="checkbox-filter"
+            >
               <div className="custom-toggle custom-toggle--checkbox">
                 <label>
                   <input

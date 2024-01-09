@@ -150,6 +150,7 @@ export default function InputRangeFilter(
             value={currMinFieldValue}
             onChange={minPriceFieldChange}
             onBlur={minPriceFieldBlur}
+            data-testid={`min-${filterName}-field`}
           />
           <label htmlFor={`${filterName}-min`}>от</label>
         </div>
@@ -160,6 +161,7 @@ export default function InputRangeFilter(
             value={currMaxFieldValue}
             onChange={maxPriceFieldChange}
             onBlur={maxPriceFieldBlur}
+            data-testid={`max-${filterName}-field`}
           />
           <label htmlFor={`${filterName}-max`}>до</label>
         </div>

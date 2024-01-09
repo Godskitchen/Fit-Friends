@@ -31,12 +31,12 @@ export default function OfferSlide({activeSlide, addToRefs, slideSetter, allSlid
         <span className="promo-slider__text">Горячие предложения на тренировки</span>
         <div className="promo-slider__bottom-container">
           <div className="promo-slider__slider-dots">
-            {allSlideRefs.map((_val, i) => (
+            {allSlideRefs.map((_val, idx) => (
               <button
                 key={idCounter++}
-                className={`${activeSlide && activeSlide === allSlideRefs[i] ? 'promo-slider__slider-dot--active' : ''} promo-slider__slider-dot`}
-                aria-label={`слайд-${i + 1}`}
-                onClick={() => {slideSetter(allSlideRefs[i]);}}
+                className={`${activeSlide && activeSlide === allSlideRefs[idx] ? 'promo-slider__slider-dot--active' : ''} promo-slider__slider-dot`}
+                aria-label={`слайд-${idx + 1}`}
+                onClick={() => {slideSetter(allSlideRefs[idx]);}}
               >
               </button>
             ))}

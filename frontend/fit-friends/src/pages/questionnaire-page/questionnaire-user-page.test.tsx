@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Action } from '@reduxjs/toolkit';
 import MockAdapter from 'axios-mock-adapter';
@@ -7,16 +6,15 @@ import { createAPI } from 'src/services/server-api';
 import { State } from 'src/types/state.type';
 import thunk, {ThunkDispatch} from 'redux-thunk';
 import { ApiRoute, AuthorizationStatus, SliceNameSpace } from 'src/app-constants';
-import { MOCK_PDF, MockTrainer, MockUser } from 'src/mock-constants';
+import { MockUser } from 'src/mock-constants';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import HistoryRouter from 'src/components/history-router/history-router';
 import { HelmetProvider } from 'react-helmet-async';
-import QuestionnaireCoachPage from './questionnaire-coach.page';
 import userEvent from '@testing-library/user-event';
 import { TRAINING_TYPE_COUNT_VALIDATION_MESSAGE } from 'src/utils/validators/user/constants';
 import { redirectAction } from 'src/store/redirect.action';
-import { createCoachProfileAction, createUserProfileAction } from 'src/store/api-actions';
+import { createUserProfileAction } from 'src/store/api-actions';
 import QuestionnaireUserPage from './questionnaire-user.page';
 
 const api = createAPI();

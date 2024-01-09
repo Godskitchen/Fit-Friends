@@ -98,11 +98,13 @@ export default function PopularTrainingsBlock(): JSX.Element {
             </div>
           </div>
           <ul className="popular-trainings__list" style={{overflow: 'hidden'}}>
-            <div style={{
-              transform: `translateX(${offset}px)`,
-              display: 'flex',
-              transition: 'transform 600ms ease-in-out'
-            }}
+            <div
+              style={{
+                transform: `translateX(${offset}px)`,
+                display: 'flex',
+                transition: 'transform 600ms ease-in-out'
+              }}
+              data-testid="slider"
             >
               {trainingList.map((card) => (
                 <TrainingCard

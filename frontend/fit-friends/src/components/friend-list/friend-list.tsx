@@ -11,7 +11,14 @@ type FriendListProps = {
 export default function FriendList({friendCards, myReadyStatus, myRole}: FriendListProps): JSX.Element {
   return (
     <ul className="friends-list__list">
-      {friendCards.map((card) => <FriendCard card={card} myReadyStatus={myReadyStatus} myRole={myRole} key={card.userId} />)}
+      {friendCards.map((card) => (
+        <FriendCard
+          card={card}
+          myReadyStatus={myReadyStatus}
+          myRole={myRole}
+          key={card.userId}
+        />
+      ))}
     </ul>
   );
 }

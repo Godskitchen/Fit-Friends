@@ -70,7 +70,12 @@ export default function TrainingCard({card:{
             </p>
           </div>
           <div className="thumbnail-training__button-wrapper">
-            <Link className="btn btn--small thumbnail-training__button-catalog" to={`${AppRoute.TrainingsCatalog}/${trainingId}`}>Подробнее</Link>
+            <Link
+              className="btn btn--small thumbnail-training__button-catalog"
+              to={`${AppRoute.TrainingsCatalog}/${trainingId}`}
+            >
+              Подробнее
+            </Link>
             <Link className="btn btn--small btn--outlined thumbnail-training__button-catalog" to="#">Отзывы</Link>
           </div>
         </div>

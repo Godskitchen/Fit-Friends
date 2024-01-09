@@ -93,11 +93,13 @@ export default function SpecialTrainingsBlock({userProfile}: SpecialTrainingsBlo
             </div>
           </div>
           <ul className="special-for-you__list" style={{overflowX: 'hidden'}}>
-            <div style={{
-              transform: `translateX(${offset}px)`,
-              display: 'flex',
-              transition: 'transform 600ms ease-in-out'
-            }}
+            <div
+              style={{
+                transform: `translateX(${offset}px)`,
+                display: 'flex',
+                transition: 'transform 600ms ease-in-out'
+              }}
+              data-testid="slider"
             >
               {
                 trainings.map(({backgroundImage, title, trainingId}) => (

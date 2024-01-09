@@ -113,7 +113,8 @@ export default function CertificateSlider(): JSX.Element {
         <div className="personal-account-coach__controls">
           <button
             className="btn-icon personal-account-coach__control"
-            type="button" aria-label="previous"
+            type="button"
+            aria-label="previous"
             onClick={handleLeftArrowClick}
             disabled={offset === minOffset || cards.length <= 3}
           >

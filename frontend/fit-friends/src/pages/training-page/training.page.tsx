@@ -34,7 +34,8 @@ export default function TrainingPage(): JSX.Element {
 
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
-  const videoSectionRef = useRef<HTMLDivElement | null>(null);
+  const [isLoadVideoMode, setLoadVideoMode] = useState<boolean>(false);
+
   const closeModalBtnRef = useRef<HTMLButtonElement | null>(null);
   const purchaseBtnRef = useRef<HTMLButtonElement | null>(null);
 
@@ -207,7 +208,7 @@ export default function TrainingPage(): JSX.Element {
                           onClick={() => {
                             setEditMode(false);
                             onSubmitHandler(getValues());
-                            videoSectionRef.current?.classList.remove('training-video--load');
+                            setLoadVideoMode(false);
                           }}
                           disabled={!isEditMode || !isValid || isSubmitting || priceError !== '' || isDataUploading}
                         >
@@ -328,33 +329,31 @@ export default function TrainingPage(): JSX.Element {
                             </button>
                             {
                               myProfile.role === Role.User &&
-                                <button
-                                  className="btn training-info__buy"
-                                  data-testid="buy-btn"
-                                  type="button"
-                                  ref={purchaseBtnRef}
-                                  onClick={() => openModal()}
-                                  disabled={trainingAmount > 0}
-                                >
-                                  Купить
-                                </button>
+                              <button
+                                className="btn training-info__buy"
+                                data-testid="buy-btn"
+                                type="button"
+                                ref={purchaseBtnRef}
+                                onClick={() => openModal()}
+                                disabled={trainingAmount > 0}
+                              >
+                                Купить
+                              </button>
                             }
                           </div>
                         </div>
                       </form>
                     </div>
                   </div>
-                  <div ref={videoSectionRef} className="training-video">
-                    <h2 className="training-video__title">Видео</h2>
-                    <TrainingVideoSection
-                      videoLink={training.video}
-                      poster={training.backgroundImage}
-                      videoSectionRef={videoSectionRef}
-                      trainingId={training.trainingId}
-                      trainingAmount={trainingAmount}
-                      myRole={myProfile.role}
-                    />
-                  </div>
+                  <TrainingVideoSection
+                    videoLink={training.video}
+                    poster={training.backgroundImage}
+                    isLoadVideoMode={isLoadVideoMode}
+                    setLoadVideoMode={setLoadVideoMode}
+                    trainingId={training.trainingId}
+                    trainingAmount={trainingAmount}
+                    myRole={myProfile.role}
+                  />
                 </div>
               </div>
             </div>

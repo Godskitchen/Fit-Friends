@@ -91,6 +91,7 @@ export default function RangeFilter(
               onChange={handleMinPriceRangeChange}
               onMouseUp={handleMouseUpPrice}
               ref={rangeMinInputRef}
+              data-testid="min-value"
             />
             <span className="visually-hidden">Минимальное значение</span>
             <span className="range-min-value">{currMinValue}</span>
@@ -100,6 +101,7 @@ export default function RangeFilter(
               value={currMaxValue} step="1"
               onChange={handleMaxPriceRangeChange}
               onMouseUp={handleMouseUpPrice}
+              data-testid="max-value"
             />
             <span className="visually-hidden">Максимальное значение</span>
             <span className="range-max-value">{currMaxValue}</span>

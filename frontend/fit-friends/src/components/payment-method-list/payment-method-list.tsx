@@ -8,7 +8,7 @@ const LogoParams: Record<PaymentMethodValue, {width: string; height: string}> = 
 };
 
 type PaymentMethodListProps = {
-  paymentMethod: string;
+  paymentMethod: PaymentMethodValue;
   methodSetter: Dispatch<SetStateAction<PaymentMethodValue>>;
 }
 
@@ -32,6 +32,7 @@ export default function PaymentMethodList({paymentMethod, methodSetter}: Payment
                   value={method}
                   checked={paymentMethod === method}
                   onChange={handlePaymentMethodBtnChange}
+                  data-testid={method}
                 />
                 <span className="btn-radio-image__image">
                   <svg

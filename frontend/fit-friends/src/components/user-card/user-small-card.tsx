@@ -11,7 +11,7 @@ export default function UserSmallCard({card: {userId, name, location, userProfil
   const specialisations = userProfile?.specialisations as Specialisation[];
 
   return (
-    <li className="look-for-company__item">
+    <li className="look-for-company__item" data-testid="user-card">
       <div className="thumbnail-user thumbnail-user--role-user thumbnail-user--dark">
         <div className="thumbnail-user__image">
           <picture>

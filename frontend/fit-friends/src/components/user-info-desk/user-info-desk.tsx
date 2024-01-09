@@ -133,11 +133,23 @@ export default function UserInfoDesk({myProfile}: UserInfoDeskProps): JSX.Elemen
     const sendData: Partial<ProfileInfoInputs> = {
       name: formData.name !== myProfile.name ? formData.name : undefined,
       aboutInfo: formData.aboutInfo !== myProfile.aboutInfo ? formData.aboutInfo : undefined,
-      individualTraining: formData.individualTraining !== myProfile.trainerProfile?.individualTraining ? formData.individualTraining : undefined,
+      individualTraining:
+        formData.individualTraining !== myProfile.trainerProfile?.individualTraining &&
+        formData.individualTraining !== myProfile.userProfile?.readyForWorkout
+          ? formData.individualTraining
+          : undefined,
       location: formData.location !== myProfile.location ? formData.location : undefined,
       gender: formData.gender !== myProfile.gender ? formData.gender : undefined,
-      skillLevel: formData.skillLevel !== myProfile.trainerProfile?.skillLevel ? formData.skillLevel : undefined,
-      specialisations: !compareArrays(formData.specialisations, myProfile.trainerProfile?.specialisations) ? formData.specialisations : undefined,
+      skillLevel:
+        formData.skillLevel !== myProfile.trainerProfile?.skillLevel &&
+        formData.skillLevel !== myProfile.userProfile?.skillLevel
+          ? formData.skillLevel
+          : undefined,
+      specialisations:
+        !compareArrays(formData.specialisations, myProfile.trainerProfile?.specialisations) &&
+        !compareArrays(formData.specialisations, myProfile.userProfile?.specialisations)
+          ? formData.specialisations
+          : undefined,
       avatar: formData.shouldDeleteAvatar ? null : formData.avatar?.length !== 0 ? formData.avatar : undefined,
     };
 
@@ -314,18 +326,13 @@ export default function UserInfoDesk({myProfile}: UserInfoDeskProps): JSX.Elemen
           </div>
         </div>
         <div className="user-info-edit__section">
-          <h2 className="user-info-edit__title user-info-edit__title--specialization">Специализация</h2>
-          <div className="specialization-checkbox user-info-edit__specialization">
-            {
-              ProfileSpecialisationList({
-                types: Object.values(Specialisation),
-                trigger,
-                register,
-                selectedSpecs,
-                isEditMode
-              })
-            }
-          </div>
+          <ProfileSpecialisationList
+            types={Object.values(Specialisation)}
+            trigger={trigger}
+            register={register}
+            selectedSpecs={selectedSpecs}
+            isEditMode={isEditMode}
+          />
           {errors.specialisations && <span style={{color: '#e4001b'}}>{errors.specialisations.message}</span>}
         </div>
         <div ref={locationBlockRef} className={`custom-select ${!isEditMode ? 'custom-select--readonly' : ''} user-info-edit__select`}>

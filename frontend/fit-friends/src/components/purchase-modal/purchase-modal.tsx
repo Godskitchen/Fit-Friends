@@ -127,6 +127,7 @@ export default function PurchaseModal({isModalOpen, closeModal, training, closeM
                       <div className="input-quantity__input">
                         <label>
                           <input
+                            data-testid="trainings-count"
                             type="number"
                             value={itemsCount}
                             size={2}
@@ -159,7 +160,7 @@ export default function PurchaseModal({isModalOpen, closeModal, training, closeM
                   <svg className="popup__total-dash" width="310" height="2" aria-hidden="true">
                     <use xlinkHref="#dash-line"></use>
                   </svg>
-                  <p className="popup__total-price">{orderSum}&nbsp;₽</p>
+                  <p className="popup__total-price" data-testid="sum">{orderSum}&nbsp;₽</p>
                 </div>
                 <div className="popup__button">
                   <button

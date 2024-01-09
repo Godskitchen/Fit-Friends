@@ -134,7 +134,7 @@ describe('Page: QuestionnaireCoachPage', () => {
 
     const specialisations = screen.getAllByTestId('specialisations');
     const uploadField = screen.getByTestId('upload-input');
-    const descriptionField = screen.getByTestId('description');
+    const descriptionField = screen.getByTestId<HTMLTextAreaElement>('description');
 
     await user.click(specialisations[0]);
 
@@ -148,6 +148,7 @@ describe('Page: QuestionnaireCoachPage', () => {
     });
 
     fireEvent.change(descriptionField, {target: {value: 'some mock description'}});
+    expect(descriptionField.value).toEqual('some mock description');
 
     await waitFor(() => {
       expect(screen.getByRole('button', { name: 'Продолжить' })).toBeEnabled();

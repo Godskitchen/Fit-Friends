@@ -63,8 +63,8 @@ describe('Page: UsersCatalogPage', () => {
     expect(screen.getByTestId('main')).toHaveClass('is-active');
     expect(screen.getByTestId('friends')).not.toHaveClass('is-active');
 
-    expect(screen.getByText(/Каталог пользователей/i)).toBeInTheDocument();
-    expect(screen.getByText(/Каталог пользователя Фильтр/i)).toBeInTheDocument();
+    expect(screen.getByText('Каталог пользователей')).toBeInTheDocument();
+    expect(screen.getByText('Каталог пользователей Фильтр')).toBeInTheDocument();
     expect(screen.getByText(/Фильтры/i)).toBeInTheDocument();
   });
 
@@ -98,7 +98,7 @@ describe('Page: UsersCatalogPage', () => {
       </Provider>
     );
 
-    expect(screen.getByText(/Каталог пользователей/i)).toBeInTheDocument();
+    expect(screen.getByText('Каталог пользователей')).toBeInTheDocument();
     expect(screen.getAllByTestId('user-card').length).toBe(6);
     expect(screen.getByText(/Показать еще/i)).not.toBeVisible();
     expect(screen.getByText(/Вернуться в начало/i)).not.toBeVisible();
@@ -134,7 +134,7 @@ describe('Page: UsersCatalogPage', () => {
       </Provider>
     );
 
-    expect(screen.getByText(/Каталог пользователей/i)).toBeInTheDocument();
+    expect(screen.getByText('Каталог пользователей')).toBeInTheDocument();
     expect(screen.getAllByTestId('user-card').length).toBe(6);
     expect(screen.getByText(/Показать еще/i)).toBeVisible();
     expect(screen.getByText(/Вернуться в начало/i)).not.toBeVisible();
@@ -177,7 +177,7 @@ describe('Page: UsersCatalogPage', () => {
       </Provider>
     );
 
-    expect(screen.getByText(/Каталог пользователей/i)).toBeInTheDocument();
+    expect(screen.getByText('Каталог пользователей')).toBeInTheDocument();
     expect(screen.getAllByTestId('user-card').length).toBe(10);
     expect(screen.getByText(/Показать еще/i)).not.toBeVisible();
     expect(screen.getByText(/Вернуться в начало/i)).toBeVisible();

@@ -104,12 +104,14 @@ export default function CoachCertificatesModal({isModalOpen, closeModalBtnRef, c
                 overflow: 'hidden'
               }}
               >
-                <div style=
-                  {{
-                    transform: `translateX(${offset}px)`,
-                    display: 'flex',
-                    transition: 'transform 400ms ease-in-out'
-                  }}
+                <div
+                  style=
+                    {{
+                      transform: `translateX(${offset}px)`,
+                      display: 'flex',
+                      transition: 'transform 400ms ease-in-out'
+                    }}
+                  data-testid="slider"
                 >
                   {
                     certificateMockImages.map((image, index, array) => (

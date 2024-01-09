@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { UseFormRegister, UseFormTrigger } from 'react-hook-form';
 import { Specialisation, SpecialisationFieldValue } from 'src/types/constants';
 import { ProfileInfoInputs } from 'src/types/forms.type';
@@ -11,7 +12,7 @@ type SpecialisationListProps = {
   selectedSpecs: Specialisation[];
 }
 
-export default function ProfileSpecialisationList({types, register, trigger, isEditMode, selectedSpecs}: SpecialisationListProps): JSX.Element[] {
+export default function ProfileSpecialisationList({types, register, trigger, isEditMode, selectedSpecs}: SpecialisationListProps): JSX.Element {
 
   const handleCheckboxChange = (value: Specialisation) => {
     if (selectedSpecs.includes(value)) {
@@ -23,24 +24,31 @@ export default function ProfileSpecialisationList({types, register, trigger, isE
   };
 
   return (
-    types.map((type) => (
-      <div className="btn-checkbox" key={type}>
-        <label>
-          <input
-            className="visually-hidden"
-            type="checkbox"
-            value={type}
-            {...register('specialisations',
-              {
-                validate: () => specialisationValidationHandler(selectedSpecs),
-                onChange: () => handleCheckboxChange(type),
-                disabled: !isEditMode,
-              })
-            }
-          />
-          <span className="btn-checkbox__btn">{SpecialisationFieldValue[type]}</span>
-        </label>
+    <Fragment>
+      <h2 className="user-info-edit__title user-info-edit__title--specialization">Специализация</h2>
+      <div className="specialization-checkbox user-info-edit__specialization">
+        {
+          types.map((type) => (
+            <div className="btn-checkbox" key={type}>
+              <label>
+                <input
+                  className="visually-hidden"
+                  type="checkbox"
+                  value={type}
+                  {...register('specialisations',
+                    {
+                      validate: () => specialisationValidationHandler(selectedSpecs),
+                      onChange: () => handleCheckboxChange(type),
+                      disabled: !isEditMode,
+                    })
+                  }
+                />
+                <span className="btn-checkbox__btn">{SpecialisationFieldValue[type]}</span>
+              </label>
+            </div>
+          ))
+        }
       </div>
-    ))
+    </Fragment>
   );
 }

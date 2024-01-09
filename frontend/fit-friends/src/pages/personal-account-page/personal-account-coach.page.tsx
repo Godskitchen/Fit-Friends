@@ -2,7 +2,7 @@ import { Fragment, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute } from 'src/app-constants';
-import CertificateSlider from 'src/components/certificate-list/certificate-list';
+import CertificateSlider from 'src/components/certificate-slider/certificate-slider';
 import ErrorScreen from 'src/components/error-screen/error-screen';
 import Header from 'src/components/header/header';
 import LoadingBlock from 'src/components/loading-components/loading-block';

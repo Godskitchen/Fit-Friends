@@ -14,7 +14,7 @@ import { Route, Routes } from 'react-router-dom';
 import PersonalAccountCoachPage from './personal-account-coach.page';
 
 
-jest.mock('src/utils/pdf-thumbnailer', () => (_cert: string) => 'mockUrl');
+jest.mock('src/utils/pdf-thumbnailer', () => (_cert: string) => 'http://localhost:4000/static/users/backs/user-3.png');
 jest.mock('nanoid', () => ({
   customAlphabet: (_alphabet: string, _defaultSize?: number) => {
     let idCounter = 1;

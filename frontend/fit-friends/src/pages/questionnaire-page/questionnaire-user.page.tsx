@@ -102,18 +102,15 @@ export default function QuestionnaireUserPage (): JSX.Element {
                       <h1 className="visually-hidden">Опросник</h1>
                       <div className="questionnaire-user__wrapper">
                         <div className="questionnaire-user__block">
-                          <span className="questionnaire-coach__legend">Ваша специализация (тип) тренировок</span>
-                          <div className="specialization-checkbox questionnaire-coach__specializations">
-                            {
-                              RegSpecialisationList({
-                                types: Object.values(Specialisation),
-                                register,
-                                trigger,
-                                fieldPaths: questionnaireUserFieldPaths,
-                                selectedSpecs
-                              })
-                            }
-                          </div>
+                          {
+                            RegSpecialisationList({
+                              types: Object.values(Specialisation),
+                              register,
+                              trigger,
+                              fieldPaths: questionnaireUserFieldPaths,
+                              selectedSpecs
+                            })
+                          }
                           {errors.specialisations && <span style={{color: '#e4001b'}}>{errors.specialisations.message}</span>}
                         </div>
                         <div className="questionnaire-user__block">

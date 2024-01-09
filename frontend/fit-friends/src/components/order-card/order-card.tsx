@@ -11,7 +11,7 @@ type OrderCardProp = {
   trainingCount: number;
 }
 
-export default function OrderCard ({training: {
+export default function OrderCard({training: {
   trainingId,
   title,
   backgroundImage,

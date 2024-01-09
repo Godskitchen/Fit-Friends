@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import OfferList from './offer-list';
 import { useAppDispatch, useAppSelector } from 'src/hooks';
 import { getSpecialOffersList } from 'src/store/app-data/app-data.selectors';

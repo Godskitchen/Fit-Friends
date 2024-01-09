@@ -82,7 +82,11 @@ export default function ReplyModal({isModalOpen, closeModal, trainingId, closeMo
   }, [closeModal, isModalOpen, keyDownModalHandler]);
 
   return (
-    <div ref={modalRef} className={`modal modal--feedback ${isModalOpen ? 'is-active' : ''}`}>
+    <div
+      ref={modalRef}
+      className={`modal modal--feedback ${isModalOpen ? 'is-active' : ''}`}
+      data-testid="reply-modal"
+    >
       <div className="modal__wrapper">
         <section className="popup" style={{background: 'none'}}>
           <div className="popup__wrapper" style={{position: 'relative'}}>
@@ -117,6 +121,7 @@ export default function ReplyModal({isModalOpen, closeModal, trainingId, closeMo
                               })}
                               aria-label={`оценка ${value}.`}
                               value={value}
+                              data-testid={`rating-${value}`}
                             />
                             <span className="popup__rate-number">{value}</span>
                           </label>
@@ -132,6 +137,7 @@ export default function ReplyModal({isModalOpen, closeModal, trainingId, closeMo
                       <label>
                         <textarea
                           style={errors.text ? {border: '1px solid #e4001b', backgroundColor: 'transparent'} : {}}
+                          data-testid="text-field"
                           placeholder=" "
                           {...register('text', {
                             required: 'Поле обязательно для заполнения',

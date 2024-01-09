@@ -44,8 +44,6 @@ describe('Page: MainPage', () => {
         specialTrainingList: createTrainingMocks(8),
         notifications: [],
       },
-      [SliceNameSpace.Main]: {
-      }
     };
 
     store = mockStore(initialState);

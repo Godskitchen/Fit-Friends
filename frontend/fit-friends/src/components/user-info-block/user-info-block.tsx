@@ -58,10 +58,10 @@ export default function UserInfoBlock({user: {userId, name, aboutInfo, location,
           <div className="user-card__wrapper">
             <div className="user-card__content">
               <div className="user-card__head">
-                <h2 className="user-card__title">{name}</h2>
+                <h2 className="user-card__title" data-testid="name">{name}</h2>
               </div>
               <div className="user-card__label">
-                <Link to='#' onClick={handleLocationClickBtn} ref={locationBtnRef}>
+                <Link to='#' onClick={handleLocationClickBtn} ref={locationBtnRef} data-testid="location-btn">
                   <svg className="user-card-coach__icon-location" width="12" height="14" aria-hidden="true">
                     <use xlinkHref="#icon-location"></use>
                   </svg>

@@ -84,7 +84,7 @@ export default function UsersCatalogFiltersDesk(): JSX.Element {
 
   return (
     <div className="user-catalog-form">
-      <h2 className="visually-hidden">Каталог пользователя Фильтр</h2>
+      <h2 className="visually-hidden">Каталог пользователей Фильтр</h2>
       <div className="user-catalog-form__wrapper">
         <button
           className="btn-flat btn-flat--underlined user-catalog-form__btnback"
@@ -101,7 +101,7 @@ export default function UsersCatalogFiltersDesk(): JSX.Element {
           <UsersCatalogCheckBoxFilter
             title='Локация, станция метро'
             filterName='location'
-            checkBoxList={Location}
+            checkBoxBtnValues={Location}
             timeoutRef={timeoutRef}
             formRef={formRef}
             setterCheckboxValues={setLocationsState}
@@ -110,7 +110,7 @@ export default function UsersCatalogFiltersDesk(): JSX.Element {
           <UsersCatalogCheckBoxFilter
             title='Специализация'
             filterName='spezialization'
-            checkBoxList={SpecialisationFieldValue}
+            checkBoxBtnValues={SpecialisationFieldValue}
             timeoutRef={timeoutRef}
             formRef={formRef}
             setterCheckboxValues={setSpecialisationState}

@@ -1,5 +1,4 @@
 /* eslint-disable no-nested-ternary */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from 'src/app-constants';
@@ -102,7 +101,7 @@ export default function TrainingsCatalogFiltersDesk(): JSX.Element {
 
   return (
     <div className="gym-catalog-form">
-      <h2 className="visually-hidden">Мои тренировки Фильтр</h2>
+      <h2 className="visually-hidden">Каталог тренировок Фильтр</h2>
       <div className="gym-catalog-form__wrapper">
         <button
           className="btn-flat btn-flat--underlined gym-catalog-form__btnback"

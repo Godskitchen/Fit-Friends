@@ -14,16 +14,26 @@ import { Role } from 'src/types/constants';
 type TrainingVideoProps = {
   videoLink: string;
   poster: string;
-  videoSectionRef: React.MutableRefObject<HTMLDivElement | null>;
+  isLoadVideoMode: boolean;
+  setLoadVideoMode: React.Dispatch<React.SetStateAction<boolean>>;
   trainingId: number;
   trainingAmount: number;
   myRole: Role;
 }
 
-export default function TrainingVideoSection({videoLink, poster, videoSectionRef, trainingId, trainingAmount, myRole}: TrainingVideoProps): JSX.Element {
+export default function TrainingVideoSection({
+  videoLink,
+  poster,
+  isLoadVideoMode,
+  setLoadVideoMode,
+  trainingId,
+  trainingAmount,
+  myRole}: TrainingVideoProps): JSX.Element {
+
   const dispatch = useAppDispatch();
 
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const videoSectionRef = useRef<HTMLDivElement | null>(null);
+  const videoPlayerRef = useRef<HTMLVideoElement | null>(null);
   const playBtnRef = useRef<HTMLButtonElement | null>(null);
   const controlsBlockRef = useRef<HTMLDivElement | null>(null);
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -60,34 +70,34 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
     if (myRole === Role.User) {
       setCanVideoPlay(false);
     }
-    if (videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.pause();
+    if (videoPlayerRef.current) {
+      videoPlayerRef.current.currentTime = 0;
+      videoPlayerRef.current.pause();
     }
   };
 
   const handlePlayBtnClick = () => {
-    if (videoRef.current?.paused) {
-      videoRef.current?.play();
+    if (videoPlayerRef.current?.paused) {
+      videoPlayerRef.current?.play();
       playBtnRef.current?.classList.add('visually-hidden');
     }
   };
 
   const handleVideoPlayerClick = () => {
-    if (videoRef.current?.played) {
-      videoRef.current?.pause();
+    if (videoPlayerRef.current?.played) {
+      videoPlayerRef.current?.pause();
       playBtnRef.current?.classList.remove('visually-hidden');
     }
   };
 
   const handleFullScrBtnClick = () => {
-    if ((canVideoPlay && myRole === Role.User) || Role.Trainer) {
-      videoRef.current?.requestFullscreen();
+    if ((canVideoPlay && myRole === Role.User) || myRole === Role.Trainer) {
+      videoPlayerRef.current?.requestFullscreen();
     }
   };
 
   const handleVideoTimeUpdate = () => {
-    setCurrentTime(Number(videoRef.current?.currentTime.toFixed(0)));
+    setCurrentTime(Number(videoPlayerRef.current?.currentTime.toFixed(0)));
   };
 
   const handleVideoError = () => {
@@ -100,7 +110,7 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
     playBtnRef.current?.classList.remove('visually-hidden');
     controlsBlockRef.current?.classList.remove('visually-hidden');
     setLoadedError(false);
-    setDuration(Number(videoRef.current?.duration.toFixed(0)));
+    setDuration(Number(videoPlayerRef.current?.duration.toFixed(0)));
   };
 
   const handleVideoEnded = () => {
@@ -111,10 +121,10 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
   };
 
   const handleDeleteBtnClick = () => {
-    videoSectionRef.current?.classList.add('training-video--load');
-    if (videoRef.current?.play) {
-      videoRef.current?.pause();
-      videoRef.current.currentTime = 0;
+    setLoadVideoMode(true);
+    if (videoPlayerRef.current?.play) {
+      videoPlayerRef.current?.pause();
+      videoPlayerRef.current.currentTime = 0;
     }
   };
 
@@ -139,7 +149,7 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
     dispatch(updateTrainingAction(Object.assign(formData, {trainingId})))
       .then((result) => {
         if (updateTrainingAction.fulfilled.match(result)) {
-          videoSectionRef.current?.classList.remove('training-video--load');
+          setLoadVideoMode(false);
         }
       });
   };
@@ -165,14 +175,15 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
   const timePassed = formatVideoDurationTime(currentTime);
 
   return (
-    <Fragment>
+    <div ref={videoSectionRef} className={`training-video ${isLoadVideoMode ? 'training-video--load' : ''}`}>
+      <h2 className="training-video__title">Видео</h2>
       <div className="training-video__video">
         {
           isLoadedError
             ? <p>Видео тренировки на данный момент недоступно</p>
             : (
               <video className="training-video__player"
-                ref={videoRef}
+                ref={videoPlayerRef}
                 src={videoLink}
                 data-testid="video-player"
                 poster={poster}
@@ -192,6 +203,7 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
           style={{ top: 0, bottom: 0, right: 0, left: 0, margin: 'auto' }}
           onClick={handlePlayBtnClick}
           disabled={isLoadedError || !canVideoPlay}
+          data-testid="playback-btn"
         >
           <svg width="18" height="30" aria-hidden="true">
             <use xlinkHref="#icon-arrow"></use>
@@ -246,7 +258,7 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
             <button
               className="btn training-video__button training-video__button--start"
               type="button"
-              disabled={ trainingAmount <= 0 || isLoadedError}
+              disabled={trainingAmount <= 0 || isLoadedError}
               onClick={handleBeginTrainingBtnClick}
             >
               Приступить
@@ -285,6 +297,6 @@ export default function TrainingVideoSection({videoLink, poster, videoSectionRef
           </div>
         )}
       </div>
-    </Fragment>
+    </div>
   );
 }

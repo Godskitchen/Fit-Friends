@@ -48,6 +48,7 @@ export default function SortFilter({
               value={key}
               onChange={handleBtnChange}
               checked={key === currentSortValue}
+              data-testid={key}
             />
             <span className="btn-radio-sort__label">{value}</span>
           </label>

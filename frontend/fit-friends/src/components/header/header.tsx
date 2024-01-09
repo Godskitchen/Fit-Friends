@@ -21,7 +21,10 @@ export default function Header({activeTab}: HeaderProps) {
 
   useEffect(() => {
     dispatch(getNotificationsAction());
-    const intervalId = setInterval(() => {dispatch(getNotificationsAction());}, DISPATCH_INTERVAL);
+    const intervalId = setInterval(
+      () => {dispatch(getNotificationsAction());},
+      DISPATCH_INTERVAL
+    );
     return () => clearInterval(intervalId);
   }, [dispatch]);
 
